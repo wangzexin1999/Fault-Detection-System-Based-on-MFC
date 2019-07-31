@@ -1,0 +1,509 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{E2354FA3-BB3D-49CB-86DC-ECD59313A2B5}</ProjectGuid>
+    <RootNamespace>AirCraftCasingVibrateSystem</RootNamespace>
+    <Keyword>MFCProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="PropertyFFTW.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="mysql.props" />
+    <Import Project="PropertyFFTW.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="PropertyFFTW.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="PropertyFFTW.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0804</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>false</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0804</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0804</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0804</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AirCraftCasingVibrateSystem.h" />
+    <ClInclude Include="AirCraftCasingVibrateSystemDoc.h" />
+    <ClInclude Include="AirCraftCasingVibrateSystemView.h" />
+    <ClInclude Include="AlarmParaSetView.h" />
+    <ClInclude Include="ChannelParaDialog.h" />
+    <ClInclude Include="ChartCtrl\ChartAxis.h" />
+    <ClInclude Include="ChartCtrl\ChartAxisDu.h" />
+    <ClInclude Include="ChartCtrl\ChartAxisLabel.h" />
+    <ClInclude Include="ChartCtrl\ChartBalloonLabel.h" />
+    <ClInclude Include="ChartCtrl\ChartBarAxisDu.h" />
+    <ClInclude Include="ChartCtrl\ChartBarSerie.h" />
+    <ClInclude Include="ChartCtrl\ChartBarSerieDu.h" />
+    <ClInclude Include="ChartCtrl\ChartCandlestickSerie.h" />
+    <ClInclude Include="ChartCtrl\ChartCrossHairCursor.h" />
+    <ClInclude Include="ChartCtrl\ChartCtrl.h" />
+    <ClInclude Include="ChartCtrl\ChartCursor.h" />
+    <ClInclude Include="ChartCtrl\ChartDateTimeAxis.h" />
+    <ClInclude Include="ChartCtrl\ChartDragLineCursor.h" />
+    <ClInclude Include="ChartCtrl\ChartDragLineCursorDu.h" />
+    <ClInclude Include="ChartCtrl\ChartDuCursorPeak.h" />
+    <ClInclude Include="ChartCtrl\ChartDuCursorTrough.h" />
+    <ClInclude Include="ChartCtrl\ChartDuCursorXie.h" />
+    <ClInclude Include="ChartCtrl\ChartFont.h" />
+    <ClInclude Include="ChartCtrl\ChartGanttSerie.h" />
+    <ClInclude Include="ChartCtrl\ChartGradient.h" />
+    <ClInclude Include="ChartCtrl\ChartGrid.h" />
+    <ClInclude Include="ChartCtrl\ChartLabel.h" />
+    <ClInclude Include="ChartCtrl\ChartLegend.h" />
+    <ClInclude Include="ChartCtrl\ChartLineSerie.h" />
+    <ClInclude Include="ChartCtrl\ChartLineSerieDu.h" />
+    <ClInclude Include="ChartCtrl\ChartLogarithmicAxis.h" />
+    <ClInclude Include="ChartCtrl\ChartLogarithmicAxisDu.h" />
+    <ClInclude Include="ChartCtrl\ChartMouseListener.h" />
+    <ClInclude Include="ChartCtrl\ChartPointsArray.h" />
+    <ClInclude Include="ChartCtrl\ChartPointsSerie.h" />
+    <ClInclude Include="ChartCtrl\ChartScrollBar.h" />
+    <ClInclude Include="ChartCtrl\ChartSerie.h" />
+    <ClInclude Include="ChartCtrl\ChartSerieBase.h" />
+    <ClInclude Include="ChartCtrl\ChartSeriesMouseListener.h" />
+    <ClInclude Include="ChartCtrl\ChartStandardAxis.h" />
+    <ClInclude Include="ChartCtrl\ChartStandardAxisDu.h" />
+    <ClInclude Include="ChartCtrl\ChartString.h" />
+    <ClInclude Include="ChartCtrl\ChartSurfaceSerie.h" />
+    <ClInclude Include="ChartCtrl\ChartTitle.h" />
+    <ClInclude Include="ChartCtrl\ChartXYSerie.h" />
+    <ClInclude Include="ChartCtrl\ChartXYSerieDu.h" />
+    <ClInclude Include="ChartCtrl\DuChartCtrl.h" />
+    <ClInclude Include="ChartCtrl\DuChartCtrlShuxing.h" />
+    <ClInclude Include="ChartCtrl\DuChartCtrlStaticFunction.h" />
+    <ClInclude Include="ChartCtrl\DuExport.h" />
+    <ClInclude Include="ChartCtrl\MemDC.h" />
+    <ClInclude Include="ChartCtrl\PointsOrdering.h" />
+    <ClInclude Include="CheckTaskController.h" />
+    <ClInclude Include="CherryTree.h" />
+    <ClInclude Include="ChildFrm.h" />
+    <ClInclude Include="ClassifierController.h" />
+    <ClInclude Include="ColorView.h" />
+    <ClInclude Include="CommonUtil.h" />
+    <ClInclude Include="ConfigurationUtil.h" />
+    <ClInclude Include="CoordinateView.h" />
+    <ClInclude Include="DateUtil.h" />
+    <ClInclude Include="DetectDeviceManageView.h" />
+    <ClInclude Include="DetectedDeviceManageView.h" />
+    <ClInclude Include="DetectedDeviceService.h" />
+    <ClInclude Include="DeviceParaView.h" />
+    <ClInclude Include="EngineerUnitView.h" />
+    <ClInclude Include="FeatureExtrationController.h" />
+    <ClInclude Include="fftw3.h" />
+    <ClInclude Include="FileUtil.h" />
+    <ClInclude Include="FontView.h" />
+    <ClInclude Include="GeneralParaView.h" />
+    <ClInclude Include="GeometricParaView.h" />
+    <ClInclude Include="GraphAttributeController.h" />
+    <ClInclude Include="GraphAttributeView.h" />
+    <ClInclude Include="GraphicAttributeView.h" />
+    <ClInclude Include="GridCtrl_src\CellRange.h" />
+    <ClInclude Include="GridCtrl_src\GCMemDC.h" />
+    <ClInclude Include="GridCtrl_src\GridCell.h" />
+    <ClInclude Include="GridCtrl_src\GridCellBase.h" />
+    <ClInclude Include="GridCtrl_src\GridCtrl.h" />
+    <ClInclude Include="GridCtrl_src\GridDropTarget.h" />
+    <ClInclude Include="GridCtrl_src\InPlaceEdit.h" />
+    <ClInclude Include="GridCtrl_src\TitleTip.h" />
+    <ClInclude Include="LineView.h" />
+    <ClInclude Include="LoginView.h" />
+    <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="MyGridCtrl.h" />
+    <ClInclude Include="NetConService.h" />
+    <ClInclude Include="NewProjectView.h" />
+    <ClInclude Include="PDAttribute.h" />
+    <ClInclude Include="PDDatabase.h" />
+    <ClInclude Include="PDSQL.h" />
+    <ClInclude Include="ProjectController.h" />
+    <ClInclude Include="ProjectManageView.h" />
+    <ClInclude Include="ProjectService.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="Result.h" />
+    <ClInclude Include="SelectView.h" />
+    <ClInclude Include="SelfCheckController.h" />
+    <ClInclude Include="SensorService.h" />
+    <ClInclude Include="SersorParaView.h" />
+    <ClInclude Include="SignalController.h" />
+    <ClInclude Include="SignalDataView.h" />
+    <ClInclude Include="SignalService.h" />
+    <ClInclude Include="SignalSaveView.h" />
+    <ClInclude Include="SignalSelectView.h" />
+    <ClInclude Include="Signal.h" />
+    <ClInclude Include="StatisticView.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="SubChannelParaView.h" />
+    <ClInclude Include="SystemParaDialog.h" />
+    <ClInclude Include="SystemParaView.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="TbDetectedDevice.h" />
+    <ClInclude Include="TbDetectedDeviceDao.h" />
+    <ClInclude Include="TbDictionaryDao.h" />
+    <ClInclude Include="TbProject.h" />
+    <ClInclude Include="TbProjectDao.h" />
+    <ClInclude Include="TbRecordSignalDao.h" />
+    <ClInclude Include="TbSensorDao.h" />
+    <ClInclude Include="TbSersorPara.h" />
+    <ClInclude Include="TbSersorParaDao.h" />
+    <ClInclude Include="TbSignal.h" />
+    <ClInclude Include="TbSignalDao.h" />
+    <ClInclude Include="TbTesterDao.h" />
+    <ClInclude Include="TbTestingDevice.h" />
+    <ClInclude Include="TbTestingDeviceDao.h" />
+    <ClInclude Include="TbTestingDevicePara.h" />
+    <ClInclude Include="TbTestingDeviceParaDao.h" />
+    <ClInclude Include="TbTester.h" />
+    <ClInclude Include="TesterController.h" />
+    <ClInclude Include="TesterService.h" />
+    <ClInclude Include="TestingDeviceService.h" />
+    <ClInclude Include="TriggerParaView.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AirCraftCasingVibrateSystem.cpp" />
+    <ClCompile Include="AirCraftCasingVibrateSystemDoc.cpp" />
+    <ClCompile Include="AirCraftCasingVibrateSystemView.cpp" />
+    <ClCompile Include="AlarmParaSetView.cpp" />
+    <ClCompile Include="ChannelParaDialog.cpp" />
+    <ClCompile Include="ChannelParaView.cpp" />
+    <ClCompile Include="ChartCtrl\ChartAxis.cpp" />
+    <ClCompile Include="ChartCtrl\ChartAxisDu.cpp" />
+    <ClCompile Include="ChartCtrl\ChartAxisLabel.cpp" />
+    <ClCompile Include="ChartCtrl\ChartBarAxisDu.cpp" />
+    <ClCompile Include="ChartCtrl\ChartBarSerie.cpp" />
+    <ClCompile Include="ChartCtrl\ChartBarSerieDu.cpp" />
+    <ClCompile Include="ChartCtrl\ChartCandlestickSerie.cpp" />
+    <ClCompile Include="ChartCtrl\ChartCrossHairCursor.cpp" />
+    <ClCompile Include="ChartCtrl\ChartCtrl.cpp" />
+    <ClCompile Include="ChartCtrl\ChartCursor.cpp" />
+    <ClCompile Include="ChartCtrl\ChartDateTimeAxis.cpp" />
+    <ClCompile Include="ChartCtrl\ChartDragLineCursor.cpp" />
+    <ClCompile Include="ChartCtrl\ChartDragLineCursorDu.cpp" />
+    <ClCompile Include="ChartCtrl\ChartDuCursorPeak.cpp" />
+    <ClCompile Include="ChartCtrl\ChartDuCursorTrough.cpp" />
+    <ClCompile Include="ChartCtrl\ChartDuCursorXie.cpp" />
+    <ClCompile Include="ChartCtrl\ChartFont.cpp" />
+    <ClCompile Include="ChartCtrl\ChartGanttSerie.cpp" />
+    <ClCompile Include="ChartCtrl\ChartGradient.cpp" />
+    <ClCompile Include="ChartCtrl\ChartGrid.cpp" />
+    <ClCompile Include="ChartCtrl\ChartLegend.cpp" />
+    <ClCompile Include="ChartCtrl\ChartLineSerie.cpp" />
+    <ClCompile Include="ChartCtrl\ChartLineSerieDu.cpp" />
+    <ClCompile Include="ChartCtrl\ChartLogarithmicAxis.cpp" />
+    <ClCompile Include="ChartCtrl\ChartLogarithmicAxisDu.cpp" />
+    <ClCompile Include="ChartCtrl\ChartPointsSerie.cpp" />
+    <ClCompile Include="ChartCtrl\ChartScrollBar.cpp" />
+    <ClCompile Include="ChartCtrl\ChartSerie.cpp" />
+    <ClCompile Include="ChartCtrl\ChartStandardAxis.cpp" />
+    <ClCompile Include="ChartCtrl\ChartStandardAxisDu.cpp" />
+    <ClCompile Include="ChartCtrl\ChartSurfaceSerie.cpp" />
+    <ClCompile Include="ChartCtrl\ChartTitle.cpp" />
+    <ClCompile Include="ChartCtrl\ChartXYSerie.cpp" />
+    <ClCompile Include="ChartCtrl\ChartXYSerieDu.cpp" />
+    <ClCompile Include="ChartCtrl\DuChartCtrl.cpp" />
+    <ClCompile Include="ChartCtrl\DuChartCtrlShuxing.cpp" />
+    <ClCompile Include="ChartCtrl\DuChartCtrlStaticFunction.cpp" />
+    <ClCompile Include="CheckTaskController.cpp" />
+    <ClCompile Include="CherryTree.cpp" />
+    <ClCompile Include="ChildFrm.cpp" />
+    <ClCompile Include="ClassifierController.cpp" />
+    <ClCompile Include="ColorView.cpp" />
+    <ClCompile Include="CommonUtil.cpp" />
+    <ClCompile Include="ConfigurationUtil.cpp" />
+    <ClCompile Include="CoordinateView.cpp" />
+    <ClCompile Include="DateUtil.cpp" />
+    <ClCompile Include="DetectDeviceManageView.cpp" />
+    <ClCompile Include="DetectedDeviceManageView.cpp" />
+    <ClCompile Include="DetectedDeviceService.cpp" />
+    <ClCompile Include="DeviceParaView.cpp" />
+    <ClCompile Include="EngineerUnitView.cpp" />
+    <ClCompile Include="FeatureExtrationController.cpp" />
+    <ClCompile Include="FileUtil.cpp" />
+    <ClCompile Include="FontView.cpp" />
+    <ClCompile Include="GeneralParaView.cpp" />
+    <ClCompile Include="GeometricParaView.cpp" />
+    <ClCompile Include="GraphAttributeController.cpp" />
+    <ClCompile Include="GraphAttributeView.cpp" />
+    <ClCompile Include="GraphicAttributeView.cpp" />
+    <ClCompile Include="GridCtrl_src\GridCell.cpp" />
+    <ClCompile Include="GridCtrl_src\GridCellBase.cpp" />
+    <ClCompile Include="GridCtrl_src\GridCtrl.cpp" />
+    <ClCompile Include="GridCtrl_src\GridDropTarget.cpp" />
+    <ClCompile Include="GridCtrl_src\InPlaceEdit.cpp" />
+    <ClCompile Include="GridCtrl_src\TitleTip.cpp" />
+    <ClCompile Include="LineView.cpp" />
+    <ClCompile Include="LoginView.cpp" />
+    <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="MyGridCtrl.cpp" />
+    <ClCompile Include="NetConService.cpp" />
+    <ClCompile Include="NewProjectView.cpp" />
+    <ClCompile Include="PDAttribute.cpp" />
+    <ClCompile Include="PDDatabase.cpp" />
+    <ClCompile Include="PDSQL.cpp" />
+    <ClCompile Include="ProjectController.cpp" />
+    <ClCompile Include="ProjectManageView.cpp" />
+    <ClCompile Include="ProjectService.cpp" />
+    <ClCompile Include="Result.cpp" />
+    <ClCompile Include="SelectView.cpp" />
+    <ClCompile Include="SelfCheckController.cpp" />
+    <ClCompile Include="SensorService.cpp" />
+    <ClCompile Include="SersorParaView.cpp" />
+    <ClCompile Include="SignalController.cpp" />
+    <ClCompile Include="SignalDataView.cpp" />
+    <ClCompile Include="SignalService.cpp" />
+    <ClCompile Include="SignalSaveView.cpp" />
+    <ClCompile Include="SignalSelectView.cpp" />
+    <ClCompile Include="Signal.cpp" />
+    <ClCompile Include="StatisticView.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="SubChannelParaView.cpp" />
+    <ClCompile Include="SystemParaDialog.cpp" />
+    <ClCompile Include="SystemParaView.cpp" />
+    <ClCompile Include="TbDetectedDevice.cpp" />
+    <ClCompile Include="TbDetectedDeviceDao.cpp" />
+    <ClCompile Include="TbDictionaryDao.cpp" />
+    <ClCompile Include="TbProject.cpp" />
+    <ClCompile Include="TbProjectDao.cpp" />
+    <ClCompile Include="TbRecordSignalDao.cpp" />
+    <ClCompile Include="TbSensorDao.cpp" />
+    <ClCompile Include="TbSersorPara.cpp" />
+    <ClCompile Include="TbSersorParaDao.cpp" />
+    <ClCompile Include="TbSignal.cpp" />
+    <ClCompile Include="TbSignalDao.cpp" />
+    <ClCompile Include="TbTesterDao.cpp" />
+    <ClCompile Include="TbTestingDevice.cpp" />
+    <ClCompile Include="TbTestingDeviceDao.cpp" />
+    <ClCompile Include="TbTestingDevicePara.cpp" />
+    <ClCompile Include="TbTestingDeviceParaDao.cpp" />
+    <ClCompile Include="TbTester.cpp" />
+    <ClCompile Include="TesterController.cpp" />
+    <ClCompile Include="TesterService.cpp" />
+    <ClCompile Include="TestingDeviceService.cpp" />
+    <ClCompile Include="TriggerParaView.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="AirCraftCasingVibrateSystem.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="C:\Users\Administrator\Desktop\Project8.bmp" />
+    <Image Include="C:\Users\Administrator\Desktop\start.ico" />
+    <Image Include="res\AirCraftCasingVibrateSystem.ico" />
+    <Image Include="res\AirCraftCasingVibrateSystemDoc.ico" />
+    <Image Include="res\bitmap1.bmp" />
+    <Image Include="res\bitmap2.bmp" />
+    <Image Include="res\bitmap3.bmp" />
+    <Image Include="res\bitmap4.bmp" />
+    <Image Include="res\buttons.bmp" />
+    <Image Include="res\contrlBig.bmp" />
+    <Image Include="res\contrlSmall.bmp" />
+    <Image Include="res\fileBigBMP.bmp" />
+    <Image Include="res\filelarge.bmp" />
+    <Image Include="res\fileLarge.ico" />
+    <Image Include="res\filesLarge.bmp" />
+    <Image Include="res\filesmall.bmp" />
+    <Image Include="res\icon1.ico" />
+    <Image Include="res\info.bmp" />
+    <Image Include="res\main.bmp" />
+    <Image Include="res\Project10.bmp" />
+    <Image Include="res\Project8.bmp" />
+    <Image Include="res\signalGreen.bmp" />
+    <Image Include="res\signalRed.bmp" />
+    <Image Include="res\small.bmp" />
+    <Image Include="res\start.ico" />
+    <Image Include="res\start3.bmp" />
+    <Image Include="res\systemBig.bmp" />
+    <Image Include="res\Toolbar.bmp" />
+    <Image Include="res\Toolbar256.bmp" />
+    <Image Include="res\writelarge.bmp" />
+    <Image Include="res\writesmall.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ChartCtrl\ChartBalloonLabel.inl" />
+    <None Include="ChartCtrl\ChartLabel.inl" />
+    <None Include="ChartCtrl\ChartPointsArray.inl" />
+    <None Include="ChartCtrl\ChartSerieBase.inl" />
+    <None Include="res\AirCraftCasingVibrateSystem.rc2" />
+    <None Include="res\ribbon.mfcribbon-ms">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="AirCraftCasingVibrateSystem.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

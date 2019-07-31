@@ -1,0 +1,88 @@
+// ChannelParaDialog.cpp : 实现文件
+//
+
+#include "stdafx.h"
+#include "AirCraftCasingVibrateSystem.h"
+#include "ChannelParaDialog.h"
+#include "afxdialogex.h"
+
+// CChannelParaDialog 对话框
+
+IMPLEMENT_DYNAMIC(CChannelParaDialog, CDialogEx)
+
+CChannelParaDialog::CChannelParaDialog(CWnd* pParent /*=NULL*/)
+	: CDialogEx(CChannelParaDialog::IDD, pParent)
+{
+}
+
+CChannelParaDialog::~CChannelParaDialog()
+{
+
+
+}
+
+void CChannelParaDialog::DoDataExchange(CDataExchange* pDX)
+{
+	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_TAB1, m_channelTab);
+}
+
+BEGIN_MESSAGE_MAP(CChannelParaDialog, CDialogEx)
+	ON_NOTIFY(TCN_SELCHANGE, IDC_TAB1, &CChannelParaDialog::OnTcnSelchangeTab1)
+END_MESSAGE_MAP()
+
+// CChannelParaDialog 消息处理程序
+
+BOOL CChannelParaDialog::OnInitDialog()
+{
+	CDialogEx::OnInitDialog();
+
+	// TODO:  在此添加额外的初始化
+	m_channelTab.InsertItem(0, _T("通用参数"));
+	m_channelTab.InsertItem(1, _T("触发参数"));
+	//创建两个对话框  
+	m_generalPara.Create(IDD_DIALOG_GENERAL_PARA, &m_channelTab);
+	m_triggerPara.Create(IDD_DIALOG_TRIGGER_PARA, &m_channelTab);
+	
+	//设定在Tab内显示的范围  
+	CRect tabRect;
+	GetClientRect(tabRect);
+	tabRect.left += 1;
+	tabRect.right -= 1;
+	tabRect.top += 22;
+	tabRect.bottom -= 1;
+	//m_tabSystemPara.MoveWindow(tabRect);
+	m_generalPara.MoveWindow(&tabRect);
+	m_triggerPara.MoveWindow(&tabRect);
+	//把对话框对象指针保存起来
+	pDialog[0] = &m_generalPara;
+	pDialog[1] = &m_triggerPara;
+	//显示初始页面  
+	m_generalPara.ShowWindow(SW_SHOW);
+	m_triggerPara.ShowWindow(SW_HIDE);
+	m_CurSelTab = 0;
+
+
+	
+
+
+
+
+
+
+	return TRUE;  // return TRUE unless you set the focus to a control
+	// 异常:  OCX 属性页应返回 FALSE
+}
+
+
+void CChannelParaDialog::OnTcnSelchangeTab1(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	// TODO:  在此添加控件通知处理程序代码
+	//把当前的页面隐藏起来
+	pDialog[m_CurSelTab]->ShowWindow(SW_HIDE);
+	//得到新的页面索引
+	m_CurSelTab = m_channelTab.GetCurSel();
+	//把新的页面显示出来
+	pDialog[m_CurSelTab]->ShowWindow(SW_SHOW);
+	*pResult = 0;
+}
