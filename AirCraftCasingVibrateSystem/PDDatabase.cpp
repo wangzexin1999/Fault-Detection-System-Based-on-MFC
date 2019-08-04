@@ -198,6 +198,7 @@ bool PDDatabase::GetKeyIdList(vector<CString> &keyList, CString strSqlQueryWhere
 	{
 		m_strSqlQuery += " LIMIT " + strStartNumber + "," + strRecordCount;
 	}
+	
 	int res = theApp.PDsql.SelectMysqlOneFiled(keyList, m_strSqlQuery);
 	if (res > 0)
 	{
@@ -299,6 +300,8 @@ bool PDDatabase::DBSelect(vector<PDAttribute *> selectVector, CString strSqlQuer
 		m_strSqlQuery += " LIMIT " + strStartNumber + "," + strRecordCount;
 	}
 	//µ×²ã²éÑ¯
+	TRACE("%s\n", m_strSqlQuery);
+
 	bResult = theApp.PDsql.SelectMysql(selectedValueVector, m_strSqlQuery);
 	return bResult;
 }

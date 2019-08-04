@@ -25,6 +25,7 @@ protected:
 	CGridCtrl m_projectGrid;
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
 	vector<TbProject> m_projectVector;
+	TbProject m_selectedProject;
 	ProjectController m_projectController;
 	DECLARE_MESSAGE_MAP()
 public:
@@ -33,6 +34,7 @@ public:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedSearchbutton();
 	afx_msg void OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult);
+	afx_msg void OnGridClick(NMHDR *pNotifyStruct, LRESULT* pResult);
 	CEdit m_proSearchNameEdit;
 	CButton m_dateSelectCheckBox;
 	CDateTimeCtrl m_proStartTimeCtrl;

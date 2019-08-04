@@ -310,8 +310,8 @@
     <ClInclude Include="TbProjectDao.h" />
     <ClInclude Include="TbRecordSignalDao.h" />
     <ClInclude Include="TbSensorDao.h" />
-    <ClInclude Include="TbSersorPara.h" />
-    <ClInclude Include="TbSersorParaDao.h" />
+    <ClInclude Include="TbSensorPara.h" />
+    <ClInclude Include="TbSensorParaDao.h" />
     <ClInclude Include="TbSignal.h" />
     <ClInclude Include="TbSignalDao.h" />
     <ClInclude Include="TbTesterDao.h" />
@@ -437,8 +437,8 @@
     <ClCompile Include="TbProjectDao.cpp" />
     <ClCompile Include="TbRecordSignalDao.cpp" />
     <ClCompile Include="TbSensorDao.cpp" />
-    <ClCompile Include="TbSersorPara.cpp" />
-    <ClCompile Include="TbSersorParaDao.cpp" />
+    <ClCompile Include="TbSensorPara.cpp" />
+    <ClCompile Include="TbSensorParaDao.cpp" />
     <ClCompile Include="TbSignal.cpp" />
     <ClCompile Include="TbSignalDao.cpp" />
     <ClCompile Include="TbTesterDao.cpp" />

@@ -35,12 +35,13 @@ CString TbSignal::GetSignalType() {
 void TbSignal::SetSignalType(CString signalType) {
 	this->m_signalType = signalType;
 }
-TbSersorPara & TbSignal::GetSensorPara() {
-	return m_sensorPara;
+vector<TbSensorPara> & TbSignal::GetSensorParaVector() {
+	return m_sensorParaVector;
 }
-void TbSignal::SetSensorPara(TbSersorPara sensorPara) {
-	this->m_sensorPara = sensorPara;
+void TbSignal::SetSensorParaVector(vector<TbSensorPara> sensorParaVector) {
+	this->m_sensorParaVector = sensorParaVector;
 }
+
 TbDetectedDevice & TbSignal::GetDetectedDevice() {
 	return m_detectedDevice;
 }
@@ -58,4 +59,10 @@ CString TbSignal::GetDataUrl() {
 }
 void TbSignal::SetDataUrl(CString dataUrl) {
 	this->m_dataUrl = dataUrl;
+}
+void TbSignal::SetProjectId(int projectId){
+	this->m_projectId = projectId;
+}
+int TbSignal::GetProjectId(){
+	return this->m_projectId;
 }

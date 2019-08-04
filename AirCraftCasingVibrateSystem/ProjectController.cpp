@@ -42,7 +42,6 @@ Result ProjectController::AddProject(TbProject &project){
 }
 
 Result ProjectController::LoadAllProjectBySearchCondition(int testerId, CString projectName, CString startTime, CString endTime, vector<TbProject> &projectVector){
-	projectVector.clear();
 	bool flag = m_projectService.GetAllProjectBySearchCondition(testerId, projectName, startTime, endTime, projectVector);
 	if (flag){
 		return Result(true, "ÏîÄ¿²éÑ¯");

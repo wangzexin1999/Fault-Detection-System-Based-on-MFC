@@ -1,12 +1,13 @@
 #pragma once
 #include "PDDatabase.h"
-class TbSersorParaDao :
+#include "TbSensorPara.h"
+class TbSensorParaDao :
 	public PDDatabase
 {
 public:
-	TbSersorParaDao();
-	TbSersorParaDao(const TbSersorParaDao &sersorPara);
-	~TbSersorParaDao();
+	TbSensorParaDao();
+	TbSensorParaDao(const TbSensorParaDao &sersorPara);
+	~TbSensorParaDao();
 
 	PDAttribute m_sensorParaId;
 	PDAttribute m_projectId;
@@ -33,7 +34,10 @@ public:
 	
 
 
-	bool SelectObjectsByCondition(vector<TbSersorParaDao> &selectedValueVector, CString strSqlQueryWhere = "");
-	bool SelectObjectsByCondition(vector<TbSersorParaDao> &selectedValueVector, int iStartNumber, int iRecordCount, CString strSqlQueryWhere = "");
+	bool SelectObjectsByCondition(vector<TbSensorParaDao> &selectedValueVector, CString strSqlQueryWhere = "");
+	bool SelectObjectsByCondition(vector<TbSensorParaDao> &selectedValueVector, int iStartNumber, int iRecordCount, CString strSqlQueryWhere = "");
+
+
+	void GetTableFieldValues(TbSensorPara &sensorPara);
 };
 

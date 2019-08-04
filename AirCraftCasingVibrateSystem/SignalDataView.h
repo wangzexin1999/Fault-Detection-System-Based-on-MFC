@@ -4,6 +4,9 @@
 #include "afxdtctl.h"
 #include<vector>
 #include "TbSignal.h"
+#include "SignalController.h"
+#include "Result.h"
+#include "DateUtil.h"
 using namespace std;
 // CSignalDataView ¶Ô»°¿ò
 
@@ -27,6 +30,14 @@ protected:
 	CDateTimeCtrl m_signalDataStartTimeCtrl;
 	CDateTimeCtrl m_signalDataEndTimeCtrl;
 	vector<TbSignal> m_signalVector;
+	SignalController m_signalController;
+	TbSignal m_selectedSignal;
+
 public:
 	virtual BOOL OnInitDialog();
+	afx_msg void OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult);
+	afx_msg void OnGridClick(NMHDR *pNotifyStruct, LRESULT* pResult);
+	afx_msg void OnBnClickedOk();
+	afx_msg void OnBnClickedSearchButton();
+	CButton m_dateSelectCheckBox;
 };

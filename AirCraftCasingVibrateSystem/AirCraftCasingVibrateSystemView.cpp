@@ -252,6 +252,11 @@ void CAirCraftCasingVibrateSystemView::OnButtonProjectManage()
 void CAirCraftCasingVibrateSystemView::OnButtonOpenDataFile()
 {
 	// TODO:  在此添加命令处理程序代码
+	int projectId = theApp.m_currentProject.GetProjectId();
+	if (projectId <= 0){
+		AfxMessageBox("请先打开或者新建项目");
+		return;
+	}
 	CSignalDataView signalDataView;
 	signalDataView.DoModal();
 }
@@ -406,7 +411,7 @@ void CAirCraftCasingVibrateSystemView::OnBtnAutoScale()
 	view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
 
 	CDuChartCtrlStaticFunction::AutoXScale(&view->m_chart,FALSE);
-	CDuChartCtrlStaticFunction::AutoYScale(&view->m_chart, FALSE);
+	//CDuChartCtrlStaticFunction::AutoYScale(&view->m_chart, FALSE);
 	
 }
 

@@ -38,6 +38,7 @@ BEGIN_MESSAGE_MAP(CProjectManageView, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CProjectManageView::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_SEARCHBUTTON, &CProjectManageView::OnBnClickedSearchbutton)
 	ON_NOTIFY(NM_DBLCLK, IDC_GRIDCTRL_PROJECT, OnGridDblClick)
+	ON_NOTIFY(NM_CLICK, IDC_GRIDCTRL_PROJECT, OnGridClick)
 END_MESSAGE_MAP()
 
 
@@ -87,7 +88,7 @@ void CProjectManageView::GridCtrlInit(){
 
 		Item.nFormat = DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS;
 		CString strText;
-		if (col == 0) strText = CommonUtil::int2CString(m_projectVector[row - 1].GetProjectId());
+		if (col == 0) strText = CommonUtil::Int2CString(m_projectVector[row - 1].GetProjectId());
 		if (col == 1) strText = m_projectVector[row - 1].GetProjectName();
 		if (col == 2) strText = m_projectVector[row - 1].GetProjectCreateTime();
 		if (col == 3) strText = m_projectVector[row - 1].GetTestingDevicePara().GetTestingdevice().GetTestingdeviceIp();
@@ -104,10 +105,11 @@ BOOL CProjectManageView::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 	// TODO:  在此添加额外的初始化
+
 	////初始化日期控件
 	m_proStartTimeCtrl.SetFormat(_T("yyyy'- 'MM'- 'dd"));
 	m_proEndTimeCtrl.SetFormat(_T("yyyy'- 'MM'- 'dd"));
-	///初始化开始日期控件时间
+	///初始化开始日期控件时间为一周之前
 	CTime aWeekAgo = DateUtil::GetAWeekAgoDate();
 	m_proStartTimeCtrl.SetTime(&aWeekAgo);
 
@@ -131,7 +133,10 @@ BOOL CProjectManageView::OnInitDialog()
 void CProjectManageView::OnBnClickedOk()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	AfxMessageBox("哪个键？？？？");
+	if (MessageBox("是否打开项目 " + m_selectedProject.GetProjectName(), "打开项目", MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL) return;
+	////将选择的项目赋给全局project对象。
+	theApp.m_currentProject = m_selectedProject;
+	AfxMessageBox("项目加载成功");
 	CDialogEx::OnOK();
 }
 
@@ -155,7 +160,8 @@ void CProjectManageView::OnBnClickedSearchbutton()
 		proStartTime = DateUtil::GetCStringTimeFormCTime(ctStartTime);
 		proEndTime = DateUtil::GetCStringTimeFormCTime(ctEndTime);
 	}
-	
+	////清空项目集合
+	m_projectVector.clear();
 	int testerId = theApp.m_currentProject.GetTester().GetTesterId();
 	Result res = m_projectController.LoadAllProjectBySearchCondition(testerId, proSearchName, proStartTime, proEndTime, m_projectVector);
 	if (res.GetIsSuccess()){
@@ -172,11 +178,19 @@ void CProjectManageView::OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* /*pResult
 {
 
 	NM_GRIDVIEW* pItem = (NM_GRIDVIEW*)pNotifyStruct;
+	if (pItem->iRow == 0 || pItem->iRow > m_projectVector.size()) return;
 	TbProject g_project = m_projectVector.at(pItem->iRow -1);
 	if (MessageBox("是否打开项目 " + g_project.GetProjectName(), "打开项目", MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL) return;
 	////将选择的项目赋给全局project对象。
 	theApp.m_currentProject = g_project;
-	AfxMessageBox("项目加载成功");
+//	AfxMessageBox("项目加载成功");
 	///关闭窗口
 	CDialogEx::OnOK();
+}
+void CProjectManageView::OnGridClick(NMHDR *pNotifyStruct, LRESULT * /*pResult*/ )
+{
+	NM_GRIDVIEW* pItem = (NM_GRIDVIEW*)pNotifyStruct;
+	if (pItem->iRow == 0 || pItem->iRow > m_projectVector.size()) return;
+	TbProject g_project = m_projectVector.at(pItem->iRow - 1);
+	m_selectedProject = g_project;
 }

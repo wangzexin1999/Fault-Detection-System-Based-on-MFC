@@ -2,7 +2,7 @@
 #include "TbTester.h"
 #include"TbTestingDevicePara.h"
 #include "TbDetectedDevice.h"
-#include "TbSersorPara.h"
+#include "TbSensorPara.h"
 #include <vector>
 using namespace std;
 class TbProject
@@ -18,7 +18,7 @@ protected:
 	CString m_projectCreatetime;
 	TbTestingDevicePara  m_testingDevicePara;
 	TbDetectedDevice m_detectedDevice;
-	vector<TbSersorPara> m_sensorParaVector;
+	vector<TbSensorPara> m_sensorParaVector;
 
 public:
 	void SetProjectId(int projectId);
@@ -32,7 +32,7 @@ public:
 	TbTester & GetTester();
 	CString GetProjectCreateTime();
 	CString GetProjectName();
-	vector<TbSersorPara> GetTbSersorParaVector();
+	vector<TbSensorPara> GetTbSensorParaVector();
 	int GetProjectId();
 };
 

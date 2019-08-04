@@ -57,7 +57,7 @@ void PDAttribute::SetValue(CString value)
 
 int PDAttribute::GetInt()
 {
-	if (this->m_strKind == "int")
+	if (this->m_strKind == "int" || this->m_strKind=="char")
 		return atoi(this->m_strValue);
 	else
 		ASSERT(0);

@@ -19,8 +19,12 @@ Modification:
 ************************************************************************/
 #include "Result.h"
 #include "TbSignal.h"
+#include "SignalService.h"
 class SignalController
 {
+
+private:
+	SignalService m_signalService;
 public:
 	SignalController();
 	~SignalController();

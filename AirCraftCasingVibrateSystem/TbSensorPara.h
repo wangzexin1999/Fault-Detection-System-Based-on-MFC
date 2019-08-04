@@ -1,15 +1,15 @@
 #pragma once
-class TbSersorPara
+class TbSensorPara
 {
 public:
-	TbSersorPara();
-	~TbSersorPara();
+	TbSensorPara();
+	~TbSensorPara();
 
 private:
 	int m_sensorParaId;
 	int m_projectId;
-	int m_sersorId;
-	char m_sersorStatus;
+	int m_sensorId;
+	char m_sensorStatus;
 	int m_messureType;
 	CString m_sensorDesc;
 	int m_windowType;
@@ -28,17 +28,17 @@ private:
 	char m_antiAliasingFiltering;
 	float m_maxFrequency;
 	char m_isUsed;
-
+public:
 	int GetSensorParaId();
 	void SetSensorParaId(int sensorParaId);
 	int GetProjectId();
 	void SetProjectId(int projectId);
-	int GetSersorId();
-	void SetSersorId(int sersorId);
-	char GetSersorStatus();
-	void SetSersorStatus(char sersorStatus);
-	char GetSersorIsUsed();
-	void SetSersorIsUsed(char isUsed);
+	int GetSensorId();
+	void SetSensorId(int SensorId);
+	char GetSensorStatus();
+	void SetSensorStatus(char SensorStatus);
+	char GetSensorIsUsed();
+	void SetSensorIsUsed(char isUsed);
 	int GetMessureType();
 	void SetMessureType(int messureType);
 	CString GetSensorDesc();

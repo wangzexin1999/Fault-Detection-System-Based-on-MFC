@@ -1,6 +1,6 @@
 #pragma once
 #include "TbDetectedDevice.h"
-#include "TbSersorPara.h"
+#include "TbSensorPara.h"
 #include <vector>
 using namespace std;
 
@@ -10,17 +10,19 @@ public:
 	TbSignal();
 	~TbSignal();
 
+private:
 	int m_signalId;
+	int m_projectId;
 	CString m_startTime;
 	CString m_endTime;
 	CString m_signalType;
-	TbSersorPara m_sensorPara;
+	vector<TbSensorPara> m_sensorParaVector;
 	TbDetectedDevice m_detectedDevice;
 	CString m_signalStatus;
 	CString m_dataUrl;
 	vector<vector<double> >  m_signalData; ///ÐÅºÅÊý¾Ý
 
-
+public:
 	int GetSignalId();
 	void SetSignalId(int signalId);
 	CString GetStartTime();
@@ -29,8 +31,8 @@ public:
 	void SetEndTime(CString endTime);
 	CString GetSignalType();
 	void SetSignalType(CString signalType);
-	TbSersorPara & GetSensorPara();
-	void SetSensorPara(TbSersorPara sensorPara);
+	vector<TbSensorPara> & GetSensorParaVector();
+	void SetSensorParaVector(vector<TbSensorPara> sensorParaVector);
 	TbDetectedDevice & GetDetectedDevice();
 	void SetDetectedDevice(TbDetectedDevice detectedDevice);
 	CString GetSignalStatus();
@@ -38,5 +40,7 @@ public:
 	CString GetDataUrl();
 	void SetDataUrl(CString data_url);
 
+	void SetProjectId(int project_Id);
+	int GetProjectId();
 };
 

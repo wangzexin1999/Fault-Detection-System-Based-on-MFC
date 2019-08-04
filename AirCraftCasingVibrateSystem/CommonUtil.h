@@ -1,10 +1,12 @@
 #pragma once
+#include<vector>
+using namespace std;
 class CommonUtil
 {
 public:
-	CommonUtil();
-	~CommonUtil();
 
-	static CString int2CString(int num);
+	static CString Int2CString(int num);
+	static void GetIntVectorFromSplitCString(CString strSource, CString separator, vector<int> & intVector);
+	static CString GetFileNameFromFilePath(CString path);
 };
 

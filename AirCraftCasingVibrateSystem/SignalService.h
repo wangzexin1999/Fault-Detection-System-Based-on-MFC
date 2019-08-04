@@ -18,9 +18,12 @@ Modification:
 修改内容：
 ************************************************************************/
 #include "fftw3.h"
+#include"TbRecordSignalDao.h"
 #include"TbSignal.h"
-#include "TbSersorPara.h"
-#include "TbSersorParaDao.h"
+#include "TbSensorPara.h"
+#include "TbSensorParaDao.h"
+#include "CommonUtil.h"
+#include "TbDetectedDeviceDao.h"
 class SignalService
 {
 public:
@@ -28,7 +31,9 @@ public:
 	~SignalService();
 
 protected:
-	TbSersorParaDao m_sensorParaDao;
+	TbSensorParaDao m_sensorParaDao;
+	TbRecordSignalDao m_recordSignalDao;
+	TbDetectedDeviceDao m_detectedDeviceDao;
 public:
 	/**********************************************************************
 	功能描述： FFT变换

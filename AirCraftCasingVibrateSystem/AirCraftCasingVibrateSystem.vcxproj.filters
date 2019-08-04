@@ -195,9 +195,6 @@
     <ClInclude Include="TbSensorDao.h">
       <Filter>头文件\dao</Filter>
     </ClInclude>
-    <ClInclude Include="TbSersorParaDao.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
     <ClInclude Include="TbTesterDao.h">
       <Filter>头文件\dao</Filter>
     </ClInclude>
@@ -224,9 +221,6 @@
     </ClInclude>
     <ClInclude Include="ProjectService.h">
       <Filter>头文件\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="TbSersorPara.h">
-      <Filter>头文件\entity</Filter>
     </ClInclude>
     <ClInclude Include="ColorView.h">
       <Filter>头文件\View</Filter>
@@ -465,11 +459,17 @@
     <ClInclude Include="TbSignal.h">
       <Filter>头文件\entity</Filter>
     </ClInclude>
-    <ClInclude Include="SignalController.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="SignalService.h">
       <Filter>头文件\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="TbSensorPara.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="TbSensorParaDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="SignalController.h">
+      <Filter>头文件\Controller</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -596,9 +596,6 @@
     <ClCompile Include="TbSensorDao.cpp">
       <Filter>源文件\dao</Filter>
     </ClCompile>
-    <ClCompile Include="TbSersorParaDao.cpp">
-      <Filter>源文件\dao</Filter>
-    </ClCompile>
     <ClCompile Include="TbTesterDao.cpp">
       <Filter>源文件\dao</Filter>
     </ClCompile>
@@ -643,9 +640,6 @@
     </ClCompile>
     <ClCompile Include="SelectView.cpp">
       <Filter>源文件\View</Filter>
-    </ClCompile>
-    <ClCompile Include="TbSersorPara.cpp">
-      <Filter>源文件\entity</Filter>
     </ClCompile>
     <ClCompile Include="ClassifierController.cpp">
       <Filter>源文件\Controller</Filter>
@@ -832,6 +826,12 @@
     </ClCompile>
     <ClCompile Include="SignalService.cpp">
       <Filter>源文件\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="TbSensorPara.cpp">
+      <Filter>源文件\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="TbSensorParaDao.cpp">
+      <Filter>源文件\dao</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

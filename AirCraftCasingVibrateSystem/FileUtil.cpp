@@ -109,7 +109,7 @@ bool CFileUtil::ReadFile(CString sFilePath, double(&outRead)[100][1000])
 
 	// TODO:  在此添加控件通知处理程序代码
 	// 打开文件目录
-	 sFilePath = _T("D:\\train_data.csv");
+	 sFilePath = _T("H:\\项目\\发动机故障检测\\train_data.csv");
 	// 读数据
 	CStdioFile fileRead;
 	if (!fileRead.Open(sFilePath, CFile::modeRead))//以读模式打开文本文件
@@ -171,7 +171,7 @@ void CFileUtil::SaveSampleData(vector<queue<CSignal>> signalData)
 	}
 	/*写操作*/
 	CFile file;
-	if (!file.Open(_T("D:\\test.csv"), CFile::modeCreate | CFile::modeWrite | CFile::modeNoTruncate, NULL))
+	if (!file.Open(_T("H:\\test.csv"), CFile::modeCreate | CFile::modeWrite | CFile::modeNoTruncate, NULL))
 	{
 		return;
 	}

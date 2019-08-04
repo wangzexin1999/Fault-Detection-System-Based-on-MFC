@@ -36,10 +36,10 @@ bool ProjectService::GetAllProjectBySearchCondition(int testerId, CString projec
 	vector<TbProjectDao>  selectedValueVector;
 	////2.查询测试人员的所有项目
 	//////2.1 封装sql查询条件
-	CString strSqlWhere = "tester_id ='" + CommonUtil::int2CString(testerId) + "'";
+	CString strSqlWhere = "tester_id ='" + CommonUtil::Int2CString(testerId) + "'";
 	if (projectName != "") strSqlWhere += "and project_name like '%" + projectName+"%'";
-	if (startTime != "") strSqlWhere += "and project_createtime >'" + startTime + "'";
-	if (endTime != "") strSqlWhere += "and project_createtime <'" + endTime + "'";
+	if (startTime != "") strSqlWhere += "and project_createtime >='" + startTime + "'";
+	if (endTime != "") strSqlWhere += "and project_createtime <='" + endTime + "'";
 	//////2.2 根据sql语句查询符合条件的所有项目
 	bool isSuccess = m_projectDao.SelectObjectsByCondition(selectedValueVector, strSqlWhere);
 	if (isSuccess){
@@ -52,25 +52,26 @@ bool ProjectService::GetAllProjectBySearchCondition(int testerId, CString projec
 			tbProject.GetTestingDevicePara().SetTestingdeviceparaId(tbProjectDao.m_testingDeviceParaid.GetInt());
 			///查询检测设备参数信息
 			m_testingDeviceParaDao.m_testingDeviceParaId.SetValue(tbProjectDao.m_testingDeviceParaid.GetInt());
-			if (m_testingDeviceParaDao.SelectByKey()){
+			isSuccess = m_testingDeviceParaDao.SelectByKey();
+			if (isSuccess){
 				////封装查询到的设备参数信息
 				m_testingDeviceParaDao.GetTableFieldValues(tbProject.GetTestingDevicePara());
 				////查询设备参数信息中的检测设备
 				m_testingDeviceDao.m_testingDeviceId.SetValue(tbProject.GetTestingDevicePara().GetTestingdevice().GetTestingdeviceId());
-				if (m_testingDeviceDao.SelectByKey()){
+				isSuccess = m_testingDeviceDao.SelectByKey();
+				if (isSuccess){
 					///封装检测设备对象
 					m_testingDeviceDao.GetTableFieldValues(tbProject.GetTestingDevicePara().GetTestingdevice());
 				}
 			}
-
 			tbProject.SetProjectCreateTime(tbProjectDao.m_projectCreatetime.m_strValue);
 			////查询被检测设备的信息
 			tbProject.GetDetectedDevice().SetDetecteddeviceId(tbProjectDao.m_detectedDeviceId.GetInt());
 			m_detectedDeviceDao.m_detecteddeviceId.SetValue(tbProjectDao.m_detectedDeviceId.GetInt());
-			if (m_detectedDeviceDao.SelectByKey()){
+			isSuccess = m_detectedDeviceDao.SelectByKey();
+			if (isSuccess){
 				m_detectedDeviceDao.GetTableFieldValues(tbProject.GetDetectedDevice());
 			}
-
 			projectVector.push_back(tbProject);
 		}
 	}
