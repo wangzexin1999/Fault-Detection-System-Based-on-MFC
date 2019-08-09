@@ -2,7 +2,6 @@
 #include "PDSQL.h"
 #include "PDAttribute.h"
 #include <vector>
-#include "AirCraftCasingVibrateSystem.h"
 using namespace std;
 
 class PDDatabase

@@ -17,8 +17,9 @@ private:
 	CString m_endTime;
 	CString m_signalType;
 	vector<TbSensorPara> m_sensorParaVector;
+	CString m_sensorParas;
 	TbDetectedDevice m_detectedDevice;
-	CString m_signalStatus;
+	char m_signalStatus;
 	CString m_dataUrl;
 	vector<vector<double> >  m_signalData; ///ÐÅºÅÊý¾Ý
 
@@ -35,8 +36,8 @@ public:
 	void SetSensorParaVector(vector<TbSensorPara> sensorParaVector);
 	TbDetectedDevice & GetDetectedDevice();
 	void SetDetectedDevice(TbDetectedDevice detectedDevice);
-	CString GetSignalStatus();
-	void SetSignalStatus(CString signal_status);
+	char GetSignalStatus();
+	void SetSignalStatus(char signal_status);
 	CString GetDataUrl();
 	void SetDataUrl(CString data_url);
 

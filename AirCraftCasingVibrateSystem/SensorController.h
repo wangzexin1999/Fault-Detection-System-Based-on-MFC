@@ -16,27 +16,22 @@ Modification:
 修 改 人：
 修改内容：
 ************************************************************************/
+#include "SensorService.h"
 #define DELAY_TIME 10
 #pragma once
-
-#include "SignalService.h"
-
-//struct threadPara
-//{
-//	CCheckTaskController *checkController;
-//	int  channelIndex;
-//	
-//};
-class CCheckTaskController
+class SensorController
 {
 public:
-	CCheckTaskController();
-	~CCheckTaskController();
+	SensorController();
+	~SensorController();
+
+public:
+	//// 读取数据线程一共16个线程
+	 HANDLE m_pReadDataThread[16];
 
 
 public:
-	// 读取数据线程一共16个线程
-	HANDLE m_pReadDataThread[16];
+
 	static unsigned int __stdcall ReadDataThreadProcing(PVOID pM);
 	/**********************************************************************
 	功能描述： 开启线程读取数据
@@ -49,9 +44,28 @@ public:
 	***********************************************************************/
 	int StartCaptureData(int nChannelNum);
 
+	/**********************************************************************
+	功能描述：开启线程保存采样数据
+	输入参数： 
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	int StartAutoSaveCollectionData();
+	/**********************************************************************
+	功能描述：开启线程保存采样数据
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	static unsigned int __stdcall AutoSaveCollectionData(PVOID pM);
 
-public:
-	static HANDLE m_hMutex;
-
+//public:
+ 	static HANDLE m_hMutex;
 };
 

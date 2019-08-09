@@ -99,8 +99,6 @@ void CAirCraftCasingVibrateSystemView::OnInitialUpdate()
 {
 	CFormView::OnInitialUpdate();
 	ResizeParentToFit();
-
-	
 	//调整控件大小
 	CRect rc;
 	GetClientRect(rc);
@@ -160,9 +158,6 @@ void CAirCraftCasingVibrateSystemView::OnInitialUpdate()
 	//pDuChartCtrl->SetCursorSingle(FALSE);
 	pDuChartCtrl->EnableRefresh(true);
 	m_flag = true;
-
-
-
 }
 
 void CAirCraftCasingVibrateSystemView::OnRButtonUp(UINT /* nFlags */, CPoint point)
@@ -296,22 +291,41 @@ void CAirCraftCasingVibrateSystemView::OnButtonSuspendCapture()
 void CAirCraftCasingVibrateSystemView::OnButtonStartCapture()
 {
 	// TODO:  在此添加命令处理程序代码
+	
 	// 设置底部坐标轴为自动
 	//m_pBottomAxis->SetAutomatic(true);
-	// 初始化View
-	InitializeView();
-	// 清空线
-	//m_pLineSerie->ClearSerie();
-	// 计算通道个数
-	CalculateChannelNum(m_nChannelNums);
-	//读取数据
-	m_signalMainController.StartCaptureData(m_nChannelNums);
-	// view显示数据
-	ShowDataToView(m_nChannelNums);
-	// 设置读取线程标志
-	theApp.m_bThreadActive = true;
-	// 设置显示信息线程标志
-	theApp.m_bShowInfThreadActive = true;
+	int projectId = theApp.m_currentProject.GetProjectId();
+	if (projectId <= 0){
+		AfxMessageBox("请先打开或者新建项目");
+		return;
+	}
+	if (!theApp.m_bThreadActive){
+		///////若此时没有开始采集
+		// 初始化View
+		InitializeView();
+		// 清空线
+		//m_pLineSerie->ClearSerie();
+		// 计算通道个数
+		CalculateChannelNum(m_nChannelNums);
+		///清空采集数据vector
+		theApp.m_collectData.clear();
+		///初始化通道数据
+		for (int i = 0; i < m_nChannelNums;i++){
+			queue<AcquiredSignal> acquiredSignalQueue;
+			theApp.m_collectData.push_back(acquiredSignalQueue);
+		}
+		//读取数据
+		m_signalMainController.StartCaptureData(m_nChannelNums);
+		
+		m_signalMainController.StartAutoSaveCollectionData();
+		//存储数据
+		// view显示数据
+		ShowDataToView(m_nChannelNums);
+		// 设置读取线程标志
+		theApp.m_bThreadActive = true;
+		// 设置显示信息线程标志
+		theApp.m_bShowInfThreadActive = true;
+	}
 }
 
 // 停止采集
@@ -443,22 +457,20 @@ void CAirCraftCasingVibrateSystemView::OnBtnNoCorror()
 //开始采样
 void CAirCraftCasingVibrateSystemView::OnBtnStartSmaple()
 {
-	// TODO:  在此添加命令处理程序代码
-	int channelNums;
-	CalculateChannelNum(channelNums);
-	for (int i = 0; i < channelNums; i++)
-	{
-		theApp.m_vSersor[i].m_bIsSample = true;
+	int projectId = theApp.m_currentProject.GetProjectId();
+	if (projectId <= 0){
+		AfxMessageBox("请先打开或者新建项目");
+		return;
 	}
-	SetTimer(27, 50, NULL);
+	theApp.m_bIsSample = true;
 }
 
 // 停止采样
 void CAirCraftCasingVibrateSystemView::OnBtnStopSample()
 {
 	// TODO:  在此添加命令处理程序代码
-	KillTimer(27);
-	m_fileUtile.SaveSampleData(theApp.m_sampleData);
+	//////开线程去保存！！！！！！！！！！！！！！
+	//m_fileUtile.SaveSampleData(theApp.m_sampleData);
 }
 
 //工程单位
@@ -492,7 +504,7 @@ void CAirCraftCasingVibrateSystemView::OnTimer(UINT_PTR nIDEvent)
 	/*11-26是采集*/
 	if (11 == nIDEvent)
 	{
-		DrawLining(0);
+		DrawLining (0);
 	}
 	if (12 == nIDEvent)
 	{
@@ -568,12 +580,21 @@ bool CAirCraftCasingVibrateSystemView::DrawLining(int nViewIndex)
 {
 	m_dview[nViewIndex]->m_pLineSerie->ClearSerie();
 	m_dview[nViewIndex]->m_pLineSerie->SetNeedCalStatValue(TRUE);
-	//theApp.m_vSersor[nViewIndex].m_signalService.m_Y[0] = 0.0;
-	m_dview[nViewIndex]->m_pLineSerie->AddPoints(theApp.m_vSersor[nViewIndex].m_signalService.m_X, theApp.m_vSersor[nViewIndex].m_signalService.m_Y, 500);
+	EchoSignal echoSignal = theApp.m_vSersor[nViewIndex].FrontEchoSignalQueue();
+	/*double *x = echoSignal.GetXArray();
+	double *y = echoSignal.GetYArray();
+	int size = 1000;
+	for (int i = 0; i < size; i++){
+		TRACE("echo....  x=%f,y=%f\n", x[i], y[i]);
+	}*/
+	if (echoSignal.GetXLength() != 0 && echoSignal.GetYLength() != 0){
+		////当队列不是空时，刷新图表的显示
+		m_dview[nViewIndex]->m_pLineSerie->AddPoints(echoSignal.GetXArray(), echoSignal.GetYArray(), echoSignal.GetYLength()/2);
+	}
 	return true;
 }
 
-// 计算通道数
+// 计算当前开的窗口个数->通道数
 bool CAirCraftCasingVibrateSystemView::CalculateChannelNum(int &nChannelNums)
 {
 	// 显示
@@ -581,15 +602,13 @@ bool CAirCraftCasingVibrateSystemView::CalculateChannelNum(int &nChannelNums)
 	CDocTemplate *m_doc = theApp.GetNextDocTemplate(curTemplatePos);
 	/////CDocTemplate *m_doc1 = theApp.GetNextDocTemplate(curTemplatePos);//文档模板
 	//获得文档:
-	CAirCraftCasingVibrateSystemDoc * pdoc[20];
-	int i = 0;
+	nChannelNums = 0;
 	curTemplatePos = m_doc->GetFirstDocPosition();
 	while (curTemplatePos != NULL)
 	{
-		pdoc[i] = (CAirCraftCasingVibrateSystemDoc*)m_doc->GetNextDoc(curTemplatePos);
-		i++;
+		(CAirCraftCasingVibrateSystemDoc*)m_doc->GetNextDoc(curTemplatePos);
+		nChannelNums++;
 	}
-	nChannelNums = i;
 	return 0;
 
 
@@ -647,7 +666,7 @@ void CAirCraftCasingVibrateSystemView::StartSampleChannelDatat()
 	CalculateChannelNum(nchannelNums);
 	for (int i = 0; i < nchannelNums; i++)
 	{
-		theApp.m_sampleData[i].push(theApp.m_vSersor[i].popSignal());
+		/*theApp.m_sampleData[i].push(theApp.m_vSersor[i].popSampleSignalQuene());*/
 	}
 
 }
@@ -655,7 +674,6 @@ void CAirCraftCasingVibrateSystemView::StartSampleChannelDatat()
 // 开启定时器开始采集
 bool CAirCraftCasingVibrateSystemView::ShowDataToView(int nChannelNum)
 {
-
 	for (int i = 11; i < 11 + nChannelNum; i++)
 	{
 		SetTimer(i, 50, NULL);

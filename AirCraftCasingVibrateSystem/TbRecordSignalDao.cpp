@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "TbRecordSignalDao.h"
-
+#include <vector>
+#include "CommonUtil.h"
+using namespace std;
 TbRecordSignalDao::TbRecordSignalDao()
 {
 	this->m_strTableName = "tb_recordsignal";
@@ -65,7 +67,7 @@ bool TbRecordSignalDao::SelectObjectsByCondition(vector<TbRecordSignalDao> &sele
 }
 void TbRecordSignalDao::GetTableFieldValues(TbSignal &recordSignal){
 	recordSignal.SetSignalId(m_signalId.GetInt());
-	recordSignal.SetSignalStatus(m_signalStatus.m_strValue);
+	recordSignal.SetSignalStatus(m_signalStatus.GetInt());
 	recordSignal.SetDataUrl(m_dataUrl.m_strValue);
 	recordSignal.GetDetectedDevice().SetDetecteddeviceId(m_detectedDeviceId.GetInt());
 	recordSignal.SetStartTime(m_startTime.m_strValue);

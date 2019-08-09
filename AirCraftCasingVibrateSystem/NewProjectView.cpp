@@ -73,7 +73,7 @@ void CNewProjectView::OnBnClickedOk()
 	project.SetProjectName(projectName);
 	project.SetDetectedDevice(detectedDevice);
 	project.SetTester(tester);
-	project.SetProjectCreateTime(DateUtil::GetCurrentTimeCString());
+	project.SetProjectCreateTime(DateUtil::GetCurrentCStringTime());
 	int m = m_testingDeviceVector[testingIndex].m_testingDeviceId.GetInt();
 	project.GetTestingDevicePara().GetTestingdevice().SetTestingdeviceId(m_testingDeviceVector[testingIndex].m_testingDeviceId.GetInt());
 	Result res = m_projectController.AddProject(project);

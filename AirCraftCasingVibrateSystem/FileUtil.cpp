@@ -1,24 +1,11 @@
 #include "stdafx.h"
 #include "FileUtil.h"
-
-
-CFileUtil::CFileUtil()
-{
-}
-
-
-CFileUtil::~CFileUtil()
-{
-}
-
-
+#include "CommonUtil.h"
 
 
 //打开文件
 bool CFileUtil::OpenFile(CString &sFilePath,  CString sRootPath)
 {
-
-
 	//**********************选择文件*************************
 	BOOL isOpen = TRUE;		//是否打开(否则为保存)
 	//CString defaultDir = "";	//默认打开的文件路径
@@ -136,88 +123,132 @@ bool CFileUtil::ReadFile(CString sFilePath, double(&outRead)[100][1000])
 	return true;
 }
 
+
+
+
 /*采样数据存储*/
-void CFileUtil::SaveSampleData(vector<queue<CSignal>> signalData)
-{
-	this->m_signalData = signalData;
-	int channelCount = 0,queueCount = 0;
-	/*删除无用数据*/
-	for (int i = 0; i < signalData.size(); i++)
-	{
-		if (signalData[i].size() == 0)
-		{
-			signalData.erase(signalData.begin() + i,signalData.end());
-			break;
-		}
+//void CFileUtil::SaveSampleData(vector<queue<double>> signalData)
+//{
+//	this->m_signalData = signalData;
+//	int channelCount = 0,queueCount = 0;
+//	/*删除无用数据*/
+//	for (int i = 0; i < signalData.size(); i++)
+//	{
+//		if (signalData[i].size() == 0)
+//		{
+//			signalData.erase(signalData.begin() + i,signalData.end());
+//			break;
+//		}
+//	}
+//	/*变量初始化*/
+//	channelCount = signalData.size();
+//	queueCount = signalData[0].size();
+//	CString channelString, douhaoString = ",",channelName = _T("通道");
+//	/*写通道*/
+//	for (int k = 0; k < channelCount; k++)
+//	{
+//		CString iTempStr;
+//		iTempStr.Format("%d",k+1);
+//		
+//		if (k == channelCount-1)
+//		{
+//			channelString = channelString + channelName + iTempStr;
+//		}
+//		else
+//		{
+//			channelString = channelString + channelName + iTempStr + douhaoString;
+//		}
+//	}
+//	/*写操作*/
+//	CFile file;
+//	if (!file.Open(_T("H:\\test.csv"), CFile::modeCreate | CFile::modeWrite | CFile::modeNoTruncate, NULL))
+//	{
+//		return;
+//	}
+//	channelString = channelString + "\n";
+//	file.Write(channelString, strlen(channelString));
+//	/*写数据*/
+//	vector<EchoSignal> vSignal;
+//	int vSignalNums = 0;
+//	CString yStr = "";
+//	for (int i = 0; i < queueCount; i++)
+//	{
+//		/*每个通道出队*/
+//		for (int j = 0; j < channelCount; j++)
+//		{
+//			vSignal.push_back(signalData[j].front());
+//			signalData[j].pop();
+//		}
+//		vSignalNums = vSignal.size();
+//		/*拼接*/
+//		for (int m = 0; m < 1000; m++)
+//		{
+//			for (int n = 0; n < vSignalNums; n++)
+//			{
+//				CString yStrTemp;
+//				yStrTemp.Format("%lf", vSignal[n].m_Y[m]);
+//				if (n == vSignalNums - 1)
+//				{
+//					yStr = yStr + yStrTemp;
+//				}
+//				else
+//				{
+//					yStr = yStr+yStrTemp + douhaoString;
+//				}
+//				
+//			}
+//			yStr = yStr + "\n";
+//			file.Write(yStr, strlen(yStr));
+//			yStr = "";
+//			
+//		}
+//		vSignal.clear();
+//		
+//	}
+//	file.Close();
+//}
+
+Result CFileUtil::SaveCollectionData(vector<queue<AcquiredSignal>> &collectData, CString path, CString fileName, int saveCount){
+	if (collectData.size() == 0) return Result(false, "写入内容不能为空"); //vector为空，则不操作
+	if (saveCount <= 0) return Result(false, "保存数量不能为0");///需要保存的数量为空，则不操作
+	CFile file;///文件对象
+	if (!file.Open(_T(path+fileName), CFile::modeCreate | CFile::modeWrite | CFile::modeNoTruncate, NULL)){
+		return Result(false, "创建文件失败"); ////创建文件失败，则不操作
 	}
-	/*变量初始化*/
-	channelCount = signalData.size();
-	queueCount = signalData[0].size();
-	CString channelString, douhaoString = ",",channelName = _T("通道");
-	/*写通道*/
-	for (int k = 0; k < channelCount; k++)
-	{
-		CString iTempStr;
-		iTempStr.Format("%d",k+1);
-		
-		if (k == channelCount-1)
-		{
-			channelString = channelString + channelName + iTempStr;
-		}
-		else
-		{
-			channelString = channelString + channelName + iTempStr + douhaoString;
-		}
-	}
-	/*写操作*/
-	CFile file;
-	if (!file.Open(_T("H:\\test.csv"), CFile::modeCreate | CFile::modeWrite | CFile::modeNoTruncate, NULL))
-	{
-		return;
-	}
-	channelString = channelString + "\n";
-	file.Write(channelString, strlen(channelString));
-	/*写数据*/
-	vector<CSignal> vSignal;
-	int vSignalNums = 0;
-	CString yStr = "";
-	for (int i = 0; i < queueCount; i++)
-	{
-		/*每个通道出队*/
-		for (int j = 0; j < channelCount; j++)
-		{
-			vSignal.push_back(signalData[j].front());
-			signalData[j].pop();
-		}
-		vSignalNums = vSignal.size();
-		/*拼接*/
-		for (int m = 0; m < 1000; m++)
-		{
-			for (int n = 0; n < vSignalNums; n++)
-			{
-				CString yStrTemp;
-				yStrTemp.Format("%lf", vSignal[n].m_Y[m]);
-				if (n == vSignalNums - 1)
-				{
-					yStr = yStr + yStrTemp;
-				}
-				else
-				{
-					yStr = yStr+yStrTemp + douhaoString;
-				}
-				
+	CString separator = ",";////逗号分隔符
+	///循环写入数据
+	CString endTime="";
+	for (int i = 0; i < saveCount;i++){
+		if (i = saveCount - 1){
+			////如果是最后一条数据，拿到最后的结束时间
+			TRACE("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+			if (!collectData[0].empty()){
+			TRACE("\n0000000000000000000000000000000000000000000000000000000000000\n");
+				endTime = collectData[0].front().GetAcquireTime();
 			}
-			yStr = yStr + "\n";
-			file.Write(yStr, strlen(yStr));
-			yStr = "";
-			
+			for (int j = 1; j < collectData.size(); j++){
+				CString acquireTime = collectData[j].front().GetAcquireTime();
+				if (endTime < acquireTime)  endTime = acquireTime;
+			}
+			TRACE("\n111111111111111111111111111111111111111111111111111111111111\n");
 		}
-		vSignal.clear();
-		
+		CString data="";
+		///拼装字符串
+		int j;
+		////依次获得每个通道的数据
+		for (j = 0; j < collectData.size() - 1;j++){
+			data += CommonUtil::DoubleOrFloat2CString(collectData[j].front().GetSignalData()) + separator;
+			TRACE("\n22222222222222222222222222222222222222222222222222222222222222222\n");
+			collectData[j].pop();
+		}
+		////获得最后一个通道的数据
+		if (!collectData[j].empty()){
+			TRACE("\n3333333333333333333333333333333333333333333333333333333333333333333\n");
+			data += CommonUtil::DoubleOrFloat2CString(collectData[j].front().GetSignalData());
+			collectData[j].pop();
+		}
+		file.Write(data, strlen(data));
 	}
 	file.Close();
-
-	
-	
-
+	return Result(true, endTime);
 }

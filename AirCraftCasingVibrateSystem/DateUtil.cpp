@@ -2,27 +2,12 @@
 #include "DateUtil.h"
 
 
-DateUtil::DateUtil()
-{
-}
 
-
-DateUtil::~DateUtil()
-{
-}
-
-
-CString DateUtil::GetCurrentTimeCString(){
+CString DateUtil::GetCurrentCStringTime(CString format){
 	CTime tm;
 	tm = CTime::GetCurrentTime();
-	return tm.Format("%Y-%m-%d %H:%M:%S");
+	return tm.Format(format);
 }
-
-//CString DateUtil::GetCStringTimeFormCDateTimeCtrl(CDateTimeCtrl dateTimeCtrl){
-//	CTime ctime;
-//	dateTimeCtrl.GetTime(ctime);
-//	return ctime.Format("%Y-%m-%d");
-//}
 
 CString DateUtil::GetCStringTimeFormCTime(CTime time){
 	return time.Format("%Y-%m-%d");

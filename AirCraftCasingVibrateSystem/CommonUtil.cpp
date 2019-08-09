@@ -8,6 +8,12 @@ CString CommonUtil::Int2CString(int num){
 	str.Format("%d", num);
 	return str;
 }
+CString CommonUtil::DoubleOrFloat2CString(double num){
+	CString str;
+	str.Format("lf",num);
+	return str;
+}
+
 ///将字符串按照指定的分割字符分割成一个int型的vector向量
 void CommonUtil::GetIntVectorFromSplitCString(CString strSource, CString separator, vector<int> & intVector){
 	int iPos = 0;

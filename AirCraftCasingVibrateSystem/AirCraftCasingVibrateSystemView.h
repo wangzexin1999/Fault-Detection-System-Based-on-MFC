@@ -23,7 +23,7 @@
 #include "ChartCtrl/ChartLineSerieDu.h"
 #include "resource.h"
 #include "SignalSelectView.h"
-#include "CheckTaskController.h"
+#include "SensorController.h"
 #include "GraphAttributeView.h"
 #include "AlarmParaSetView.h"
 #include "NewProjectView.h"
@@ -33,6 +33,8 @@
 #include "DetectDeviceManageView.h"
 #include "DetectedDeviceManageView.h"
 #include "FileUtil.h"
+
+
 class CAirCraftCasingVibrateSystemView : public CFormView
 {
 protected: // 仅从序列化创建
@@ -53,7 +55,7 @@ public:
 	int m_flag = false;  // 调整控件大小标志
 	int m_nChannelNums = 0; // 通道个数
 	CAirCraftCasingVibrateSystemView * m_dview[20]; //视图
-	CCheckTaskController  m_signalMainController;// 信号的业务逻辑
+	SensorController  m_signalMainController;// 信号的业务逻辑
 	CSignalSelectView  m_signalSelectView;   //信号选择界面
 	CGraphAttributeView m_graphAttributeView; // 图形属性界面
 	CNewProjectView m_newProjectView;    // 项目管理界面

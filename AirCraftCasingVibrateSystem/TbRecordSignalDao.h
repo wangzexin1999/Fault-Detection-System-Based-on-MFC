@@ -1,9 +1,7 @@
 #pragma once
 #include "PDDatabase.h"
 #include "TbSignal.h"
-#include <vector>
-#include "CommonUtil.h"
-using namespace std;
+
 class TbRecordSignalDao :
 	public PDDatabase
 {

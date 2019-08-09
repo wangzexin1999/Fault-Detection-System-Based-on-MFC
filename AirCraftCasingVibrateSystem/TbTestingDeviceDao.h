@@ -1,5 +1,6 @@
 #pragma once
 #include "PDDatabase.h"
+#include "TbTestingDevice.h"
 
 class TbTestingDeviceDao :
 	public PDDatabase

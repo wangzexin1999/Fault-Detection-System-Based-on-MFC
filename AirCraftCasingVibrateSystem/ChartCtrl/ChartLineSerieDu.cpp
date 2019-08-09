@@ -37,6 +37,7 @@ void CChartLineSerieDu::AddPoints(double* pX, double* pY, unsigned Count)
 	
 	// ¿½±´»ùÀàµÄ
 	SChartXYPoint* pPoints = new SChartXYPoint[Count];
+
 	for (unsigned i=0; i<Count; i++)
 	{
 		pPoints[i].X = pX[i];

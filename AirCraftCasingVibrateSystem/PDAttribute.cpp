@@ -33,7 +33,7 @@ void PDAttribute::CreateSQLWord(CString strSqlField, CString strKind)
 
 void PDAttribute::SetValue(int value)
 {
-	ASSERT(this->m_strKind == "int");
+	ASSERT(this->m_strKind == "int" || this->m_strKind == "char");
 	this->m_strValue.Format("%d", value);
 }
 

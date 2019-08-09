@@ -16,21 +16,17 @@ Modification:
 修 改 人：
 修改内容：
 ************************************************************************/
-
-
 #pragma once
 #include "Signal.h"
 #include <vector>
 #include <queue>
+#include "AcquiredSignal.h"
+#include "Result.h"
 using namespace std;
 
 
 class CFileUtil
 {
-public:
-	CFileUtil();
-	~CFileUtil();
-
 
 public:
 	/**********************************************************************
@@ -42,7 +38,7 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	bool OpenFile(CString &sFilePath,  CString sRootPath = "D:");
+	 bool OpenFile(CString &sFilePath,  CString sRootPath = "D:");
 	/**********************************************************************
 	功能描述： 写文件
 	输入参数： sFilePath---要写数据的目录，默认D:,dX[]--X数据，dY--Y数据
@@ -75,15 +71,13 @@ public:
 	bool ReadFile(CString sFilePath, double (&outRead)[100][1000]);
 	/**********************************************************************
 	 功能描述： 保存采样数据
-	 输入参数： 
+	 输入参数： queue的vector向量，文件保存路径，文件名字，保存数量 
 	 输出参数： 
 	 返 回 值： 
 	 其它说明：
 	 修改日期 版本号 修改人 修改内容
 	 ----------------------------------------------------------------------
 	 ***********************************************************************/
-	void SaveSampleData(vector<queue<CSignal>> signalData);
-protected:
-	vector<queue<CSignal>> m_signalData;
+	static Result SaveCollectionData(vector<queue<AcquiredSignal>> &collectData, CString path, CString fileName, int saveCount);
 };
 

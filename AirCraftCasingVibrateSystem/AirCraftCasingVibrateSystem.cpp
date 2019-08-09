@@ -84,9 +84,9 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	m_loginView.DoModal();
 
 	static double tempRead[100][1000];
-	// 从文件中读取数据
-	CFileUtil fileController;
-	fileController.ReadFile(_T(""), tempRead);
+	// 从文件中读取数据->内存（模拟数据）
+	CFileUtil fileUtil;
+	fileUtil.ReadFile(_T(""), tempRead);
 	//double temp = tempRead[10][200];
 	for (int i = 0; i < SERSOR_NUM; i++)
 	{
@@ -99,13 +99,11 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 			}
 		}
 		m_vSersor.push_back(sersor);
-		for (int j = 0; j < 1000; j++)// 初始化 x坐标
-		{
-
-			m_vSersor[i].m_signalService.m_X[j] = j;
-		}
-		queue<CSignal> temp;
-		m_sampleData.push_back(temp);
+		//for (int j = 0; j < 1000; j++)// 初始化 x坐标
+		//{
+		//	m_vSersor[i].m_signal.PushToX(j);
+		//}
+		
 	}
 	
 

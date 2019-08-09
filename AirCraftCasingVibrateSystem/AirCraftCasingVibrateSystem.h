@@ -25,46 +25,46 @@
 #include <vector>
 #include "PDSQL.h"
 #include "TbProject.h"
-#include <queue>
+#include "ThreadSafeQueue.h"////线程安全锁。 
+#include "AcquiredSignal.h"
 using namespace std;
 
 
 // CAirCraftCasingVibrateSystemApp:
 // 有关此类的实现，请参阅 AirCraftCasingVibrateSystem.cpp
 //
+
 class CAirCraftCasingVibrateSystemApp : public CWinAppEx
 {
 public:
 	CAirCraftCasingVibrateSystemApp();
 
-	unsigned int m_count;
-	unsigned int m_count2;
-	const size_t m_c_arrayLength = 2096;
-
-	double m_readX[102400];//读取
-	double m_readY[102400];
-
-	double m_readDrawX[2096];//读取画
-	double m_readDrawY[2096];
-
-	double m_dSaveX[102400];// 存储
-	double m_dSaveY[102400];
-
 	CNetConService  m_con;  // 网络通信连接
 	bool m_bcon = false;  // 判断网络通信是否连接成功
 
-	int countNums = 0;
-	int countNumsReadDraw = 0;
 	// 多个传感器
 	vector<CSensorService>  m_vSersor;
-	bool m_bThreadActive = true; // 采集数据线程控制标准
+	bool m_bThreadActive = false; // 采集数据线程控制标准
 	bool m_bShowInfThreadActive = true;
 	/// 用户
 	TbProject m_currentProject;
 	int m_chartCtrlIndex = 10000;/*画图控件ID*/
 
-	vector<queue<CSignal>> m_sampleData;
-	 
+	//vector<queue<EchoSignal>> m_sampleData;
+
+	int m_iSignalsStoreCount = 1000; ///信号的存储数量。 
+
+	bool m_bIsSample = false;//是否进行采样
+
+	int m_signalEchoCount = 2000; //信号回显数量
+
+	bool m_bIsAutoSaveSamplingData = true; ///是否自动保存采样数据
+	bool m_bIsAutoSaveCollectionData = true; ///是否自动保存采集数据
+
+	vector<queue<AcquiredSignal>> m_sampleData; ///采样数据
+	vector<queue<AcquiredSignal>> m_collectData; ///采集数据
+
+
 // 重写
 public:
 	virtual BOOL InitInstance();

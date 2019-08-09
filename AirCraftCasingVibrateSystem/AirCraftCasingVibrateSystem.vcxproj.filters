@@ -141,9 +141,6 @@
     <ClInclude Include="ConfigurationUtil.h">
       <Filter>头文件\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="CheckTaskController.h">
-      <Filter>头文件\Controller</Filter>
-    </ClInclude>
     <ClInclude Include="NetConService.h">
       <Filter>头文件\Service</Filter>
     </ClInclude>
@@ -263,9 +260,6 @@
     </ClInclude>
     <ClInclude Include="FileUtil.h">
       <Filter>头文件\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Signal.h">
-      <Filter>头文件\entity</Filter>
     </ClInclude>
     <ClInclude Include="DetectDeviceManageView.h">
       <Filter>头文件\View</Filter>
@@ -471,6 +465,21 @@
     <ClInclude Include="SignalController.h">
       <Filter>头文件\Controller</Filter>
     </ClInclude>
+    <ClInclude Include="SensorController.h">
+      <Filter>头文件\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="EchoSignal.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="FFTWUtil.h">
+      <Filter>头文件\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="AcquiredSignal.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadSafeQueue.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AirCraftCasingVibrateSystem.cpp">
@@ -550,9 +559,6 @@
     </ClCompile>
     <ClCompile Include="SensorService.cpp">
       <Filter>源文件\Service</Filter>
-    </ClCompile>
-    <ClCompile Include="CheckTaskController.cpp">
-      <Filter>源文件\Controller</Filter>
     </ClCompile>
     <ClCompile Include="TesterController.cpp">
       <Filter>源文件\Controller</Filter>
@@ -664,9 +670,6 @@
     </ClCompile>
     <ClCompile Include="FileUtil.cpp">
       <Filter>源文件\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="Signal.cpp">
-      <Filter>源文件\entity</Filter>
     </ClCompile>
     <ClCompile Include="DetectDeviceManageView.cpp">
       <Filter>源文件\View</Filter>
@@ -832,6 +835,18 @@
     </ClCompile>
     <ClCompile Include="TbSensorParaDao.cpp">
       <Filter>源文件\dao</Filter>
+    </ClCompile>
+    <ClCompile Include="SensorController.cpp">
+      <Filter>源文件\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="EchoSignal.cpp">
+      <Filter>源文件\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="FFTWUtil.cpp">
+      <Filter>源文件\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="AcquiredSignal.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -48,10 +48,10 @@ TbDetectedDevice & TbSignal::GetDetectedDevice() {
 void TbSignal::SetDetectedDevice(TbDetectedDevice detectedDevice) {
 	this->m_detectedDevice = detectedDevice;
 }
-CString TbSignal::GetSignalStatus() {
+char TbSignal::GetSignalStatus() {
 	return m_signalStatus;
 }
-void TbSignal::SetSignalStatus(CString signal_status) {
+void TbSignal::SetSignalStatus(char signal_status) {
 	this->m_signalStatus = signal_status;
 }
 CString TbSignal::GetDataUrl() {

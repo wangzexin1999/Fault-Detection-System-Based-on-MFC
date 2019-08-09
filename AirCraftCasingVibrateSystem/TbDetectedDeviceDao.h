@@ -1,5 +1,6 @@
 #pragma once
 #include "PDDatabase.h"
+#include "TbDetectedDevice.h"
 class TbDetectedDeviceDao :
 	public PDDatabase
 {
