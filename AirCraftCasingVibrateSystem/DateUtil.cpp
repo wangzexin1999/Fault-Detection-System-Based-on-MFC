@@ -18,3 +18,14 @@ CTime & DateUtil::GetAWeekAgoDate(){
 
 	return currentTime - aweekSpan;
 }
+
+CString DateUtil::GetTimeStampCString(){
+	SYSTEMTIME tmSys;
+	GetLocalTime(&tmSys);
+	CTime tm3(tmSys);
+	__int64 tmDst = __int64(tm3.GetTime()) * 1000 + tmSys.wMilliseconds;
+	CString timeStamp;
+	_i64toa(tmDst, timeStamp.GetBuffer(100), 10);
+	timeStamp.ReleaseBuffer();
+	return timeStamp;
+}

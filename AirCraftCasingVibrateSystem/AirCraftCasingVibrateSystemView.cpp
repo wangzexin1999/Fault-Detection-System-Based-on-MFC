@@ -311,7 +311,7 @@ void CAirCraftCasingVibrateSystemView::OnButtonStartCapture()
 		theApp.m_collectData.clear();
 		///初始化通道数据
 		for (int i = 0; i < m_nChannelNums;i++){
-			queue<AcquiredSignal> acquiredSignalQueue;
+			ThreadSafeQueue<AcquiredSignal> acquiredSignalQueue;
 			theApp.m_collectData.push_back(acquiredSignalQueue);
 		}
 		//读取数据
@@ -471,6 +471,8 @@ void CAirCraftCasingVibrateSystemView::OnBtnStopSample()
 	// TODO:  在此添加命令处理程序代码
 	//////开线程去保存！！！！！！！！！！！！！！
 	//m_fileUtile.SaveSampleData(theApp.m_sampleData);
+
+	
 }
 
 //工程单位
@@ -580,16 +582,20 @@ bool CAirCraftCasingVibrateSystemView::DrawLining(int nViewIndex)
 {
 	m_dview[nViewIndex]->m_pLineSerie->ClearSerie();
 	m_dview[nViewIndex]->m_pLineSerie->SetNeedCalStatValue(TRUE);
-	EchoSignal echoSignal = theApp.m_vSersor[nViewIndex].FrontEchoSignalQueue();
-	/*double *x = echoSignal.GetXArray();
-	double *y = echoSignal.GetYArray();
-	int size = 1000;
-	for (int i = 0; i < size; i++){
-		TRACE("echo....  x=%f,y=%f\n", x[i], y[i]);
-	}*/
-	if (echoSignal.GetXLength() != 0 && echoSignal.GetYLength() != 0){
-		////当队列不是空时，刷新图表的显示
-		m_dview[nViewIndex]->m_pLineSerie->AddPoints(echoSignal.GetXArray(), echoSignal.GetYArray(), echoSignal.GetYLength()/2);
+	if (!theApp.m_echoData[nViewIndex].empty()){ 
+		////回显对列中有数据，则去刷新数据
+		shared_ptr<EchoSignal>  echoSignal = theApp.m_echoData[nViewIndex].wait_and_pop();
+		double *x = echoSignal->GetXArray();
+		double *y = echoSignal->GetYArray();
+		int size = 1000;
+		/*for (int i = 0; i < 5; i++){
+			TRACE("\n窗口：%d x=%f,y=%f\n",nViewIndex, x[i], y[i]);
+			}*/
+		if (echoSignal->GetXLength() != 0 && echoSignal->GetYLength() != 0){
+			TRACE("\n刷新%d窗口.......................................................\n",nViewIndex);
+			////当队列不是空时，刷新图表的显示
+			m_dview[nViewIndex]->m_pLineSerie->AddPoints(echoSignal->GetXArray(), echoSignal->GetYArray(), echoSignal->GetYLength()/2);
+		}
 	}
 	return true;
 }
@@ -676,7 +682,7 @@ bool CAirCraftCasingVibrateSystemView::ShowDataToView(int nChannelNum)
 {
 	for (int i = 11; i < 11 + nChannelNum; i++)
 	{
-		SetTimer(i, 50, NULL);
+		SetTimer(i, 100, NULL);
 	}
 	return true;
 }

@@ -6,6 +6,7 @@
 #include "AcquiredSignal.h"
 #include "DateUtil.h"
 
+double CSensorService::m_readFromCSVFile[100][1000];
 CSensorService::CSensorService()
 {
 	//m_signalBuff.CreateBuffer(102400);
@@ -29,6 +30,7 @@ int CSensorService::ReadData(int sensorNum)
 	int countN = rand() % 100;
 	EchoSignal signal;
 	// 取数
+
 	for (int j = 0; j < 1000; j++)
 	{
 		this->m_signal.PushToX(j);
@@ -46,18 +48,27 @@ int CSensorService::ReadData(int sensorNum)
 		///如果采集的数量已经达到回显的数量。默认1000个点
 		if (this->m_signal.GetDinLength() >= theApp.m_signalEchoCount){
 			/////对其进行傅里叶变换
+			
 			////////对传入的数据进行傅里叶变换处理
 			FFTWUtil::FastFourierTransformation(m_signal.GetDinLength(),
 				m_signal.GetDinArray(), m_signal.GetDoutArray());
 			////////将处理之后的傅里叶变换转换成XY坐标，用来显示折线图
 			FFTWUtil::FFTDataToXY(m_signal);
+
+			double *x = m_signal.GetXArray();
+			double *y = m_signal.GetYArray();
+			fftw_complex *din = m_signal.GetDinArray();
+			fftw_complex *dout = m_signal.GetDoutArray();
+			int size = 1000;
+			for (int i = 0; i < 5; i++){
+				TRACE("\n++++++++++++++++++++++++++++++窗口：%d din=%f,dout=%f,x=%f,y=%f\n", sensorNum, din[i][0],dout[i][0],x[i], y[i]);
+			}
 			////接受要显示的点
 			 EchoSignal echoSignal = m_signal;
-			 this->m_echoSignalQueue.push(echoSignal);
+			 theApp.m_echoData[sensorNum].push(echoSignal);
 			m_signal.ClearSignalData();
 		}
 		///如果采集的数量达到 
-
 	}
 	return true;
 }
@@ -79,33 +90,23 @@ double CSensorService::randf(double min, double max)
 	int resultInteger = randInteger % diffInteger + minInteger;
 	return resultInteger / 10000.0;
 }
-EchoSignal CSensorService::FrontEchoSignalQueue(){
-	EchoSignal echoSignal;
-	if (!m_echoSignalQueue.empty()) {
-		///队列中有元素，获得该元素，并从栈中弹出该元素
-		echoSignal = m_echoSignalQueue.front();
-		m_echoSignalQueue.pop();
-	}
-	return echoSignal;
-}
-bool CSensorService::SaveCollectData(TbProject &project, vector<queue<AcquiredSignal>> &collectData, int saveCount){
+
+bool CSensorService::SaveCollectData(TbProject &project, vector<ThreadSafeQueue<AcquiredSignal>> &collectData, int saveCount){
 	///1.拼装保存路径
 	CString path = "I:\\temp\\";
 	//2.拼装文件名
 	CString fileName = CommonUtil::Int2CString(project.GetProjectId()) + "-"
 		+ CommonUtil::Int2CString(project.GetTestingDevicePara().GetTestingdevice().GetTestingdeviceId())
 			+ "-" + CommonUtil::Int2CString(project.GetDetectedDevice().GetDetecteddeviceId()) 
-			+ "-" + CommonUtil::Int2CString(collectData.size()) + "-" + DateUtil::GetCurrentCStringTime("%Y_%m_%d_%H_%M_%S")
+			+ "-" + CommonUtil::Int2CString(collectData.size()) + "-" + DateUtil::GetTimeStampCString()
 			+ ".csv";
 	//3.获得当前保存队列的开始采集时间和结束采集时间
 	//3.1 获得开始采集时间。
 	CString startTime = DateUtil::GetCurrentCStringTime();
 	for (int i = 0; i < collectData.size(); i++){
-		if (!collectData[i].empty()){
-			TRACE("\n%s+++++++++++++++++++++++++++++++\n", collectData[i].front().GetAcquireTime());
-			TRACE("\n---------------------------------\n");
-			//CString acquireTime = collectData[i].front().GetAcquireTime();
-			//if (acquireTime < startTime) startTime = acquireTime;
+		if (collectData[i].size() != 0){
+			CString acquireTime = collectData[i].front().GetAcquireTime();
+			if (acquireTime < startTime) startTime = acquireTime;
 		}
 	}
 	//4.调用FileUtil保存文件，保存成功返回采集的结束时间
@@ -126,7 +127,6 @@ bool CSensorService::SaveCollectData(TbProject &project, vector<queue<AcquiredSi
 	else
 	{
 		AfxMessageBox(res.GetMessages());
-		TRACE("%d+++++++++++++++++++++++++++++++++++++++++++\n", saveCount);
 	}
 	return false;
 }

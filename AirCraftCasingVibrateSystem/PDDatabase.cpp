@@ -300,7 +300,6 @@ bool PDDatabase::DBSelect(vector<PDAttribute *> selectVector, CString strSqlQuer
 		m_strSqlQuery += " LIMIT " + strStartNumber + "," + strRecordCount;
 	}
 	//µ×²ã²éÑ¯
-	TRACE("%s\n", m_strSqlQuery);
 
 	bResult = theApp.PDsql.SelectMysql(selectedValueVector, m_strSqlQuery);
 	return bResult;
@@ -405,7 +404,6 @@ bool PDDatabase::DBInsert(int &iGetFirstId, bool bIsInsertKeyId)
 	}
 	m_strSqlQuery = m_strSqlQuery.Left(m_strSqlQuery.GetLength() - 1);//É¾³ý×îºóµÄ¶ººÅ
 	m_strSqlQuery += ")";
-	TRACE("%s\n", m_strSqlQuery);
 	bool bResult = theApp.PDsql.InsertMysql(iGetFirstId, m_strSqlQuery);
 	return bResult;
 }

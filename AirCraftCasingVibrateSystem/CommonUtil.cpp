@@ -10,7 +10,7 @@ CString CommonUtil::Int2CString(int num){
 }
 CString CommonUtil::DoubleOrFloat2CString(double num){
 	CString str;
-	str.Format("lf",num);
+	str.Format("%lf",num);
 	return str;
 }
 

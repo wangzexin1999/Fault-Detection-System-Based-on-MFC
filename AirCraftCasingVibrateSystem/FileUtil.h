@@ -22,6 +22,7 @@ Modification:
 #include <queue>
 #include "AcquiredSignal.h"
 #include "Result.h"
+#include "ThreadSafeQueue.h"
 using namespace std;
 
 
@@ -78,6 +79,6 @@ public:
 	 修改日期 版本号 修改人 修改内容
 	 ----------------------------------------------------------------------
 	 ***********************************************************************/
-	static Result SaveCollectionData(vector<queue<AcquiredSignal>> &collectData, CString path, CString fileName, int saveCount);
+	static Result SaveCollectionData(vector<ThreadSafeQueue<AcquiredSignal>> &collectData, CString path, CString fileName, int saveCount);
 };
 

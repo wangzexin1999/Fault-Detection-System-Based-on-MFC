@@ -14,6 +14,6 @@ public:
 	static CString GetCurrentCStringTime(CString format = "%Y-%m-%d %H:%M:%S");
 	static CString GetCStringTimeFormCTime(CTime time);
 	static CTime & GetAWeekAgoDate();
-
+	static CString GetTimeStampCString();
 };
 

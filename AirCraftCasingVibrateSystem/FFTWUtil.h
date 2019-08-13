@@ -1,10 +1,12 @@
 #pragma once
 #include "fftw3.h"
 #include "EchoSignal.h"
+#include <mutex>
+#include <memory>
+#include <condition_variable>
 class FFTWUtil
 {
 public:
-	~FFTWUtil();
 
 	/**********************************************************************
 	功能描述： FFT变换，将原始数据转换成傅里叶数据
@@ -27,5 +29,7 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	static int FFTDataToXY(EchoSignal & echoSignal);
+	////锁
+	static std::mutex m_fftMut;
 };
 

@@ -4,29 +4,30 @@
 #include <mutex>
 #include "AcquiredSignal.h"
 
-HANDLE SensorController::m_hMutex;
+//HANDLE SensorController::m_hMutex;
 
 SensorController::SensorController(void)
 {
-	m_hMutex = ::CreateMutex(NULL, FALSE, NULL);
+	//m_hMutex = ::CreateMutex(NULL, FALSE, NULL);
 }
 
 
 SensorController::~SensorController()
 {
-	CloseHandle(m_hMutex);
+	//CloseHandle(m_hMutex);
 }
 
 // 读取传感器线程 想用传参的方式，for循环开线程
 UINT  SensorController::ReadDataThreadProcing(void * pParam)
 {
 	int pthis = (int)pParam;
+	CSensorService sensorService;
 	while (theApp.m_bThreadActive)
 	{
-		WaitForSingleObject(m_hMutex, INFINITE);
-		theApp.m_vSersor[pthis].ReadData(pthis);
-		//Sleep(DELAY_TIME);
-		ReleaseMutex(m_hMutex);
+		//WaitForSingleObject(m_hMutex, INFINITE);
+		sensorService.ReadData(pthis);
+		//ReleaseMutex(m_hMutex);
+		Sleep(50);
 	}
 	return 1;
 }
@@ -34,14 +35,24 @@ UINT  SensorController::ReadDataThreadProcing(void * pParam)
 // 开始采集开启多个线程读取数据
 int SensorController::StartCaptureData(int nChannelNum)
 {
+	////依次创建线程，使线程进入挂起状态
 	for (int i = 0; i < nChannelNum; i++){
 		 ///// 开启传感器读取数据的线性
 		 m_pReadDataThread[i] = (HANDLE)_beginthreadex(NULL, 0, ReadDataThreadProcing, (void *)i, 0, NULL);
+		 ///// 申请指定数量的空间去存放回显数据
+		 ThreadSafeQueue<EchoSignal> echoSignalQueue;
+		 theApp.m_echoData.push_back(echoSignalQueue);
+	}
+	////依次开启线程，使线程运行
+	for (int i = 0; i < nChannelNum; i++)
+	{
+		ResumeThread(m_pReadDataThread[i]);
 	}
 	return 0;
 }
+
 UINT SensorController::AutoSaveCollectionData(void * pParam){
-	vector<queue<AcquiredSignal>> &collectData = theApp.m_collectData;  ///创建全局对象的引用
+	vector<ThreadSafeQueue<AcquiredSignal>> &collectData = theApp.m_collectData;  ///创建全局对象的引用
 	CSensorService m_seneorService;
 	while (true){
 		if (theApp.m_bIsAutoSaveSamplingData); {
@@ -52,9 +63,8 @@ UINT SensorController::AutoSaveCollectionData(void * pParam){
 			}
 			if (count == collectData.size()){
 				////当集合中的所有队列元素个数都到达了可以保存的条件时,调用服务去保存采集数据
-				WaitForSingleObject(m_hMutex, INFINITE);
+				TRACE("\n保存数据。。。。。。。。。。。。。。。。\n");
 				m_seneorService.SaveCollectData(theApp.m_currentProject,collectData, theApp.m_iSignalsStoreCount);
-				ReleaseMutex(m_hMutex);
 			}
 		}
 	}

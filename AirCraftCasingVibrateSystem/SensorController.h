@@ -29,7 +29,6 @@ public:
 	//// 读取数据线程一共16个线程
 	 HANDLE m_pReadDataThread[16];
 
-
 public:
 
 	static unsigned int __stdcall ReadDataThreadProcing(PVOID pM);
@@ -66,6 +65,6 @@ public:
 	static unsigned int __stdcall AutoSaveCollectionData(PVOID pM);
 
 //public:
- 	static HANDLE m_hMutex;
+ 	//static HANDLE m_hMutex;
 };
 

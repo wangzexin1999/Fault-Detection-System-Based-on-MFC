@@ -208,7 +208,7 @@ bool CFileUtil::ReadFile(CString sFilePath, double(&outRead)[100][1000])
 //	file.Close();
 //}
 
-Result CFileUtil::SaveCollectionData(vector<queue<AcquiredSignal>> &collectData, CString path, CString fileName, int saveCount){
+Result CFileUtil::SaveCollectionData(vector<ThreadSafeQueue<AcquiredSignal>> &collectData, CString path, CString fileName, int saveCount){
 	if (collectData.size() == 0) return Result(false, "写入内容不能为空"); //vector为空，则不操作
 	if (saveCount <= 0) return Result(false, "保存数量不能为0");///需要保存的数量为空，则不操作
 	CFile file;///文件对象
@@ -219,34 +219,32 @@ Result CFileUtil::SaveCollectionData(vector<queue<AcquiredSignal>> &collectData,
 	///循环写入数据
 	CString endTime="";
 	for (int i = 0; i < saveCount;i++){
-		if (i = saveCount - 1){
+
+		if (i == saveCount - 1){
 			////如果是最后一条数据，拿到最后的结束时间
-			TRACE("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
-			if (!collectData[0].empty()){
-			TRACE("\n0000000000000000000000000000000000000000000000000000000000000\n");
+			if (collectData[0].size()!=0){
 				endTime = collectData[0].front().GetAcquireTime();
 			}
 			for (int j = 1; j < collectData.size(); j++){
-				CString acquireTime = collectData[j].front().GetAcquireTime();
-				if (endTime < acquireTime)  endTime = acquireTime;
+				if (collectData[j].size() != 0){
+					CString acquireTime = collectData[j].front().GetAcquireTime();
+					if (acquireTime < endTime) endTime = acquireTime;
+				}
 			}
-			TRACE("\n111111111111111111111111111111111111111111111111111111111111\n");
 		}
 		CString data="";
 		///拼装字符串
 		int j;
 		////依次获得每个通道的数据
 		for (j = 0; j < collectData.size() - 1;j++){
-			data += CommonUtil::DoubleOrFloat2CString(collectData[j].front().GetSignalData()) + separator;
-			TRACE("\n22222222222222222222222222222222222222222222222222222222222222222\n");
-			collectData[j].pop();
+			data += CommonUtil::DoubleOrFloat2CString(collectData[j].wait_and_pop()->GetSignalData()) + separator;
 		}
 		////获得最后一个通道的数据
 		if (!collectData[j].empty()){
-			TRACE("\n3333333333333333333333333333333333333333333333333333333333333333333\n");
-			data += CommonUtil::DoubleOrFloat2CString(collectData[j].front().GetSignalData());
-			collectData[j].pop();
+			data += CommonUtil::DoubleOrFloat2CString(collectData[j].wait_and_pop()->GetSignalData());
 		}
+		////程序追加换行
+		data += "\n";
 		file.Write(data, strlen(data));
 	}
 	file.Close();

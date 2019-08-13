@@ -1,12 +1,10 @@
 #pragma once
 #include "fftw3.h"
 #include "EchoSignal.h"
-#include <queue>
-#include "DuSmartArrayFixedQueue.h"
 #include "TbSignalDao.h"
 #include "TbProject.h"
 #include "AcquiredSignal.h"
-
+#include "ThreadSafeQueue.h"
 using namespace std;
 
 class CSensorService 
@@ -65,15 +63,15 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	bool SaveCollectData(TbProject &project,vector<queue<AcquiredSignal>> &collectData,int saveCount);
+	bool SaveCollectData(TbProject &project, vector<ThreadSafeQueue<AcquiredSignal>> &collectData, int saveCount);
 
 private:
-	queue<EchoSignal> m_echoSignalQueue; ///回显数据的队列
+	//queue<EchoSignal> m_echoSignalQueue; ///回显数据的队列
 	EchoSignal m_signal; ///需要回显的数据
 	TbSignalDao m_signalDao;
 public:
 	
-	double m_readFromCSVFile[100][1000];//文件的测试数据数组
+	static double m_readFromCSVFile[100][1000];//文件的测试数据数组
 	
 };
 

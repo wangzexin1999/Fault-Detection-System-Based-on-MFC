@@ -22,9 +22,9 @@ void AcquiredSignal::SetSignalData(double signalData){
 	this->m_signalData = signalData;
 }
 CString AcquiredSignal::GetAcquireTime(){
-	return m_acquiredTime;
-}
+	return this->m_acquiredTime;
+} 
 
 double AcquiredSignal::GetSignalData(){
-	return m_signalData;
+	return this->m_signalData;
 }

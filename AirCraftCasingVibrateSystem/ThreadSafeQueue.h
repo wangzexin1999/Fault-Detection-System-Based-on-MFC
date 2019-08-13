@@ -1,3 +1,4 @@
+#pragma once
 #include <queue>
 #include <mutex>
 #include <memory>
@@ -8,6 +9,7 @@ class ThreadSafeQueue
 {
 public:
 	ThreadSafeQueue() {}
+	ThreadSafeQueue(const ThreadSafeQueue &safeQuene) {}
 	~ThreadSafeQueue() {}
 
 	void push(T new_data)
@@ -16,12 +18,20 @@ public:
 		data_queue.push(std::move(new_data));           // 2.push时独占锁
 		cond.notify_one();
 	}
+	int size(){
+		std::lock_guard<std::mutex> lk(mut);
+		return data_queue.size();
+	}
 	void wait_and_pop(T& val)
 	{
 		std::unique_lock<std::mutex> ulk(mut);                    // 3.全局加锁
 		cond.wait(ulk, [this]() { return !data_queue.empty(); });  // 4.front 和 pop_front时独占锁
 		val = std::move(data_queue.front());
 		data_queue.pop();
+	}
+
+	 T front(){
+		return data_queue.front();
 	}
 	std::shared_ptr<T> wait_and_pop()
 	{
@@ -55,6 +65,7 @@ public:
 		std::lock_guard<std::mutex> lk(mut);
 		return data_queue.empty();
 	}
+
 private:
 	std::queue<T> data_queue;
 	std::mutex mut;

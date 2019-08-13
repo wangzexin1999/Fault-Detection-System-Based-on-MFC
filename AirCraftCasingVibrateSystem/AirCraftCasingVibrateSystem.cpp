@@ -95,15 +95,9 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 		{
 			for (int n = 0; n < 1000; n++)
 			{
-				sersor.m_readFromCSVFile[m][n] = tempRead[m][n];
+				CSensorService::m_readFromCSVFile[m][n] = tempRead[m][n];
 			}
 		}
-		m_vSersor.push_back(sersor);
-		//for (int j = 0; j < 1000; j++)// ³õÊ¼»¯ x×ø±ê
-		//{
-		//	m_vSersor[i].m_signal.PushToX(j);
-		//}
-		
 	}
 	
 

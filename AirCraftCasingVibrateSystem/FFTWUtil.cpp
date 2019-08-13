@@ -1,8 +1,10 @@
 #include "stdafx.h"
 #include "FFTWUtil.h"
 
+std::mutex FFTWUtil::m_fftMut;
 bool FFTWUtil::FastFourierTransformation(int nCounts, fftw_complex *din, fftw_complex *out)
 {
+	std::unique_lock<std::mutex> lk(m_fftMut);
 	int i;
 	fftw_plan p;
 	if ((din == NULL) || (out == NULL))
@@ -12,9 +14,9 @@ bool FFTWUtil::FastFourierTransformation(int nCounts, fftw_complex *din, fftw_co
 	}
 	p = fftw_plan_dft_1d(nCounts, din, out, FFTW_FORWARD, FFTW_ESTIMATE);
 	fftw_execute(p); 
+	
 	return true;
 }
-
 /*傅里叶变换之后转成坐标*/
 int FFTWUtil::FFTDataToXY(EchoSignal & echoSignal){
 	fftw_complex * out = echoSignal.GetDoutArray();

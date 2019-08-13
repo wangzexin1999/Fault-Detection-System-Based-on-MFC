@@ -43,7 +43,7 @@ public:
 	bool m_bcon = false;  // 判断网络通信是否连接成功
 
 	// 多个传感器
-	vector<CSensorService>  m_vSersor;
+	//vector<CSensorService>  m_vSersor;
 	bool m_bThreadActive = false; // 采集数据线程控制标准
 	bool m_bShowInfThreadActive = true;
 	/// 用户
@@ -52,7 +52,7 @@ public:
 
 	//vector<queue<EchoSignal>> m_sampleData;
 
-	int m_iSignalsStoreCount = 1000; ///信号的存储数量。 
+	int m_iSignalsStoreCount = 100000; ///信号的存储数量。 
 
 	bool m_bIsSample = false;//是否进行采样
 
@@ -61,8 +61,10 @@ public:
 	bool m_bIsAutoSaveSamplingData = true; ///是否自动保存采样数据
 	bool m_bIsAutoSaveCollectionData = true; ///是否自动保存采集数据
 
-	vector<queue<AcquiredSignal>> m_sampleData; ///采样数据
-	vector<queue<AcquiredSignal>> m_collectData; ///采集数据
+	vector<ThreadSafeQueue<AcquiredSignal>> m_sampleData; ///采样数据
+	vector<ThreadSafeQueue<AcquiredSignal>> m_collectData; ///采集数据
+
+	vector<ThreadSafeQueue<EchoSignal>> m_echoData; ///回显数据
 
 
 // 重写
