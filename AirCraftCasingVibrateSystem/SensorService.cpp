@@ -50,10 +50,11 @@ int CSensorService::ReadData(int sensorNum)
 			/////对其进行傅里叶变换
 			
 			////////对传入的数据进行傅里叶变换处理
-			FFTWUtil::FastFourierTransformation(m_signal.GetDinLength(),
+			FFTWUtil fftwUtil;
+			fftwUtil.FastFourierTransformation(m_signal.GetDinLength(),
 				m_signal.GetDinArray(), m_signal.GetDoutArray());
 			////////将处理之后的傅里叶变换转换成XY坐标，用来显示折线图
-			FFTWUtil::FFTDataToXY(m_signal);
+			fftwUtil.FFTDataToXY(m_signal);
 
 			double *x = m_signal.GetXArray();
 			double *y = m_signal.GetYArray();

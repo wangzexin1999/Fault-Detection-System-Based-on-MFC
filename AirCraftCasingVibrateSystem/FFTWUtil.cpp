@@ -1,10 +1,8 @@
 #include "stdafx.h"
 #include "FFTWUtil.h"
 
-std::mutex FFTWUtil::m_fftMut;
 bool FFTWUtil::FastFourierTransformation(int nCounts, fftw_complex *din, fftw_complex *out)
 {
-	std::unique_lock<std::mutex> lk(m_fftMut);
 	int i;
 	fftw_plan p;
 	if ((din == NULL) || (out == NULL))

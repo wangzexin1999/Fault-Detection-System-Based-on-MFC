@@ -17,7 +17,7 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	static bool FastFourierTransformation(int nCounts, fftw_complex *din, fftw_complex *out);
+	bool FastFourierTransformation(int nCounts, fftw_complex *din, fftw_complex *out);
 
 	/**********************************************************************
 	功能描述：将傅里叶变换处理之后的数据转换成X,Y坐标
@@ -28,8 +28,6 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	static int FFTDataToXY(EchoSignal & echoSignal);
-	////锁
-	static std::mutex m_fftMut;
+	int FFTDataToXY(EchoSignal & echoSignal);
 };
 

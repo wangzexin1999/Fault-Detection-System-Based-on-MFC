@@ -27,7 +27,6 @@ UINT  SensorController::ReadDataThreadProcing(void * pParam)
 		//WaitForSingleObject(m_hMutex, INFINITE);
 		sensorService.ReadData(pthis);
 		//ReleaseMutex(m_hMutex);
-		Sleep(50);
 	}
 	return 1;
 }
