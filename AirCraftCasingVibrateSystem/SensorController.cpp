@@ -21,11 +21,10 @@ SensorController::~SensorController()
 UINT  SensorController::ReadDataThreadProcing(void * pParam)
 {
 	int pthis = (int)pParam;
-	CSensorService sensorService;
 	while (theApp.m_bThreadActive)
 	{
 		//WaitForSingleObject(m_hMutex, INFINITE);
-		sensorService.ReadData(pthis);
+		theApp.m_vSignalAcquisitionService[pthis].ReadData();
 		//ReleaseMutex(m_hMutex);
 	}
 	return 1;
@@ -36,34 +35,32 @@ int SensorController::StartCaptureData(int nChannelNum)
 {
 	////依次创建线程，使线程进入挂起状态
 	for (int i = 0; i < nChannelNum; i++){
-		 ///// 开启传感器读取数据的线性
+		 ///// 开启传感器读取数据的线程
 		 m_pReadDataThread[i] = (HANDLE)_beginthreadex(NULL, 0, ReadDataThreadProcing, (void *)i, 0, NULL);
-		 ///// 申请指定数量的空间去存放回显数据
-		 ThreadSafeQueue<EchoSignal> echoSignalQueue;
-		 theApp.m_echoData.push_back(echoSignalQueue);
 	}
-	////依次开启线程，使线程运行
-	for (int i = 0; i < nChannelNum; i++)
-	{
+
+	for (int i = 0; i < nChannelNum; i++){
+		///// 开启传感器读取数据的线程
 		ResumeThread(m_pReadDataThread[i]);
 	}
+	
 	return 0;
 }
 
 UINT SensorController::AutoSaveCollectionData(void * pParam){
-	vector<ThreadSafeQueue<AcquiredSignal>> &collectData = theApp.m_collectData;  ///创建全局对象的引用
 	CSensorService m_seneorService;
 	while (true){
 		if (theApp.m_bIsAutoSaveSamplingData); {
 			///设置自动保存
 			int count = 0;///当前队列满足信号保存数量的个数
-			for (int i = 0; i < collectData.size();i++){
-				if (collectData[i].size() >= theApp.m_iSignalsStoreCount){ count++; }
+			int size = theApp.m_vSignalAcquisitionService.size();
+			for (int i = 0; i < size; i++){
+				if (theApp.m_vSignalAcquisitionService[i].GetCollectDataSize() >= theApp.m_iSignalsStoreCount){ count++; }
 			}
-			if (count == collectData.size()){
+			if (count == size){
 				////当集合中的所有队列元素个数都到达了可以保存的条件时,调用服务去保存采集数据
-				TRACE("\n保存数据。。。。。。。。。。。。。。。。\n");
-				m_seneorService.SaveCollectData(theApp.m_currentProject,collectData, theApp.m_iSignalsStoreCount);
+				TRACE("\n保存数据。。。。。。。。。。。。。。。。。。。。。。。\n");
+				m_seneorService.SaveCollectData(theApp.m_currentProject, theApp.m_iSignalsStoreCount);
 			}
 		}
 	}
@@ -72,6 +69,7 @@ UINT SensorController::AutoSaveCollectionData(void * pParam){
 
 ////开启自动保存采样数据
 int SensorController::StartAutoSaveCollectionData(){
-	(HANDLE)_beginthreadex(NULL, 0, AutoSaveCollectionData, (void *)NULL, 0, NULL);
+	/*HANDLE ht =  (HANDLE)_beginthreadex(NULL, 0, AutoSaveCollectionData, (void *)NULL, 0, NULL);
+	ResumeThread(ht);*/
 	return 0;
 }

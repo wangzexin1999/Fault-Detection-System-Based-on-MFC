@@ -305,15 +305,32 @@ void CAirCraftCasingVibrateSystemView::OnButtonStartCapture()
 		InitializeView();
 		// 清空线
 		//m_pLineSerie->ClearSerie();
+
+		// 设置读取线程标志
+		theApp.m_bThreadActive = true;
+		// 设置显示信息线程标志
+		theApp.m_bShowInfThreadActive = true;
+
 		// 计算通道个数
 		CalculateChannelNum(m_nChannelNums);
-		///清空采集数据vector
-		theApp.m_collectData.clear();
-		///初始化通道数据
-		for (int i = 0; i < m_nChannelNums;i++){
-			ThreadSafeQueue<AcquiredSignal> acquiredSignalQueue;
-			theApp.m_collectData.push_back(acquiredSignalQueue);
+		/// 清空信号采集服务集合
+		theApp.m_vSignalAcquisitionService.clear();
+		for (int i = 0; i < m_nChannelNums; i++){
+			SignalAcquisitionService signalAcquisitionService;
+			////给传感器数据赋值
+			for (int i = 0; i < m_nChannelNums; i++)
+			{
+				for (int m = 0; m < 100; m++)
+				{
+					for (int n = 0; n < 1000; n++)
+					{
+						signalAcquisitionService.m_readFromCSVFile[m][n] = theApp.tempRead[m][n];
+					}
+				}
+			}
+			theApp.m_vSignalAcquisitionService.push_back(signalAcquisitionService);
 		}
+
 		//读取数据
 		m_signalMainController.StartCaptureData(m_nChannelNums);
 		
@@ -321,10 +338,6 @@ void CAirCraftCasingVibrateSystemView::OnButtonStartCapture()
 		//存储数据
 		// view显示数据
 		ShowDataToView(m_nChannelNums);
-		// 设置读取线程标志
-		theApp.m_bThreadActive = true;
-		// 设置显示信息线程标志
-		theApp.m_bShowInfThreadActive = true;
 	}
 }
 
@@ -582,9 +595,9 @@ bool CAirCraftCasingVibrateSystemView::DrawLining(int nViewIndex)
 {
 	m_dview[nViewIndex]->m_pLineSerie->ClearSerie();
 	m_dview[nViewIndex]->m_pLineSerie->SetNeedCalStatValue(TRUE);
-	if (!theApp.m_echoData[nViewIndex].empty()){ 
+	if (!theApp.m_vSignalAcquisitionService[nViewIndex].GetEchoData().empty()){ 
 		////回显对列中有数据，则去刷新数据
-		shared_ptr<EchoSignal>  echoSignal = theApp.m_echoData[nViewIndex].wait_and_pop();
+		shared_ptr<EchoSignal>  echoSignal = theApp.m_vSignalAcquisitionService[nViewIndex].GetEchoData().wait_and_pop();
 		double *x = echoSignal->GetXArray();
 		double *y = echoSignal->GetYArray();
 		int size = 1000;

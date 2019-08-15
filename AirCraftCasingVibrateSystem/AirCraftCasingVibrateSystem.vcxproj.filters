@@ -480,6 +480,9 @@
     <ClInclude Include="ThreadSafeQueue.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="SignalAcquisitionService.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AirCraftCasingVibrateSystem.cpp">
@@ -846,6 +849,9 @@
       <Filter>源文件\Utils</Filter>
     </ClCompile>
     <ClCompile Include="AcquiredSignal.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SignalAcquisitionService.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

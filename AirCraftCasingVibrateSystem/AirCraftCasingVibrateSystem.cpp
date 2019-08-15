@@ -83,23 +83,10 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	CLoginView m_loginView;
 	m_loginView.DoModal();
 
-	static double tempRead[100][1000];
 	// 从文件中读取数据->内存（模拟数据）
 	CFileUtil fileUtil;
 	fileUtil.ReadFile(_T(""), tempRead);
 	//double temp = tempRead[10][200];
-	for (int i = 0; i < SERSOR_NUM; i++)
-	{
-		CSensorService sersor ;
-		for (int m = 0; m < 100; m++)
-		{
-			for (int n = 0; n < 1000; n++)
-			{
-				CSensorService::m_readFromCSVFile[m][n] = tempRead[m][n];
-			}
-		}
-	}
-	
 
 	INITCOMMONCONTROLSEX InitCtrls;
 	InitCtrls.dwSize = sizeof(InitCtrls);

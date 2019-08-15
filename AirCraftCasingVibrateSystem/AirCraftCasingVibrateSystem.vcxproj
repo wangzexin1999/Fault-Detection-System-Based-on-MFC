@@ -293,6 +293,7 @@
     <ClInclude Include="SelfCheckController.h" />
     <ClInclude Include="SensorService.h" />
     <ClInclude Include="SersorParaView.h" />
+    <ClInclude Include="SignalAcquisitionService.h" />
     <ClInclude Include="SignalController.h" />
     <ClInclude Include="SignalDataView.h" />
     <ClInclude Include="SignalService.h" />
@@ -419,6 +420,7 @@
     <ClCompile Include="SelfCheckController.cpp" />
     <ClCompile Include="SensorService.cpp" />
     <ClCompile Include="SersorParaView.cpp" />
+    <ClCompile Include="SignalAcquisitionService.cpp" />
     <ClCompile Include="SignalController.cpp" />
     <ClCompile Include="SignalDataView.cpp" />
     <ClCompile Include="SignalService.cpp" />

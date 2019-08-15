@@ -1,6 +1,5 @@
 #include "stdafx.h"
-#include "AirCraftCasingVibrateSystem.h"
-#include "FFTWUtil.h"
+#include "SensorService.h"
 #include "FileUtil.h"
 #include "CommonUtil.h"
 #include "AcquiredSignal.h"
@@ -23,56 +22,7 @@ CSensorService::~CSensorService()
 
 }
 
-/*读取数据*/
-int CSensorService::ReadData(int sensorNum)
-{
-	// TODO:  在此添加控件通知处理程序代码
-	int countN = rand() % 100;
-	EchoSignal signal;
-	// 取数
 
-	for (int j = 0; j < 1000; j++)
-	{
-		this->m_signal.PushToX(j);
-		///采集数据存入到队列中。
-		AcquiredSignal acquiredSignal(this->m_readFromCSVFile[countN][j], DateUtil::GetCurrentCStringTime());
-
-		theApp.m_collectData[sensorNum].push(acquiredSignal);
-
-		///采集数据存入到回显信号的输入数组
-		this->m_signal.PushToDin(this->m_readFromCSVFile[countN][j]);
-		if (theApp.m_bIsSample){
-			////如果此时正在采样，将采样的数据存入到采样队列中。
-			theApp.m_sampleData[sensorNum].push(acquiredSignal);
-		}
-		///如果采集的数量已经达到回显的数量。默认1000个点
-		if (this->m_signal.GetDinLength() >= theApp.m_signalEchoCount){
-			/////对其进行傅里叶变换
-			
-			////////对传入的数据进行傅里叶变换处理
-			FFTWUtil fftwUtil;
-			fftwUtil.FastFourierTransformation(m_signal.GetDinLength(),
-				m_signal.GetDinArray(), m_signal.GetDoutArray());
-			////////将处理之后的傅里叶变换转换成XY坐标，用来显示折线图
-			fftwUtil.FFTDataToXY(m_signal);
-
-			double *x = m_signal.GetXArray();
-			double *y = m_signal.GetYArray();
-			fftw_complex *din = m_signal.GetDinArray();
-			fftw_complex *dout = m_signal.GetDoutArray();
-			int size = 1000;
-			for (int i = 0; i < 5; i++){
-				TRACE("\n++++++++++++++++++++++++++++++窗口：%d din=%f,dout=%f,x=%f,y=%f\n", sensorNum, din[i][0],dout[i][0],x[i], y[i]);
-			}
-			////接受要显示的点
-			 EchoSignal echoSignal = m_signal;
-			 theApp.m_echoData[sensorNum].push(echoSignal);
-			m_signal.ClearSignalData();
-		}
-		///如果采集的数量达到 
-	}
-	return true;
-}
 /*随机数组*/
 void CSensorService::RandArray(double* ptr, size_t length)
 {
@@ -92,34 +42,27 @@ double CSensorService::randf(double min, double max)
 	return resultInteger / 10000.0;
 }
 
-bool CSensorService::SaveCollectData(TbProject &project, vector<ThreadSafeQueue<AcquiredSignal>> &collectData, int saveCount){
+bool CSensorService::SaveCollectData(TbProject &project,int saveCount){
 	///1.拼装保存路径
 	CString path = "I:\\temp\\";
 	//2.拼装文件名
 	CString fileName = CommonUtil::Int2CString(project.GetProjectId()) + "-"
 		+ CommonUtil::Int2CString(project.GetTestingDevicePara().GetTestingdevice().GetTestingdeviceId())
 			+ "-" + CommonUtil::Int2CString(project.GetDetectedDevice().GetDetecteddeviceId()) 
-			+ "-" + CommonUtil::Int2CString(collectData.size()) + "-" + DateUtil::GetTimeStampCString()
+			+ "-" + CommonUtil::Int2CString(project.GetTbSensorParaVector().size()) + "-" + DateUtil::GetTimeStampCString()
 			+ ".csv";
-	//3.获得当前保存队列的开始采集时间和结束采集时间
-	//3.1 获得开始采集时间。
-	CString startTime = DateUtil::GetCurrentCStringTime();
-	for (int i = 0; i < collectData.size(); i++){
-		if (collectData[i].size() != 0){
-			CString acquireTime = collectData[i].front().GetAcquireTime();
-			if (acquireTime < startTime) startTime = acquireTime;
-		}
-	}
-	//4.调用FileUtil保存文件，保存成功返回采集的结束时间
-	Result res = CFileUtil::SaveCollectionData(collectData, path, fileName, saveCount);
+	
+	//3.调用FileUtil保存文件，保存成功返回采集的开始时间和结束时间
+	Result res = CFileUtil::SaveCollectionData(path, fileName, saveCount);
 	if (res.GetIsSuccess()){
-		///5.文件保存成功，将记录保存到数据库
+		///4.文件保存成功，将记录保存到数据库
 		TbSignal signal;
 		signal.SetDataUrl(path + fileName);
 		signal.SetProjectId(project.GetProjectId());
 		signal.SetDetectedDevice(project.GetDetectedDevice());
-		signal.SetStartTime(startTime);
-		signal.SetEndTime(res.GetMessages());
+		vector<CString> times = CommonUtil::GetCStringVectorFromSplitCString(res.GetMessages(), ","); 
+		signal.SetStartTime(times[0]);
+		signal.SetEndTime(times[1]);
 		/////传感器参数号等等参数还要穿
 		m_signalDao.SetTableFieldValues(signal);
 		m_signalDao.Insert(false);

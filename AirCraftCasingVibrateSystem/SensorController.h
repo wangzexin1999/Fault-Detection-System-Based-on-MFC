@@ -27,7 +27,7 @@ public:
 
 public:
 	//// 读取数据线程一共16个线程
-	 HANDLE m_pReadDataThread[16];
+	 HANDLE m_pReadDataThread[20];
 
 public:
 

@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "FileUtil.h"
 #include "CommonUtil.h"
-
-
+#include "AirCraftCasingVibrateSystem.h"
+#include "DateUtil.h"
 //打开文件
 bool CFileUtil::OpenFile(CString &sFilePath,  CString sRootPath)
 {
@@ -104,7 +104,6 @@ bool CFileUtil::ReadFile(CString sFilePath, double(&outRead)[100][1000])
 		return false;
 	}
 	
-	
 	CString FileData;           //定义一个CString变量作为缓冲区
 	CString str;
 	double xTemp, y;
@@ -126,9 +125,7 @@ bool CFileUtil::ReadFile(CString sFilePath, double(&outRead)[100][1000])
 
 
 
-/*采样数据存储*/
-//void CFileUtil::SaveSampleData(vector<queue<double>> signalData)
-//{
+//Result CFileUtil::SaveCollectionData(CString path, CString fileName, int saveCount){
 //	this->m_signalData = signalData;
 //	int channelCount = 0,queueCount = 0;
 //	/*删除无用数据*/
@@ -208,45 +205,52 @@ bool CFileUtil::ReadFile(CString sFilePath, double(&outRead)[100][1000])
 //	file.Close();
 //}
 
-Result CFileUtil::SaveCollectionData(vector<ThreadSafeQueue<AcquiredSignal>> &collectData, CString path, CString fileName, int saveCount){
-	if (collectData.size() == 0) return Result(false, "写入内容不能为空"); //vector为空，则不操作
+Result CFileUtil::SaveCollectionData(CString path, CString fileName, int saveCount){
 	if (saveCount <= 0) return Result(false, "保存数量不能为0");///需要保存的数量为空，则不操作
 	CFile file;///文件对象
 	if (!file.Open(_T(path+fileName), CFile::modeCreate | CFile::modeWrite | CFile::modeNoTruncate, NULL)){
 		return Result(false, "创建文件失败"); ////创建文件失败，则不操作
 	}
 	CString separator = ",";////逗号分隔符
-	///循环写入数据
-	CString endTime="";
-	for (int i = 0; i < saveCount;i++){
 
+	CString startTime = DateUtil::GetCurrentCStringTime();
+	CString endTime;
+
+	////获得开始采集时间
+	for (int i = 0; i < theApp.m_vSignalAcquisitionService.size() ; i++){
+		CString acquiredTime = theApp.m_vSignalAcquisitionService[i].GetCollectData().front().GetAcquireTime();
+		if (acquiredTime < startTime){
+			startTime = acquiredTime;
+		}
+	}
+	///循环写入数据
+	for (int i = 0,j = 0; i < saveCount;i++){
+		////如果是最后一条数据，拿到结束采集时间
 		if (i == saveCount - 1){
-			////如果是最后一条数据，拿到最后的结束时间
-			if (collectData[0].size()!=0){
-				endTime = collectData[0].front().GetAcquireTime();
+			if (theApp.m_vSignalAcquisitionService[0].GetCollectDataSize() != 0){
+				endTime = theApp.m_vSignalAcquisitionService[0].GetCollectData().front().GetAcquireTime();
 			}
-			for (int j = 1; j < collectData.size(); j++){
-				if (collectData[j].size() != 0){
-					CString acquireTime = collectData[j].front().GetAcquireTime();
+			for (int j = 1; j < theApp.m_vSignalAcquisitionService.size(); j++){
+				if (theApp.m_vSignalAcquisitionService[j].GetCollectDataSize() != 0){
+					CString acquireTime = theApp.m_vSignalAcquisitionService[0].GetCollectData().front().GetAcquireTime();
 					if (acquireTime < endTime) endTime = acquireTime;
 				}
 			}
 		}
 		CString data="";
 		///拼装字符串
-		int j;
 		////依次获得每个通道的数据
-		for (j = 0; j < collectData.size() - 1;j++){
-			data += CommonUtil::DoubleOrFloat2CString(collectData[j].wait_and_pop()->GetSignalData()) + separator;
+		for (j = 0; j < theApp.m_vSignalAcquisitionService.size() - 1; j++){
+			data += CommonUtil::DoubleOrFloat2CString(theApp.m_vSignalAcquisitionService[j].GetCollectData().wait_and_pop()->GetSignalData()) + separator;
 		}
 		////获得最后一个通道的数据
-		if (!collectData[j].empty()){
-			data += CommonUtil::DoubleOrFloat2CString(collectData[j].wait_and_pop()->GetSignalData());
-		}
+		data += CommonUtil::DoubleOrFloat2CString(theApp.m_vSignalAcquisitionService[j].GetCollectData().wait_and_pop()->GetSignalData());
 		////程序追加换行
 		data += "\n";
 		file.Write(data, strlen(data));
 	}
+	////获得最后一条数据的结束时间
+	
 	file.Close();
-	return Result(true, endTime);
+	return Result(true, startTime+separator+endTime);
 }

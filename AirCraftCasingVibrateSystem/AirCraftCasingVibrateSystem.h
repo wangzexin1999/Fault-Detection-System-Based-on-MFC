@@ -27,6 +27,7 @@
 #include "TbProject.h"
 #include "ThreadSafeQueue.h"////线程安全锁。 
 #include "AcquiredSignal.h"
+#include "SignalAcquisitionService.h"
 using namespace std;
 
 
@@ -60,13 +61,11 @@ public:
 
 	bool m_bIsAutoSaveSamplingData = true; ///是否自动保存采样数据
 	bool m_bIsAutoSaveCollectionData = true; ///是否自动保存采集数据
+		
 
-	vector<ThreadSafeQueue<AcquiredSignal>> m_sampleData; ///采样数据
-	vector<ThreadSafeQueue<AcquiredSignal>> m_collectData; ///采集数据
+	vector<SignalAcquisitionService> m_vSignalAcquisitionService; ////信号采集服务
 
-	vector<ThreadSafeQueue<EchoSignal>> m_echoData; ///回显数据
-
-
+	double tempRead[100][1000]; ///模拟数据
 // 重写
 public:
 	virtual BOOL InitInstance();

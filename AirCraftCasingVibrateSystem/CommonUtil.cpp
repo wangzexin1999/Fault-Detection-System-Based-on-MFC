@@ -26,7 +26,18 @@ void CommonUtil::GetIntVectorFromSplitCString(CString strSource, CString separat
 		strTmp = strSource.Tokenize(separator, iPos);
 	}
 }
-
+vector<CString> CommonUtil::GetCStringVectorFromSplitCString(CString strSource, CString separator){
+	vector<CString> vString;
+	int iPos = 0;
+	CString strTmp;
+	strTmp = strSource.Tokenize(separator, iPos);
+	while (strTmp.Trim() != _T(""))
+	{
+		vString.push_back(strTmp);
+		strTmp = strSource.Tokenize(separator, iPos);
+	}
+	return vString;
+}
 CString CommonUtil::GetFileNameFromFilePath(CString path){
 	int statIndex = -1;
 	///倒着查最后一层目录，分隔符是 “//”
@@ -41,4 +52,9 @@ CString CommonUtil::GetFileNameFromFilePath(CString path){
 	path.Delete(path.Find(_T(".")), path.GetLength());
 	///返回分割之后的字符串
 	return path.Right(path.GetLength()-1-statIndex);
+}
+
+CString CommonUtil::GetMergeCString(CString str1, CString separtor, CString str2){
+	CString  str = str1 + separtor + str2;
+	return str;
 }
