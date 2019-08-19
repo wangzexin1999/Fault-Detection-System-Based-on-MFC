@@ -15,12 +15,10 @@ CChannelParaDialog::CChannelParaDialog(CWnd* pParent /*=NULL*/)
 {
 }
 
-CChannelParaDialog::~CChannelParaDialog()
-{
-
-
+CChannelParaDialog::~CChannelParaDialog(){}
+void CChannelParaDialog::RefreshDlg(){
+	m_generalParaView.GridCtrlInit();
 }
-
 void CChannelParaDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
@@ -29,6 +27,7 @@ void CChannelParaDialog::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CChannelParaDialog, CDialogEx)
 	ON_NOTIFY(TCN_SELCHANGE, IDC_TAB1, &CChannelParaDialog::OnTcnSelchangeTab1)
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 // CChannelParaDialog 消息处理程序
@@ -39,10 +38,10 @@ BOOL CChannelParaDialog::OnInitDialog()
 
 	// TODO:  在此添加额外的初始化
 	m_channelTab.InsertItem(0, _T("通用参数"));
-	m_channelTab.InsertItem(1, _T("触发参数"));
+	//m_channelTab.InsertItem(1, _T("触发参数"));
 	//创建两个对话框  
-	m_generalPara.Create(IDD_DIALOG_GENERAL_PARA, &m_channelTab);
-	m_triggerPara.Create(IDD_DIALOG_TRIGGER_PARA, &m_channelTab);
+	m_generalParaView.Create(IDD_DIALOG_GENERAL_PARA, &m_channelTab);
+	//m_triggerParaView.Create(IDD_DIALOG_TRIGGER_PARA, &m_channelTab);
 	
 	//设定在Tab内显示的范围  
 	CRect tabRect;
@@ -52,24 +51,15 @@ BOOL CChannelParaDialog::OnInitDialog()
 	tabRect.top += 22;
 	tabRect.bottom -= 1;
 	//m_tabSystemPara.MoveWindow(tabRect);
-	m_generalPara.MoveWindow(&tabRect);
-	m_triggerPara.MoveWindow(&tabRect);
+	m_generalParaView.MoveWindow(&tabRect);
+	//m_triggerParaView.MoveWindow(&tabRect);
 	//把对话框对象指针保存起来
-	pDialog[0] = &m_generalPara;
-	pDialog[1] = &m_triggerPara;
+	pDialog[0] = &m_generalParaView;
+	//pDialog[1] = &m_triggerParaView;
 	//显示初始页面  
-	m_generalPara.ShowWindow(SW_SHOW);
-	m_triggerPara.ShowWindow(SW_HIDE);
+	m_generalParaView.ShowWindow(SW_SHOW);
+	//m_triggerParaView.ShowWindow(SW_HIDE);
 	m_CurSelTab = 0;
-
-
-	
-
-
-
-
-
-
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常:  OCX 属性页应返回 FALSE
 }
@@ -85,4 +75,11 @@ void CChannelParaDialog::OnTcnSelchangeTab1(NMHDR *pNMHDR, LRESULT *pResult)
 	//把新的页面显示出来
 	pDialog[m_CurSelTab]->ShowWindow(SW_SHOW);
 	*pResult = 0;
+}
+
+
+void CChannelParaDialog::OnSize(UINT nType, int cx, int cy)
+{
+	CDialogEx::OnSize(nType, cx, cy);
+	// TODO:  在此处添加消息处理程序代码
 }

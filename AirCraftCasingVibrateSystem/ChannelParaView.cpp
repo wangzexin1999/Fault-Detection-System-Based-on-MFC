@@ -10,14 +10,9 @@
 
 IMPLEMENT_DYNAMIC(CChannelParaView, CDockablePane)
 
-CChannelParaView::CChannelParaView()
-{
+CChannelParaView::CChannelParaView(){}
 
-}
-
-CChannelParaView::~CChannelParaView()
-{
-}
+CChannelParaView::~CChannelParaView(){}
 
 
 BEGIN_MESSAGE_MAP(CChannelParaView, CDockablePane)
@@ -29,10 +24,6 @@ END_MESSAGE_MAP()
 
 
 // CChannelParaView 消息处理程序
-
-
-
-
 void CChannelParaView::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
@@ -56,9 +47,7 @@ void CChannelParaView::OnPaint()
 	GetClientRect(rect);
 	bush.CreateSolidBrush(RGB(240,240,240));
 	dc.FillRect(&rect, &bush);
-	
 }
-
 
 int CChannelParaView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
@@ -97,8 +86,12 @@ void CChannelParaView::OnSize(UINT nType, int cx, int cy)
 	/*CRect rectTree;
 	GetWindowRect(rectTree);
 	m_channelParaDialog.MoveWindow(rectTree);*/
-	CDockablePane::OnSize(nType, cx, cy);
 
-	// TODO:  在此处添加消息处理程序代码
-   
+	m_channelParaDialog.SetWindowPos(this, -1, -1, cx, cy, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOZORDER);
+	m_channelParaDialog.ShowWindow(SW_SHOW);
+
+	CDockablePane::OnSize(nType, cx, cy);
+}
+void CChannelParaView::RefreshView(){
+	m_channelParaDialog.RefreshDlg();
 }

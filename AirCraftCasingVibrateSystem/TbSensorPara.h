@@ -1,4 +1,5 @@
 #pragma once
+#include "TbDictionary.h"
 class TbSensorPara
 {
 public:
@@ -9,25 +10,26 @@ private:
 	int m_sensorParaId;
 	int m_projectId;
 	int m_sensorId;
-	char m_sensorStatus;
-	int m_messureType;
+	TbDictionary m_sensorStatus;
+	TbDictionary m_messureType;
 	CString m_sensorDesc;
-	int m_windowType;
+	TbDictionary m_windowType;
 	float m_triggerMagnitude;
-	int m_triggerPolarity;
+	TbDictionary m_triggerPolarity;
 	int m_pointNum;
-	int m_coordinateSystem;
-	int m_coordinateSystemDirection;
+	TbDictionary m_coordinateSystem;
+	TbDictionary m_coordinateSystemDirection;
 	char m_isReference;
-	int m_engineeringUnits;
+	TbDictionary m_engineeringUnits;
 	float  m_sensitivity;
 	float m_mileageRange;
-	int m_integralType;
-	int m_integralUnits;
-	int m_inputMethod;
+	TbDictionary m_integralType;
+	TbDictionary m_integralUnits;
+	TbDictionary m_inputMethod;
 	char m_antiAliasingFiltering;
 	float m_maxFrequency;
 	char m_isUsed;
+
 public:
 	int GetSensorParaId();
 	void SetSensorParaId(int sensorParaId);
@@ -35,40 +37,41 @@ public:
 	void SetProjectId(int projectId);
 	int GetSensorId();
 	void SetSensorId(int SensorId);
-	char GetSensorStatus();
-	void SetSensorStatus(char SensorStatus);
+
+	TbDictionary & GetSensorStatus();
+	void SetSensorStatus(TbDictionary SensorStatus);
 	char GetSensorIsUsed();
 	void SetSensorIsUsed(char isUsed);
-	int GetMessureType();
-	void SetMessureType(int messureType);
+	TbDictionary & GetMessureType();
+	void SetMessureType(TbDictionary messureType);
 	CString GetSensorDesc();
 	void SetSensorDesc(CString sensorDesc);
-	int GetWindowType();
-	void SetWindowType(int windowType);
+	TbDictionary & GetWindowType();
+	void SetWindowType(TbDictionary windowType);
 	float GetTriggerMagnitude();
 	void SetTriggerMagnitude(float triggerMagnitude);
-	int GetTriggerPolarity();
-	void SetTriggerPolarity(int triggerPolarity);
+	TbDictionary & GetTriggerPolarity();
+	void SetTriggerPolarity(TbDictionary triggerPolarity);
 	int GetPointNum();
 	void SetPointNum(int pointNum);
-	int GetCoordinateSystem();
-	void SetCoordinateSystem(int coordinateSystem);
-	int GetCoordinateSystemDirection();
-	void SetCoordinateSystemDirection(int coordinateSystemDirection);
+	TbDictionary & GetCoordinateSystem();
+	void SetCoordinateSystem(TbDictionary coordinateSystem);
+	TbDictionary & GetCoordinateSystemDirection();
+	void SetCoordinateSystemDirection(TbDictionary coordinateSystemDirection);
 	char GetIsReference();
 	void SetIsReference(char isReference);
-	int GetEngineeringUnits();
-	void SetEngineeringUnits(int engineeringUnits);
+	TbDictionary & GetEngineeringUnits();
+	void SetEngineeringUnits(TbDictionary engineeringUnits);
 	float GetSensitivity();
 	void SetSensitivity(float sensitivity);
 	float GetMileageRange();
 	void SetMileageRange(float mileageRange);
-	int GetIntegralType();
-	void SetIntegralType(int integralType);
-	int GetIntegralUnits();
-	void SetIntegralUnits(int integralUnits);
-	int GetInputMethod();
-	void SetInputMethod(int inputMethod);
+	TbDictionary & GetIntegralType();
+	void SetIntegralType(TbDictionary integralType);
+	TbDictionary & GetIntegralUnits();
+	void SetIntegralUnits(TbDictionary integralUnits);
+	TbDictionary & GetInputMethod();
+	void SetInputMethod(TbDictionary inputMethod);
 	char GetAntiAliasingFiltering();
 	void SetAntiAliasingFiltering(char antiAliasingFiltering);
 	float GetMaxFrequency();

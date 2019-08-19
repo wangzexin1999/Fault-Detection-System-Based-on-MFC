@@ -11,6 +11,9 @@ TbTestingDeviceDao::TbTestingDeviceDao()
 	SetVectorAndField("testingdevice_name", "CString", m_testingDeviceName);
 	SetVectorAndField("testingdevice_borndate", "CString", m_testingDeviceBornDate);
 	SetVectorAndField("testingdevice_importdate", "CString", m_testingDevicImportDate);
+	SetVectorAndField("testingdevice_status", "int", m_testingDevicStatus);
+
+	
 }
 TbTestingDeviceDao::TbTestingDeviceDao(const TbTestingDeviceDao &testingDevice){
 	this->m_strTableName = "tb_testingdevice";
@@ -20,6 +23,8 @@ TbTestingDeviceDao::TbTestingDeviceDao(const TbTestingDeviceDao &testingDevice){
 	SetVectorAndField("testingdevice_name", "CString", m_testingDeviceName);
 	SetVectorAndField("testingdevice_borndate", "CString", m_testingDeviceBornDate);
 	SetVectorAndField("testingdevice_importdate", "CString", m_testingDevicImportDate);
+	SetVectorAndField("testingdevice_status", "int", m_testingDevicStatus);
+
 	operator = (testingDevice);
 }
 
@@ -61,4 +66,13 @@ void TbTestingDeviceDao::GetTableFieldValues(TbTestingDevice &testingDevice){
 	testingDevice.SetTestingdeviceName(m_testingDeviceName.m_strValue);
 	testingDevice.SetTestingdeviceBorndate(m_testingDeviceBornDate.m_strValue);
 	testingDevice.SetTestingdeviceImportdate(m_testingDevicImportDate.m_strValue);
+	testingDevice.SetTestingDeviceStatus(m_testingDevicStatus.GetInt());
+}
+void TbTestingDeviceDao::SetTableFieldValues(TbTestingDevice testingDevice){
+	m_testingDeviceId.SetValue(testingDevice.GetTestingdeviceId());
+	m_testingDeviceIp.m_strValue = testingDevice.GetTestingdeviceIp();
+	m_testingDeviceName.m_strValue = testingDevice.GetTestingdeviceName();
+	m_testingDevicImportDate.m_strValue = testingDevice.GetTestingdeviceImportdate();
+	m_testingDeviceBornDate.m_strValue = testingDevice.GetTestingdeviceBorndate();
+	m_testingDevicStatus.SetValue(testingDevice.GetTestingDeviceStatus());
 }

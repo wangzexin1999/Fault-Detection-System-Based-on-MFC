@@ -2,11 +2,24 @@
 #include "TbTestingDevice.h"
 
 
-TbTestingDevice::TbTestingDevice()
-{
+TbTestingDevice::TbTestingDevice(int testingdeviceID){
+	m_testingdeviceId = testingdeviceID;
 }
 
+bool TbTestingDevice::operator == (TbTestingDevice testingDevice){
+	bool tag = true;
+	if (m_testingdeviceId != testingDevice.GetTestingdeviceId()) tag = false;
+	if (m_testingdeviceIp != testingDevice.GetTestingdeviceIp()) tag = false;
+	if (m_testingdeviceName != testingDevice.GetTestingdeviceName()) tag = false;
+	if (m_testingdeviceBorndate!= testingDevice.GetTestingdeviceBorndate()) tag = false;
+	if (m_testingdeviceImportdate != testingDevice.GetTestingdeviceImportdate()) tag = false;
+	if (m_testingdeviceStatus != testingDevice.GetTestingDeviceStatus()) tag = false;
+	return tag;
+}
 
+bool TbTestingDevice::operator != (TbTestingDevice testingDevice){
+	return *this == testingDevice ? false : true;
+}
 TbTestingDevice::~TbTestingDevice()
 {
 }
@@ -48,4 +61,11 @@ CString TbTestingDevice::GetTestingdeviceImportdate() {
 
 void TbTestingDevice::SetTestingdeviceImportdate(CString testingdeviceImportdate) {
 	this->m_testingdeviceImportdate = testingdeviceImportdate ;
+}
+
+void TbTestingDevice::SetTestingDeviceStatus(int status){
+	m_testingdeviceStatus = status;
+}
+int TbTestingDevice::GetTestingDeviceStatus(){
+	return m_testingdeviceStatus;
 }

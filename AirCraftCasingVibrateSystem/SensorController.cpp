@@ -1,20 +1,16 @@
 #include "stdafx.h"
 #include "SensorController.h"
 #include "AirCraftCasingVibrateSystem.h"
-#include <mutex>
 #include "AcquiredSignal.h"
-
-//HANDLE SensorController::m_hMutex;
 
 SensorController::SensorController(void)
 {
-	//m_hMutex = ::CreateMutex(NULL, FALSE, NULL);
 }
 
 
 SensorController::~SensorController()
 {
-	//CloseHandle(m_hMutex);
+	
 }
 
 // 读取传感器线程 想用传参的方式，for循环开线程
@@ -23,9 +19,7 @@ UINT  SensorController::ReadDataThreadProcing(void * pParam)
 	int pthis = (int)pParam;
 	while (theApp.m_bThreadActive)
 	{
-		//WaitForSingleObject(m_hMutex, INFINITE);
-		theApp.m_vSignalAcquisitionService[pthis].ReadData();
-		//ReleaseMutex(m_hMutex);
+		theApp.m_vSignalAcquisitionService[pthis].ReadData();	
 	}
 	return 1;
 }
@@ -59,7 +53,7 @@ UINT SensorController::AutoSaveCollectionData(void * pParam){
 			}
 			if (count == size){
 				////当集合中的所有队列元素个数都到达了可以保存的条件时,调用服务去保存采集数据
-				TRACE("\n保存数据。。。。。。。。。。。。。。。。。。。。。。。\n");
+				TRACE("\n再开线程去保存数据\n");
 				m_seneorService.SaveCollectData(theApp.m_currentProject, theApp.m_iSignalsStoreCount);
 			}
 		}
@@ -69,7 +63,7 @@ UINT SensorController::AutoSaveCollectionData(void * pParam){
 
 ////开启自动保存采样数据
 int SensorController::StartAutoSaveCollectionData(){
-	/*HANDLE ht =  (HANDLE)_beginthreadex(NULL, 0, AutoSaveCollectionData, (void *)NULL, 0, NULL);
-	ResumeThread(ht);*/
+	HANDLE ht =  (HANDLE)_beginthreadex(NULL, 0, AutoSaveCollectionData, (void *)NULL, 0, NULL);
+	ResumeThread(ht);
 	return 0;
 }

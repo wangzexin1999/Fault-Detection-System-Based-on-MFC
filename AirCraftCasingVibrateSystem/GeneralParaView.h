@@ -18,8 +18,8 @@ Modification:
 ************************************************************************/
 #pragma once
 #include "afxcmn.h"
-
-
+#include "GridCtrl_src/GridCtrl.h"
+#include "SensorParaController.h"
 // CGeneralParaView 对话框
 
 class CGeneralParaView : public CDialogEx
@@ -32,12 +32,13 @@ public:
 
 // 对话框数据
 	enum { IDD = IDD_DIALOG_GENERAL_PARA };
-
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
+	CGridCtrl m_generalParaGridCtrl;
 
 	DECLARE_MESSAGE_MAP()
+	SensorParaController m_sensorParaController;
 public:
 	virtual BOOL OnInitDialog();
-	CListCtrl m_generalParaList;
+	void GridCtrlInit();
 };

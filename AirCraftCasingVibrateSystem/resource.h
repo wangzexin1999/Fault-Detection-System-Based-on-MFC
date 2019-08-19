@@ -6,6 +6,7 @@
 #define IDOK2                           3
 #define IDCANCEL2                       4
 #define IDOK3                           5
+#define ID_SAVE_BUTTON                  5
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
 #define IDD_AIRCRAFTCASINGVIBRATESYSTEM_FORM 101
@@ -160,6 +161,11 @@
 #define IDC_SIGNALDATANAME_EDIT         1093
 #define IDC_SEARCH_BUTTON               1094
 #define IDC_DATESELECT_CHECK            1095
+#define IDC_GENERAPARA_GRIDCTRL         1096
+#define IDC_TESTINGDEVICE_GRIDCTRL      1097
+#define IDC_TESTINGDEVICENAME_EDIT      1098
+#define ID_DELETE_BUTTON                1099
+#define IDC_ADD_BUTTON                  1100
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_CHECK2                       32771
 #define ID_COMBO2                       32772
@@ -220,7 +226,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        368
 #define _APS_NEXT_COMMAND_VALUE         32829
-#define _APS_NEXT_CONTROL_VALUE         1096
+#define _APS_NEXT_CONTROL_VALUE         1101
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

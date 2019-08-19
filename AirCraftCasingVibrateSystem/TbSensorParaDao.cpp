@@ -93,28 +93,29 @@ bool TbSensorParaDao::SelectObjectsByCondition(vector<TbSensorParaDao> &selected
 
 }
 
-
 void TbSensorParaDao::GetTableFieldValues(TbSensorPara &sensorPara){
 	sensorPara.SetSensorParaId(m_sensorParaId.GetInt());
 	sensorPara.SetAntiAliasingFiltering(m_antiAliasingFiltering.GetInt());
-	sensorPara.SetCoordinateSystem(m_coordinateSystem.GetInt());
-	sensorPara.SetCoordinateSystemDirection(m_coordinateSystemDirection.GetInt());
-	sensorPara.SetEngineeringUnits(m_engineeringUnits.GetInt());
-	sensorPara.SetInputMethod(m_inputMethod.GetInt());
-	sensorPara.SetIntegralType(m_integralType.GetInt());
-	sensorPara.SetIntegralUnits(m_integralUnits.GetInt());
+	sensorPara.GetCoordinateSystem().SetDictId(m_coordinateSystem.GetInt());
+	sensorPara.GetCoordinateSystemDirection().SetDictId(m_coordinateSystemDirection.GetInt());
+	sensorPara.GetEngineeringUnits().SetDictId(m_engineeringUnits.GetInt());
+	sensorPara.GetInputMethod().SetDictId(m_inputMethod.GetInt());
+	sensorPara.GetIntegralType().SetDictId(m_integralType.GetInt());
+	sensorPara.GetIntegralUnits().SetDictId(m_integralUnits.GetInt());
 	sensorPara.SetIsReference(m_isReference.GetInt());
 	sensorPara.SetMaxFrequency(m_maxFrequency.GetFloatOrDouble());
-	sensorPara.SetMessureType(m_messureType.GetInt());
+	sensorPara.GetMessureType().SetDictId(m_messureType.GetInt());
 	sensorPara.SetMileageRange(m_mileageRange.GetFloatOrDouble());
+
 	sensorPara.SetPointNum(m_pointNum.GetInt());
+	
 	sensorPara.SetProjectId(m_projectId.GetInt());
 	sensorPara.SetSensitivity(m_sensitivity.GetFloatOrDouble());
 	sensorPara.SetSensorDesc(m_sensorDesc.m_strValue);
 	sensorPara.SetSensorId(m_sersorId.GetInt());
 	sensorPara.SetSensorIsUsed(m_isUsed.GetInt());
-	sensorPara.SetSensorStatus(m_sersorStatus.GetInt());
+	sensorPara.GetSensorStatus().SetDictId(m_sersorStatus.GetInt());
 	sensorPara.SetTriggerMagnitude(m_triggerMagnitude.GetFloatOrDouble());
-	sensorPara.SetTriggerPolarity(m_triggerPolarity.GetInt());
-	sensorPara.SetWindowType(m_windowType.GetInt());
+	sensorPara.GetTriggerPolarity().SetDictId(m_triggerPolarity.GetInt());
+	sensorPara.GetWindowType().SetDictId(m_windowType.GetInt());
 }

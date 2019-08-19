@@ -16,9 +16,10 @@ Modification:
 修 改 人：
 修改内容：
 ************************************************************************/
-#include "SensorService.h"
 #define DELAY_TIME 10
 #pragma once
+#include "SensorService.h"
+#include "Result.h"
 class SensorController
 {
 public:
@@ -63,8 +64,7 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	static unsigned int __stdcall AutoSaveCollectionData(PVOID pM);
+	
 
-//public:
- 	//static HANDLE m_hMutex;
 };
 

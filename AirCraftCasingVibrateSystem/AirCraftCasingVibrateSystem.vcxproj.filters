@@ -34,9 +34,6 @@
     <Filter Include="头文件\Utils">
       <UniqueIdentifier>{43600346-829f-4b2f-bf05-7aa2677ea964}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\entity">
-      <UniqueIdentifier>{65b8e1e7-4a7d-473b-b531-f1f382895c0b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\entity">
       <UniqueIdentifier>{fadd07fd-7805-4fda-8746-87f2e264bb6d}</UniqueIdentifier>
     </Filter>
@@ -63,6 +60,9 @@
     </Filter>
     <Filter Include="ChartCtrl">
       <UniqueIdentifier>{f8e3ad54-7e20-456e-a532-837227df9190}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\entity">
+      <UniqueIdentifier>{65b8e1e7-4a7d-473b-b531-f1f382895c0b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -474,13 +474,25 @@
     <ClInclude Include="FFTWUtil.h">
       <Filter>头文件\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="AcquiredSignal.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ThreadSafeQueue.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="SensorParaController.h">
+      <Filter>头文件\Controller</Filter>
     </ClInclude>
     <ClInclude Include="SignalAcquisitionService.h">
+      <Filter>头文件\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="TbDictionary.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadSafeQueue.h">
+      <Filter>头文件\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="AcquiredSignal.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="SensorParaService.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TestingDeviceController.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -827,9 +839,6 @@
     <ClCompile Include="TbSignal.cpp">
       <Filter>源文件\entity</Filter>
     </ClCompile>
-    <ClCompile Include="SignalController.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="SignalService.cpp">
       <Filter>源文件\Service</Filter>
     </ClCompile>
@@ -849,9 +858,24 @@
       <Filter>源文件\Utils</Filter>
     </ClCompile>
     <ClCompile Include="AcquiredSignal.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="SensorParaController.cpp">
+      <Filter>源文件\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="SignalController.cpp">
+      <Filter>源文件\Controller</Filter>
     </ClCompile>
     <ClCompile Include="SignalAcquisitionService.cpp">
+      <Filter>源文件\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="TbDictionary.cpp">
+      <Filter>源文件\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="SensorParaService.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TestingDeviceController.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

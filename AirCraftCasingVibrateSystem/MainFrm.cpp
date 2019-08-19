@@ -293,6 +293,7 @@ void CMainFrame::OnViewChannelPara()
 	}
 	else
 	{
+		m_channelPara.RefreshView();
 		m_channelPara.ShowPane(TRUE, TRUE, TRUE);
 	}
 	

@@ -47,8 +47,10 @@ protected:  // 控件条嵌入成员
 	CMFCCaptionBar    m_wndCaptionBar;
 	CMFCToolBar       m_wndContrlBar;
 public:
-	CSystemParaView    m_systemPara;
+	CSystemParaView    m_systemPara; ///暂时无用
+
 	CChannelParaView    m_channelPara;
+
 	CDockablePane m_Panes[5]; //
 // 生成的消息映射函数
 protected:

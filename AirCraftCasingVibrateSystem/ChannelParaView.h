@@ -29,10 +29,12 @@ class CChannelParaView : public CDockablePane
 public:
 	CChannelParaView();
 	virtual ~CChannelParaView();
-public:
+	void RefreshView();
+private:
 	CDeviceParaView m_devicePara;
 	CMFCTabCtrl m_tab;
 	CChannelParaDialog m_channelParaDialog;
+
 protected:
 	DECLARE_MESSAGE_MAP()
 public:

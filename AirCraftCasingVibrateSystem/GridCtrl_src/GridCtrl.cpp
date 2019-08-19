@@ -7464,7 +7464,6 @@ void CGridCtrl::OnEditCell(int nRow, int nCol, CPoint point, UINT nChar)
 #ifndef GRIDCONTROL_NO_TITLETIPS
     m_TitleTip.Hide();  // hide any titletips
 #endif
-
     // Can we do it?
     CCellID cell(nRow, nCol);
     if (!IsValid(cell) || !IsCellEditable(nRow, nCol))

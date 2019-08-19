@@ -19,7 +19,18 @@ TbDictionaryDao::TbDictionaryDao(const TbDictionaryDao  & dictionary){
 	operator = (dictionary);
 }
 
-TbDictionaryDao::~TbDictionaryDao()
-{
-	
+TbDictionaryDao::~TbDictionaryDao(){}
+
+void TbDictionaryDao::GetTableFieldValues(TbDictionary &dictionary){
+	dictionary.SetDictId(m_dictId.GetInt());
+	dictionary.SetDictName(m_dictName.m_strValue);
+	dictionary.SetDictValue(m_dictValue.m_strValue);
+}
+
+void TbDictionaryDao::SelectByObject(TbDictionary &dictionary){
+	m_dictId.SetValue(dictionary.GetDictId());
+	bool isSuccess = SelectByKey();
+	if (isSuccess){
+		GetTableFieldValues(dictionary);
+	}
 }

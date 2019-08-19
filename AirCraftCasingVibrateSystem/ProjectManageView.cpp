@@ -1,7 +1,4 @@
-﻿// ProjectManageView.cpp : 实现文件
-//
-
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "AirCraftCasingVibrateSystem.h"
 #include "ProjectManageView.h"
 #include "afxdialogex.h"
@@ -129,13 +126,13 @@ BOOL CProjectManageView::OnInitDialog()
 	// 异常:  OCX 属性页应返回 FALSE
 }
 
-
+///打开项目按钮
 void CProjectManageView::OnBnClickedOk()
 {
-	// TODO:  在此添加控件通知处理程序代码
 	if (MessageBox("是否打开项目 " + m_selectedProject.GetProjectName(), "打开项目", MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL) return;
 	////将选择的项目赋给全局project对象。
 	theApp.m_currentProject = m_selectedProject;
+	
 	AfxMessageBox("项目加载成功");
 	CDialogEx::OnOK();
 }
@@ -191,6 +188,5 @@ void CProjectManageView::OnGridClick(NMHDR *pNotifyStruct, LRESULT * /*pResult*/
 {
 	NM_GRIDVIEW* pItem = (NM_GRIDVIEW*)pNotifyStruct;
 	if (pItem->iRow == 0 || pItem->iRow > m_projectVector.size()) return;
-	TbProject g_project = m_projectVector.at(pItem->iRow - 1);
-	m_selectedProject = g_project;
+	m_selectedProject = m_projectVector.at(pItem->iRow - 1);
 }

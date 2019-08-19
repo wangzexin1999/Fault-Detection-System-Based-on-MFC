@@ -291,6 +291,8 @@
     <ClInclude Include="Result.h" />
     <ClInclude Include="SelectView.h" />
     <ClInclude Include="SelfCheckController.h" />
+    <ClInclude Include="SensorParaController.h" />
+    <ClInclude Include="SensorParaService.h" />
     <ClInclude Include="SensorService.h" />
     <ClInclude Include="SersorParaView.h" />
     <ClInclude Include="SignalAcquisitionService.h" />
@@ -308,6 +310,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TbDetectedDevice.h" />
     <ClInclude Include="TbDetectedDeviceDao.h" />
+    <ClInclude Include="TbDictionary.h" />
     <ClInclude Include="TbDictionaryDao.h" />
     <ClInclude Include="TbProject.h" />
     <ClInclude Include="TbProjectDao.h" />
@@ -325,6 +328,7 @@
     <ClInclude Include="TbTester.h" />
     <ClInclude Include="TesterController.h" />
     <ClInclude Include="TesterService.h" />
+    <ClInclude Include="TestingDeviceController.h" />
     <ClInclude Include="TestingDeviceService.h" />
     <ClInclude Include="ThreadSafeQueue.h" />
     <ClInclude Include="TriggerParaView.h" />
@@ -418,6 +422,8 @@
     <ClCompile Include="Result.cpp" />
     <ClCompile Include="SelectView.cpp" />
     <ClCompile Include="SelfCheckController.cpp" />
+    <ClCompile Include="SensorParaController.cpp" />
+    <ClCompile Include="SensorParaService.cpp" />
     <ClCompile Include="SensorService.cpp" />
     <ClCompile Include="SersorParaView.cpp" />
     <ClCompile Include="SignalAcquisitionService.cpp" />
@@ -439,6 +445,7 @@
     <ClCompile Include="SystemParaView.cpp" />
     <ClCompile Include="TbDetectedDevice.cpp" />
     <ClCompile Include="TbDetectedDeviceDao.cpp" />
+    <ClCompile Include="TbDictionary.cpp" />
     <ClCompile Include="TbDictionaryDao.cpp" />
     <ClCompile Include="TbProject.cpp" />
     <ClCompile Include="TbProjectDao.cpp" />
@@ -456,6 +463,7 @@
     <ClCompile Include="TbTester.cpp" />
     <ClCompile Include="TesterController.cpp" />
     <ClCompile Include="TesterService.cpp" />
+    <ClCompile Include="TestingDeviceController.cpp" />
     <ClCompile Include="TestingDeviceService.cpp" />
     <ClCompile Include="TriggerParaView.cpp" />
   </ItemGroup>

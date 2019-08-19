@@ -12,12 +12,12 @@ class CChannelParaDialog : public CDialogEx
 public:
 	CChannelParaDialog(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CChannelParaDialog();
-
+	void RefreshDlg();
 // 对话框数据
 	enum { IDD = IDD_DIALOG_CHANNEL_PARA };
-public:
-	CTriggerParaView   m_triggerPara;
-	CGeneralParaView   m_generalPara;
+private:
+	CTriggerParaView   m_triggerParaView;
+	CGeneralParaView   m_generalParaView;
 	CDialog* pDialog[2];  //用来保存对话框对象指针
 	int m_CurSelTab;
 protected:
@@ -28,4 +28,5 @@ public:
 	CTabCtrl m_channelTab;
 	virtual BOOL OnInitDialog();
 	afx_msg void OnTcnSelchangeTab1(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 };

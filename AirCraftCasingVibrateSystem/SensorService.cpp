@@ -49,7 +49,7 @@ bool CSensorService::SaveCollectData(TbProject &project,int saveCount){
 	CString fileName = CommonUtil::Int2CString(project.GetProjectId()) + "-"
 		+ CommonUtil::Int2CString(project.GetTestingDevicePara().GetTestingdevice().GetTestingdeviceId())
 			+ "-" + CommonUtil::Int2CString(project.GetDetectedDevice().GetDetecteddeviceId()) 
-			+ "-" + CommonUtil::Int2CString(project.GetTbSensorParaVector().size()) + "-" + DateUtil::GetTimeStampCString()
+			+ "-" + CommonUtil::Int2CString(project.GetSensorParaVector().size()) + "-" + DateUtil::GetTimeStampCString()
 			+ ".csv";
 	
 	//3.调用FileUtil保存文件，保存成功返回采集的开始时间和结束时间

@@ -32,7 +32,8 @@ public:
 	TbTester & GetTester();
 	CString GetProjectCreateTime();
 	CString GetProjectName();
-	vector<TbSensorPara> GetTbSensorParaVector();
+	vector<TbSensorPara> & GetSensorParaVector();
+	void SetSensorParaVector(vector<TbSensorPara> sensorParaVector);
 	int GetProjectId();
 };
 

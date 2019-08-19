@@ -28,16 +28,16 @@ int TbSensorPara::GetSensorId() {
 void TbSensorPara::SetSensorId(int sensorId) {
 	this->m_sensorId = sensorId;
 }
-char TbSensorPara::GetSensorStatus() {
+TbDictionary & TbSensorPara::GetSensorStatus() {
 	return m_sensorStatus;
 }
-void TbSensorPara::SetSensorStatus(char sersorStatus) {
+void TbSensorPara::SetSensorStatus(TbDictionary sersorStatus) {
 	this->m_sensorStatus = sersorStatus;
 }
-int TbSensorPara::GetMessureType() {
+TbDictionary & TbSensorPara::GetMessureType() {
 	return m_messureType;
 }
-void TbSensorPara::SetMessureType(int messureType) {
+void TbSensorPara::SetMessureType(TbDictionary messureType) {
 	this->m_messureType = messureType;
 }
 CString TbSensorPara::GetSensorDesc() {
@@ -46,10 +46,10 @@ CString TbSensorPara::GetSensorDesc() {
 void TbSensorPara::SetSensorDesc(CString sensorDesc) {
 	this->m_sensorDesc = sensorDesc;
 }
-int TbSensorPara::GetWindowType() {
+TbDictionary & TbSensorPara::GetWindowType() {
 	return m_windowType;
 }
-void TbSensorPara::SetWindowType(int windowType) {
+void TbSensorPara::SetWindowType(TbDictionary windowType) {
 	this->m_windowType = windowType;
 }
 float TbSensorPara::GetTriggerMagnitude() {
@@ -58,10 +58,10 @@ float TbSensorPara::GetTriggerMagnitude() {
 void TbSensorPara::SetTriggerMagnitude(float triggerMagnitude) {
 	this->m_triggerMagnitude = triggerMagnitude;
 }
-int TbSensorPara::GetTriggerPolarity() {
+TbDictionary & TbSensorPara::GetTriggerPolarity() {
 	return m_triggerPolarity;
 }
-void TbSensorPara::SetTriggerPolarity(int triggerPolarity) {
+void TbSensorPara::SetTriggerPolarity(TbDictionary triggerPolarity) {
 	this->m_triggerPolarity = triggerPolarity;
 }
 int TbSensorPara::GetPointNum() {
@@ -70,16 +70,16 @@ int TbSensorPara::GetPointNum() {
 void TbSensorPara::SetPointNum(int pointNum) {
 	this->m_pointNum = pointNum;
 }
-int TbSensorPara::GetCoordinateSystem() {
+TbDictionary & TbSensorPara::GetCoordinateSystem() {
 	return m_coordinateSystem;
 }
-void TbSensorPara::SetCoordinateSystem(int coordinateSystem) {
+void TbSensorPara::SetCoordinateSystem(TbDictionary coordinateSystem) {
 	this->m_coordinateSystem = coordinateSystem;
 }
-int TbSensorPara::GetCoordinateSystemDirection() {
+TbDictionary & TbSensorPara::GetCoordinateSystemDirection() {
 	return m_coordinateSystemDirection;
 }
-void TbSensorPara::SetCoordinateSystemDirection(int coordinateSystemDirection) {
+void TbSensorPara::SetCoordinateSystemDirection(TbDictionary coordinateSystemDirection) {
 	this->m_coordinateSystemDirection = coordinateSystemDirection;
 }
 char TbSensorPara::GetIsReference() {
@@ -88,10 +88,10 @@ char TbSensorPara::GetIsReference() {
 void TbSensorPara::SetIsReference(char isReference) {
 	this->m_isReference = isReference;
 }
-int TbSensorPara::GetEngineeringUnits() {
+TbDictionary & TbSensorPara::GetEngineeringUnits() {
 	return m_engineeringUnits;
 }
-void TbSensorPara::SetEngineeringUnits(int engineeringUnits) {
+void TbSensorPara::SetEngineeringUnits(TbDictionary engineeringUnits) {
 	this->m_engineeringUnits = engineeringUnits;
 }
 float TbSensorPara::GetSensitivity() {
@@ -106,22 +106,22 @@ float TbSensorPara::GetMileageRange() {
 void TbSensorPara::SetMileageRange(float mileageRange) {
 	this->m_mileageRange = mileageRange;
 }
-int TbSensorPara::GetIntegralType() {
+TbDictionary & TbSensorPara::GetIntegralType() {
 	return m_integralType;
 }
-void TbSensorPara::SetIntegralType(int integralType) {
+void TbSensorPara::SetIntegralType(TbDictionary integralType) {
 	this->m_integralType = integralType;
 }
-int TbSensorPara::GetIntegralUnits() {
+TbDictionary & TbSensorPara::GetIntegralUnits() {
 	return m_integralUnits;
 }
-void TbSensorPara::SetIntegralUnits(int integralUnits) {
+void TbSensorPara::SetIntegralUnits(TbDictionary integralUnits) {
 	this->m_integralUnits = integralUnits;
 }
-int TbSensorPara::GetInputMethod() {
+TbDictionary & TbSensorPara::GetInputMethod() {
 	return m_inputMethod;
 }
-void TbSensorPara::SetInputMethod(int inputMethod) {
+void TbSensorPara::SetInputMethod(TbDictionary inputMethod) {
 	this->m_inputMethod = inputMethod;
 }
 char TbSensorPara::GetAntiAliasingFiltering() {
