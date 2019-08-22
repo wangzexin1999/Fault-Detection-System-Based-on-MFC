@@ -300,7 +300,6 @@ bool PDDatabase::DBSelect(vector<PDAttribute *> selectVector, CString strSqlQuer
 		m_strSqlQuery += " LIMIT " + strStartNumber + "," + strRecordCount;
 	}
 	//µ×²ã²éÑ¯
-
 	bResult = theApp.PDsql.SelectMysql(selectedValueVector, m_strSqlQuery);
 	return bResult;
 }

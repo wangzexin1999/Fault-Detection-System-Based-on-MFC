@@ -6,6 +6,8 @@
 #include "AcquiredSignal.h"
 #include "ThreadSafeQueue.h"
 #include "Result.h"
+#include "TbSensorDao.h"
+#include "TbSensor.h"
 class CSensorService 
 {
 public:
@@ -54,14 +56,23 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	Result AddCollectData(TbProject project, int sensorId, ThreadSafeQueue<AcquiredSignal> &collectionData);
+	/**********************************************************************
+	功能描述：查询采集设备对应的所有传感器
+	输入参数：采集设备id
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	bool GetAllSensorByTestingDeviceId(int testingDeviceId,vector<TbSensor> & sensorVector);
+
 
 private:
 	//queue<EchoSignal> m_echoSignalQueue; ///回显数据的队列
 	EchoSignal m_signal; ///需要回显的数据
 	TbSignalDao m_signalDao;
-public:
-	
-	static double m_readFromCSVFile[100][1000];//文件的测试数据数组
+	TbSensorDao m_sensorDao;
 	
 };
 

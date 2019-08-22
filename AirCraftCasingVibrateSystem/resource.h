@@ -96,8 +96,10 @@
 #define IDC_COMBO6                      1009
 #define IDC_COMBO7                      1010
 #define IDC_COMBO8                      1011
-#define IDC_TREE_SELECT_CHANNEL         1012
+#define IDC_TREE_SELECTED_CHANNEL       1012
 #define IDC_LIST1                       1013
+#define IDC_TREE_SELECT_CHANNEL2        1013
+#define IDC_TREE_SELECT_CHANNEL         1013
 #define IDC_EDIT_PROJECTNAME            1014
 #define IDC_EDIT2                       1015
 #define IDC_EDIT_PASSWORD               1015
@@ -219,14 +221,15 @@
 #define ID_BUTTON4                      32826
 #define ID_BUTTON_DETECT_DEVICE         32827
 #define ID_BUTTON_DETECTED_DEVICE       32828
+#define ID_32829                        32829
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        368
-#define _APS_NEXT_COMMAND_VALUE         32829
-#define _APS_NEXT_CONTROL_VALUE         1101
+#define _APS_NEXT_COMMAND_VALUE         32830
+#define _APS_NEXT_CONTROL_VALUE         1103
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

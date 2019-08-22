@@ -30,7 +30,6 @@
 #endif
 
 using namespace std;
-// CAirCraftCasingVibrateSystemView
 
 IMPLEMENT_DYNCREATE(CAirCraftCasingVibrateSystemView, CFormView)
 
@@ -68,6 +67,7 @@ BOOL CAirCraftCasingVibrateSystemView::PreCreateWindow(CREATESTRUCT& cs)
 {
 	// TODO:  在此处通过修改
 	//  CREATESTRUCT cs 来修改窗口类或样式
+	m_hMutex = ::CreateMutex(NULL, FALSE, NULL);
 
 	return CFormView::PreCreateWindow(cs);
 }
@@ -165,18 +165,14 @@ void CAirCraftCasingVibrateSystemView::CaptureData(){
 		/////将一次采集的数据进行傅里叶变换
 		//////对传入的数据进行傅里叶变换处理
 		SmartFFTWComplexArray fftwOutput(fftwInput.size());
-		FFTWUtil fftwUtil;
-		
-		fftwUtil.FastFourierTransformation(fftwInput.size(),fftwInput.GeFFTWComplexArray(),
+		::WaitForSingleObject(m_hMutex, INFINITE);
+		FFTWUtil::FastFourierTransformation(fftwInput.size(), fftwInput.GeFFTWComplexArray(),
 				fftwOutput.GeFFTWComplexArray());
-
+		::ReleaseMutex(m_hMutex);
 		/////将处理之后的傅里叶变换转换成XY坐标
 		SmartArray<double> yData(xData.size()); ///y坐标
-		fftwUtil.FFTDataToXY(fftwOutput,yData,xData.size());
+		FFTWUtil::FFTDataToXY(fftwOutput, yData, xData.size());
 		/////添加到回显数据队列中
-		/*for (int i = 0; i < fftwInput.size(); i++){
-			TRACE("\n坐标点 x[%d] =%f,y[%d] =%f\n", i, xData.GetSmartArray()[i], i, yData.GetSmartArray()[i]);
-			}*/
 		m_echoSignalQueue.push(EchoSignal(xData, yData));
 		/////清空用来做显示的缓冲区。
 		fftwInput.clear();
@@ -190,13 +186,15 @@ void CAirCraftCasingVibrateSystemView::CaptureData(){
 		}
 		////保存采样数据
 	}
+	KillTimer(m_icurrentWindowNumber);
 }
 
 ///开启线程采集数据&设置定时器刷新数据
 void CAirCraftCasingVibrateSystemView::OpenThread2CaptureData(){
+
      thread t(&CAirCraftCasingVibrateSystemView::CaptureData,this);
 	 t.detach();
-	 SetTimer(m_icurrentWindowNumber, 50, NULL);
+	 SetTimer(m_icurrentWindowNumber, 10, NULL);
 }
 
 void CAirCraftCasingVibrateSystemView::OnTimer(UINT_PTR nIDEvent){
@@ -287,11 +285,6 @@ void CAirCraftCasingVibrateSystemView::OnPaint()
 // 信号选择
 void CAirCraftCasingVibrateSystemView::OnButtonSignalSelect()
 {
-	// TODO:  在此添加命令处理程序代码
-	CAirCraftCasingVibrateSystemView *view;
-	view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
-	
-	//AfxMessageBox();
 	m_signalSelectView.DoModal();
 }
 

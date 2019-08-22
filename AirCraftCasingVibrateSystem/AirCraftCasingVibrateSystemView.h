@@ -30,12 +30,15 @@
 #include "SmartArray.h"
 #include "AirCraftCasingVibrateSystemDoc.h"
 #include "EchoSignal.h"
+
+static HANDLE m_hMutex;
+
 class CAirCraftCasingVibrateSystemView : public CFormView
 {
 protected: // 仅从序列化创建
 	CAirCraftCasingVibrateSystemView();
 	DECLARE_DYNCREATE(CAirCraftCasingVibrateSystemView)
-
+	
 private:
 	CDuChartCtrl m_chart;
 	CChartLineSerieDu *m_pLineSerie;
@@ -44,12 +47,6 @@ private:
 	CGraphAttributeView m_graphAttributeView; // 图形属性界面
 	TbSensor m_sensor;////传感器对象
 	SensorController m_sensorController; ///传感器控制类
-
-	/*SmartArray<double> m_xData; ///x坐标
-	SmartArray<double> m_yData; ///y坐标
-
-	SmartFFTWComplexArray m_fftwInput; ///傅里叶变换初始的输入
-	SmartFFTWComplexArray m_fftwOutput;///傅里叶变换之后的输出 */
 
 	ThreadSafeQueue<EchoSignal>  m_echoSignalQueue;
 

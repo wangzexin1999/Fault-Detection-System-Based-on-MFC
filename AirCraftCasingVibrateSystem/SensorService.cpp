@@ -4,7 +4,7 @@
 #include "CommonUtil.h"
 #include "DateUtil.h"
 
-double CSensorService::m_readFromCSVFile[100][1000];
+
 CSensorService::CSensorService()
 {
 	//m_signalBuff.CreateBuffer(102400);
@@ -68,4 +68,19 @@ Result CSensorService::AddCollectData(TbProject project, int sensorId, ThreadSaf
 		m_signalDao.Insert(false);
 	}
 	return res;
+}
+
+
+bool  CSensorService::GetAllSensorByTestingDeviceId(int testingDeviceId, vector<TbSensor>& sensorVector){
+	vector<TbSensorDao> sensorDaoVec;
+	bool isSuccess = m_sensorDao.SelectObjectsByCondition(sensorDaoVec, "testingdevice_id='" + CommonUtil::Int2CString(testingDeviceId) + "'");
+	if (isSuccess){
+		///查询成功之后
+		for (auto sensorDao : sensorDaoVec){
+			TbSensor tbSensor;
+			sensorDao.GetTableFieldValues(tbSensor);
+			sensorVector.push_back(tbSensor);
+		}
+	}
+	return isSuccess;
 }

@@ -509,6 +509,7 @@ void CMainFrame::OnBtnStopCapture()
 	//}
 	//theApp.m_bThreadActive = false;
 	//theApp.m_bShowInfThreadActive = false;
+	theApp.m_icollectionStatus = 0;
 }
 
 // Í£Ö¹»Ø·Å

@@ -1,16 +1,16 @@
 #pragma once
 #include "fftw3.h"
 #include "EchoSignal.h"
-#include <mutex>
 #include <memory>
 #include "SmartFFTWComplexArray.h"
 #include "SmartArray.h"
 #include <mutex>
 #include <condition_variable>
+	
 class FFTWUtil
 {
-private:
-	static HANDLE m_hMutex;
+
+protected:
 public:
 	FFTWUtil();
 	~FFTWUtil();
@@ -23,7 +23,7 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	bool FastFourierTransformation(int nCounts, fftw_complex *din, fftw_complex *out);
+	static bool FastFourierTransformation(int nCounts, fftw_complex *din, fftw_complex *out);
 
 	/**********************************************************************
 	功能描述：将傅里叶变换处理之后的数据转换成X,Y坐标
@@ -34,6 +34,6 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	int FFTDataToXY(SmartFFTWComplexArray & fftwOut, SmartArray<double> &yData, int pointCount);
+	static void FFTDataToXY(SmartFFTWComplexArray & fftwOut, SmartArray<double> &yData, int pointCount);
 };
 
