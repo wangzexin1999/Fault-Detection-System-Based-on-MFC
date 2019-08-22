@@ -28,7 +28,7 @@ private:
 	CString m_sensorName;
 
 public:
-	TbSensor();
+	TbSensor(int sensorId = 0);
 	~TbSensor();
 
 	void SetSensorId(int sensorId);

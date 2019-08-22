@@ -45,9 +45,7 @@ private:
 	int m_flag = false;  // 调整控件大小标志
 	CSignalSelectView  m_signalSelectView;   //信号选择界面
 	CGraphAttributeView m_graphAttributeView; // 图形属性界面
-	TbSensor m_sensor;////传感器对象
 	SensorController m_sensorController; ///传感器控制类
-
 	ThreadSafeQueue<EchoSignal>  m_echoSignalQueue;
 
 	int m_icurrentWindowNumber;

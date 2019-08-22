@@ -31,23 +31,24 @@ void CSignalSelectView::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CSignalSelectView, CDialogEx)
-
-	ON_NOTIFY(NM_CLICK, IDC_TREE_SELECT_CHANNEL, &CSignalSelectView::OnNMClickTreePath)
 	ON_NOTIFY(NM_DBLCLK, IDC_TREE_SELECT_CHANNEL, &CSignalSelectView::OnNMDblclkTreeSelectChannel)
 	ON_NOTIFY(NM_DBLCLK, IDC_TREE_SELECTED_CHANNEL, &CSignalSelectView::OnNMDblclkTreeSelectedChannel)
 	ON_BN_CLICKED(IDOK, &CSignalSelectView::OnBnClickedOk)
-	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE_SELECTED_CHANNEL, &CSignalSelectView::OnTvnSelchangedTreeSelectedChannel)
 END_MESSAGE_MAP()
 
 
 // CSignalSelectView 消息处理程序
-
+TbSensor & CSignalSelectView::GetSelectedSensor(){
+	return m_selectedSensor;
+}
 
 BOOL CSignalSelectView::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 	/////初始化传感器选择树控件
 	InitSensorSelectTree();
+	////初始化传感器被选择控件
+	InitSensorSelectedTree();
 	return TRUE;  
 }
 
@@ -82,10 +83,8 @@ void CSignalSelectView::InitSensorSelectTree(){
 	}
 }
 void CSignalSelectView::InitSensorSelectedTree(){
-	m_treeSignalSelected.DeleteAllItems();
 	// 树的根节点的句柄   
-	HBITMAP hDirBmp;
-	hDirBmp = ::LoadBitmap(_AtlBaseModule.m_hInstResource, MAKEINTRESOURCE(ID_BMPSIGNALRED));
+
 	m_treeSignalSelected.ModifyStyle(0, TVS_TRACKGROUPSELECT | TVS_SINGLECLICKEXPAND | TVS_HASBUTTONS | TVS_HASLINES);
 	CFont font;
 	font.CreatePointFont(100, _T("Book Antiqua"));
@@ -94,11 +93,17 @@ void CSignalSelectView::InitSensorSelectedTree(){
 	m_treeSignalSelected.SetFocus();
 	m_treeSignalSelected.SetBkColor(RGB(255, 255, 255));
 
-	HTREEITEM hCurrent;
-	hCurrent = m_treeSignalSelected.InsertItem(_T(m_selectedSensor.GetSensorName()), TVI_ROOT, TVI_LAST);
-	m_treeSignalSelected.AddItemBitmap(hCurrent, hDirBmp, ppLastLeft);
+	if (m_selectedSensor.GetSensorId()!=0){
+		////如果已经选择了传感器，则显示已经显示的传感器
+		HBITMAP hDirBmp = ::LoadBitmap(_AtlBaseModule.m_hInstResource, MAKEINTRESOURCE(ID_BMPSIGNALRED));
+		HTREEITEM hCurrent = m_treeSignalSelected.InsertItem(_T(m_selectedSensor.GetSensorName()), TVI_ROOT, TVI_LAST);
+		m_treeSignalSelected.AddItemBitmap(hCurrent, hDirBmp, ppLastLeft);
+	}
+
 }
-void CSignalSelectView::OnNMClickTreePath(NMHDR *pNMHDR, LRESULT *pResult)
+
+///双击左边树结构节点时，将该节点赋值给临时传感器对象，并显示。
+void CSignalSelectView::OnNMDblclkTreeSelectChannel(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	if (m_sensorVector.empty()){ return; }
 	CString tmp;
@@ -113,34 +118,22 @@ void CSignalSelectView::OnNMClickTreePath(NMHDR *pNMHDR, LRESULT *pResult)
 
 	////拿到当前选中的传感器
 	int num = atoi(CommonUtil::GetCStringVectorFromSplitCString(text, "-")[0]);
-	m_selectedSensor = m_sensorVector[num - 1];
+	m_tempSelectedSensor = m_sensorVector[num - 1];
+	/////删除选中的所有节点
+	m_treeSignalSelected.DeleteAllItems();
+	HBITMAP hDirBmp = ::LoadBitmap(_AtlBaseModule.m_hInstResource, MAKEINTRESOURCE(ID_BMPSIGNALRED));
+	HTREEITEM hCurrent = m_treeSignalSelected.InsertItem(_T(m_tempSelectedSensor.GetSensorName()), TVI_ROOT, TVI_LAST);
+	m_treeSignalSelected.AddItemBitmap(hCurrent, hDirBmp, ppLastLeft);
 }
 
-void CSignalSelectView::OnNMDblclkTreeSelectChannel(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	OnNMClickTreePath(pNMHDR, pResult);
-	InitSensorSelectedTree();
-}
-
+////双击节点删除
 void CSignalSelectView::OnNMDblclkTreeSelectedChannel(NMHDR *pNMHDR, LRESULT *pResult)
 {
-	CString tmp;
-	HTREEITEM selectedItem;
-	CWnd *m_CWnd;
-	m_CWnd = GetDlgItem(IDC_TREE_SELECT_CHANNEL);
-	selectedItem = m_treeSignalSelected.GetSelectedItem();
 	m_treeSignalSelected.DeleteAllItems();
+	m_tempSelectedSensor = TbSensor();
 }
-
 void CSignalSelectView::OnBnClickedOk()
 {
-	InitSensorSelectedTree();
-}
-
-
-void CSignalSelectView::OnTvnSelchangedTreeSelectedChannel(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
-	// TODO:  在此添加控件通知处理程序代码
-	*pResult = 0;
+	m_selectedSensor = m_tempSelectedSensor;
+	CDialogEx::OnOK();
 }

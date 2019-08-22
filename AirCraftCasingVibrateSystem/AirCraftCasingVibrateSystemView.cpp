@@ -25,6 +25,7 @@
 #include "FFTWUtil.h"
 #include <thread>
 #include "fftw3.h"
+#include "CommonUtil.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -191,7 +192,11 @@ void CAirCraftCasingVibrateSystemView::CaptureData(){
 
 ///开启线程采集数据&设置定时器刷新数据
 void CAirCraftCasingVibrateSystemView::OpenThread2CaptureData(){
-
+	////如果当前未选择相应的传感器，则不能开线程采集数据
+	if (!m_signalSelectView.GetSelectedSensor().GetSensorId()){
+		AfxMessageBox("窗口"+CommonUtil::Int2CString(m_icurrentWindowNumber)+"还没有选择传感器");
+		return;
+	}
      thread t(&CAirCraftCasingVibrateSystemView::CaptureData,this);
 	 t.detach();
 	 SetTimer(m_icurrentWindowNumber, 10, NULL);
@@ -214,7 +219,7 @@ void  CAirCraftCasingVibrateSystemView::RefershChartCtrlData(){
 
 void  CAirCraftCasingVibrateSystemView::AutoSaveCollectionData(){
 	////调用传感器Controller类保存数据
-	m_sensorController.SaveCollectionData(m_icurrentWindowNumber,m_sensor.GetSensorId());
+	m_sensorController.SaveCollectionData(m_icurrentWindowNumber,m_signalSelectView.GetSelectedSensor().GetSensorId());
 }
 
 CDuChartCtrl & CAirCraftCasingVibrateSystemView::GetChartCtrl(){

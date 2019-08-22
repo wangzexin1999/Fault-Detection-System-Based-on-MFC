@@ -21,18 +21,16 @@ protected:
 	SensorController m_sensorController;
 	vector<TbSensor>  m_sensorVector;
 	TbSensor m_selectedSensor;
+	TbSensor m_tempSelectedSensor;
 	void InitSensorSelectTree();
 	void InitSensorSelectedTree();
-
 	DECLARE_MESSAGE_MAP()
 public:
 	CCherryTree m_treeSignalSelect;
 	CCherryTree m_treeSignalSelected;
+	TbSensor & GetSelectedSensor();
 	virtual BOOL OnInitDialog();
-	
-	afx_msg void OnNMClickTreePath(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnNMDblclkTreeSelectChannel(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnNMDblclkTreeSelectedChannel(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedOk();
-	afx_msg void OnTvnSelchangedTreeSelectedChannel(NMHDR *pNMHDR, LRESULT *pResult);
 };

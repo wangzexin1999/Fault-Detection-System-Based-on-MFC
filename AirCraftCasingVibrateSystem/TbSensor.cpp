@@ -2,7 +2,7 @@
 #include "TbSensor.h"
 
 
-TbSensor::TbSensor(){}
+TbSensor::TbSensor(int sensorId){ m_isensorId = sensorId; }
 
 
 TbSensor::~TbSensor(){}
