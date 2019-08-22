@@ -25,162 +25,125 @@
 #include "SignalSelectView.h"
 #include "SensorController.h"
 #include "GraphAttributeView.h"
-#include "AlarmParaSetView.h"
-#include "NewProjectView.h"
-#include "EngineerUnitView.h"
-#include "ProjectManageView.h"
-#include "SignalDataView.h"
-#include "DetectDeviceManageView.h"
-#include "DetectedDeviceManageView.h"
-#include "FileUtil.h"
-
-
+#include "TbSensor.h"
+#include "SmartFFTWComplexArray.h"
+#include "SmartArray.h"
+#include "AirCraftCasingVibrateSystemDoc.h"
+#include "EchoSignal.h"
 class CAirCraftCasingVibrateSystemView : public CFormView
 {
 protected: // 仅从序列化创建
 	CAirCraftCasingVibrateSystemView();
 	DECLARE_DYNCREATE(CAirCraftCasingVibrateSystemView)
 
+private:
+	CDuChartCtrl m_chart;
+	CChartLineSerieDu *m_pLineSerie;
+	int m_flag = false;  // 调整控件大小标志
+	CSignalSelectView  m_signalSelectView;   //信号选择界面
+	CGraphAttributeView m_graphAttributeView; // 图形属性界面
+	TbSensor m_sensor;////传感器对象
+	SensorController m_sensorController; ///传感器控制类
+
+	/*SmartArray<double> m_xData; ///x坐标
+	SmartArray<double> m_yData; ///y坐标
+
+	SmartFFTWComplexArray m_fftwInput; ///傅里叶变换初始的输入
+	SmartFFTWComplexArray m_fftwOutput;///傅里叶变换之后的输出 */
+
+	ThreadSafeQueue<EchoSignal>  m_echoSignalQueue;
+
+	int m_icurrentWindowNumber;
+
+
+	static int m_iwindowCount;//窗口数量
+
 public:
 	enum{ IDD = IDD_AIRCRAFTCASINGVIBRATESYSTEM_FORM };
 
-// 特性
-public:
+	////多文档框架对应的文档类
 	CAirCraftCasingVibrateSystemDoc* GetDocument() const;
 
 // 操作
 public:
-	CDuChartCtrl m_chart;
-	CChartLineSerieDu *m_pLineSerie;
-	int m_flag = false;  // 调整控件大小标志
-	int m_nChannelNums = 0; // 通道个数
-	CAirCraftCasingVibrateSystemView * m_dview[20]; //视图
-	SensorController  m_signalMainController;// 信号的业务逻辑
-	CSignalSelectView  m_signalSelectView;   //信号选择界面
-	CGraphAttributeView m_graphAttributeView; // 图形属性界面
-	CNewProjectView m_newProjectView;    // 项目管理界面
-	CFileUtil  m_fileUtile;
-	/**********************************************************************
-	功能描述： 读取数据显示
-	输入参数：
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
-	***********************************************************************/
-	void drawMoving2();
-	/**********************************************************************
-	功能描述： 数组左移动
-	输入参数：
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
-	***********************************************************************/
-	void LeftMoveArray(double* ptr, size_t length, double data);
 
-	/**********************************************************************
-	功能描述： 计算有多少个通道
-	输入参数：nChannelNums -- 通道个数
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
-	***********************************************************************/
-	bool CalculateChannelNum(int &nChannelNums);
-	/**********************************************************************
-	功能描述： 开始采集画图
-	输入参数：nViewIndex--画多少个
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
-	***********************************************************************/
-	bool DrawLining(int nViewIndex);
-	/**********************************************************************
-	功能描述： 转换成JSON格式
-	输入参数：nXvalue -- X值； nYValue--Y值
-	输出参数：strData -- 输出的JSON字符串
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
-	***********************************************************************/
-	bool  ConvertJSON(double dXvalue[], double dYValue[], CString &strData);
-	/**********************************************************************
-	功能描述： 设置颜色,
-	输入参数：nR--red,nG--green,nB--blue
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
-	***********************************************************************/
-	COLORREF SetColor(int nR, int nG, int nB);
-	/**********************************************************************
-	功能描述： 开始采样，拼接数组,
-	输入参数：
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
-	***********************************************************************/
-	bool SplitData();
-	/**********************************************************************
-	功能描述： // 得到部分数组,
-	输入参数：
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
-	***********************************************************************/
-	bool GetPartArray();
-	/**********************************************************************
-	功能描述：显示信息,
-	输入参数：nType 1--采集显示 2--回放显示
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
-	***********************************************************************/
-	bool DisplayInf(int nType);
-	/**********************************************************************
-	功能描述：初始化view
-	输入参数：
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
-	***********************************************************************/
-	bool InitializeView();
-	/**********************************************************************
-	功能描述：显示数据
-	输入参数：nChannelNum--通道个数
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
-	***********************************************************************/
-	bool ShowDataToView(int nChannelNum);
-	/**********************************************************************
-	 功能描述： 开始采集通道数据
-	 输入参数： 
-	 输出参数： 
-	 返 回 值： 
+	 double m_readFromCSVFile[100][1000];//文件的测试数据数组，测试用
+
+	 /**********************************************************************
+	 功能描述： 采集&采样数据
+	 输入参数：
+	 输出参数：
+	 返 回 值：
 	 其它说明：
 	 修改日期 版本号 修改人 修改内容
 	 ----------------------------------------------------------------------
 	 ***********************************************************************/
-	void StartSampleChannelDatat();
+	 void  CaptureData();
+	/**********************************************************************
+	功能描述： 开启线程采集数据
+	输入参数：  
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void OpenThread2CaptureData();
+	/**********************************************************************
+	功能描述： 刷新图表控件
+	输入参数： 
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void RefershChartCtrlData();
+
+	/**********************************************************************
+	功能描述： 自动保存文件的线程函数
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void AutoSaveCollectionData();
+
+	/**********************************************************************
+	功能描述： 得到view中的ChartCtrl控件
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	CDuChartCtrl & GetChartCtrl();
+
+	/**********************************************************************
+	功能描述： 设置当前窗口的序号
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void SetViewNumber(int windowNumber);
+
+	/**********************************************************************
+	功能描述： 重置窗口
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void ResetView();
+
 // 重写
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
@@ -207,37 +170,18 @@ protected:
 public:
 	afx_msg void OnPaint();
 	afx_msg void OnButtonSignalSelect();
-	afx_msg void OnButtonNewProject();
-	afx_msg void OnButton2SaveProject();
-	afx_msg void OnButtonProjectManage();
-	afx_msg void OnButtonOpenDataFile();
-	afx_msg void OnButtonExportChannelPara();
-	afx_msg void OnButtonImportChannelPara();
-	afx_msg void OnButtonExportSysPara();
-	afx_msg void OnButtonImportSysPara();
-	afx_msg void OnButtonSuspendCapture();
-	afx_msg void OnButtonStartCapture();
-	afx_msg void OnBtnStopCapture();
-	afx_msg void OnBtnStopPlayback();
-	afx_msg void OnBtnStartPlayback();
-	afx_msg void OnBtnCloseAllWindow();
-	afx_msg void OnBtnTransverseAmplification();
-	afx_msg void OnBtnHorizontalReduction();
-	afx_msg void OnBtnVerticalReduction();
-	afx_msg void OnBtnVerticalAmplification();
-	afx_msg void OnBtnSingleCursor();
-	afx_msg void OnBtnPeakValue();
-	afx_msg void OnBtnAutoScale();
-	afx_msg void OnBtnSelfScale();
-	afx_msg void OnBtnNoCorror();
-	afx_msg void OnBtnStartSmaple();
-	afx_msg void OnBtnStopSample();
-	afx_msg void OnBtnProjectUnit();
-	afx_msg void OnBtnAlarmSet();
 	afx_msg void OnBtnGraphAttr();
+	
+	void OnBtnTransverseAmplification();
+	void OnBtnHorizontalReduction();
+	void OnBtnVerticalReduction();
+	void OnBtnVerticalAmplification();
+	void OnBtnSingleCursor();
+	void OnBtnPeakValue();
+	void OnBtnAutoScale();
+	void OnBtnSelfScale();
+	void OnBtnNoCorror();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
-	afx_msg void OnButtonDetectDevice();
-	afx_msg void OnButtonDetectedDevice();
 };
 
 #ifndef _DEBUG  // AirCraftCasingVibrateSystemView.cpp 中的调试版本

@@ -21,12 +21,15 @@
 
 #include "AirCraftCasingVibrateSystemDoc.h"
 #include "AirCraftCasingVibrateSystemView.h"
-
+#include "DateUtil.h"
+#include "FFTWUtil.h"
+#include <thread>
+#include "fftw3.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
-
+using namespace std;
 // CAirCraftCasingVibrateSystemView
 
 IMPLEMENT_DYNCREATE(CAirCraftCasingVibrateSystemView, CFormView)
@@ -36,46 +39,20 @@ BEGIN_MESSAGE_MAP(CAirCraftCasingVibrateSystemView, CFormView)
 	ON_WM_RBUTTONUP()
 	ON_WM_PAINT()
 	ON_COMMAND(ID_BUTTON_SIGNAL_SELECT, &CAirCraftCasingVibrateSystemView::OnButtonSignalSelect)
-	ON_COMMAND(ID_BUTTON_NEW_PROJECT, &CAirCraftCasingVibrateSystemView::OnButtonNewProject)
-	ON_COMMAND(ID_BUTTON2_SAVE_PROJECT, &CAirCraftCasingVibrateSystemView::OnButton2SaveProject)
-	ON_COMMAND(ID_BUTTON_PROJECT_MANAGE, &CAirCraftCasingVibrateSystemView::OnButtonProjectManage)
-	ON_COMMAND(ID_BUTTON_OPEN_DATA_FILE, &CAirCraftCasingVibrateSystemView::OnButtonOpenDataFile)
-	ON_COMMAND(ID_BUTTON_EXPORT_CHANNEL_PARA, &CAirCraftCasingVibrateSystemView::OnButtonExportChannelPara)
-	ON_COMMAND(ID_BUTTON_IMPORT_CHANNEL_PARA, &CAirCraftCasingVibrateSystemView::OnButtonImportChannelPara)
-	ON_COMMAND(ID_BUTTON_EXPORT_SYS_PARA, &CAirCraftCasingVibrateSystemView::OnButtonExportSysPara)
-	ON_COMMAND(ID_BUTTON_IMPORT_SYS_PARA, &CAirCraftCasingVibrateSystemView::OnButtonImportSysPara)
-	ON_COMMAND(ID_BUTTON_SUSPEND_CAPTURE, &CAirCraftCasingVibrateSystemView::OnButtonSuspendCapture)
-	ON_COMMAND(ID_BUTTON_START_CAPTURE, &CAirCraftCasingVibrateSystemView::OnButtonStartCapture)
-	ON_COMMAND(ID_BTN_STOP_CAPTURE, &CAirCraftCasingVibrateSystemView::OnBtnStopCapture)
-	ON_COMMAND(ID_BTN_STOP_PLAYBACK, &CAirCraftCasingVibrateSystemView::OnBtnStopPlayback)
-	ON_COMMAND(ID_BTN_START_PLAYBACK, &CAirCraftCasingVibrateSystemView::OnBtnStartPlayback)
-	ON_COMMAND(ID_BTN_CLOSE_ALL_WINDOW, &CAirCraftCasingVibrateSystemView::OnBtnCloseAllWindow)
-	ON_COMMAND(ID_BTN_TRANSVERSE_AMPLIFICATION, &CAirCraftCasingVibrateSystemView::OnBtnTransverseAmplification)
-	ON_COMMAND(ID_BTN_HORIZONTAL_REDUCTION, &CAirCraftCasingVibrateSystemView::OnBtnHorizontalReduction)
-	ON_COMMAND(ID_BTN_VERTICAL_REDUCTION, &CAirCraftCasingVibrateSystemView::OnBtnVerticalReduction)
-	ON_COMMAND(ID_BTN_VERTICAL_AMPLIFICATION, &CAirCraftCasingVibrateSystemView::OnBtnVerticalAmplification)
-	ON_COMMAND(ID_BTN_SINGLE_CURSOR, &CAirCraftCasingVibrateSystemView::OnBtnSingleCursor)
-	ON_COMMAND(ID_BTN_PEAK_VALUE, &CAirCraftCasingVibrateSystemView::OnBtnPeakValue)
-	ON_COMMAND(ID_BTN_AUTO_SCALE, &CAirCraftCasingVibrateSystemView::OnBtnAutoScale)
-	ON_COMMAND(ID_BTN_SELF_SCALE, &CAirCraftCasingVibrateSystemView::OnBtnSelfScale)
-	ON_COMMAND(ID_BTN_NO_CORROR, &CAirCraftCasingVibrateSystemView::OnBtnNoCorror)
-	ON_COMMAND(ID_BTN_START_SMAPLE, &CAirCraftCasingVibrateSystemView::OnBtnStartSmaple)
-	ON_COMMAND(ID_BTN_STOP_SAMPLE, &CAirCraftCasingVibrateSystemView::OnBtnStopSample)
-	ON_COMMAND(ID_BTN_PROJECT_UNIT, &CAirCraftCasingVibrateSystemView::OnBtnProjectUnit)
-	ON_COMMAND(ID_BTN_ALARM_SET, &CAirCraftCasingVibrateSystemView::OnBtnAlarmSet)
 	ON_COMMAND(ID_BTN_GRAPH_ATTR, &CAirCraftCasingVibrateSystemView::OnBtnGraphAttr)
 	ON_WM_TIMER()
-	ON_COMMAND(ID_BUTTON_DETECT_DEVICE, &CAirCraftCasingVibrateSystemView::OnButtonDetectDevice)
-	ON_COMMAND(ID_BUTTON_DETECTED_DEVICE, &CAirCraftCasingVibrateSystemView::OnButtonDetectedDevice)
+
 END_MESSAGE_MAP()
 
 // CAirCraftCasingVibrateSystemView 构造/析构
 
+int CAirCraftCasingVibrateSystemView::m_iwindowCount = 0;
+
+
 CAirCraftCasingVibrateSystemView::CAirCraftCasingVibrateSystemView()
 	: CFormView(CAirCraftCasingVibrateSystemView::IDD)
 {
-	// TODO:  在此处添加构造代码
-
+     // m_icurrentWindowNumber = m_iwindowCount++; ///当前窗口号
 }
 
 CAirCraftCasingVibrateSystemView::~CAirCraftCasingVibrateSystemView()
@@ -160,6 +137,100 @@ void CAirCraftCasingVibrateSystemView::OnInitialUpdate()
 	m_flag = true;
 }
 
+////采集数据
+void CAirCraftCasingVibrateSystemView::CaptureData(){
+	SmartArray<double> xData; ///x坐标
+	
+	SmartFFTWComplexArray fftwInput; ///傅里叶变换初始的输入
+	while (theApp.m_icollectionStatus){
+		int countN = rand() % 100;
+		// 每次读取的数量按照用户在窗口的操作来选择
+		for (int j = 0; j < theApp.m_signalEchoCount && theApp.m_icollectionStatus == 1; j++)
+		{
+			xData.push_back(j); ///X坐标
+
+			///采集数据存入到队列中。
+			AcquiredSignal acquiredSignal(m_readFromCSVFile[countN][j], DateUtil::GetCurrentCStringTime());
+			theApp.m_collectData[m_icurrentWindowNumber].push(acquiredSignal);
+
+			///采集数据存入到回显信号的输入数组
+			fftw_complex fftw;
+			fftw[0] = m_readFromCSVFile[countN][j];
+			fftwInput.push_back(fftw);
+			if (theApp.m_bIsSample){
+				////如果此时正在采样，将采样的数据存入到采样队列中。
+				theApp.m_sampleData[m_icurrentWindowNumber].push(acquiredSignal);
+			}
+		}
+		/////将一次采集的数据进行傅里叶变换
+		//////对传入的数据进行傅里叶变换处理
+		SmartFFTWComplexArray fftwOutput(fftwInput.size());
+		FFTWUtil fftwUtil;
+		
+		fftwUtil.FastFourierTransformation(fftwInput.size(),fftwInput.GeFFTWComplexArray(),
+				fftwOutput.GeFFTWComplexArray());
+
+		/////将处理之后的傅里叶变换转换成XY坐标
+		SmartArray<double> yData(xData.size()); ///y坐标
+		fftwUtil.FFTDataToXY(fftwOutput,yData,xData.size());
+		/////添加到回显数据队列中
+		/*for (int i = 0; i < fftwInput.size(); i++){
+			TRACE("\n坐标点 x[%d] =%f,y[%d] =%f\n", i, xData.GetSmartArray()[i], i, yData.GetSmartArray()[i]);
+			}*/
+		m_echoSignalQueue.push(EchoSignal(xData, yData));
+		/////清空用来做显示的缓冲区。
+		fftwInput.clear();
+		xData.clear();
+		yData.clear();
+		/////保存采集数据
+		if (theApp.m_bIsAutoSaveCollectionData &&theApp.m_collectData[m_icurrentWindowNumber].size() >= theApp.m_isignalsStoreCount){
+			////采集过程中如果设置为自动保存采集数据并且数据量达到了保存的时候，创建线程保存数据
+			thread t(&CAirCraftCasingVibrateSystemView::AutoSaveCollectionData,this);
+		    t.detach();
+		}
+		////保存采样数据
+	}
+}
+
+///开启线程采集数据&设置定时器刷新数据
+void CAirCraftCasingVibrateSystemView::OpenThread2CaptureData(){
+     thread t(&CAirCraftCasingVibrateSystemView::CaptureData,this);
+	 t.detach();
+	 SetTimer(m_icurrentWindowNumber, 50, NULL);
+}
+
+void CAirCraftCasingVibrateSystemView::OnTimer(UINT_PTR nIDEvent){
+	if (m_icurrentWindowNumber == nIDEvent){ RefershChartCtrlData(); }
+}
+
+////刷新图标控件的数据
+void  CAirCraftCasingVibrateSystemView::RefershChartCtrlData(){
+	m_pLineSerie->ClearSerie();
+	m_pLineSerie->SetNeedCalStatValue(TRUE);
+	TRACE("\n刷新%d窗口.......................................................\n", m_icurrentWindowNumber);
+	shared_ptr<EchoSignal> echoSignal = m_echoSignalQueue.wait_and_pop();
+	SmartArray<double> xData = echoSignal->GetXData();
+	SmartArray<double> yData = echoSignal->GetYData();
+	m_pLineSerie->AddPoints(xData.GetSmartArray(),yData.GetSmartArray(),xData.size() / 2);
+}
+
+void  CAirCraftCasingVibrateSystemView::AutoSaveCollectionData(){
+	////调用传感器Controller类保存数据
+	m_sensorController.SaveCollectionData(m_icurrentWindowNumber,m_sensor.GetSensorId());
+}
+
+CDuChartCtrl & CAirCraftCasingVibrateSystemView::GetChartCtrl(){
+	return m_chart;
+}
+
+void CAirCraftCasingVibrateSystemView::SetViewNumber(int windowNumber){
+	this->m_icurrentWindowNumber = windowNumber;
+}
+
+void CAirCraftCasingVibrateSystemView::ResetView(){
+	m_pLineSerie->ClearSerie();
+}
+
 void CAirCraftCasingVibrateSystemView::OnRButtonUp(UINT /* nFlags */, CPoint point)
 {
 	ClientToScreen(&point);
@@ -203,7 +274,6 @@ CAirCraftCasingVibrateSystemDoc* CAirCraftCasingVibrateSystemView::GetDocument()
 void CAirCraftCasingVibrateSystemView::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
-	// TODO:  在此处添加消息处理程序代码
 	// 不为绘图消息调用 CFormView::OnPaint()
 	CRect rc;
 	GetClientRect(rc);
@@ -218,239 +288,78 @@ void CAirCraftCasingVibrateSystemView::OnPaint()
 void CAirCraftCasingVibrateSystemView::OnButtonSignalSelect()
 {
 	// TODO:  在此添加命令处理程序代码
-	m_signalSelectView.DoModal();
-}
-
-// 新建项目
-void CAirCraftCasingVibrateSystemView::OnButtonNewProject()
-{
-	//打开窗口
-	m_newProjectView.DoModal();
-
-}
-
-// 保存项目
-void CAirCraftCasingVibrateSystemView::OnButton2SaveProject()
-{
-	// TODO:  在此添加命令处理程序代码
-}
-
-// 项目管理
-void CAirCraftCasingVibrateSystemView::OnButtonProjectManage()
-{
-	// TODO:  在此添加命令处理程序代码
-	CProjectManageView projectView;
-	int  i = projectView.DoModal();
-}
-
-// 打开数据文件
-void CAirCraftCasingVibrateSystemView::OnButtonOpenDataFile()
-{
-	// TODO:  在此添加命令处理程序代码
-	int projectId = theApp.m_currentProject.GetProjectId();
-	if (projectId <= 0){
-		AfxMessageBox("请先打开或者新建项目");
-		return;
-	}
-	CSignalDataView signalDataView;
-	signalDataView.DoModal();
-}
-
-// 导出通道参数
-void CAirCraftCasingVibrateSystemView::OnButtonExportChannelPara()
-{
-	// TODO:  在此添加命令处理程序代码
-}
-
-//导入通道参数
-void CAirCraftCasingVibrateSystemView::OnButtonImportChannelPara()
-{
-	// TODO:  在此添加命令处理程序代码
-}
-
-// 导出系统参数
-void CAirCraftCasingVibrateSystemView::OnButtonExportSysPara()
-{
-	// TODO:  在此添加命令处理程序代码
-}
-
-// 导入系统参数
-void CAirCraftCasingVibrateSystemView::OnButtonImportSysPara()
-{
-	// TODO:  在此添加命令处理程序代码
-}
-
-
-//暂停采集
-void CAirCraftCasingVibrateSystemView::OnButtonSuspendCapture()
-{
-	// TODO:  在此添加命令处理程序代码
-}
-
-//开始采集
-void CAirCraftCasingVibrateSystemView::OnButtonStartCapture()
-{
-	// TODO:  在此添加命令处理程序代码
+	CAirCraftCasingVibrateSystemView *view;
+	view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
 	
-	// 设置底部坐标轴为自动
-	//m_pBottomAxis->SetAutomatic(true);
-	int projectId = theApp.m_currentProject.GetProjectId();
-	if (projectId <= 0){
-		AfxMessageBox("请先打开或者新建项目");
-		return;
-	}
-	if (!theApp.m_bThreadActive){
-		///////若此时没有开始采集
-		// 初始化View
-		InitializeView();
-		// 清空线
-		//m_pLineSerie->ClearSerie();
-
-		// 设置读取线程标志
-		theApp.m_bThreadActive = true;
-		// 设置显示信息线程标志
-		theApp.m_bShowInfThreadActive = true;
-
-		// 计算通道个数
-		CalculateChannelNum(m_nChannelNums);
-		/// 清空信号采集服务集合
-		theApp.m_vSignalAcquisitionService.clear();
-		for (int i = 0; i < m_nChannelNums; i++){
-			SignalAcquisitionService signalAcquisitionService;
-			////给传感器数据赋值
-			for (int i = 0; i < m_nChannelNums; i++)
-			{
-				for (int m = 0; m < 100; m++)
-				{
-					for (int n = 0; n < 1000; n++)
-					{
-						signalAcquisitionService.m_readFromCSVFile[m][n] = theApp.tempRead[m][n];
-					}
-				}
-			}
-			theApp.m_vSignalAcquisitionService.push_back(signalAcquisitionService);
-		}
-
-		//读取数据
-		m_signalMainController.StartCaptureData(m_nChannelNums);
-		
-		m_signalMainController.StartAutoSaveCollectionData();
-		//存储数据
-		// view显示数据
-		ShowDataToView(m_nChannelNums);
-	}
-}
-
-// 停止采集
-void CAirCraftCasingVibrateSystemView::OnBtnStopCapture()
-{
-	// TODO:  在此添加命令处理程序代码
-	for (int i = 11; i < m_nChannelNums + 11; i++)
-	{
-		KillTimer(i);
-	}
-	theApp.m_bThreadActive = false;
-	theApp.m_bShowInfThreadActive = false;
-}
-
-// 停止回放
-void CAirCraftCasingVibrateSystemView::OnBtnStopPlayback()
-{
-	// TODO:  在此添加命令处理程序代码
-}
-
-//开始回放
-void CAirCraftCasingVibrateSystemView::OnBtnStartPlayback()
-{
-	// TODO:  在此添加命令处理程序代码
-}
-
-// 关闭所有窗口
-void CAirCraftCasingVibrateSystemView::OnBtnCloseAllWindow()
-{
-	// TODO:  在此添加命令处理程序代码
+	//AfxMessageBox();
+	m_signalSelectView.DoModal();
 }
 
 // 横向放大
 void CAirCraftCasingVibrateSystemView::OnBtnTransverseAmplification()
 {
-	// TODO:  在此添加命令处理程序代码
-	CAirCraftCasingVibrateSystemView *view;
-	view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
-	CDuChartCtrlStaticFunction::HengxiangFangda(&view->m_chart);
+	// 当前窗口的图表横向放大
+	CDuChartCtrlStaticFunction::HengxiangFangda(&this->m_chart);
 }
 
 // 横向缩小
 void CAirCraftCasingVibrateSystemView::OnBtnHorizontalReduction()
 {
-	// TODO:  在此添加命令处理程序代码
-	CAirCraftCasingVibrateSystemView *view;
-	view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
-	CDuChartCtrlStaticFunction::HengxiangSuoxiao(&view->m_chart);
+	// 当前窗口的图标横向缩小
+	CDuChartCtrlStaticFunction::HengxiangSuoxiao(&this->m_chart);
 
 }
 
 // 纵向缩小
 void CAirCraftCasingVibrateSystemView::OnBtnVerticalReduction()
 {
-	// TODO:  在此添加命令处理程序代码
-	CAirCraftCasingVibrateSystemView *view;
-	view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
-	CDuChartCtrlStaticFunction::ZongxiangSuoxiao(&view->m_chart);
+	//当前窗口的图标纵向缩小
+	CDuChartCtrlStaticFunction::ZongxiangSuoxiao(&this->m_chart);
 }
 
 //纵向放大
 void CAirCraftCasingVibrateSystemView::OnBtnVerticalAmplification()
 {
-	// TODO:  在此添加命令处理程序代码
-	// TODO:  在此添加命令处理程序代码
-	CAirCraftCasingVibrateSystemView *view;
-	view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
-	CDuChartCtrlStaticFunction::ZongxiangFangda(&view->m_chart);
+	// 横向放大
+	//CAirCraftCasingVibrateSystemView *view;
+	//view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
+	CDuChartCtrlStaticFunction::ZongxiangFangda(&this->m_chart);
 }
 
 //单光标
 void CAirCraftCasingVibrateSystemView::OnBtnSingleCursor()
 {
-	// TODO:  在此添加命令处理程序代码
-	CAirCraftCasingVibrateSystemView *view;
-	view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
-	CDuChartCtrlStaticFunction::SetCursorSingle(&view->m_chart);
+	// 单光标
+	//CAirCraftCasingVibrateSystemView *view;
+	//view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
+	CDuChartCtrlStaticFunction::SetCursorSingle(&this->m_chart);
 }
 
 //峰值
 void CAirCraftCasingVibrateSystemView::OnBtnPeakValue()
 {
-	// TODO:  在此添加命令处理程序代码
-	CAirCraftCasingVibrateSystemView *view;
-	view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
-	
-	CDuChartCtrlStaticFunction::SetCursorPeak(&view->m_chart);
+	// 峰值
+	//CAirCraftCasingVibrateSystemView *view;
+	//view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
+	CDuChartCtrlStaticFunction::SetCursorPeak(&this->m_chart);
 }
 
 
 // 自动刻度
 void CAirCraftCasingVibrateSystemView::OnBtnAutoScale()
 {
-	// TODO:  在此添加命令处理程序代码
-	// TODO:  在此添加命令处理程序代码
-	CAirCraftCasingVibrateSystemView *view;
-	view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
+	//CAirCraftCasingVibrateSystemView *view;
+	//view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
 
-	CDuChartCtrlStaticFunction::AutoXScale(&view->m_chart,FALSE);
+	CDuChartCtrlStaticFunction::AutoXScale(&this->m_chart,FALSE);
 	//CDuChartCtrlStaticFunction::AutoYScale(&view->m_chart, FALSE);
-	
 }
 
 // 默认刻度
 void CAirCraftCasingVibrateSystemView::OnBtnSelfScale()
 {
-	// TODO:  在此添加命令处理程序代码
-	CAirCraftCasingVibrateSystemView *view;
-	view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
-	//CDuChartCtrlStaticFunction::SetCursorNone(&view->m_chart);
-	CChartStandardAxisDu * leftAxis = (CChartStandardAxisDu*)view->m_chart.GetAxisDu(CChartCtrl::LeftAxis, 0);
-	CChartStandardAxisDu * bottomAxis = (CChartStandardAxisDu*)view->m_chart.GetAxisDu(CChartCtrl::BottomAxis, 0);
+	CChartStandardAxisDu * leftAxis = (CChartStandardAxisDu*)this->m_chart.GetAxisDu(CChartCtrl::LeftAxis, 0);
+	CChartStandardAxisDu * bottomAxis = (CChartStandardAxisDu*)this->m_chart.GetAxisDu(CChartCtrl::BottomAxis, 0);
 	bottomAxis->SetMinMax(0, 1000);//设置下刻度
 	bottomAxis->SetTickIncrement(false, 100);
 
@@ -461,241 +370,14 @@ void CAirCraftCasingVibrateSystemView::OnBtnSelfScale()
 // 无光标
 void CAirCraftCasingVibrateSystemView::OnBtnNoCorror()
 {
-	// TODO:  在此添加命令处理程序代码
-	CAirCraftCasingVibrateSystemView *view;
-	view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
-	CDuChartCtrlStaticFunction::SetCursorNone(&view->m_chart);
+	CDuChartCtrlStaticFunction::SetCursorNone(&this->m_chart);
 }
 
-//开始采样
-void CAirCraftCasingVibrateSystemView::OnBtnStartSmaple()
-{
-	int projectId = theApp.m_currentProject.GetProjectId();
-	if (projectId <= 0){
-		AfxMessageBox("请先打开或者新建项目");
-		return;
-	}
-	theApp.m_bIsSample = true;
-}
 
-// 停止采样
-void CAirCraftCasingVibrateSystemView::OnBtnStopSample()
-{
-	// TODO:  在此添加命令处理程序代码
-	//////开线程去保存！！！！！！！！！！！！！！
-	//m_fileUtile.SaveSampleData(theApp.m_sampleData);
-
-	
-}
-
-//工程单位
-void CAirCraftCasingVibrateSystemView::OnBtnProjectUnit()
-{
-	// TODO:  在此添加命令处理程序代码
-	CEngineerUnitView engineerUnitView;
-	engineerUnitView.DoModal();
-}
-
-// 报警设置
-void CAirCraftCasingVibrateSystemView::OnBtnAlarmSet()
-{
-	// TODO:  在此添加命令处理程序代码
-	CAlarmParaSetView alarmView;
-	alarmView.DoModal();
-	
-}
 
 // 图像属性
 void CAirCraftCasingVibrateSystemView::OnBtnGraphAttr()
 {
 	// TODO:  在此添加命令处理程序代码
 	m_graphAttributeView.DoModal();
-}
-
-/*定时器*/
-void CAirCraftCasingVibrateSystemView::OnTimer(UINT_PTR nIDEvent)
-{
-	// TODO:  在此添加消息处理程序代码和/或调用默认值
-	/*11-26是采集*/
-	if (11 == nIDEvent)
-	{
-		DrawLining (0);
-	}
-	if (12 == nIDEvent)
-	{
-		DrawLining(1);
-	}
-	if (13 == nIDEvent)
-	{
-		DrawLining(2);
-	}
-	if (14 == nIDEvent)
-	{
-		DrawLining(3);
-	}
-	if (15 == nIDEvent)
-	{
-		DrawLining(4);
-	}
-	if (16 == nIDEvent)
-	{
-		DrawLining(5);
-	}
-	if (17 == nIDEvent)
-	{
-		DrawLining(6);
-	}
-	if (18 == nIDEvent)
-	{
-		DrawLining(7);
-	}
-	if (19 == nIDEvent)
-	{
-		DrawLining(8);
-	}
-	if (20 == nIDEvent)
-	{
-		DrawLining(9);
-	}
-	if (21 == nIDEvent)
-	{
-		DrawLining(10);
-	}
-	if (22 == nIDEvent)
-	{
-		DrawLining(11);
-	}
-	if (23 == nIDEvent)
-	{
-		DrawLining(12);
-	}
-	if (24 == nIDEvent)
-	{
-		DrawLining(13);
-	}
-	if (25 == nIDEvent)
-	{
-		DrawLining(14);
-	}
-	if (26 == nIDEvent)
-	{
-		DrawLining(15);
-	}
-	/*27 开始采样*/
-	if (27 == nIDEvent)
-	{
-		/*定时采样*/
-		StartSampleChannelDatat();
-	}
-	CFormView::OnTimer(nIDEvent);
-}
-
-/*线束画图*/
-bool CAirCraftCasingVibrateSystemView::DrawLining(int nViewIndex)
-{
-	m_dview[nViewIndex]->m_pLineSerie->ClearSerie();
-	m_dview[nViewIndex]->m_pLineSerie->SetNeedCalStatValue(TRUE);
-	if (!theApp.m_vSignalAcquisitionService[nViewIndex].GetEchoData().empty()){ 
-		////回显对列中有数据，则去刷新数据
-		shared_ptr<EchoSignal>  echoSignal = theApp.m_vSignalAcquisitionService[nViewIndex].GetEchoData().wait_and_pop();
-		double *x = echoSignal->GetXArray();
-		double *y = echoSignal->GetYArray();
-		int size = 1000;
-		/*for (int i = 0; i < 5; i++){
-			TRACE("\n窗口：%d x=%f,y=%f\n",nViewIndex, x[i], y[i]);
-			}*/
-		if (echoSignal->GetXLength() != 0 && echoSignal->GetYLength() != 0){
-			TRACE("\n刷新%d窗口.......................................................\n",nViewIndex);
-			////当队列不是空时，刷新图表的显示
-			m_dview[nViewIndex]->m_pLineSerie->AddPoints(echoSignal->GetXArray(), echoSignal->GetYArray(), echoSignal->GetYLength()/2);
-		}
-	}
-	return true;
-}
-
-// 计算当前开的窗口个数->通道数
-bool CAirCraftCasingVibrateSystemView::CalculateChannelNum(int &nChannelNums)
-{
-	// 显示
-	POSITION curTemplatePos = theApp.GetFirstDocTemplatePosition();
-	CDocTemplate *m_doc = theApp.GetNextDocTemplate(curTemplatePos);
-	/////CDocTemplate *m_doc1 = theApp.GetNextDocTemplate(curTemplatePos);//文档模板
-	//获得文档:
-	nChannelNums = 0;
-	curTemplatePos = m_doc->GetFirstDocPosition();
-	while (curTemplatePos != NULL)
-	{
-		(CAirCraftCasingVibrateSystemDoc*)m_doc->GetNextDoc(curTemplatePos);
-		nChannelNums++;
-	}
-	return 0;
-
-
-}
-
-//初始化View
-bool CAirCraftCasingVibrateSystemView::InitializeView()
-{
-	// 显示
-	POSITION curTemplatePos = theApp.GetFirstDocTemplatePosition();
-	CDocTemplate *m_doc = theApp.GetNextDocTemplate(curTemplatePos);
-	/////CDocTemplate *m_doc1 = theApp.GetNextDocTemplate(curTemplatePos);//文档模板
-	//获得文档:
-	CAirCraftCasingVibrateSystemDoc * pdoc[20];
-	int i = 0;
-	curTemplatePos = m_doc->GetFirstDocPosition();
-	while (curTemplatePos != NULL)
-	{
-		pdoc[i] = (CAirCraftCasingVibrateSystemDoc*)m_doc->GetNextDoc(curTemplatePos);
-		//获得视图:
-		POSITION curViewPos;
-		curViewPos = pdoc[i]->GetFirstViewPosition();
-		while (curViewPos != NULL)
-		{
-			m_dview[i] = (CAirCraftCasingVibrateSystemView*)pdoc[i]->GetNextView(curViewPos);
-		}
-		i++;
-	}
-	return true;
-
-}
-
-
-/*检测设备管理*/
-void CAirCraftCasingVibrateSystemView::OnButtonDetectDevice()
-{
-	// TODO:  在此添加命令处理程序代码
-	CDetectDeviceManageView detectDeviceManageView;
-	detectDeviceManageView.DoModal();
-}
-
-/*被检测设备管理*/
-void CAirCraftCasingVibrateSystemView::OnButtonDetectedDevice()
-{
-	// TODO:  在此添加命令处理程序代码
-	CDetectedDeviceManageView detectedDeviceManegeView;
-	detectedDeviceManegeView.DoModal();
-}
-
-
-/*定时采样*/
-void CAirCraftCasingVibrateSystemView::StartSampleChannelDatat()
-{
-	int nchannelNums;
-	CalculateChannelNum(nchannelNums);
-	for (int i = 0; i < nchannelNums; i++)
-	{
-		/*theApp.m_sampleData[i].push(theApp.m_vSersor[i].popSampleSignalQuene());*/
-	}
-
-}
-
-// 开启定时器开始采集
-bool CAirCraftCasingVibrateSystemView::ShowDataToView(int nChannelNum)
-{
-	for (int i = 11; i < 11 + nChannelNum; i++)
-	{
-		SetTimer(i, 100, NULL);
-	}
-	return true;
 }

@@ -38,7 +38,6 @@ END_MESSAGE_MAP()
 
 
 // CAirCraftCasingVibrateSystemApp 构造
-
 CAirCraftCasingVibrateSystemApp::CAirCraftCasingVibrateSystemApp()
 {
 	// 支持重新启动管理器

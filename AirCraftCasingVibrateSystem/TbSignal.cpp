@@ -35,12 +35,7 @@ CString TbSignal::GetSignalType() {
 void TbSignal::SetSignalType(CString signalType) {
 	this->m_signalType = signalType;
 }
-vector<TbSensorPara> & TbSignal::GetSensorParaVector() {
-	return m_sensorParaVector;
-}
-void TbSignal::SetSensorParaVector(vector<TbSensorPara> sensorParaVector) {
-	this->m_sensorParaVector = sensorParaVector;
-}
+
 
 TbDetectedDevice & TbSignal::GetDetectedDevice() {
 	return m_detectedDevice;
@@ -65,4 +60,16 @@ void TbSignal::SetProjectId(int projectId){
 }
 int TbSignal::GetProjectId(){
 	return this->m_projectId;
+}
+TbSensor & TbSignal::GetSensor(){
+	return m_sensor;
+}
+void TbSignal::SetSensor(TbSensor  sensor){
+	m_sensor = sensor;
+}
+TbTestingDevice & TbSignal::GetTestingDevice(){
+	return m_testingDevice;
+}
+void TbSignal::SetTesingDevice(TbTestingDevice  testingDevice){
+	m_testingDevice = testingDevice;
 }

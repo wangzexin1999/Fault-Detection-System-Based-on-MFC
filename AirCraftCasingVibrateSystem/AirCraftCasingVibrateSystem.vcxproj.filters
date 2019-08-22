@@ -468,9 +468,6 @@
     <ClInclude Include="SensorController.h">
       <Filter>头文件\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="EchoSignal.h">
-      <Filter>头文件\entity</Filter>
-    </ClInclude>
     <ClInclude Include="FFTWUtil.h">
       <Filter>头文件\Utils</Filter>
     </ClInclude>
@@ -489,10 +486,25 @@
     <ClInclude Include="AcquiredSignal.h">
       <Filter>头文件\entity</Filter>
     </ClInclude>
-    <ClInclude Include="SensorParaService.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="TestingDeviceController.h">
+      <Filter>头文件\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="SensorParaService.h">
+      <Filter>头文件\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="TbSensor.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="SmartFFTWComplexArray.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="SmartArray.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="DataStructure.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="EchoSignal.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -851,9 +863,6 @@
     <ClCompile Include="SensorController.cpp">
       <Filter>源文件\Controller</Filter>
     </ClCompile>
-    <ClCompile Include="EchoSignal.cpp">
-      <Filter>源文件\entity</Filter>
-    </ClCompile>
     <ClCompile Include="FFTWUtil.cpp">
       <Filter>源文件\Utils</Filter>
     </ClCompile>
@@ -872,10 +881,19 @@
     <ClCompile Include="TbDictionary.cpp">
       <Filter>源文件\entity</Filter>
     </ClCompile>
-    <ClCompile Include="SensorParaService.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="TestingDeviceController.cpp">
+      <Filter>源文件\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="SensorParaService.cpp">
+      <Filter>源文件\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="TbSensor.cpp">
+      <Filter>源文件\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="SmartFFTWComplexArray.cpp">
+      <Filter>源文件\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="EchoSignal.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

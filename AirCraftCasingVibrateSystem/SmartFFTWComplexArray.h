@@ -1,7 +1,7 @@
 /************************************************************************
 Copyright (C), 2018-2020. 哈尔滨理工大学人工智能实验室
 文件名称： SignalController.h
-内容摘要： 智能模板数组类 
+内容摘要： 智能傅里叶复数数组类 .对应的实现类文件为SmartFFTWComplexArray.cpp。
 其它说明：飞机机匣振动检测系统
 当前版本： 1.0
 作 者： 马善涛
@@ -17,39 +17,22 @@ Modification:
 修改内容：
 ************************************************************************/
 #pragma once
+#include "fftw3.h"
 #include "DataStructure.h"
-
-template<typename T>
-class SmartArray
+class SmartFFTWComplexArray
 {
 private:
-	LinearTable<T> m_smartArray;
+
+	LinearTable<fftw_complex> m_fftwComplexArray; ///傅里叶数据存储区
+
 public:
-	SmartArray(int size = 1000){
-		////初始化图表数据x坐标数组
-		this->m_smartArray.size = size;
-		this->m_smartArray.index = 0;
-		this->m_smartArray.data = (T*)malloc(sizeof(T)*this->m_smartArray.size);
-	}
+	SmartFFTWComplexArray(int size = 1000);
+	~SmartFFTWComplexArray();
 
-
-	SmartArray(const SmartArray &smartArray){
-		*this = smartArray;
-	}
-	void operator=(const SmartArray &smartArray){
-		////初始化傅里叶处理之后的数据数组
-		this->m_smartArray.size = smartArray.m_smartArray.size;
-		this->m_smartArray.index = smartArray.m_smartArray.index;
-		this->m_smartArray.data = (T*)malloc(sizeof(T)* this->m_smartArray.size);
-		////深拷贝代码
-		memcpy(this->m_smartArray.data, smartArray.m_smartArray.data, sizeof(T)*this->m_smartArray.index);
-	}
-	~SmartArray(){
-		free(m_smartArray.data);
-		m_smartArray.data = NULL;
-	}
+	SmartFFTWComplexArray(const SmartFFTWComplexArray &fftwComplexArray);
+	void operator=(const SmartFFTWComplexArray &fftwComplexArray);
 	/**********************************************************************
-	功能描述：向智能模板数组的最后插入元素
+	功能描述：向智能傅里叶复数数组的最后插入元素
 	输入参数：
 	输出参数：
 	返 回 值：
@@ -58,16 +41,9 @@ public:
 	2019-08-20   1.0		马善涛		初始化
 	----------------------------------------------------------------------
 	***********************************************************************/
-	void push_back(T t){
-		if (m_smartArray.index >= m_smartArray.size){
-			/////数组长度不够时，动态扩充数组长度
-			m_smartArray.size = 2 * m_smartArray.size;
-			m_smartArray.data =(T *)realloc(m_smartArray.data, m_smartArray.size);
-		}
-		m_smartArray.data[m_smartArray.index++] = t;
-	}
+	void push_back(fftw_complex fftwComplex);
 	/**********************************************************************
-	功能描述：清空数组
+	功能描述：清空傅里叶复数数组
 	输入参数：
 	输出参数：
 	返 回 值：
@@ -76,12 +52,10 @@ public:
 	2019-08-20   1.0		马善涛		初始化
 	----------------------------------------------------------------------
 	***********************************************************************/
-	void clear(){
-		m_smartArray.index = 0;
-	}
+	void clear();
 
 	/**********************************************************************
-	功能描述：得到数组长度
+	功能描述：清空傅里叶复数数组长度
 	输入参数：
 	输出参数：
 	返 回 值：
@@ -90,12 +64,10 @@ public:
 	2019-08-20   1.0		马善涛		初始化
 	----------------------------------------------------------------------
 	***********************************************************************/
-	int size(){
-		return m_smartArray.index;
-	}
+	int size();
 
 	/**********************************************************************
-	功能描述：得到智能数组
+	功能描述：得到傅里叶复数数组
 	输入参数：
 	输出参数：
 	返 回 值：
@@ -104,8 +76,7 @@ public:
 	2019-08-20   1.0		马善涛		初始化
 	----------------------------------------------------------------------
 	***********************************************************************/
-	T * GetSmartArray(){
-		return m_smartArray.data;
-	}
+	fftw_complex * GeFFTWComplexArray();
+
 };
 

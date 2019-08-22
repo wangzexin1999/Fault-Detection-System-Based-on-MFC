@@ -31,6 +31,7 @@ public:
 	}
 
 	 T front(){
+		std::lock_guard<std::mutex> lk(mut);
 		return data_queue.front();
 	}
 	std::shared_ptr<T> wait_and_pop()

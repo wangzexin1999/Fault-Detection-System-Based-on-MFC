@@ -14,11 +14,12 @@ public:
 	PDAttribute m_startTime;
 	PDAttribute m_endTime;
 	PDAttribute m_signalType;
-	PDAttribute m_sensorParas;
 	PDAttribute m_detectedDeviceId;
 	PDAttribute m_signalStatus;
 	PDAttribute m_dataUrl;
+	PDAttribute m_sensorId;
 	PDAttribute m_projectId;
+	PDAttribute m_testingDeviceId;
 
 
 	bool SelectObjectsByCondition(vector<TbRecordSignalDao> &selectedValueVector, CString strSqlQueryWhere = "");

@@ -56,18 +56,22 @@ BOOL CSignalSelectView::OnInitDialog()
 	m_treeSignalSelect.SetFont(&font);
 	m_treeSignalSelect.SetFocus();
 	m_treeSignalSelect.SetBkColor(RGB(255, 255, 255));
+	
 	HTREEITEM hCurrent;
-
-
 
 	hCurrent = m_treeSignalSelect.InsertItem(_T("FFT"), TVI_ROOT, TVI_LAST);
 	m_treeSignalSelect.AddItemBitmap(hCurrent, hDirBmp, ppLastLeft);
-	HTREEITEM hCurrent1;
-	hCurrent1 = m_treeSignalSelect.InsertItem(_T("1-1"), hCurrent, TVI_LAST);
-	hCurrent1 = m_treeSignalSelect.InsertItem(_T("1-1"), hCurrent, TVI_LAST);
-	hCurrent1 = m_treeSignalSelect.InsertItem(_T("1-1"), hCurrent, TVI_LAST);
-	hCurrent1 = m_treeSignalSelect.InsertItem(_T("1-1"), hCurrent, TVI_LAST);
 
+	HTREEITEM hCurrent1;
+	HBITMAP itemBmp = ::LoadBitmap(_AtlBaseModule.m_hInstResource, MAKEINTRESOURCE(IDB_BMPSIGNALGREEN));
+	hCurrent1 = m_treeSignalSelect.InsertItem(_T("1-1"), hCurrent, TVI_LAST);
+	m_treeSignalSelect.AddItemBitmap(hCurrent1, itemBmp, ppLastLeft);
+	hCurrent1 = m_treeSignalSelect.InsertItem(_T("1-1"), hCurrent, TVI_LAST);
+	m_treeSignalSelect.AddItemBitmap(hCurrent1, itemBmp, ppLastLeft);
+	hCurrent1 = m_treeSignalSelect.InsertItem(_T("1-1"), hCurrent, TVI_LAST);
+	m_treeSignalSelect.AddItemBitmap(hCurrent1, itemBmp, ppLastLeft);
+	hCurrent1 = m_treeSignalSelect.InsertItem(_T("1-1"), hCurrent, TVI_LAST);
+	m_treeSignalSelect.AddItemBitmap(hCurrent1, itemBmp, ppLastLeft);
 	/*m_hRoot = NULL;
 	AddSubDir(m_hRoot, m_sRootPath);*/
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -76,15 +80,15 @@ BOOL CSignalSelectView::OnInitDialog()
 
 void CSignalSelectView::OnNMClickTreePath(NMHDR *pNMHDR, LRESULT *pResult)
 {
-
 	CString tmp;
-	HTREEITEM hItem;
+	HTREEITEM selectedItem;
 	CWnd *m_CWnd;
 	m_CWnd = GetDlgItem(IDC_TREE_SELECT_CHANNEL);
-	HBITMAP hDirBmp;
-	hDirBmp = ::LoadBitmap(_AtlBaseModule.m_hInstResource, MAKEINTRESOURCE(IDB_BMPSIGNALGREEN));
-	hItem=m_treeSignalSelect.ClickhItem;
-	if (hItem){
-		m_treeSignalSelect.AddItemBitmap(hItem, hDirBmp, ppLastLeft);
+	selectedItem = m_treeSignalSelect.ClickhItem;
+	if (m_treeSignalSelect.ItemHasChildren(selectedItem)) {
+		AfxMessageBox("??");
+		return; ///如果还有子节点，则不做任何操作
 	}
+	AfxMessageBox(m_treeSignalSelect.GetItemText(selectedItem));
+	TRACE("\n-------------%d\n", selectedItem);
 }

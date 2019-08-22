@@ -79,6 +79,6 @@ public:
 	 修改日期 版本号 修改人 修改内容
 	 ----------------------------------------------------------------------
 	 ***********************************************************************/
-	static Result SaveCollectionData(CString path, CString fileName, int saveCount);
+	static Result SaveCollectionData(CString path, CString fileName, ThreadSafeQueue<AcquiredSignal> &collectionData);
 };
 

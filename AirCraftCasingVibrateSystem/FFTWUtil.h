@@ -3,11 +3,17 @@
 #include "EchoSignal.h"
 #include <mutex>
 #include <memory>
+#include "SmartFFTWComplexArray.h"
+#include "SmartArray.h"
+#include <mutex>
 #include <condition_variable>
 class FFTWUtil
 {
+private:
+	static HANDLE m_hMutex;
 public:
-
+	FFTWUtil();
+	~FFTWUtil();
 	/**********************************************************************
 	功能描述： FFT变换，将原始数据转换成傅里叶数据
 	输入参数：
@@ -28,6 +34,6 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	int FFTDataToXY(EchoSignal & echoSignal);
+	int FFTDataToXY(SmartFFTWComplexArray & fftwOut, SmartArray<double> &yData, int pointCount);
 };
 

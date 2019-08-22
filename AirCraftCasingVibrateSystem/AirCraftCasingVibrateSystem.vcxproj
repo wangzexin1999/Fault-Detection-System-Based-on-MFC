@@ -243,6 +243,8 @@
     <ClInclude Include="ChartCtrl\DuExport.h" />
     <ClInclude Include="ChartCtrl\MemDC.h" />
     <ClInclude Include="ChartCtrl\PointsOrdering.h" />
+    <ClInclude Include="DataStructure.h" />
+    <ClInclude Include="EchoSignal.h" />
     <ClInclude Include="FFTWUtil.h" />
     <ClInclude Include="SensorController.h" />
     <ClInclude Include="CherryTree.h" />
@@ -301,7 +303,8 @@
     <ClInclude Include="SignalService.h" />
     <ClInclude Include="SignalSaveView.h" />
     <ClInclude Include="SignalSelectView.h" />
-    <ClInclude Include="EchoSignal.h" />
+    <ClInclude Include="SmartArray.h" />
+    <ClInclude Include="SmartFFTWComplexArray.h" />
     <ClInclude Include="StatisticView.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SubChannelParaView.h" />
@@ -315,6 +318,7 @@
     <ClInclude Include="TbProject.h" />
     <ClInclude Include="TbProjectDao.h" />
     <ClInclude Include="TbRecordSignalDao.h" />
+    <ClInclude Include="TbSensor.h" />
     <ClInclude Include="TbSensorDao.h" />
     <ClInclude Include="TbSensorPara.h" />
     <ClInclude Include="TbSensorParaDao.h" />
@@ -378,6 +382,7 @@
     <ClCompile Include="ChartCtrl\DuChartCtrl.cpp" />
     <ClCompile Include="ChartCtrl\DuChartCtrlShuxing.cpp" />
     <ClCompile Include="ChartCtrl\DuChartCtrlStaticFunction.cpp" />
+    <ClCompile Include="EchoSignal.cpp" />
     <ClCompile Include="FFTWUtil.cpp" />
     <ClCompile Include="SensorController.cpp" />
     <ClCompile Include="CherryTree.cpp" />
@@ -432,7 +437,7 @@
     <ClCompile Include="SignalService.cpp" />
     <ClCompile Include="SignalSaveView.cpp" />
     <ClCompile Include="SignalSelectView.cpp" />
-    <ClCompile Include="EchoSignal.cpp" />
+    <ClCompile Include="SmartFFTWComplexArray.cpp" />
     <ClCompile Include="StatisticView.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -450,6 +455,7 @@
     <ClCompile Include="TbProject.cpp" />
     <ClCompile Include="TbProjectDao.cpp" />
     <ClCompile Include="TbRecordSignalDao.cpp" />
+    <ClCompile Include="TbSensor.cpp" />
     <ClCompile Include="TbSensorDao.cpp" />
     <ClCompile Include="TbSensorPara.cpp" />
     <ClCompile Include="TbSensorParaDao.cpp" />

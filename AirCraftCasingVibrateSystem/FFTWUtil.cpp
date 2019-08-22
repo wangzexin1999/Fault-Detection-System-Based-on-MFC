@@ -1,38 +1,47 @@
 #include "stdafx.h"
 #include "FFTWUtil.h"
 
+
+HANDLE FFTWUtil::m_hMutex;
+
+
+FFTWUtil::FFTWUtil(){
+	m_hMutex = ::CreateMutex(NULL, FALSE, NULL);
+}
+
+FFTWUtil::~FFTWUtil()
+{
+	//::CloseHandle(m_hMutex);
+}
+
 bool FFTWUtil::FastFourierTransformation(int nCounts, fftw_complex *din, fftw_complex *out)
 {
-	for (int i = 0; i < 5; i++){
-		TRACE("\n傅里叶变换函数查看 din=%f\n", din[i][0]);
-	}
-
-	int i;
-	fftw_plan p;
+	//::WaitForSingleObject(m_hMutex, INFINITE);
 	if ((din == NULL) || (out == NULL))
 	{
 		printf("Error:insufficient available memory\n");
 		return false;
 	}
-	p = fftw_plan_dft_1d(nCounts, din, out, FFTW_FORWARD, FFTW_ESTIMATE);
-	fftw_execute(p); 
-	fftw_destroy_plan(p);
-	return true;
+	fftw_plan plan = fftw_plan_dft_1d(
+		nCounts,
+		din,
+		out, FFTW_FORWARD, FFTW_ESTIMATE);
+	if (NULL != plan)
+	{
+		fftw_execute(plan);
+		fftw_destroy_plan(plan);
+		return TRUE;
+	}
+	//::ReleaseMutex(m_hMutex);
+	return FALSE;
 }
 /*傅里叶变换之后转成坐标*/
-int FFTWUtil::FFTDataToXY(EchoSignal & echoSignal){
-	/*fftw_complex * out = echoSignal.GetDoutArray();
-	for (int i = 0; i < echoSignal.GetXLength(); i++)
+int FFTWUtil::FFTDataToXY(SmartFFTWComplexArray  & fftwOut, SmartArray<double> &yData, int pointCount){
+	fftw_complex * out = fftwOut.GeFFTWComplexArray();
+	yData.push_back(0);
+	for (int i = 1; i < pointCount; i++)
 	{
-	echoSignal.PushToY(2 * sqrt(out[i][0] * out[i][0] + out[i][1] * out[i][1]) / 1000);
+		yData.push_back(2 * sqrt(out[i][0] * out[i][0] + out[i][1] * out[i][1]) / 1000);
 	}
-	echoSignal.UpdateY(0, 0);*/
-
-	fftw_complex * out = echoSignal.GetDinArray();
-	for (int i = 0; i < echoSignal.GetXLength(); i++)
-	{
-		echoSignal.PushToY(2 * sqrt(out[i][0] * out[i][0] + out[i][1] * out[i][1]) / 1000);
-	}
-	echoSignal.UpdateY(0, 0);
 	return 0;
 }

@@ -2,7 +2,6 @@
 #include "SensorService.h"
 #include "FileUtil.h"
 #include "CommonUtil.h"
-#include "AcquiredSignal.h"
 #include "DateUtil.h"
 
 double CSensorService::m_readFromCSVFile[100][1000];
@@ -42,35 +41,31 @@ double CSensorService::randf(double min, double max)
 	return resultInteger / 10000.0;
 }
 
-bool CSensorService::SaveCollectData(TbProject &project,int saveCount){
+Result CSensorService::AddCollectData(TbProject project, int sensorId, ThreadSafeQueue<AcquiredSignal> &collectionData){
 	///1.拼装保存路径
 	CString path = "I:\\temp\\";
-	//2.拼装文件名
+	//2.拼装文件名 项目id_测试设备id_传感器id_被检测设备id_时间戳
 	CString fileName = CommonUtil::Int2CString(project.GetProjectId()) + "-"
 		+ CommonUtil::Int2CString(project.GetTestingDevicePara().GetTestingdevice().GetTestingdeviceId())
-			+ "-" + CommonUtil::Int2CString(project.GetDetectedDevice().GetDetecteddeviceId()) 
-			+ "-" + CommonUtil::Int2CString(project.GetSensorParaVector().size()) + "-" + DateUtil::GetTimeStampCString()
-			+ ".csv";
-	
-	//3.调用FileUtil保存文件，保存成功返回采集的开始时间和结束时间
-	Result res = CFileUtil::SaveCollectionData(path, fileName, saveCount);
+		+ "-" + CommonUtil::Int2CString(sensorId) + "-" + CommonUtil::Int2CString(project.GetDetectedDevice().GetDetecteddeviceId())
+		+ "-" + DateUtil::GetTimeStampCString()
+		+ ".csv";
+
+	CString startCollectTime = collectionData.front().GetAcquireTime();
+	//3.调用FileUtil保存文件，保存成功返回采集的结束时间
+	Result res = CFileUtil::SaveCollectionData(path, fileName, collectionData);
 	if (res.GetIsSuccess()){
 		///4.文件保存成功，将记录保存到数据库
 		TbSignal signal;
 		signal.SetDataUrl(path + fileName);
 		signal.SetProjectId(project.GetProjectId());
 		signal.SetDetectedDevice(project.GetDetectedDevice());
-		vector<CString> times = CommonUtil::GetCStringVectorFromSplitCString(res.GetMessages(), ","); 
-		signal.SetStartTime(times[0]);
-		signal.SetEndTime(times[1]);
-		/////传感器参数号等等参数还要穿
+		signal.SetStartTime(startCollectTime);
+		signal.SetEndTime(res.GetMessages());
+		signal.GetSensor().SetSensorId(sensorId);
+		signal.GetTestingDevice().SetTestingdeviceId(project.GetTestingDevicePara().GetTestingdevice().GetTestingdeviceId());
 		m_signalDao.SetTableFieldValues(signal);
 		m_signalDao.Insert(false);
-		return true;
 	}
-	else
-	{
-		AfxMessageBox(res.GetMessages());
-	}
-	return false;
+	return res;
 }

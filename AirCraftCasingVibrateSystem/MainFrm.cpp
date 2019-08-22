@@ -10,12 +10,19 @@
 // 保留所有权利。
 
 // MainFrm.cpp : CMainFrame 类的实现
-//
 
 #include "stdafx.h"
 #include "AirCraftCasingVibrateSystem.h"
-
+#include "NewProjectView.h"
 #include "MainFrm.h"
+#include "ProjectManageView.h"
+#include "SignalDataView.h"
+#include "EngineerUnitView.h"
+#include "DetectDeviceManageView.h"
+#include "DetectedDeviceManageView.h"
+#include "AlarmParaSetView.h"
+#include "ChartCtrl/DuChartCtrlStaticFunction.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -37,6 +44,37 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_CHECK2, &CMainFrame::OnUpdateViewChannelPara)
 	ON_COMMAND(ID_CHECK3, &CMainFrame::OnViewSystemPara)
 	ON_UPDATE_COMMAND_UI(ID_CHECK3, &CMainFrame::OnUpdateViewSystemPara)
+	ON_COMMAND(ID_BUTTON_NEW_PROJECT, &CMainFrame::OnButtonNewProject)
+	ON_COMMAND(ID_BUTTON_PROJECT_MANAGE, &CMainFrame::OnButtonProjectManage)
+	ON_COMMAND(ID_BUTTON_OPEN_DATA_FILE, &CMainFrame::OnButtonOpenDataFile)
+
+	ON_COMMAND(ID_BUTTON_EXPORT_CHANNEL_PARA, &CMainFrame::OnButtonExportChannelPara)
+	ON_COMMAND(ID_BUTTON_IMPORT_CHANNEL_PARA, &CMainFrame::OnButtonImportChannelPara)
+	ON_COMMAND(ID_BUTTON_EXPORT_SYS_PARA, &CMainFrame::OnButtonExportSysPara)
+	ON_COMMAND(ID_BUTTON_IMPORT_SYS_PARA, &CMainFrame::OnButtonImportSysPara)
+	ON_COMMAND(ID_BUTTON_SUSPEND_CAPTURE, &CMainFrame::OnButtonSuspendCapture)
+	ON_COMMAND(ID_BUTTON_START_CAPTURE, &CMainFrame::OnButtonStartCapture)
+	ON_COMMAND(ID_BTN_STOP_CAPTURE, &CMainFrame::OnBtnStopCapture)
+	ON_COMMAND(ID_BTN_STOP_PLAYBACK, &CMainFrame::OnBtnStopPlayback)
+	ON_COMMAND(ID_BTN_START_PLAYBACK, &CMainFrame::OnBtnStartPlayback)
+	ON_COMMAND(ID_BTN_CLOSE_ALL_WINDOW, &CMainFrame::OnBtnCloseAllWindow)
+
+	ON_COMMAND(ID_BTN_START_SMAPLE, &CMainFrame::OnBtnStartSmaple)
+	ON_COMMAND(ID_BTN_STOP_SAMPLE, &CMainFrame::OnBtnStopSample)
+	ON_COMMAND(ID_BTN_PROJECT_UNIT, &CMainFrame::OnBtnEngineeringUnit)
+	ON_COMMAND(ID_BTN_ALARM_SET, &CMainFrame::OnBtnAlarmSet)
+	ON_COMMAND(ID_BUTTON_DETECT_DEVICE, &CMainFrame::OnButtonDetectDevice)
+	ON_COMMAND(ID_BUTTON_DETECTED_DEVICE, &CMainFrame::OnButtonDetectedDevice)
+
+	ON_COMMAND(ID_BTN_TRANSVERSE_AMPLIFICATION, &CMainFrame::OnBtnTransverseAmplification)
+	ON_COMMAND(ID_BTN_HORIZONTAL_REDUCTION, &CMainFrame::OnBtnHorizontalReduction)
+	ON_COMMAND(ID_BTN_VERTICAL_REDUCTION, &CMainFrame::OnBtnVerticalReduction)
+	ON_COMMAND(ID_BTN_VERTICAL_AMPLIFICATION, &CMainFrame::OnBtnVerticalAmplification)
+	ON_COMMAND(ID_BTN_SINGLE_CURSOR, &CMainFrame::OnBtnSingleCursor)
+	ON_COMMAND(ID_BTN_PEAK_VALUE, &CMainFrame::OnBtnPeakValue)
+	ON_COMMAND(ID_BTN_AUTO_SCALE, &CMainFrame::OnBtnAutoScale)
+	ON_COMMAND(ID_BTN_SELF_SCALE, &CMainFrame::OnBtnDefaultScale)
+	ON_COMMAND(ID_BTN_NO_CORROR, &CMainFrame::OnBtnNoCorror)
 END_MESSAGE_MAP()
 
 // CMainFrame 构造/析构
@@ -285,6 +323,30 @@ void CMainFrame::OnOptions()
 }
 
 
+////初始化采集窗口vector
+void CMainFrame::InitializeCaptureView(){
+	// 显示
+	POSITION curTemplatePos = theApp.GetFirstDocTemplatePosition();
+	CDocTemplate *m_doc = theApp.GetNextDocTemplate(curTemplatePos);
+	//获得文档:
+	curTemplatePos = m_doc->GetFirstDocPosition();
+	int viewNumber = 0;
+	while(curTemplatePos != NULL){
+		CAirCraftCasingVibrateSystemDoc * pdoc = (CAirCraftCasingVibrateSystemDoc*)m_doc->GetNextDoc(curTemplatePos);
+		//获得视图:
+		POSITION curViewPos;
+		curViewPos = pdoc->GetFirstViewPosition();
+		while (curViewPos != NULL)
+		{
+			CAirCraftCasingVibrateSystemView* currentView = (CAirCraftCasingVibrateSystemView*)pdoc->GetNextView(curViewPos);
+			currentView->SetViewNumber(viewNumber);
+			currentView->ResetView();
+			m_vsignalCaptureView.push_back(currentView);
+		}
+		viewNumber++;
+	}
+}
+
 void CMainFrame::OnViewChannelPara()
 {
 	if (m_channelPara.IsVisible())
@@ -323,4 +385,281 @@ void CMainFrame::OnViewSystemPara()
 void CMainFrame::OnUpdateViewSystemPara(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck(m_systemPara.IsVisible());
+}
+
+
+// 新建项目
+void CMainFrame::OnButtonNewProject()
+{
+	//打开窗口
+	CNewProjectView newProjectView;
+	newProjectView.DoModal();
+
+}
+
+// 项目管理
+void CMainFrame::OnButtonProjectManage()
+{
+	// TODO:  在此添加命令处理程序代码
+	CProjectManageView projectView;
+	int  i = projectView.DoModal();
+}
+
+// 打开数据文件
+void CMainFrame::OnButtonOpenDataFile()
+{
+	// TODO:  在此添加命令处理程序代码
+	int projectId = theApp.m_currentProject.GetProjectId();
+	if (projectId <= 0){
+		AfxMessageBox("请先打开或者新建项目");
+		return;
+	}
+	CSignalDataView signalDataView;
+	signalDataView.DoModal();
+}
+
+
+// 导出通道参数
+void CMainFrame::OnButtonExportChannelPara()
+{
+	// TODO:  在此添加命令处理程序代码
+}
+
+//导入通道参数
+void CMainFrame::OnButtonImportChannelPara()
+{
+	// TODO:  在此添加命令处理程序代码
+}
+
+// 导出系统参数
+void CMainFrame::OnButtonExportSysPara()
+{
+	// TODO:  在此添加命令处理程序代码
+}
+
+// 导入系统参数
+void CMainFrame::OnButtonImportSysPara()
+{
+	// TODO:  在此添加命令处理程序代码
+}
+
+
+//暂停采集
+void CMainFrame::OnButtonSuspendCapture()
+{
+	theApp.m_icollectionStatus = 2;
+}
+
+
+//开始采集
+void CMainFrame::OnButtonStartCapture()
+{
+	// TODO:  在此添加命令处理程序代码
+
+	// 设置底部坐标轴为自动
+	//
+	int projectId = theApp.m_currentProject.GetProjectId();
+	if (projectId <= 0){
+		AfxMessageBox("请先打开或者新建项目");
+		return;
+	}
+	////m_icollectionStatus == 0 是未采集
+	if (!theApp.m_icollectionStatus){
+		//// 初始化采集窗口View
+		InitializeCaptureView();
+		//// 设置信号采集状态为1
+		theApp.m_icollectionStatus = 1;
+
+		//// 设置显示信息线程标志
+		//theApp.m_bShowInfThreadActive = true;
+
+		//// 计算通道个数
+		//CalculateChannelNum(m_nChannelNums);
+
+		///// 初始化信号采集队列，初始化信号采集View
+		theApp.m_collectData.clear();
+
+		for (int i = 0; i < m_vsignalCaptureView.size(); i++){
+			///添加数据队列到采集数据队列集合
+			ThreadSafeQueue<AcquiredSignal> acquireSignalQueue;
+			theApp.m_collectData.push_back(acquireSignalQueue);
+			////给传感器数据赋值
+				for (int m = 0; m < 100; m++)
+				{
+					for (int n = 0; n < 1000; n++)
+					{
+						m_vsignalCaptureView[i]->m_readFromCSVFile[m][n] = theApp.tempRead[m][n];
+					}
+				}
+		}
+		////开启所有窗口的采集线程
+		for (int i = 0; i < m_vsignalCaptureView.size(); i++){
+			m_vsignalCaptureView[i]->OpenThread2CaptureData();
+		}
+	}
+}
+
+// 停止采集
+void CMainFrame::OnBtnStopCapture()
+{
+	//// TODO:  在此添加命令处理程序代码
+	//for (int i = 11; i < m_nChannelNums + 11; i++)
+	//{
+	//	KillTimer(i);
+	//}
+	//theApp.m_bThreadActive = false;
+	//theApp.m_bShowInfThreadActive = false;
+}
+
+// 停止回放
+void CMainFrame::OnBtnStopPlayback()
+{
+	// TODO:  在此添加命令处理程序代码
+}
+
+//开始回放
+void CMainFrame::OnBtnStartPlayback()
+{
+	// TODO:  在此添加命令处理程序代码
+}
+
+// 关闭所有窗口
+void CMainFrame::OnBtnCloseAllWindow()
+{
+	// TODO:  在此添加命令处理程序代码
+}
+
+/*检测设备管理*/
+void CMainFrame::OnButtonDetectDevice()
+{
+	// TODO:  在此添加命令处理程序代码
+	CDetectDeviceManageView detectDeviceManageView;
+	detectDeviceManageView.DoModal();
+}
+
+/*被检测设备管理*/
+void CMainFrame::OnButtonDetectedDevice()
+{
+	// TODO:  在此添加命令处理程序代码
+	CDetectedDeviceManageView detectedDeviceManegeView;
+	detectedDeviceManegeView.DoModal();
+}
+
+//开始采样
+void CMainFrame::OnBtnStartSmaple()
+{
+	int projectId = theApp.m_currentProject.GetProjectId();
+	if (projectId <= 0){
+		AfxMessageBox("请先打开或者新建项目");
+		return;
+	}
+	theApp.m_bIsSample = true;
+}
+
+// 停止采样
+void CMainFrame::OnBtnStopSample()
+{
+	// TODO:  在此添加命令处理程序代码
+	//////开线程去保存！！！！！！！！！！！！！！
+	//m_fileUtile.SaveSampleData(theApp.m_sampleData);
+}
+
+//工程单位
+void CMainFrame::OnBtnEngineeringUnit()
+{
+	// TODO:  在此添加命令处理程序代码
+	CEngineerUnitView engineerUnitView;
+	engineerUnitView.DoModal();
+}
+
+// 报警设置
+void CMainFrame::OnBtnAlarmSet()
+{
+	// TODO:  在此添加命令处理程序代码
+	CAlarmParaSetView alarmView;
+	alarmView.DoModal();
+
+}
+
+// 横向放大
+void CMainFrame::OnBtnTransverseAmplification()
+{
+	CAirCraftCasingVibrateSystemView *view;
+	view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
+	CDuChartCtrlStaticFunction::HengxiangFangda(&view->GetChartCtrl());
+}
+
+// 横向缩小
+void CMainFrame::OnBtnHorizontalReduction()
+{
+	CAirCraftCasingVibrateSystemView *view;
+	view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
+	CDuChartCtrlStaticFunction::HengxiangSuoxiao(&view->GetChartCtrl());
+
+}
+
+// 纵向缩小
+void CMainFrame::OnBtnVerticalReduction()
+{
+	CAirCraftCasingVibrateSystemView *view;
+	view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
+	CDuChartCtrlStaticFunction::ZongxiangSuoxiao(&view->GetChartCtrl());
+}
+
+//纵向放大
+void CMainFrame::OnBtnVerticalAmplification()
+{
+	CAirCraftCasingVibrateSystemView *view;
+	view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
+	CDuChartCtrlStaticFunction::ZongxiangFangda(&view->GetChartCtrl());
+}
+
+//单光标
+void CMainFrame::OnBtnSingleCursor()
+{
+	CAirCraftCasingVibrateSystemView *view;
+	view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
+	CDuChartCtrlStaticFunction::SetCursorSingle(&view->GetChartCtrl());
+}
+
+//峰值
+void CMainFrame::OnBtnPeakValue()
+{
+	CAirCraftCasingVibrateSystemView *view;
+	view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
+	CDuChartCtrlStaticFunction::SetCursorPeak(&view->GetChartCtrl());
+}
+
+
+// 自动刻度
+void CMainFrame::OnBtnAutoScale()
+{
+	CAirCraftCasingVibrateSystemView *view;
+	view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
+	CDuChartCtrlStaticFunction::AutoXScale(&view->GetChartCtrl(), FALSE);
+	//CDuChartCtrlStaticFunction::AutoYScale(&view->GetChartCtrl(), FALSE);
+
+}
+
+// 默认刻度
+void CMainFrame::OnBtnDefaultScale()
+{
+	CAirCraftCasingVibrateSystemView *view;
+	view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
+	//CDuChartCtrlStaticFunction::SetCursorNone(&view->GetChartCtrl());
+	CChartStandardAxisDu * leftAxis = (CChartStandardAxisDu*)view->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0);
+	CChartStandardAxisDu * bottomAxis = (CChartStandardAxisDu*)view->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0);
+	bottomAxis->SetMinMax(0, 1000);//设置下刻度
+	bottomAxis->SetTickIncrement(false, 100);
+
+	leftAxis->SetMinMax(-0.1, 0.1);
+	leftAxis->SetTickIncrement(false, 0.05);
+}
+
+// 无光标
+void CMainFrame::OnBtnNoCorror()
+{
+	CAirCraftCasingVibrateSystemView *view;
+	view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
+	CDuChartCtrlStaticFunction::SetCursorNone(&view->GetChartCtrl());
 }

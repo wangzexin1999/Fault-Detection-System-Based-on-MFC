@@ -5,8 +5,7 @@
 #include "TbProject.h"
 #include "AcquiredSignal.h"
 #include "ThreadSafeQueue.h"
-using namespace std;
-
+#include "Result.h"
 class CSensorService 
 {
 public:
@@ -54,7 +53,7 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	bool SaveCollectData(TbProject &project,int saveCount);
+	Result AddCollectData(TbProject project, int sensorId, ThreadSafeQueue<AcquiredSignal> &collectionData);
 
 private:
 	//queue<EchoSignal> m_echoSignalQueue; ///回显数据的队列
