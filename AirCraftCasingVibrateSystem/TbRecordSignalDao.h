@@ -25,6 +25,7 @@ public:
 	bool SelectObjectsByCondition(vector<TbRecordSignalDao> &selectedValueVector, CString strSqlQueryWhere = "");
 	bool SelectObjectsByCondition(vector<TbRecordSignalDao> &selectedValueVector, int iStartNumber, int iRecordCount, CString strSqlQueryWhere = "");
 
-	void GetTableFieldValues(TbSignal &recordSignal);
+	void SetTableFieldValues(TbSignal signal);
+	void GetTableFieldValues(TbSignal &signal);
 };
 

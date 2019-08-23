@@ -68,7 +68,7 @@ BOOL CAirCraftCasingVibrateSystemView::PreCreateWindow(CREATESTRUCT& cs)
 {
 	// TODO:  在此处通过修改
 	//  CREATESTRUCT cs 来修改窗口类或样式
-	m_hMutex = ::CreateMutex(NULL, FALSE, NULL);
+	
 
 	return CFormView::PreCreateWindow(cs);
 }
@@ -141,11 +141,11 @@ void CAirCraftCasingVibrateSystemView::OnInitialUpdate()
 ////采集数据
 void CAirCraftCasingVibrateSystemView::CaptureData(){
 	SmartArray<double> xData; ///x坐标
-	
 	SmartFFTWComplexArray fftwInput; ///傅里叶变换初始的输入
 	while (theApp.m_icollectionStatus){
 		int countN = rand() % 100;
 		// 每次读取的数量按照用户在窗口的操作来选择
+		if (theApp.m_icollectionStatus == 2){ KillTimer(m_icurrentWindowNumber); };
 		for (int j = 0; j < theApp.m_signalEchoCount && theApp.m_icollectionStatus == 1; j++)
 		{
 			xData.push_back(j); ///X坐标
@@ -166,10 +166,8 @@ void CAirCraftCasingVibrateSystemView::CaptureData(){
 		/////将一次采集的数据进行傅里叶变换
 		//////对传入的数据进行傅里叶变换处理
 		SmartFFTWComplexArray fftwOutput(fftwInput.size());
-		::WaitForSingleObject(m_hMutex, INFINITE);
 		FFTWUtil::FastFourierTransformation(fftwInput.size(), fftwInput.GeFFTWComplexArray(),
 				fftwOutput.GeFFTWComplexArray());
-		::ReleaseMutex(m_hMutex);
 		/////将处理之后的傅里叶变换转换成XY坐标
 		SmartArray<double> yData(xData.size()); ///y坐标
 		FFTWUtil::FFTDataToXY(fftwOutput, yData, xData.size());
@@ -180,7 +178,7 @@ void CAirCraftCasingVibrateSystemView::CaptureData(){
 		xData.clear();
 		yData.clear();
 		/////保存采集数据
-		if (theApp.m_bIsAutoSaveCollectionData &&theApp.m_collectData[m_icurrentWindowNumber].size() >= theApp.m_isignalsStoreCount){
+		if (theApp.m_bIsAutoSaveCollectionData &&theApp.m_collectData[m_icurrentWindowNumber].size() >= theApp.m_icollectSignalsStoreCount){
 			////采集过程中如果设置为自动保存采集数据并且数据量达到了保存的时候，创建线程保存数据
 			thread t(&CAirCraftCasingVibrateSystemView::AutoSaveCollectionData,this);
 		    t.detach();
@@ -188,6 +186,12 @@ void CAirCraftCasingVibrateSystemView::CaptureData(){
 		////保存采样数据
 	}
 	KillTimer(m_icurrentWindowNumber);
+	////停止采集后，如果还有未保存的数据，将剩余数据保存
+	while(theApp.m_collectData[m_icurrentWindowNumber].size() > 0){
+		////采集过程中如果设置为自动保存采集数据并且数据量达到了保存的时候，创建线程保存数据
+		thread t(&CAirCraftCasingVibrateSystemView::AutoSaveCollectionData, this);
+		t.detach();
+	}
 }
 
 ///开启线程采集数据&设置定时器刷新数据
@@ -195,6 +199,7 @@ void CAirCraftCasingVibrateSystemView::OpenThread2CaptureData(){
 	////如果当前未选择相应的传感器，则不能开线程采集数据
 	if (!m_signalSelectView.GetSelectedSensor().GetSensorId()){
 		AfxMessageBox("窗口"+CommonUtil::Int2CString(m_icurrentWindowNumber)+"还没有选择传感器");
+		theApp.m_icollectionStatus = 0; ///一旦出现没有选择传感器的情况，将当前采集状态置为0 
 		return;
 	}
      thread t(&CAirCraftCasingVibrateSystemView::CaptureData,this);
@@ -218,10 +223,14 @@ void  CAirCraftCasingVibrateSystemView::RefershChartCtrlData(){
 }
 
 void  CAirCraftCasingVibrateSystemView::AutoSaveCollectionData(){
-	////调用传感器Controller类保存数据
+	////调用传感器Controller类保存采集数据
 	m_sensorController.SaveCollectionData(m_icurrentWindowNumber,m_signalSelectView.GetSelectedSensor().GetSensorId());
 }
 
+void  CAirCraftCasingVibrateSystemView::AutoSaveSampleData(){
+	////调用传感器Controller类保存采样数据
+	//m_sensorController.SaveSampleData(m_icurrentWindowNumber, m_signalSelectView.GetSelectedSensor().GetSensorId());
+}
 CDuChartCtrl & CAirCraftCasingVibrateSystemView::GetChartCtrl(){
 	return m_chart;
 }

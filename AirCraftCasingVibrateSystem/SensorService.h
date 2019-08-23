@@ -2,6 +2,7 @@
 #include "fftw3.h"
 #include "EchoSignal.h"
 #include "TbSignalDao.h"
+#include "TbRecordSignalDao.h"
 #include "TbProject.h"
 #include "AcquiredSignal.h"
 #include "ThreadSafeQueue.h"
@@ -57,6 +58,26 @@ public:
 	***********************************************************************/
 	Result AddCollectData(TbProject project, int sensorId, ThreadSafeQueue<AcquiredSignal> &collectionData);
 	/**********************************************************************
+	功能描述：保存数据
+	输入参数：当前项目,需要保存的队列集合，需要保存的数量
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	Result AddSignalData(CString path, CString fileName, ThreadSafeQueue<AcquiredSignal> &collectionData, TbSignal &signal);
+	/**********************************************************************
+	功能描述：保存采样数据
+	输入参数：当前项目,需要保存的队列集合，需要保存的数量
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	Result AddSampleData(TbProject project, int sensorId, ThreadSafeQueue<AcquiredSignal> &collectionData);
+	/**********************************************************************
 	功能描述：查询采集设备对应的所有传感器
 	输入参数：采集设备id
 	输出参数：
@@ -67,11 +88,11 @@ public:
 	***********************************************************************/
 	bool GetAllSensorByTestingDeviceId(int testingDeviceId,vector<TbSensor> & sensorVector);
 
-
 private:
 	//queue<EchoSignal> m_echoSignalQueue; ///回显数据的队列
 	EchoSignal m_signal; ///需要回显的数据
 	TbSignalDao m_signalDao;
+	TbRecordSignalDao m_recordSignalDao;
 	TbSensorDao m_sensorDao;
 	
 };

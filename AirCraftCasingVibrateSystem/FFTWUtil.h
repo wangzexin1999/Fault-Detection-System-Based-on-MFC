@@ -11,6 +11,9 @@ class FFTWUtil
 {
 
 protected:
+	
+	static HANDLE m_hMutex;
+
 public:
 	FFTWUtil();
 	~FFTWUtil();

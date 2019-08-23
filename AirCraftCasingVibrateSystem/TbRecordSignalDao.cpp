@@ -80,3 +80,18 @@ void TbRecordSignalDao::GetTableFieldValues(TbSignal &signal){
 	signal.SetProjectId(m_projectId.GetInt());
 	signal.GetTestingDevice().SetTestingdeviceId(m_testingDeviceId.GetInt());
 }
+
+void TbRecordSignalDao::SetTableFieldValues(TbSignal signal){
+	m_projectId.SetValue(signal.GetProjectId());
+	m_sensorId.SetValue(signal.GetSensor().GetSensorId());
+	m_signalId.SetValue(signal.GetSignalId());
+	if (signal.GetSignalStatus() >= 0){
+		m_signalStatus.SetValue(signal.GetSignalStatus());
+	}
+	m_signalType.SetValue(signal.GetSignalType());
+	m_startTime.SetValue(signal.GetStartTime());
+	m_endTime.SetValue(signal.GetEndTime());
+	m_dataUrl.SetValue(signal.GetDataUrl());
+	m_detectedDeviceId.SetValue(signal.GetDetectedDevice().GetDetecteddeviceId());
+	m_testingDeviceId.SetValue(signal.GetTestingDevice().GetTestingdeviceId());
+}

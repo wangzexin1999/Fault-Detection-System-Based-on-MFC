@@ -25,7 +25,8 @@ class SensorController
 
 private:
 	CSensorService m_sensorService;
-
+	static HANDLE m_popCollectDataQueueMutex;  ///弹出采集队列元素的线程锁
+	static HANDLE m_popSampleDataQueueMutex;  ///弹出采样队列元素的线程锁
 public:
 	SensorController();
 	~SensorController();
@@ -45,6 +46,17 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	Result SaveCollectionData(int viewId,int sensorId);
+
+	/**********************************************************************
+	功能描述：保存采集的数据
+	输入参数：当前窗口的id，传感器的id
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	Result SaveSampleData(int viewId, int sensorId);
 
 	/**********************************************************************
 	功能描述：查询采集设备对应的所有传感器

@@ -502,13 +502,6 @@ void CMainFrame::OnButtonStartCapture()
 // 停止采集
 void CMainFrame::OnBtnStopCapture()
 {
-	//// TODO:  在此添加命令处理程序代码
-	//for (int i = 11; i < m_nChannelNums + 11; i++)
-	//{
-	//	KillTimer(i);
-	//}
-	//theApp.m_bThreadActive = false;
-	//theApp.m_bShowInfThreadActive = false;
 	theApp.m_icollectionStatus = 0;
 }
 
@@ -561,8 +554,7 @@ void CMainFrame::OnBtnStartSmaple()
 void CMainFrame::OnBtnStopSample()
 {
 	// TODO:  在此添加命令处理程序代码
-	//////开线程去保存！！！！！！！！！！！！！！
-	//m_fileUtile.SaveSampleData(theApp.m_sampleData);
+
 }
 
 //工程单位

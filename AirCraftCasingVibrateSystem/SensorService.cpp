@@ -43,7 +43,7 @@ double CSensorService::randf(double min, double max)
 
 Result CSensorService::AddCollectData(TbProject project, int sensorId, ThreadSafeQueue<AcquiredSignal> &collectionData){
 	///1.拼装保存路径
-	CString path = "I:\\temp\\";
+	CString path = "I:\\collectionData\\";
 	//2.拼装文件名 项目id_测试设备id_传感器id_被检测设备id_时间戳
 	CString fileName = CommonUtil::Int2CString(project.GetProjectId()) + "-"
 		+ CommonUtil::Int2CString(project.GetTestingDevicePara().GetTestingdevice().GetTestingdeviceId())
@@ -83,4 +83,33 @@ bool  CSensorService::GetAllSensorByTestingDeviceId(int testingDeviceId, vector<
 		}
 	}
 	return isSuccess;
+}
+
+Result CSensorService::AddSampleData(TbProject project, int sensorId, ThreadSafeQueue<AcquiredSignal> &collectionData){
+	///1.拼装保存路径
+	CString path = "I:\\SampleData\\";
+	//2.拼装文件名 项目id_测试设备id_传感器id_被检测设备id_时间戳
+	CString fileName = CommonUtil::Int2CString(project.GetProjectId()) + "-"
+		+ CommonUtil::Int2CString(project.GetTestingDevicePara().GetTestingdevice().GetTestingdeviceId())
+		+ "-" + CommonUtil::Int2CString(sensorId) + "-" + CommonUtil::Int2CString(project.GetDetectedDevice().GetDetecteddeviceId())
+		+ "-" + DateUtil::GetTimeStampCString()
+		+ ".csv";
+
+	CString startCollectTime = collectionData.front().GetAcquireTime();
+	//3.调用FileUtil保存文件，保存成功返回采集的结束时间
+	Result res = CFileUtil::SaveCollectionData(path, fileName, collectionData);
+	if (res.GetIsSuccess()){
+		///4.文件保存成功，将记录保存到数据库
+		TbSignal signal;
+		signal.SetDataUrl(path + fileName);
+		signal.SetProjectId(project.GetProjectId());
+		signal.SetDetectedDevice(project.GetDetectedDevice());
+		signal.SetStartTime(startCollectTime);
+		signal.SetEndTime(res.GetMessages());
+		signal.GetSensor().SetSensorId(sensorId);
+		signal.GetTestingDevice().SetTestingdeviceId(project.GetTestingDevicePara().GetTestingdevice().GetTestingdeviceId());
+		m_recordSignalDao.SetTableFieldValues(signal);
+		m_recordSignalDao.Insert(false);
+	}
+	return res;
 }

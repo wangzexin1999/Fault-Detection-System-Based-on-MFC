@@ -46,7 +46,6 @@ public:
 	// 多个传感器
 	//vector<CSensorService>  m_vSersor;
 
-	bool m_bThreadActive = false; // 采集数据线程控制标准
 	bool m_bShowInfThreadActive = true;
 	/// 用户
 	TbProject m_currentProject;
@@ -54,7 +53,8 @@ public:
 
 	//vector<queue<EchoSignal>> m_sampleData;
 
-	int m_isignalsStoreCount = 100000; ///信号的存储数量。 
+	int m_icollectSignalsStoreCount = 100000; ///采集信号的存储数量。 
+	int m_isampleSignalsStoreCount = 100000; ///采集信号的存储数量。 
 
 	bool m_bIsSample = false;//是否进行采样
 

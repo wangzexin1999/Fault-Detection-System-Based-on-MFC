@@ -5,11 +5,14 @@ FFTWUtil::FFTWUtil(){
 }
 
 FFTWUtil::~FFTWUtil(){
-	//::CloseHandle(m_hMutex);
+
 }
+
+HANDLE FFTWUtil::m_hMutex = CreateMutex(NULL, FALSE, NULL);
 
 bool FFTWUtil::FastFourierTransformation(int nCounts, fftw_complex *din, fftw_complex *out)
 {
+	WaitForSingleObject(m_hMutex, INFINITE);
 	if ((din == NULL) || (out == NULL))
 	{
 		printf("Error:insufficient available memory\n");
@@ -17,6 +20,7 @@ bool FFTWUtil::FastFourierTransformation(int nCounts, fftw_complex *din, fftw_co
 	}
 	fftw_plan plan = fftw_plan_dft_1d(nCounts,din,out, FFTW_FORWARD, FFTW_ESTIMATE);
 	fftw_execute(plan);
+	ReleaseMutex(m_hMutex);
 	return FALSE;
 }
 /*傅里叶变换之后转成坐标*/
