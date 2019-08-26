@@ -109,7 +109,7 @@ void CSignalDataView::GridCtrlInit(){
 				Item.strText.Format(_T("信号类型"), 3);
 			}
 			if (col == 5){
-				Item.strText.Format(_T("被检测设备"), 4);
+				Item.strText.Format(_T("产品"), 4);
 			}
 			m_signalDataGridCtrl.SetItem(&Item);
 			continue;

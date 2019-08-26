@@ -27,11 +27,11 @@ bool SignalService::GetAllRecordedSignalBySearchCondition(int projectId, CString
 		for (auto signalDao : recordSignalDaoVector){
 			TbSignal recordSignal;
 			signalDao.GetTableFieldValues(recordSignal);
-			///查询数据的被检测设备的信息
+			///查询数据的产品的信息
 			m_detectedDeviceDao.m_key->SetValue(recordSignal.GetDetectedDevice().GetDetecteddeviceId());
 			isSuccess = m_detectedDeviceDao.SelectByKey();
 			if (isSuccess){
-			///查询被检测设备成功
+			///查询产品成功
 				m_detectedDeviceDao.GetTableFieldValues(recordSignal.GetDetectedDevice());
 			}
 			signalVector.push_back(recordSignal);

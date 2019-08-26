@@ -96,7 +96,7 @@ bool CFileUtil::ReadFile(CString sFilePath, double(&outRead)[100][1000])
 
 	// TODO:  在此添加控件通知处理程序代码
 	// 打开文件目录
-	 sFilePath = _T("H:\\项目\\发动机故障检测\\train_data.csv");
+	 sFilePath = _T("C:\\train_data.csv");
 	// 读数据
 	CStdioFile fileRead;
 	if (!fileRead.Open(sFilePath, CFile::modeRead))//以读模式打开文本文件

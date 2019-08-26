@@ -25,10 +25,10 @@ Result ProjectController::LoadAllDetectedDevice(vector<TbDetectedDeviceDao> & Tb
 	
 	bool flag = m_detectedDeviceService.GetAllDetectedDevice(TbDetectedDeviceDaoVec);
 	if (flag){
-		return Result(true,"被检测设备加载成功");
+		return Result(true,"产品加载成功");
 	}
 	else{
-		return Result(false, "被检测设备加载失败");
+		return Result(false, "产品加载失败");
 	}
 }
 Result ProjectController::AddProject(TbProject &project){

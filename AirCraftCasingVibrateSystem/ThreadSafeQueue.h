@@ -9,7 +9,9 @@ class ThreadSafeQueue
 {
 public:
 	ThreadSafeQueue() {}
-	ThreadSafeQueue(const ThreadSafeQueue &safeQuene) {}
+	ThreadSafeQueue(const ThreadSafeQueue &safeQuene) {
+		data_queue = safeQuene.data_queue;
+	}
 	~ThreadSafeQueue() {}
 
 	void push(T new_data)

@@ -22,7 +22,7 @@
 #include "AirCraftCasingVibrateSystemView.h"
 #include "LoginView.h"
 #include "FileUtil.h"
-#ifdef _DEBUG
+#ifdef _DEBUGE	
 #define new DEBUG_NEW
 #endif
 

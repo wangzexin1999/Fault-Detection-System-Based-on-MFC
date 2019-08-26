@@ -47,7 +47,7 @@ public:
 	Result LoadAllTestingDevice(vector<TbTestingDeviceDao> & tbTestingVec);
 
 	/**********************************************************************
-	功能描述：加载所有的被检测设备
+	功能描述：加载所有的产品
 	输入参数：
 	输出参数：
 	返 回 值：

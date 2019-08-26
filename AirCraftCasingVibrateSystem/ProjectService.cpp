@@ -65,7 +65,7 @@ bool ProjectService::GetAllProjectBySearchCondition(int testerId, CString projec
 				}
 			}
 			tbProject.SetProjectCreateTime(tbProjectDao.m_projectCreatetime.m_strValue);
-			////查询被检测设备的信息
+			////查询产品的信息
 			tbProject.GetDetectedDevice().SetDetecteddeviceId(tbProjectDao.m_detectedDeviceId.GetInt());
 			m_detectedDeviceDao.m_detecteddeviceId.SetValue(tbProjectDao.m_detectedDeviceId.GetInt());
 			isSuccess = m_detectedDeviceDao.SelectByKey();

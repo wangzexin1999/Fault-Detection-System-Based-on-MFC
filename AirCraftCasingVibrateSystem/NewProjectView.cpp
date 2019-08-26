@@ -61,7 +61,7 @@ void CNewProjectView::OnBnClickedOk()
 		detectedIndex--;
 	}
 	else{
-		AfxMessageBox("请选择被检测设备");
+		AfxMessageBox("请选择产品");
 		return;
 	}
 	TbTester tester = theApp.m_currentProject.GetTester();
@@ -106,7 +106,7 @@ BOOL CNewProjectView::OnInitDialog()
 		AfxMessageBox(res.GetMessages());
 	}
 
-	/*2.调用ProjectController去查询被检测设备的下拉列表的数据*/
+	/*2.调用ProjectController去查询产品的下拉列表的数据*/
 
 	res = m_projectController.LoadAllDetectedDevice(m_detectedDeviceVector);
 	if (res.GetIsSuccess()){

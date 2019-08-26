@@ -43,8 +43,8 @@ double CSensorService::randf(double min, double max)
 
 Result CSensorService::AddCollectData(TbProject project, int sensorId, ThreadSafeQueue<AcquiredSignal> &collectionData){
 	///1.拼装保存路径
-	CString path = "I:\\collectionData\\";
-	//2.拼装文件名 项目id_测试设备id_传感器id_被检测设备id_时间戳
+	CString path = "C:\\collectionData\\";
+	//2.拼装文件名 项目id_测试设备id_传感器id_产品id_时间戳
 	CString fileName = CommonUtil::Int2CString(project.GetProjectId()) + "-"
 		+ CommonUtil::Int2CString(project.GetTestingDevicePara().GetTestingdevice().GetTestingdeviceId())
 		+ "-" + CommonUtil::Int2CString(sensorId) + "-" + CommonUtil::Int2CString(project.GetDetectedDevice().GetDetecteddeviceId())
@@ -70,7 +70,6 @@ Result CSensorService::AddCollectData(TbProject project, int sensorId, ThreadSaf
 	return res;
 }
 
-
 bool  CSensorService::GetAllSensorByTestingDeviceId(int testingDeviceId, vector<TbSensor>& sensorVector){
 	vector<TbSensorDao> sensorDaoVec;
 	bool isSuccess = m_sensorDao.SelectObjectsByCondition(sensorDaoVec, "testingdevice_id='" + CommonUtil::Int2CString(testingDeviceId) + "'");
@@ -88,7 +87,7 @@ bool  CSensorService::GetAllSensorByTestingDeviceId(int testingDeviceId, vector<
 Result CSensorService::AddSampleData(TbProject project, int sensorId, ThreadSafeQueue<AcquiredSignal> &collectionData){
 	///1.拼装保存路径
 	CString path = "I:\\SampleData\\";
-	//2.拼装文件名 项目id_测试设备id_传感器id_被检测设备id_时间戳
+	//2.拼装文件名 项目id_测试设备id_传感器id_产品id_时间戳
 	CString fileName = CommonUtil::Int2CString(project.GetProjectId()) + "-"
 		+ CommonUtil::Int2CString(project.GetTestingDevicePara().GetTestingdevice().GetTestingdeviceId())
 		+ "-" + CommonUtil::Int2CString(sensorId) + "-" + CommonUtil::Int2CString(project.GetDetectedDevice().GetDetecteddeviceId())

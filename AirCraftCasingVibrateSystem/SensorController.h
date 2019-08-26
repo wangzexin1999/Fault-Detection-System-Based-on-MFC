@@ -31,9 +31,6 @@ public:
 	SensorController();
 	~SensorController();
 
-//public:
-//	//// 读取数据线程一共16个线程
-//	 HANDLE m_pReadDataThread[20];
 
 public:
 	/**********************************************************************
@@ -45,7 +42,7 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	Result SaveCollectionData(int viewId,int sensorId);
+	Result SaveCollectionData(int sensorId, ThreadSafeQueue<AcquiredSignal> &collectionData);
 
 	/**********************************************************************
 	功能描述：保存采集的数据

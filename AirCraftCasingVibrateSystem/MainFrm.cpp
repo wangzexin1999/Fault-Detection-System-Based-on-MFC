@@ -454,10 +454,7 @@ void CMainFrame::OnButtonSuspendCapture()
 //开始采集
 void CMainFrame::OnButtonStartCapture()
 {
-	// TODO:  在此添加命令处理程序代码
-
 	// 设置底部坐标轴为自动
-	//
 	int projectId = theApp.m_currentProject.GetProjectId();
 	if (projectId <= 0){
 		AfxMessageBox("请先打开或者新建项目");
@@ -476,13 +473,10 @@ void CMainFrame::OnButtonStartCapture()
 		//// 计算通道个数
 		//CalculateChannelNum(m_nChannelNums);
 
-		///// 初始化信号采集队列，初始化信号采集View
-		theApp.m_collectData.clear();
+		///// 初始化信号采集View
 
 		for (int i = 0; i < m_vsignalCaptureView.size(); i++){
 			///添加数据队列到采集数据队列集合
-			ThreadSafeQueue<AcquiredSignal> acquireSignalQueue;
-			theApp.m_collectData.push_back(acquireSignalQueue);
 			////给传感器数据赋值
 				for (int m = 0; m < 100; m++)
 				{
@@ -531,7 +525,7 @@ void CMainFrame::OnButtonDetectDevice()
 	detectDeviceManageView.DoModal();
 }
 
-/*被检测设备管理*/
+/*产品管理*/
 void CMainFrame::OnButtonDetectedDevice()
 {
 	// TODO:  在此添加命令处理程序代码
@@ -553,7 +547,6 @@ void CMainFrame::OnBtnStartSmaple()
 // 停止采样
 void CMainFrame::OnBtnStopSample()
 {
-	// TODO:  在此添加命令处理程序代码
 
 }
 

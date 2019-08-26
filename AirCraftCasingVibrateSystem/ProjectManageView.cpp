@@ -77,7 +77,7 @@ void CProjectManageView::GridCtrlInit(){
 				Item.strText.Format(_T("检测设备"), 3);
 			}
 			if (col == 4){
-				Item.strText.Format(_T("被检测设备"), 4);
+				Item.strText.Format(_T("产品"), 4);
 			}
 			m_projectGrid.SetItem(&Item);
 			continue;

@@ -100,7 +100,7 @@ protected:
 	afx_msg void OnBtnEngineeringUnit();///工程单位
 	afx_msg void OnBtnAlarmSet();///报警设置
 	afx_msg void OnButtonDetectDevice();///检测设备
-	afx_msg void OnButtonDetectedDevice();///被检测设备
+	afx_msg void OnButtonDetectedDevice();///产品
 
 	afx_msg void OnBtnTransverseAmplification();
 	afx_msg void OnBtnHorizontalReduction(); ///横向缩小
