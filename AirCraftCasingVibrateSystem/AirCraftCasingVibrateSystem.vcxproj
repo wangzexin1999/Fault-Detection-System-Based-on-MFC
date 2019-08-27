@@ -245,8 +245,16 @@
     <ClInclude Include="ChartCtrl\DuExport.h" />
     <ClInclude Include="ChartCtrl\MemDC.h" />
     <ClInclude Include="ChartCtrl\PointsOrdering.h" />
+<<<<<<< HEAD
     <ClInclude Include="CollectionDataInfoDlg.h" />
     <ClInclude Include="Constant.h" />
+=======
+<<<<<<< HEAD
+    <ClInclude Include="CollectionDataInfoDlg.h" />
+=======
+    <ClInclude Include="Constant.h" />
+>>>>>>> 4c6fe6e808062214dec2cb9bb0fee5801905684b
+>>>>>>> 4202344749b88cd36f82820f27a75b72a21a0459
     <ClInclude Include="DataStructure.h" />
     <ClInclude Include="EchoSignal.h" />
     <ClInclude Include="FFTWUtil.h" />
