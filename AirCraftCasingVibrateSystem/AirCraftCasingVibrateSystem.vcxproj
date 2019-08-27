@@ -36,7 +36,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
-    <UseOfMfc>Dynamic</UseOfMfc>
+    <UseOfMfc>Static</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -65,6 +65,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="mysql.props" />
     <Import Project="PropertyFFTW.props" />
+    <Import Project="redis.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -118,6 +119,7 @@
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -247,6 +249,8 @@
     <ClInclude Include="DataStructure.h" />
     <ClInclude Include="EchoSignal.h" />
     <ClInclude Include="FFTWUtil.h" />
+    <ClInclude Include="hiredis.h" />
+    <ClInclude Include="redisUtil.h" />
     <ClInclude Include="SensorController.h" />
     <ClInclude Include="CherryTree.h" />
     <ClInclude Include="ChildFrm.h" />
@@ -337,6 +341,7 @@
     <ClInclude Include="TestingDeviceService.h" />
     <ClInclude Include="ThreadSafeQueue.h" />
     <ClInclude Include="TriggerParaView.h" />
+    <ClInclude Include="win32fixes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AcquiredSignal.cpp" />
@@ -473,6 +478,9 @@
     <ClCompile Include="TestingDeviceController.cpp" />
     <ClCompile Include="TestingDeviceService.cpp" />
     <ClCompile Include="TriggerParaView.cpp" />
+    <ClCompile Include="win32fixes.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AirCraftCasingVibrateSystem.rc" />

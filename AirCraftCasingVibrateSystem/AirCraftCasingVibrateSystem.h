@@ -28,7 +28,7 @@
 #include "ThreadSafeQueue.h"////线程安全锁。 
 #include "AcquiredSignal.h"
 #include "SignalAcquisitionService.h"
-
+#include "redisUtil.h"
 using namespace std;
 
 
