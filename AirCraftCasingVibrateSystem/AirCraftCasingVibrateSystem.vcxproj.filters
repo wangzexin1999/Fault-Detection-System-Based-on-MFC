@@ -64,6 +64,9 @@
     <Filter Include="头文件\entity">
       <UniqueIdentifier>{65b8e1e7-4a7d-473b-b531-f1f382895c0b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Redis">
+      <UniqueIdentifier>{0a6ada75-d743-4bad-b35a-41f254ae866d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -507,8 +510,22 @@
     <ClInclude Include="EchoSignal.h">
       <Filter>头文件</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="CollectionDataInfoDlg.h">
       <Filter>头文件</Filter>
+=======
+    <ClInclude Include="Constant.h">
+      <Filter>源文件\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="redisUtil.h">
+      <Filter>Redis</Filter>
+    </ClInclude>
+    <ClInclude Include="win32fixes.h">
+      <Filter>Redis</Filter>
+    </ClInclude>
+    <ClInclude Include="hiredis.h">
+      <Filter>Redis</Filter>
+>>>>>>> 4c6fe6e808062214dec2cb9bb0fee5801905684b
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -899,8 +916,13 @@
     <ClCompile Include="EchoSignal.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="CollectionDataInfoDlg.cpp">
       <Filter>源文件</Filter>
+=======
+    <ClCompile Include="win32fixes.c">
+      <Filter>Redis</Filter>
+>>>>>>> 4c6fe6e808062214dec2cb9bb0fee5801905684b
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
