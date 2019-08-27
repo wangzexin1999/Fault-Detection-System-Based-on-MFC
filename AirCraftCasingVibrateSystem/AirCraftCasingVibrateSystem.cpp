@@ -22,6 +22,7 @@
 #include "AirCraftCasingVibrateSystemView.h"
 #include "LoginView.h"
 #include "FileUtil.h"
+#include "Constant.h"
 #ifdef _DEBUGE	
 #define new DEBUG_NEW
 #endif
@@ -69,7 +70,6 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	// 如果一个运行在 Windows XP 上的应用程序清单指定要
 	// 使用 ComCtl32.dll 版本 6 或更高版本来启用可视化方式，
 	//则需要 InitCommonControlsEx()。  否则，将无法创建窗口。
-
 	///设置mysql数据库信息
 	const char user[] = "root";         //username
 	const char pswd[] = "123456";         //password
@@ -79,13 +79,15 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	theApp.PDsql.SetMysql(host, user, pswd, table);
 	theApp.PDsql.OpenSql();
 	//弹出登录窗口
-	CLoginView m_loginView;
-	m_loginView.DoModal();
-
+	CLoginView loginView;
+	// 如果点击取消了，程序停止
+	if (loginView.DoModal() == CancelLogin)
+	{
+		return FALSE;
+	}
 	// 从文件中读取数据->内存（模拟数据）
 	CFileUtil fileUtil;
 	fileUtil.ReadFile(_T(""), tempRead);
-	//double temp = tempRead[10][200];
 
 	INITCOMMONCONTROLSEX InitCtrls;
 	InitCtrls.dwSize = sizeof(InitCtrls);

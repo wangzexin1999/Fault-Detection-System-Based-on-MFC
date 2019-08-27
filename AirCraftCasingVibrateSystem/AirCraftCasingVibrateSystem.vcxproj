@@ -243,6 +243,7 @@
     <ClInclude Include="ChartCtrl\DuExport.h" />
     <ClInclude Include="ChartCtrl\MemDC.h" />
     <ClInclude Include="ChartCtrl\PointsOrdering.h" />
+    <ClInclude Include="Constant.h" />
     <ClInclude Include="DataStructure.h" />
     <ClInclude Include="EchoSignal.h" />
     <ClInclude Include="FFTWUtil.h" />
