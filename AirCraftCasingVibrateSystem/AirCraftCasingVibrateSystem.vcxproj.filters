@@ -510,16 +510,12 @@
     <ClInclude Include="EchoSignal.h">
       <Filter>头文件</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="CollectionDataInfoDlg.h">
       <Filter>头文件</Filter>
     </ClInclude>
-=======
-<<<<<<< HEAD
     <ClInclude Include="CollectionDataInfoDlg.h">
       <Filter>头文件</Filter>
-=======
->>>>>>> 4202344749b88cd36f82820f27a75b72a21a0459
+    </ClInclude>  
     <ClInclude Include="Constant.h">
       <Filter>源文件\Utils</Filter>
     </ClInclude>
@@ -531,10 +527,6 @@
     </ClInclude>
     <ClInclude Include="hiredis.h">
       <Filter>Redis</Filter>
-<<<<<<< HEAD
-=======
->>>>>>> 4c6fe6e808062214dec2cb9bb0fee5801905684b
->>>>>>> 4202344749b88cd36f82820f27a75b72a21a0459
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -925,21 +917,17 @@
     <ClCompile Include="EchoSignal.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="CollectionDataInfoDlg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>  
     <ClCompile Include="win32fixes.c">
       <Filter>Redis</Filter>
-=======
-<<<<<<< HEAD
+    </ClCompile>  
     <ClCompile Include="CollectionDataInfoDlg.cpp">
       <Filter>源文件</Filter>
-=======
+    </ClCompile>
     <ClCompile Include="win32fixes.c">
       <Filter>Redis</Filter>
->>>>>>> 4c6fe6e808062214dec2cb9bb0fee5801905684b
->>>>>>> 4202344749b88cd36f82820f27a75b72a21a0459
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
