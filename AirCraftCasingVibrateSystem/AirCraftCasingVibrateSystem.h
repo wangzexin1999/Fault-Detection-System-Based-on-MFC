@@ -64,7 +64,8 @@ public:
 
 	bool m_bIsAutoSaveSamplingData = true; ///是否自动保存采样数据
 	bool m_bIsAutoSaveCollectionData = true; ///是否自动保存采集数据
-		
+	
+	CString m_collectionRotatingSpeed = "";
 
 	vector<SignalAcquisitionService> m_vSignalAcquisitionService; ////信号采集服务
 

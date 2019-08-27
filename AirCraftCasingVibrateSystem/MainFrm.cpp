@@ -409,11 +409,6 @@ void CMainFrame::OnButtonProjectManage()
 void CMainFrame::OnButtonOpenDataFile()
 {
 	// TODO:  在此添加命令处理程序代码
-	int projectId = theApp.m_currentProject.GetProjectId();
-	if (projectId <= 0){
-		AfxMessageBox("请先打开或者新建项目");
-		return;
-	}
 	CSignalDataView signalDataView;
 	signalDataView.DoModal();
 }
@@ -486,6 +481,12 @@ void CMainFrame::OnButtonStartCapture()
 					}
 				}
 		}
+		/////输入采集数据信息
+		CollectionDataInfoDlg m_collectionDataInfoDlg;
+		m_collectionDataInfoDlg.DoModal();
+		
+		if (theApp.m_collectionRotatingSpeed == ""){ theApp.m_icollectionStatus = 0; return; }
+
 		////开启所有窗口的采集线程
 		for (int i = 0; i < m_vsignalCaptureView.size(); i++){
 			m_vsignalCaptureView[i]->OpenThread2CaptureData();
@@ -547,6 +548,11 @@ void CMainFrame::OnBtnStartSmaple()
 // 停止采样
 void CMainFrame::OnBtnStopSample()
 {
+	theApp.m_bIsSample = false;
+	//遍历所有采集窗口去保存采样数据
+	for (int i = 0; i < m_vsignalCaptureView.size(); i++){
+		m_vsignalCaptureView[i]->OpenThread2SaveSampleData();
+	}
 
 }
 

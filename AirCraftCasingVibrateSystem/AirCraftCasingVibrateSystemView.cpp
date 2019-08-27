@@ -156,7 +156,7 @@ void CAirCraftCasingVibrateSystemView::CaptureData(){
 			fftwInput.push_back(fftw);
 			if (theApp.m_bIsSample){
 				////如果此时正在采样，将采样的数据存入到采样队列中。
-				m_collectionDataQueue.push(acquiredSignal);
+				m_sampleDataQueue.push(acquiredSignal);
 			}
 		}
 		/////将一次采集的数据进行傅里叶变换
@@ -237,7 +237,6 @@ void  CAirCraftCasingVibrateSystemView::AutoSaveCollectionData(){
 
 ////保存采集数据
 void CAirCraftCasingVibrateSystemView::SaveCollectionData(ThreadSafeQueue<AcquiredSignal> acquireSignalQueue){
-	
 	m_sensorController.SaveCollectionData(m_signalSelectView.GetSelectedSensor().GetSensorId(), acquireSignalQueue);
 }
 
@@ -246,10 +245,18 @@ void CAirCraftCasingVibrateSystemView::OpenThread2SaveCollectionData(){
 	thread t(&CAirCraftCasingVibrateSystemView::AutoSaveCollectionData, this);
 	t.detach();
 }
-void  CAirCraftCasingVibrateSystemView::AutoSaveSampleData(){
+void  CAirCraftCasingVibrateSystemView::SaveSampleData(){
 	////调用传感器Controller类保存采样数据
-	//m_sensorController.SaveSampleData(m_icurrentWindowNumber, m_signalSelectView.GetSelectedSensor().GetSensorId());
+	Result res = m_sensorController.SaveSampleData(m_signalSelectView.GetSelectedSensor().GetSensorId(),m_sampleDataQueue);
+	if (!res.GetIsSuccess()){
+		AfxMessageBox(res.GetMessages());
+	}
 }
+void  CAirCraftCasingVibrateSystemView::OpenThread2SaveSampleData(){
+	thread t(&CAirCraftCasingVibrateSystemView::SaveSampleData, this);
+	t.detach();
+}
+
 CDuChartCtrl & CAirCraftCasingVibrateSystemView::GetChartCtrl(){
 	return m_chart;
 }

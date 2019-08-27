@@ -36,7 +36,8 @@ bool ProjectService::GetAllProjectBySearchCondition(int testerId, CString projec
 	vector<TbProjectDao>  selectedValueVector;
 	////2.查询测试人员的所有项目
 	//////2.1 封装sql查询条件
-	CString strSqlWhere = "tester_id ='" + CommonUtil::Int2CString(testerId) + "'";
+	CString strSqlWhere = "";
+	if (testerId != 0) strSqlWhere = "tester_id ='" + CommonUtil::Int2CString(testerId) + "'";
 	if (projectName != "") strSqlWhere += "and project_name like '%" + projectName+"%'";
 	if (startTime != "") strSqlWhere += "and project_createtime >='" + startTime + "'";
 	if (endTime != "") strSqlWhere += "and project_createtime <='" + endTime + "'";
@@ -77,3 +78,4 @@ bool ProjectService::GetAllProjectBySearchCondition(int testerId, CString projec
 	}
 	return isSuccess;
 }
+

@@ -12,11 +12,17 @@ CString DateUtil::GetCurrentCStringTime(CString format){
 CString DateUtil::GetCStringTimeFormCTime(CTime time){
 	return time.Format("%Y-%m-%d");
 }
-CTime & DateUtil::GetAWeekAgoDate(){
-	CTime   currentTime = CTime::GetCurrentTime();
-	CTimeSpan aweekSpan(7, 0, 0, 0);
 
-	return currentTime - aweekSpan;
+
+CString & DateUtil::GetSeveralDaysAgoCStringDate(int daysAgo, CString format){
+	CTime   currentTime = CTime::GetCurrentTime();
+	CTimeSpan aweekSpan(daysAgo, 0, 0, 0);
+	return (currentTime - aweekSpan).Format(format);
+}
+CTime  & DateUtil::GetSeveralDaysAgoCTimeDate(int daysAgo){
+	CTime   currentTime = CTime::GetCurrentTime();
+	CTimeSpan aweekSpan(daysAgo, 0, 0, 0);
+	return (currentTime - aweekSpan);
 }
 
 CString DateUtil::GetTimeStampCString(){

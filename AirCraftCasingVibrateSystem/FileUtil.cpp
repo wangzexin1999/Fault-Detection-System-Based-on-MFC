@@ -254,7 +254,6 @@ Result CFileUtil::SaveCollectionData(CString path, CString fileName, ThreadSafeQ
 	CString separator = ",";////逗号分隔符
 	CString endTime;
 	int saveCount = collectionData.size();
-
 	for (int i = 0; i < saveCount;i++){
 		////循环采集数据的队列去保存数据
 		CString data = "";
