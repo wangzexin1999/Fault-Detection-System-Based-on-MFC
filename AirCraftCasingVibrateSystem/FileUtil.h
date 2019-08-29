@@ -23,6 +23,7 @@ Modification:
 #include "AcquiredSignal.h"
 #include "Result.h"
 #include "ThreadSafeQueue.h"
+#include <string.h>
 using namespace std;
 
 
@@ -80,5 +81,25 @@ public:
 	 ----------------------------------------------------------------------
 	 ***********************************************************************/
 	static Result SaveCollectionData(CString path, CString fileName, ThreadSafeQueue<AcquiredSignal> &collectionData);
+	/**********************************************************************
+	 功能描述： 实时信号数据转换为JSON格式
+	 输入参数：
+	 输出参数： 
+	 返 回 值： 
+	 其它说明：
+	 修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	static bool RealTimeSignal2JSON(vector<double> dYValue, vector<CString> dXValue, int nDataLen, int nChannelIndex, CString &strData);
+	/**********************************************************************
+	 功能描述： 实时信号数据转换为JSON格式
+	 输入参数：
+	 输出参数： 
+	 返 回 值： 
+	 其它说明：
+	 修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	static bool  CFileUtil::RealTimeSignal2JSON(double dYValue[], string dXValue[], int nDataLen, int nChannelIndex, CString &strData);
 };
 

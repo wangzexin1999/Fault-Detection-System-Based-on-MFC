@@ -250,6 +250,7 @@
     <ClInclude Include="EchoSignal.h" />
     <ClInclude Include="FFTWUtil.h" />
     <ClInclude Include="hiredis.h" />
+    <ClInclude Include="RealTimeSignal.h" />
     <ClInclude Include="redisUtil.h" />
     <ClInclude Include="SensorController.h" />
     <ClInclude Include="CherryTree.h" />
@@ -390,6 +391,7 @@
     <ClCompile Include="ChartCtrl\DuChartCtrlStaticFunction.cpp" />
     <ClCompile Include="EchoSignal.cpp" />
     <ClCompile Include="FFTWUtil.cpp" />
+    <ClCompile Include="RealTimeSignal.cpp" />
     <ClCompile Include="SensorController.cpp" />
     <ClCompile Include="CherryTree.cpp" />
     <ClCompile Include="ChildFrm.cpp" />

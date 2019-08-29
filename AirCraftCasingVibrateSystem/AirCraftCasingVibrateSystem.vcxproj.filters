@@ -522,6 +522,9 @@
     <ClInclude Include="hiredis.h">
       <Filter>Redis</Filter>
     </ClInclude>
+    <ClInclude Include="RealTimeSignal.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AirCraftCasingVibrateSystem.cpp">
@@ -913,6 +916,9 @@
     </ClCompile>
     <ClCompile Include="win32fixes.c">
       <Filter>Redis</Filter>
+    </ClCompile>
+    <ClCompile Include="RealTimeSignal.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

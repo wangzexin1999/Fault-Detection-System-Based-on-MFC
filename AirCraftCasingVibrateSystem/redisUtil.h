@@ -16,42 +16,45 @@ public:
 
 	~Redis()
 	{
-		this->_connect = NULL;
-		this->_reply = NULL;
+		this->connect = NULL;
+		this->reply = NULL;
 	}
 
-	bool connect(std::string host, int port)
+	/*连接redis*/
+	bool Connect(std::string strHost, int nPort)
 	{
 		//使用2.1版本的Socket
 		WSADATA wsaData;
 		WSAStartup(MAKEWORD(2, 1), &wsaData); 
 		// 连接
-		this->_connect = redisConnect(host.c_str(), port); 
-		if (this->_connect != NULL && this->_connect->err)
+		this->connect = redisConnect(strHost.c_str(), nPort);
+		if (this->connect != NULL && this->connect->err)
 		{
 			AfxMessageBox("redis connect error\n");
-			return 0;
+			return false;
 		}
-		return 1;
+		return true;
 	}
 
-	std::string get(std::string key)
+	/*得到值*/
+	std::string GetValue(std::string strKey)
 	{
-		this->_reply = (redisReply*)redisCommand(this->_connect, "GET %s", key.c_str());
-		std::string str = this->_reply->str;
-		freeReplyObject(this->_reply);
+		this->reply = (redisReply*)redisCommand(this->connect, "GET %s", strKey.c_str());
+		std::string str = this->reply->str;
+		freeReplyObject(this->reply);
 		return str;
 	}
 
-	void set(std::string key, std::string value)
+	/*使得值*/
+	void SetValue(std::string strKey, std::string strValue)
 	{
-		redisCommand(this->_connect, "SET %s %s", key.c_str(), value.c_str());
+		redisCommand(this->connect, "SET %s %s", strKey.c_str(), strValue.c_str());
 	}
 
 private:
 
-	redisContext* _connect;
-	redisReply* _reply;
+	redisContext* connect;
+	redisReply* reply;
 
 };
 

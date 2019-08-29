@@ -32,3 +32,5 @@ void FFTWUtil::FFTDataToXY(SmartFFTWComplexArray  & fftwOut, SmartArray<double> 
 		yData.push_back(2 * sqrt(out[i][0] * out[i][0] + out[i][1] * out[i][1]) / 1000);
 	}
 }
+
+
