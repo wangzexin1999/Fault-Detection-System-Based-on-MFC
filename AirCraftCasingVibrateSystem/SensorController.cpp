@@ -20,7 +20,10 @@ Result SensorController::SaveCollectionData(int sensorId, ThreadSafeQueue<Acquir
 	Result res = m_sensorService.AddCollectData(theApp.m_currentProject, sensorId, collectionData);
 	return res;
 }
-
+Result SensorController::SaveSampleData(int sensorId, ThreadSafeQueue<AcquiredSignal> &collectionData){
+	Result res = m_sensorService.AddSampleData(theApp.m_currentProject, sensorId, collectionData);
+	return res;
+}
 //Result SensorController::SaveSampleData(int viewId, int sensorId){
 //	/*Result res = m_sensorService.AddSampleData(theApp.m_currentProject, sensorId, collectionData);
 //	return res;*/

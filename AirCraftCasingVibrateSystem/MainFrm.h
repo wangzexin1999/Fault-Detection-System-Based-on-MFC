@@ -17,6 +17,8 @@
 #include "ChannelParaView.h"
 #include "AirCraftCasingVibrateSystemView.h"
 #include <vector>
+#include "CollectionDataInfoDlg.h"
+
 class CMainFrame : public CMDIFrameWndEx
 {
 	DECLARE_DYNAMIC(CMainFrame)
@@ -48,7 +50,7 @@ protected:  // 控件条嵌入成员
 	CMFCRibbonStatusBar  m_wndStatusBar;
 	CMFCCaptionBar    m_wndCaptionBar;
 	CMFCToolBar       m_wndContrlBar;
-
+	
 	std::vector<CAirCraftCasingVibrateSystemView *> m_vsignalCaptureView;
 
 public:

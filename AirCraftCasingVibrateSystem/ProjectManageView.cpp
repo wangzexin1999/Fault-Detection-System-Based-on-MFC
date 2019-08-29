@@ -107,7 +107,7 @@ BOOL CProjectManageView::OnInitDialog()
 	m_proStartTimeCtrl.SetFormat(_T("yyyy'- 'MM'- 'dd"));
 	m_proEndTimeCtrl.SetFormat(_T("yyyy'- 'MM'- 'dd"));
 	///初始化开始日期控件时间为一周之前
-	CTime aWeekAgo = DateUtil::GetAWeekAgoDate();
+	CTime aWeekAgo = DateUtil::GetSeveralDaysAgoCTimeDate(7);
 	m_proStartTimeCtrl.SetTime(&aWeekAgo);
 
 	int testerId = theApp.m_currentProject.GetTester().GetTesterId();

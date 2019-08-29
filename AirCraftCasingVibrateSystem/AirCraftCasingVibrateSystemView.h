@@ -30,8 +30,13 @@
 #include "SmartArray.h"
 #include "AirCraftCasingVibrateSystemDoc.h"
 #include "EchoSignal.h"
+<<<<<<< HEAD
 #include "redisUtil.h"
 #include "RealTimeSignal.h"
+=======
+
+
+>>>>>>> e7471bba7145a850cab4c043a73d480160e511b2
 class CAirCraftCasingVibrateSystemView : public CFormView
 {
 protected: // 仅从序列化创建
@@ -44,12 +49,16 @@ private:
 	int m_flag = false;  // 调整控件大小标志
 	CSignalSelectView  m_signalSelectView;   //信号选择界面
 	CGraphAttributeView m_graphAttributeView; // 图形属性界面
+
+	
+
 	SensorController m_sensorController; ///传感器控制类
 	ThreadSafeQueue<EchoSignal>  m_echoSignalQueue;
 
 	int m_icurrentWindowNumber;
 	ThreadSafeQueue<AcquiredSignal> m_collectionDataQueue;
 
+	ThreadSafeQueue<AcquiredSignal> m_sampleDataQueue;
 	static int m_iwindowCount;//窗口数量
 	int m_realTimeSignalCaptureflag = true; // 采集实时数据时，第一次是push，接下来是赋值
 public:
@@ -127,6 +136,7 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	void OpenThread2SaveCollectionData();
+
 	/**********************************************************************
 	功能描述： 自动保存采样数据的线程函数
 	输入参数：
@@ -136,8 +146,17 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	void AutoSaveSampleData();
-
+	void SaveSampleData();
+	/**********************************************************************
+	功能描述： 开启线程自动保存采集数据的线程函数
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void OpenThread2SaveSampleData();
 	/**********************************************************************
 	功能描述： 得到view中的ChartCtrl控件
 	输入参数：

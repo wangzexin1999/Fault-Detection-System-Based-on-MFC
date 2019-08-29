@@ -245,6 +245,7 @@
     <ClInclude Include="ChartCtrl\DuExport.h" />
     <ClInclude Include="ChartCtrl\MemDC.h" />
     <ClInclude Include="ChartCtrl\PointsOrdering.h" />
+    <ClInclude Include="CollectionDataInfoDlg.h" />
     <ClInclude Include="Constant.h" />
     <ClInclude Include="DataStructure.h" />
     <ClInclude Include="EchoSignal.h" />
@@ -389,6 +390,7 @@
     <ClCompile Include="ChartCtrl\DuChartCtrl.cpp" />
     <ClCompile Include="ChartCtrl\DuChartCtrlShuxing.cpp" />
     <ClCompile Include="ChartCtrl\DuChartCtrlStaticFunction.cpp" />
+    <ClCompile Include="CollectionDataInfoDlg.cpp" />
     <ClCompile Include="EchoSignal.cpp" />
     <ClCompile Include="FFTWUtil.cpp" />
     <ClCompile Include="RealTimeSignal.cpp" />

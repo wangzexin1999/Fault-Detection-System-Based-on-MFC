@@ -53,7 +53,7 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	Result SaveSampleData(int viewId, int sensorId);
+	Result SaveSampleData(int sensorId, ThreadSafeQueue<AcquiredSignal> &collectionData);
 
 	/**********************************************************************
 	功能描述：查询采集设备对应的所有传感器

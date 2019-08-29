@@ -13,7 +13,9 @@ public:
 	***********************************************************************/
 	static CString GetCurrentCStringTime(CString format = "%Y-%m-%d %H:%M:%S");
 	static CString GetCStringTimeFormCTime(CTime time);
-	static CTime & GetAWeekAgoDate();
+
+	static CString & GetSeveralDaysAgoCStringDate(int daysAgo, CString format = "%Y-%m-%d %H:%M:%S");
+	static CTime  & GetSeveralDaysAgoCTimeDate(int daysAgo);
 	static CString GetTimeStampCString();
 };
 

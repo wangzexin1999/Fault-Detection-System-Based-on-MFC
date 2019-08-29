@@ -84,6 +84,7 @@
 #define IDD_DIALOG_OPEN_DATA            361
 #define IDD_DIALOG_DETECT_DEVICE_MANAGE 362
 #define IDD_DIALOG_DETECTED_DEVICE_MANAGE 363
+#define IDD_COLLECTIONDATAINFO_DIALOG   368
 #define IDC_TAB1                        1000
 #define IDC_LIST_GENERAL_PARA           1001
 #define IDC_COMBO1                      1002
@@ -161,6 +162,7 @@
 #define IDC_PROENDTIME                  1091
 #define IDC_SIGNALDATA_GRIDCTRL         1092
 #define IDC_SIGNALDATANAME_EDIT         1093
+#define IDC_PROJECTNAME_EDIT            1093
 #define IDC_SEARCH_BUTTON               1094
 #define IDC_DATESELECT_CHECK            1095
 #define IDC_GENERAPARA_GRIDCTRL         1096
@@ -168,6 +170,9 @@
 #define IDC_TESTINGDEVICENAME_EDIT      1098
 #define ID_DELETE_BUTTON                1099
 #define IDC_ADD_BUTTON                  1100
+#define IDC_PRODUCTNAME_EDIT            1103
+#define IDC_ROTATINGSPEED_EDIT          1104
+#define IDC_DATE_COMBO                  1105
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_CHECK2                       32771
 #define ID_COMBO2                       32772
@@ -227,9 +232,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        368
+#define _APS_NEXT_RESOURCE_VALUE        369
 #define _APS_NEXT_COMMAND_VALUE         32830
-#define _APS_NEXT_CONTROL_VALUE         1103
+#define _APS_NEXT_CONTROL_VALUE         1106
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

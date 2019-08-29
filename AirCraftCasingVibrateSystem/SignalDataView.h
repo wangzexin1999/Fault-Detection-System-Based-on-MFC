@@ -26,9 +26,12 @@ protected:
 	CGridCtrl m_signalDataGridCtrl;
 	void GridCtrlInit();
 	DECLARE_MESSAGE_MAP()
-	CEdit m_singnalDataNameCtrl;
-	CDateTimeCtrl m_signalDataStartTimeCtrl;
-	CDateTimeCtrl m_signalDataEndTimeCtrl;
+	CEdit m_projectNameEdit;
+	CComboBox m_dateSelectComboBox;
+	CEdit m_productNameEdit;
+	CEdit m_rotatingSpeedEdit;
+	
+
 	vector<TbSignal> m_signalVector;
 	SignalController m_signalController;
 	TbSignal m_selectedSignal;
@@ -39,5 +42,5 @@ public:
 	afx_msg void OnGridClick(NMHDR *pNotifyStruct, LRESULT* pResult);
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedSearchButton();
-	CButton m_dateSelectCheckBox;
+	
 };

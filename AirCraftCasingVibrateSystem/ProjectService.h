@@ -21,5 +21,6 @@ protected:
 public:
 	bool AddProject(TbProject & project);
 	bool GetAllProjectBySearchCondition(int testerId, CString projectName, CString startTime, CString endTime, vector<TbProject> &projectVector);
+	//bool GetAllProjectIdBySearchCondition(int testerId, CString projectName, CString startTime, CString endTime, vector<int> &projectIdVector);
 };
 

@@ -510,6 +510,12 @@
     <ClInclude Include="EchoSignal.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CollectionDataInfoDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CollectionDataInfoDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>  
     <ClInclude Include="Constant.h">
       <Filter>源文件\Utils</Filter>
     </ClInclude>
@@ -912,6 +918,15 @@
       <Filter>源文件\entity</Filter>
     </ClCompile>
     <ClCompile Include="EchoSignal.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CollectionDataInfoDlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>  
+    <ClCompile Include="win32fixes.c">
+      <Filter>Redis</Filter>
+    </ClCompile>  
+    <ClCompile Include="CollectionDataInfoDlg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="win32fixes.c">
