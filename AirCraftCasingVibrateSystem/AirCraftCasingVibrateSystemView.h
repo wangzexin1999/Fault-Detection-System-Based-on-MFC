@@ -30,13 +30,10 @@
 #include "SmartArray.h"
 #include "AirCraftCasingVibrateSystemDoc.h"
 #include "EchoSignal.h"
-<<<<<<< HEAD
 #include "redisUtil.h"
 #include "RealTimeSignal.h"
-=======
 
 
->>>>>>> e7471bba7145a850cab4c043a73d480160e511b2
 class CAirCraftCasingVibrateSystemView : public CFormView
 {
 protected: // 仅从序列化创建
