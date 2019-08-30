@@ -516,7 +516,6 @@
     <ClInclude Include="hiredis.h">
       <Filter>Redis</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="TbProduct.h">
       <Filter>头文件\entity</Filter>
     </ClInclude>
@@ -528,10 +527,9 @@
     </ClInclude>
     <ClInclude Include="ProductManageView.h">
       <Filter>头文件\View</Filter>
-=======
+     </ClInclude> 
     <ClInclude Include="RealTimeSignal.h">
       <Filter>头文件</Filter>
->>>>>>> 25396601561c6fe4ba86ec03b79f3fb3ec46af35
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -922,7 +920,6 @@
     <ClCompile Include="win32fixes.c">
       <Filter>Redis</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="TbProduct.cpp">
       <Filter>源文件\entity</Filter>
     </ClCompile>
@@ -934,10 +931,9 @@
     </ClCompile>
     <ClCompile Include="ProductManageView.cpp">
       <Filter>源文件\View</Filter>
-=======
+    </ClCompile>  
     <ClCompile Include="RealTimeSignal.cpp">
       <Filter>源文件</Filter>
->>>>>>> 25396601561c6fe4ba86ec03b79f3fb3ec46af35
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
