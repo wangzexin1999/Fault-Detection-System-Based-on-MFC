@@ -36,7 +36,5 @@ public:
 	afx_msg void OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult);
 	afx_msg void OnGridClick(NMHDR *pNotifyStruct, LRESULT* pResult);
 	CEdit m_proSearchNameEdit;
-	CButton m_dateSelectCheckBox;
-	CDateTimeCtrl m_proStartTimeCtrl;
-	CDateTimeCtrl m_proEndTimeCtrl;
+	CComboBox m_dateSelectComboBox;
 };

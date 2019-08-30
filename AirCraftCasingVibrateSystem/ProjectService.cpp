@@ -30,17 +30,18 @@ bool ProjectService::AddProject(TbProject & project){
 	return true;
 }
 
-bool ProjectService::GetAllProjectBySearchCondition(int testerId, CString projectName, CString startTime, CString endTime, vector<TbProject> &projectVector){
+bool ProjectService::GetAllProjectBySearchCondition(TbProject project, CString startTime, CString endTime, vector<TbProject> &projectVector){
 	///1.设置项目的测试人员
-	m_projectDao.m_testerId.SetValue(testerId);
+	m_projectDao.m_testerId.SetValue(project.GetTester().GetTesterId());
 	vector<TbProjectDao>  selectedValueVector;
 	////2.查询测试人员的所有项目
 	//////2.1 封装sql查询条件
-	CString strSqlWhere = "";
-	if (testerId != 0) strSqlWhere = "tester_id ='" + CommonUtil::Int2CString(testerId) + "'";
-	if (projectName != "") strSqlWhere += "and project_name like '%" + projectName+"%'";
-	if (startTime != "") strSqlWhere += "and project_createtime >='" + startTime + "'";
-	if (endTime != "") strSqlWhere += "and project_createtime <='" + endTime + "'";
+	CString strSqlWhere = "1 = 1 ";
+	if (project.GetTester().GetTesterId() != 0) strSqlWhere += " and tester_id ='" + CommonUtil::Int2CString(project.GetTester().GetTesterId()) + "'";
+	if (project.GetProjectName() != "") strSqlWhere += " and project_name like '%" + project.GetProjectName() + "%'";
+	if (project.GetProduct().GetProductId() != 0) strSqlWhere += " and product_id =" + CommonUtil::Int2CString(project.GetProduct().GetProductId());
+	if (startTime != "") strSqlWhere += " and project_createtime >='" + startTime + "'";
+	if (endTime != "") strSqlWhere += " and project_createtime <='" + endTime + "'";
 	//////2.2 根据sql语句查询符合条件的所有项目
 	bool isSuccess = m_projectDao.SelectObjectsByCondition(selectedValueVector, strSqlWhere);
 	if (isSuccess){
@@ -67,11 +68,11 @@ bool ProjectService::GetAllProjectBySearchCondition(int testerId, CString projec
 			}
 			tbProject.SetProjectCreateTime(tbProjectDao.m_projectCreatetime.m_strValue);
 			////查询产品的信息
-			tbProject.GetDetectedDevice().SetDetecteddeviceId(tbProjectDao.m_detectedDeviceId.GetInt());
-			m_detectedDeviceDao.m_detecteddeviceId.SetValue(tbProjectDao.m_detectedDeviceId.GetInt());
-			isSuccess = m_detectedDeviceDao.SelectByKey();
+			tbProject.GetProduct().SetProductId(tbProjectDao.m_productId.GetInt());
+			m_productDao.m_productId.SetValue(tbProjectDao.m_productId.GetInt());
+			isSuccess = m_productDao.SelectByKey();
 			if (isSuccess){
-				m_detectedDeviceDao.GetTableFieldValues(tbProject.GetDetectedDevice());
+				m_productDao.GetTableFieldValues(tbProject.GetProduct());
 			}
 			projectVector.push_back(tbProject);
 		}

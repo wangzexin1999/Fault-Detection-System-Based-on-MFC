@@ -22,7 +22,7 @@ Modification:
 #include "TbSensorPara.h"
 #include "TbSensorParaDao.h"
 #include "CommonUtil.h"
-#include "TbDetectedDeviceDao.h"
+#include "TbProductDao.h"
 class SignalService
 {
 public:
@@ -32,13 +32,13 @@ public:
 protected:
 	TbSensorParaDao m_sensorParaDao;
 	TbRecordSignalDao m_recordSignalDao;
-	TbDetectedDeviceDao m_detectedDeviceDao;
+	TbProductDao m_productDao;
 public:
 	
 
 	/**********************************************************************
 	功能描述：根据查询条件查询所有的记录数据
-	输入参数：项目id ，信号名称，信号采集时间，信号结束采集时间。信号的集合。
+	输入参数：查询信号对象，信号采集时间，信号结束采集时间。信号的集合。
 	输出参数：
 	返 回 值：bool
 	其它说明：
@@ -46,7 +46,7 @@ public:
 	2019-07-30   1.0		马善涛		初始化
 	----------------------------------------------------------------------
 	***********************************************************************/
-	bool GetAllRecordedSignalBySearchCondition(int projectId, CString signalName, CString startTime, CString endTime, vector<TbSignal> &signalVector);
+	bool GetAllRecordedSignalBySearchCondition(TbSignal signal,CString startTime, CString endTime, vector<TbSignal> &signalVector);
 	
 };
 

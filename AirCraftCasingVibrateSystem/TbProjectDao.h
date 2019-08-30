@@ -14,10 +14,11 @@ public:
 	PDAttribute m_projectName;
 	PDAttribute m_projectCreatetime;
 	PDAttribute m_testingDeviceParaid;
-	PDAttribute m_detectedDeviceId;
-
+	PDAttribute m_productId;
+	PDAttribute m_projectStatus;
+	
 	void SetTableFieldValues(TbProject project);
-
+	void GetTableFieldValues(TbProject &project);
 
 	bool SelectObjectsByCondition(vector<TbProjectDao> &selectedValueVector, CString strSqlQueryWhere = "");
 	bool SelectObjectsByCondition(vector<TbProjectDao> &selectedValueVector, int iStartNumber, int iRecordCount, CString strSqlQueryWhere = "");

@@ -1,24 +1,28 @@
 #pragma once
 #include "TbTester.h"
 #include"TbTestingDevicePara.h"
-#include "TbDetectedDevice.h"
+#include "TbProduct.h"
 #include "TbSensorPara.h"
 #include <vector>
 using namespace std;
 class TbProject
 {
 public:
-	TbProject();
-	TbProject(int projectId, TbTester tester, CString  projectName, CString projectCreatetime, TbTestingDevicePara  testingDevicePara, TbDetectedDevice  detectedDevice);
+
+	TbProject(int projectId = 0,CString  projectName = "");
+	TbProject(int projectId, CString  projectName, CString projectCreatetime, TbTester tester, TbTestingDevicePara  testingDevicePara, TbProduct  product);
 	~TbProject();
+
 protected:
+
 	int m_projectId;
 	TbTester m_tester;
 	CString  m_projectName;
 	CString m_projectCreatetime;
 	TbTestingDevicePara  m_testingDevicePara;
-	TbDetectedDevice m_detectedDevice;
+	TbProduct m_product;
 	vector<TbSensorPara> m_sensorParaVector;
+	int m_projectStatus;
 
 public:
 	void SetProjectId(int projectId);
@@ -26,8 +30,8 @@ public:
 	void SetTester(TbTester tester);
 	void SetTestingDevicePara(TbTestingDevicePara testingDevicePara);
 	TbTestingDevicePara & GetTestingDevicePara();
-	TbDetectedDevice & GetDetectedDevice();
-	void SetDetectedDevice(TbDetectedDevice  detectedDevice);
+	TbProduct & GetProduct();
+	void SetProduct(TbProduct  product);
 	void SetProjectCreateTime(CString m_projectCreatetime);
 	TbTester & GetTester();
 	CString GetProjectCreateTime();
@@ -35,5 +39,8 @@ public:
 	vector<TbSensorPara> & GetSensorParaVector();
 	void SetSensorParaVector(vector<TbSensorPara> sensorParaVector);
 	int GetProjectId();
+	void SetProjectStatus(int status);
+	int GetProjectStatus();
+
 };
 

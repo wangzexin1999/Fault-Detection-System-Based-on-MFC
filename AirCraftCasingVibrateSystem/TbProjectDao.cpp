@@ -11,7 +11,10 @@ TbProjectDao::TbProjectDao()
 	SetVectorAndField("project_name", "CString", m_projectName);
 	SetVectorAndField("project_createtime", "CString", m_projectCreatetime);
 	SetVectorAndField("testingdevice_paraid", "int", m_testingDeviceParaid);
-	SetVectorAndField("detecteddevice_id", "int", m_detectedDeviceId);
+	SetVectorAndField("product_id", "int", m_productId);
+	SetVectorAndField("project_status", "int", m_projectStatus);
+
+
 }
 
 
@@ -27,12 +30,12 @@ TbProjectDao::TbProjectDao(const TbProjectDao &project){
 	SetVectorAndField("project_name", "CString", m_projectName);
 	SetVectorAndField("project_createtime", "CString", m_projectCreatetime);
 	SetVectorAndField("testingdevice_paraid", "int", m_testingDeviceParaid);
-	SetVectorAndField("detecteddevice_id", "int", m_detectedDeviceId);
+	SetVectorAndField("product_id", "int", m_productId);
+	SetVectorAndField("project_status", "int", m_projectStatus);
 	operator = (project);
 }
 
 bool TbProjectDao::SelectObjectsByCondition(vector<TbProjectDao> &selectedValueVector, CString strSqlQueryWhere ){
-
 	int iStartNumberIn = 0; int iRecordCountIn = 0;
 	return SelectObjectsByCondition(selectedValueVector, iStartNumberIn, iRecordCountIn, strSqlQueryWhere);
 }
@@ -64,9 +67,21 @@ bool TbProjectDao::SelectObjectsByCondition(vector<TbProjectDao> &selectedValueV
 }
 
 void TbProjectDao::SetTableFieldValues(TbProject project){
-	this->m_detectedDeviceId.SetValue(project.GetDetectedDevice().GetDetecteddeviceId());
+	this->m_projectId.SetValue(project.GetProjectId());
+	this->m_productId.SetValue(project.GetProduct().GetProductId());
 	this->m_projectCreatetime.SetValue(project.GetProjectCreateTime());
 	this->m_projectName.SetValue(project.GetProjectName());
 	this->m_testerId.SetValue(project.GetTester().GetTesterId());
 	this->m_testingDeviceParaid.SetValue(project.GetTestingDevicePara().GetTestingdeviceparaId());
+	this->m_projectStatus.SetValue(project.GetProjectStatus());
+}
+
+void TbProjectDao::GetTableFieldValues(TbProject &project){
+	project.SetProjectId(m_projectId.GetInt());
+	project.SetProjectCreateTime(m_projectCreatetime.m_strValue);
+	project.SetProjectName(m_projectName.m_strValue);
+	project.SetProjectStatus(m_projectStatus.GetInt());
+	project.GetTester().SetTesterId(m_testerId.GetInt());
+	project.GetProduct().SetProductId(m_productId.GetInt());
+	project.GetTestingDevicePara().SetTestingdeviceparaId(m_testingDeviceParaid.GetInt());
 }

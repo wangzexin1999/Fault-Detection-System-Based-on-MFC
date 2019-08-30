@@ -21,7 +21,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-	vector<TbDetectedDeviceDao> m_detectedDeviceVector;
+	vector<TbProduct> m_productVector;
 
 	vector<TbTestingDeviceDao> m_testingDeviceVector;
 
@@ -29,7 +29,7 @@ public:
 	afx_msg void OnBnClickedOk();
 
 	CComboBox m_testingDeviceCombo;
-	CComboBox m_detectedDeviceCombo;
+	CComboBox m_productCombo;
 
 	virtual BOOL OnInitDialog();
 	ProjectController m_projectController;

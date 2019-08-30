@@ -30,7 +30,7 @@ void CNewProjectView::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_COMBO_TESTINGDEVICE, m_testingDeviceCombo);
-	DDX_Control(pDX, IDC_COMBO_DETECTEDDEVICE, m_detectedDeviceCombo);
+	DDX_Control(pDX, IDC_COMBO_DETECTEDDEVICE, m_productCombo);
 	DDX_Control(pDX, IDC_EDIT_PROJECTNAME, m_projectNameEdit);
 }
 
@@ -48,7 +48,7 @@ void CNewProjectView::OnBnClickedOk()
 	m_projectNameEdit.GetWindowTextA(projectName);
 	if (projectName == ""){ AfxMessageBox("项目名不能为空"); return;}
 	int testingIndex = m_testingDeviceCombo.GetCurSel();
-	int detectedIndex = m_detectedDeviceCombo.GetCurSel();
+	int detectedIndex = m_productCombo.GetCurSel();
 
 	if (testingIndex > 0) {
 		testingIndex--;
@@ -66,12 +66,12 @@ void CNewProjectView::OnBnClickedOk()
 	}
 	TbTester tester = theApp.m_currentProject.GetTester();
 
-	TbDetectedDevice detectedDevice;
-	detectedDevice.SetDetecteddeviceId(m_detectedDeviceVector[detectedIndex].m_detecteddeviceId.GetInt());
+	TbProduct product;
+	product.SetProductId(m_productVector[detectedIndex].GetProductId());
 
 	TbProject project;
 	project.SetProjectName(projectName);
-	project.SetDetectedDevice(detectedDevice);
+	project.SetProduct(product);
 	project.SetTester(tester);
 	project.SetProjectCreateTime(DateUtil::GetCurrentCStringTime());
 	int m = m_testingDeviceVector[testingIndex].m_testingDeviceId.GetInt();
@@ -92,7 +92,7 @@ BOOL CNewProjectView::OnInitDialog()
 	CDialogEx::OnInitDialog();
 	/*1.调用ProjectController去查询检测设备的下拉列表的数据*/
 	m_testingDeviceCombo.ResetContent();
-	m_detectedDeviceCombo.ResetContent();
+	m_productCombo.ResetContent();
 	Result res = m_projectController.LoadAllTestingDevice(m_testingDeviceVector);
 	if (res.GetIsSuccess()){
 		int i = 0;
@@ -108,19 +108,18 @@ BOOL CNewProjectView::OnInitDialog()
 
 	/*2.调用ProjectController去查询产品的下拉列表的数据*/
 
-	res = m_projectController.LoadAllDetectedDevice(m_detectedDeviceVector);
+	res = m_projectController.LoadAllProduct(m_productVector);
 	if (res.GetIsSuccess()){
 		int i = 0;
-		m_detectedDeviceCombo.InsertString(i,"暂不选择2");
-		for (auto detectedDevice : m_detectedDeviceVector){
-			m_detectedDeviceCombo.InsertString(++i,detectedDevice.m_detecteddeviceName.m_strValue);
+		m_productCombo.InsertString(i,"暂不选择2");
+		for (auto product : m_productVector){
+			m_productCombo.InsertString(++i,product.GetProductType());
 		}
-		m_detectedDeviceCombo.SetCurSel(0);
+		m_productCombo.SetCurSel(0);
 	}
 	else
 	{
 		AfxMessageBox(res.GetMessages());
 	}
-	return TRUE;  // return TRUE unless you set the focus to a control
-	// 异常:  OCX 属性页应返回 FALSE
+	return TRUE;  
 }

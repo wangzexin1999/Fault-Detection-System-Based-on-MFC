@@ -14,10 +14,12 @@ CString DateUtil::GetCStringTimeFormCTime(CTime time){
 }
 
 
-CString & DateUtil::GetSeveralDaysAgoCStringDate(int daysAgo, CString format){
+CString  DateUtil::GetSeveralDaysAgoCStringDate(int daysAgo, CString format){
 	CTime   currentTime = CTime::GetCurrentTime();
 	CTimeSpan aweekSpan(daysAgo, 0, 0, 0);
-	return (currentTime - aweekSpan).Format(format);
+	CTime time = currentTime - aweekSpan;
+	CString str = time.Format(format);
+	return str;
 }
 CTime  & DateUtil::GetSeveralDaysAgoCTimeDate(int daysAgo){
 	CTime   currentTime = CTime::GetCurrentTime();

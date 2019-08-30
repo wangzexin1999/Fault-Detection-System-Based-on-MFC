@@ -47,7 +47,7 @@ Result CSensorService::AddCollectData(TbProject project, int sensorId, ThreadSaf
 	//2.拼装文件名 项目id_测试设备id_传感器id_产品id_时间戳
 	CString fileName = CommonUtil::Int2CString(project.GetProjectId()) + "-"
 		+ CommonUtil::Int2CString(project.GetTestingDevicePara().GetTestingdevice().GetTestingdeviceId())
-		+ "-" + CommonUtil::Int2CString(sensorId) + "-" + CommonUtil::Int2CString(project.GetDetectedDevice().GetDetecteddeviceId())
+		+ "-" + CommonUtil::Int2CString(sensorId) + "-" + CommonUtil::Int2CString(project.GetProduct().GetProductId())
 		+ "-" + DateUtil::GetTimeStampCString()
 		+ ".csv";
 
@@ -58,8 +58,8 @@ Result CSensorService::AddCollectData(TbProject project, int sensorId, ThreadSaf
 		///4.文件保存成功，将记录保存到数据库
 		TbSignal signal;
 		signal.SetDataUrl(path + fileName);
-		signal.SetProjectId(project.GetProjectId());
-		signal.SetDetectedDevice(project.GetDetectedDevice());
+		signal.SetProject (project);
+		signal.SetProduct(project.GetProduct());
 		signal.SetStartTime(startCollectTime);
 		signal.SetEndTime(res.GetMessages());
 		signal.GetSensor().SetSensorId(sensorId);
@@ -90,7 +90,7 @@ Result CSensorService::AddSampleData(TbProject project, int sensorId, ThreadSafe
 	//2.拼装文件名 项目id_测试设备id_传感器id_产品id_时间戳
 	CString fileName = CommonUtil::Int2CString(project.GetProjectId()) + "-"
 		+ CommonUtil::Int2CString(project.GetTestingDevicePara().GetTestingdevice().GetTestingdeviceId())
-		+ "-" + CommonUtil::Int2CString(sensorId) + "-" + CommonUtil::Int2CString(project.GetDetectedDevice().GetDetecteddeviceId())
+		+ "-" + CommonUtil::Int2CString(sensorId) + "-" + CommonUtil::Int2CString(project.GetProduct().GetProductId())
 		+ "-" + DateUtil::GetTimeStampCString()
 		+ ".csv";
 
@@ -101,8 +101,8 @@ Result CSensorService::AddSampleData(TbProject project, int sensorId, ThreadSafe
 		///4.文件保存成功，将记录保存到数据库
 		TbSignal signal;
 		signal.SetDataUrl(path + fileName);
-		signal.SetProjectId(project.GetProjectId());
-		signal.SetDetectedDevice(project.GetDetectedDevice());
+		signal.SetProject(project );
+		signal.SetProduct(project.GetProduct());
 		signal.SetStartTime(startCollectTime);
 		signal.SetEndTime(res.GetMessages());
 		signal.GetSensor().SetSensorId(sensorId);

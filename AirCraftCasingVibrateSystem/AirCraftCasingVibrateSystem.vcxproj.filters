@@ -177,14 +177,8 @@
     <ClInclude Include="TestingDeviceService.h">
       <Filter>头文件\Service</Filter>
     </ClInclude>
-    <ClInclude Include="DetectedDeviceService.h">
-      <Filter>头文件\Service</Filter>
-    </ClInclude>
     <ClInclude Include="TesterService.h">
       <Filter>头文件\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="TbDetectedDeviceDao.h">
-      <Filter>头文件\dao</Filter>
     </ClInclude>
     <ClInclude Include="TbDictionaryDao.h">
       <Filter>头文件\dao</Filter>
@@ -211,9 +205,6 @@
       <Filter>头文件\entity</Filter>
     </ClInclude>
     <ClInclude Include="TbTestingDevicePara.h">
-      <Filter>头文件\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="TbDetectedDevice.h">
       <Filter>头文件\entity</Filter>
     </ClInclude>
     <ClInclude Include="DateUtil.h">
@@ -290,9 +281,6 @@
     </ClInclude>
     <ClInclude Include="GridCtrl_src\TitleTip.h">
       <Filter>GridCtrl</Filter>
-    </ClInclude>
-    <ClInclude Include="DetectedDeviceManageView.h">
-      <Filter>头文件\View</Filter>
     </ClInclude>
     <ClInclude Include="AlarmParaSetView.h">
       <Filter>头文件\View</Filter>
@@ -515,7 +503,7 @@
     </ClInclude>
     <ClInclude Include="CollectionDataInfoDlg.h">
       <Filter>头文件</Filter>
-    </ClInclude>  
+    </ClInclude>
     <ClInclude Include="Constant.h">
       <Filter>源文件\Utils</Filter>
     </ClInclude>
@@ -527,6 +515,18 @@
     </ClInclude>
     <ClInclude Include="hiredis.h">
       <Filter>Redis</Filter>
+    </ClInclude>
+    <ClInclude Include="TbProduct.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="TbProductDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="ProductService.h">
+      <Filter>头文件\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="ProductManageView.h">
+      <Filter>头文件\View</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -623,14 +623,8 @@
     <ClCompile Include="TestingDeviceService.cpp">
       <Filter>源文件\Service</Filter>
     </ClCompile>
-    <ClCompile Include="DetectedDeviceService.cpp">
-      <Filter>源文件\Service</Filter>
-    </ClCompile>
     <ClCompile Include="TesterService.cpp">
       <Filter>源文件\Service</Filter>
-    </ClCompile>
-    <ClCompile Include="TbDetectedDeviceDao.cpp">
-      <Filter>源文件\dao</Filter>
     </ClCompile>
     <ClCompile Include="PDAttribute.cpp">
       <Filter>源文件\dao\basedao</Filter>
@@ -666,9 +660,6 @@
       <Filter>源文件\entity</Filter>
     </ClCompile>
     <ClCompile Include="TbProject.cpp">
-      <Filter>源文件\entity</Filter>
-    </ClCompile>
-    <ClCompile Include="TbDetectedDevice.cpp">
       <Filter>源文件\entity</Filter>
     </ClCompile>
     <ClCompile Include="DateUtil.cpp">
@@ -739,9 +730,6 @@
     </ClCompile>
     <ClCompile Include="GridCtrl_src\TitleTip.cpp">
       <Filter>GridCtrl</Filter>
-    </ClCompile>
-    <ClCompile Include="DetectedDeviceManageView.cpp">
-      <Filter>源文件\View</Filter>
     </ClCompile>
     <ClCompile Include="CommonUtil.cpp">
       <Filter>源文件\Utils</Filter>
@@ -919,15 +907,27 @@
     </ClCompile>
     <ClCompile Include="CollectionDataInfoDlg.cpp">
       <Filter>源文件</Filter>
-    </ClCompile>  
+    </ClCompile>
     <ClCompile Include="win32fixes.c">
       <Filter>Redis</Filter>
-    </ClCompile>  
+    </ClCompile>
     <ClCompile Include="CollectionDataInfoDlg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="win32fixes.c">
       <Filter>Redis</Filter>
+    </ClCompile>
+    <ClCompile Include="TbProduct.cpp">
+      <Filter>源文件\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="TbProductDao.cpp">
+      <Filter>源文件\dao</Filter>
+    </ClCompile>
+    <ClCompile Include="ProductService.cpp">
+      <Filter>源文件\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="ProductManageView.cpp">
+      <Filter>源文件\View</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

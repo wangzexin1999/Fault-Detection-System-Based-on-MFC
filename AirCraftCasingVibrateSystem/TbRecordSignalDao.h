@@ -14,7 +14,7 @@ public:
 	PDAttribute m_startTime;
 	PDAttribute m_endTime;
 	PDAttribute m_signalType;
-	PDAttribute m_detectedDeviceId;
+	PDAttribute m_productId;
 	PDAttribute m_signalStatus;
 	PDAttribute m_dataUrl;
 	PDAttribute m_sensorId;

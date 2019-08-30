@@ -173,6 +173,7 @@
 #define IDC_PRODUCTNAME_EDIT            1103
 #define IDC_ROTATINGSPEED_EDIT          1104
 #define IDC_DATE_COMBO                  1105
+#define IDC__COMBO                      1106
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_CHECK2                       32771
 #define ID_COMBO2                       32772
@@ -234,7 +235,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        369
 #define _APS_NEXT_COMMAND_VALUE         32830
-#define _APS_NEXT_CONTROL_VALUE         1106
+#define _APS_NEXT_CONTROL_VALUE         1107
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

@@ -2,8 +2,7 @@
 class TbTester
 {
 public:
-	TbTester();
-	TbTester(int testerId, CString loginName, CString password);
+	TbTester(int testerId = 0, CString loginName = "", CString password = "");
 	~TbTester();
 	CString GetLoginName();
 	CString GetPassWord();

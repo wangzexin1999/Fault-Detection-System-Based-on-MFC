@@ -2,17 +2,19 @@
 #include "TbProject.h"
 
 
-TbProject::TbProject()
+TbProject::TbProject(int projectId, CString  projectName  )
 {
+	m_projectId = projectId;
+	m_projectName = projectName;
 
 }
-TbProject::TbProject(int projectId, TbTester tester, CString  projectName, CString projectCreatetime, TbTestingDevicePara  testingDevicePara, TbDetectedDevice  detectedDevice){
+TbProject::TbProject(int projectId, CString  projectName, CString projectCreatetime, TbTester tester, TbTestingDevicePara  testingDevicePara, TbProduct  product){
 	this->m_projectId = projectId;
 	this->m_tester = tester;
 	this->m_projectName = projectName;
 	this->m_projectCreatetime = projectCreatetime;
 	this->m_testingDevicePara = testingDevicePara;
-	this->m_detectedDevice = detectedDevice;
+	this->m_product = product;
 }
 
 
@@ -24,8 +26,8 @@ void TbProject::SetProjectId(int projectId){
 	this->m_projectId = projectId;
 }
 
-void TbProject::SetDetectedDevice(TbDetectedDevice  detectedDevice){
-	this->m_detectedDevice = detectedDevice;
+void TbProject::SetProduct(TbProduct  product){
+	this->m_product = product;
 }
 
 void TbProject::SetProjectName(CString projectName){
@@ -52,8 +54,8 @@ TbTestingDevicePara & TbProject::GetTestingDevicePara(){
 	return this->m_testingDevicePara;
 }
 
-TbDetectedDevice & TbProject::GetDetectedDevice(){
-	return this->m_detectedDevice;
+TbProduct & TbProject::GetProduct(){
+	return this->m_product;
 }
 
 CString TbProject::GetProjectCreateTime(){
@@ -74,3 +76,12 @@ void TbProject::SetSensorParaVector(vector<TbSensorPara> sensorParaVector){
 int TbProject::GetProjectId(){
 	return this->m_projectId;
 }
+
+void TbProject::SetProjectStatus(int status){
+	m_projectStatus = status;
+}
+
+int TbProject::GetProjectStatus(){
+	return m_projectStatus;
+}
+

@@ -66,6 +66,7 @@
     <Import Project="mysql.props" />
     <Import Project="PropertyFFTW.props" />
     <Import Project="redis.props" />
+    <Import Project="libcurl.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -81,6 +82,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>include;$(IncludePath)</IncludePath>
+    <LibraryPath>lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -262,8 +265,8 @@
     <ClInclude Include="CoordinateView.h" />
     <ClInclude Include="DateUtil.h" />
     <ClInclude Include="DetectDeviceManageView.h" />
-    <ClInclude Include="DetectedDeviceManageView.h" />
-    <ClInclude Include="DetectedDeviceService.h" />
+    <ClInclude Include="ProductManageView.h" />
+    <ClInclude Include="ProductService.h" />
     <ClInclude Include="DeviceParaView.h" />
     <ClInclude Include="EngineerUnitView.h" />
     <ClInclude Include="FeatureExtrationController.h" />
@@ -317,8 +320,8 @@
     <ClInclude Include="SystemParaDialog.h" />
     <ClInclude Include="SystemParaView.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="TbDetectedDevice.h" />
-    <ClInclude Include="TbDetectedDeviceDao.h" />
+    <ClInclude Include="TbProduct.h" />
+    <ClInclude Include="TbProductDao.h" />
     <ClInclude Include="TbDictionary.h" />
     <ClInclude Include="TbDictionaryDao.h" />
     <ClInclude Include="TbProject.h" />
@@ -402,8 +405,8 @@
     <ClCompile Include="CoordinateView.cpp" />
     <ClCompile Include="DateUtil.cpp" />
     <ClCompile Include="DetectDeviceManageView.cpp" />
-    <ClCompile Include="DetectedDeviceManageView.cpp" />
-    <ClCompile Include="DetectedDeviceService.cpp" />
+    <ClCompile Include="ProductManageView.cpp" />
+    <ClCompile Include="ProductService.cpp" />
     <ClCompile Include="DeviceParaView.cpp" />
     <ClCompile Include="EngineerUnitView.cpp" />
     <ClCompile Include="FeatureExtrationController.cpp" />
@@ -456,8 +459,8 @@
     <ClCompile Include="SubChannelParaView.cpp" />
     <ClCompile Include="SystemParaDialog.cpp" />
     <ClCompile Include="SystemParaView.cpp" />
-    <ClCompile Include="TbDetectedDevice.cpp" />
-    <ClCompile Include="TbDetectedDeviceDao.cpp" />
+    <ClCompile Include="TbProduct.cpp" />
+    <ClCompile Include="TbProductDao.cpp" />
     <ClCompile Include="TbDictionary.cpp" />
     <ClCompile Include="TbDictionaryDao.cpp" />
     <ClCompile Include="TbProject.cpp" />

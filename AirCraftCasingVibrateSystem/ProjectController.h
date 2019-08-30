@@ -18,7 +18,7 @@ Modification:
 ************************************************************************/
 #pragma once
 #include"TbTestingDeviceDao.h"
-#include "DetectedDeviceService.h"
+#include "ProductService.h"
 #include "TestingDeviceService.h"
 #include "TbProject.h"
 #include "ProjectService.h"
@@ -31,7 +31,7 @@ public:
 
 	TestingDeviceService m_testingDeviceService;
 
-	DetectedDeviceService m_detectedDeviceService;
+	ProductService m_productService;
 
 	ProjectService m_projectService;
 
@@ -55,7 +55,7 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	Result LoadAllDetectedDevice(vector<TbDetectedDeviceDao> & TbDetectedDeviceDaoVec);
+	Result LoadAllProduct(vector<TbProduct> & TbProductDaoVec);
 
 	/**********************************************************************
 	功能描述：新建项目

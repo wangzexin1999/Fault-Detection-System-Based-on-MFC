@@ -25,9 +25,7 @@ void CProjectManageView::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_GridControl(pDX, IDC_GRIDCTRL_PROJECT, m_projectGrid);
 	DDX_Control(pDX, IDC_EDIT_PROSEARCHNAME, m_proSearchNameEdit);
-	DDX_Control(pDX, IDC_DATESEARCH_CHECKBOX, m_dateSelectCheckBox);
-	DDX_Control(pDX, IDC_PROSTARTTIME, m_proStartTimeCtrl);
-	DDX_Control(pDX, IDC_PROENDTIME, m_proEndTimeCtrl);
+	DDX_Control(pDX, IDC_DATE_COMBO, m_dateSelectComboBox);
 }
 
 
@@ -89,7 +87,7 @@ void CProjectManageView::GridCtrlInit(){
 		if (col == 1) strText = m_projectVector[row - 1].GetProjectName();
 		if (col == 2) strText = m_projectVector[row - 1].GetProjectCreateTime();
 		if (col == 3) strText = m_projectVector[row - 1].GetTestingDevicePara().GetTestingdevice().GetTestingdeviceIp();
-		if (col == 4) strText = m_projectVector[row - 1].GetDetectedDevice().GetDetecteddeviceName();
+		if (col == 4) strText = m_projectVector[row - 1].GetProduct().GetProductName();
 		Item.strText.Format(_T(strText), row);
 		m_projectGrid.SetItem(&Item);  
 
@@ -101,14 +99,15 @@ void CProjectManageView::GridCtrlInit(){
 BOOL CProjectManageView::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
-	// TODO:  在此添加额外的初始化
 
-	////初始化日期控件
-	m_proStartTimeCtrl.SetFormat(_T("yyyy'- 'MM'- 'dd"));
-	m_proEndTimeCtrl.SetFormat(_T("yyyy'- 'MM'- 'dd"));
-	///初始化开始日期控件时间为一周之前
-	CTime aWeekAgo = DateUtil::GetSeveralDaysAgoCTimeDate(7);
-	m_proStartTimeCtrl.SetTime(&aWeekAgo);
+	////初始化日期选择控件
+	m_dateSelectComboBox.InsertString(0, "全部日期");
+	m_dateSelectComboBox.InsertString(1, "最近一天");
+	m_dateSelectComboBox.InsertString(2, "最近一周");
+	m_dateSelectComboBox.InsertString(3, "最近一月");
+	m_dateSelectComboBox.InsertString(4, "最近半年");
+	m_dateSelectComboBox.InsertString(5, "最近一年");
+	m_dateSelectComboBox.SetCurSel(0);
 
 	int testerId = theApp.m_currentProject.GetTester().GetTesterId();
 	
@@ -122,8 +121,7 @@ BOOL CProjectManageView::OnInitDialog()
 		return FALSE;
 	}
 
-	return TRUE;  // return TRUE unless you set the focus to a control
-	// 异常:  OCX 属性页应返回 FALSE
+	return TRUE; 
 }
 
 ///打开项目按钮
@@ -145,22 +143,19 @@ void CProjectManageView::OnBnClickedSearchbutton()
 	m_proSearchNameEdit.GetWindowTextA(proSearchName);
 	
 	///2.获取项目查询  开始时间和结束时间
-	
-	CTime ctStartTime, ctEndTime;
-	m_proStartTimeCtrl.GetTime(ctStartTime);
-	m_proEndTimeCtrl.GetTime(ctEndTime);
-	CString proStartTime = "";
-	CString proEndTime  = "";
+	int testingIndex = m_dateSelectComboBox.GetCurSel();
+	CString strStartTime;
+	CString strEndTime = DateUtil::GetCurrentCStringTime();
 
-	if (m_dateSelectCheckBox.GetCheck()){
-		///选择了使用查询时间时，给起始时间和终止时间赋值
-		proStartTime = DateUtil::GetCStringTimeFormCTime(ctStartTime);
-		proEndTime = DateUtil::GetCStringTimeFormCTime(ctEndTime);
-	}
+	if (testingIndex == 1){ strStartTime = DateUtil::GetSeveralDaysAgoCStringDate(1); }
+	if (testingIndex == 2){ strStartTime = DateUtil::GetSeveralDaysAgoCStringDate(7); }
+	if (testingIndex == 3){ strStartTime = DateUtil::GetSeveralDaysAgoCStringDate(30); }
+	if (testingIndex == 4){ strStartTime = DateUtil::GetSeveralDaysAgoCStringDate(182); }
+	if (testingIndex == 5){ strStartTime = DateUtil::GetSeveralDaysAgoCStringDate(365); }
 	////清空项目集合
 	m_projectVector.clear();
 	int testerId = theApp.m_currentProject.GetTester().GetTesterId();
-	Result res = m_projectController.LoadAllProjectBySearchCondition(testerId, proSearchName, proStartTime, proEndTime, m_projectVector);
+	Result res = m_projectController.LoadAllProjectBySearchCondition(testerId, proSearchName, strStartTime, strEndTime, m_projectVector);
 	if (res.GetIsSuccess()){
 		TRACE("\n项目个数为:%d\n", m_projectVector.size());
 		GridCtrlInit();

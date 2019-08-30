@@ -19,7 +19,7 @@
 #include "SignalDataView.h"
 #include "EngineerUnitView.h"
 #include "DetectDeviceManageView.h"
-#include "DetectedDeviceManageView.h"
+#include "ProductManageView.h"
 #include "AlarmParaSetView.h"
 #include "ChartCtrl/DuChartCtrlStaticFunction.h"
 
@@ -64,7 +64,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_BTN_PROJECT_UNIT, &CMainFrame::OnBtnEngineeringUnit)
 	ON_COMMAND(ID_BTN_ALARM_SET, &CMainFrame::OnBtnAlarmSet)
 	ON_COMMAND(ID_BUTTON_DETECT_DEVICE, &CMainFrame::OnButtonDetectDevice)
-	ON_COMMAND(ID_BUTTON_DETECTED_DEVICE, &CMainFrame::OnButtonDetectedDevice)
+	ON_COMMAND(ID_BUTTON_DETECTED_DEVICE, &CMainFrame::OnButtonProduct)
 
 	ON_COMMAND(ID_BTN_TRANSVERSE_AMPLIFICATION, &CMainFrame::OnBtnTransverseAmplification)
 	ON_COMMAND(ID_BTN_HORIZONTAL_REDUCTION, &CMainFrame::OnBtnHorizontalReduction)
@@ -527,11 +527,11 @@ void CMainFrame::OnButtonDetectDevice()
 }
 
 /*产品管理*/
-void CMainFrame::OnButtonDetectedDevice()
+void CMainFrame::OnButtonProduct()
 {
 	// TODO:  在此添加命令处理程序代码
-	CDetectedDeviceManageView detectedDeviceManegeView;
-	detectedDeviceManegeView.DoModal();
+	CProductManageView productManegeView;
+	productManegeView.DoModal();
 }
 
 //开始采样

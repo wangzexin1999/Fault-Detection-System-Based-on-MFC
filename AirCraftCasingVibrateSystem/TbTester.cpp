@@ -2,11 +2,8 @@
 #include "TbTester.h"
 
 
-TbTester::TbTester()
-{
-}
 
-TbTester::TbTester(int testerId,CString loginName, CString password){
+TbTester::TbTester(int testerId ,CString loginName , CString password ){
 	this->m_testerId = testerId;
 	this->m_loginName = loginName;
 	this->m_Password = password;

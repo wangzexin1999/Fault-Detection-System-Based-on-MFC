@@ -23,6 +23,7 @@ class EchoSignal
 private:
 	SmartArray<double> m_x;
 	SmartArray<double> m_y;
+
 public:
 	EchoSignal();
 	EchoSignal(SmartArray<double> xData, SmartArray<double> yData);

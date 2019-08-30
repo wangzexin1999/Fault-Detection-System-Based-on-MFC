@@ -54,7 +54,7 @@ BOOL CSignalDataView::OnInitDialog()
 	m_dateSelectComboBox.InsertString(3,"最近一月");
 	m_dateSelectComboBox.InsertString(4,"最近半年");
 	m_dateSelectComboBox.InsertString(5,"最近一年");
-
+	m_dateSelectComboBox.SetCurSel(0);
 	m_projectNameEdit.SetWindowTextA(theApp.m_currentProject.GetProjectName());
 
 	////////查询数据文件表格数据
@@ -122,7 +122,7 @@ void CSignalDataView::GridCtrlInit(){
 		if (col == 2) strText = m_signalVector[row - 1].GetStartTime();
 		if (col == 3) strText = m_signalVector[row - 1].GetEndTime();
 		if (col == 4) strText = m_signalVector[row - 1].GetSignalType();
-		if (col == 5) strText = m_signalVector[row - 1].GetDetectedDevice().GetDetecteddeviceName();
+		if (col == 5) strText = m_signalVector[row - 1].GetProduct().GetProductName();
 		Item.strText.Format(_T(strText), row);
 		m_signalDataGridCtrl.SetItem(&Item);
 	}
@@ -169,14 +169,8 @@ void CSignalDataView::OnBnClickedSearchButton()
 	m_rotatingSpeedEdit.GetWindowTextA(strSearchRoatatingSpeed);
 
 	int testingIndex = m_dateSelectComboBox.GetCurSel();
-	CString strStartTime = "";
+	CString strStartTime  ;
 	CString strEndTime = DateUtil::GetCurrentCStringTime();
-
-	m_dateSelectComboBox.InsertString(1, "最近一天");
-	m_dateSelectComboBox.InsertString(2, "最近一周");
-	m_dateSelectComboBox.InsertString(3, "最近一月");
-	m_dateSelectComboBox.InsertString(4, "最近半年");
-	m_dateSelectComboBox.InsertString(5, "最近一年");
 
 	if (testingIndex == 1){ strStartTime = DateUtil::GetSeveralDaysAgoCStringDate(1); }
 	if (testingIndex == 2){ strStartTime = DateUtil::GetSeveralDaysAgoCStringDate(7); }
@@ -187,7 +181,7 @@ void CSignalDataView::OnBnClickedSearchButton()
 	////清空数据集合
 	m_signalVector.clear();
 	int projectId = theApp.m_currentProject.GetProjectId();
-	Result res = m_signalController.LoadAllRecordedSignalBySearchCondition(strSearchProjectName, strSearchProductName,strSearchRoatatingSpeed,
+	Result res = m_signalController.FindAllRecordedSignalBySearchCondition(strSearchProjectName, strSearchProductName,strSearchRoatatingSpeed,
 						strStartTime, strEndTime, m_signalVector);
 	if (res.GetIsSuccess()){
 		GridCtrlInit();

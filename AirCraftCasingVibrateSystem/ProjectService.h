@@ -5,7 +5,7 @@
 #include "TbTestingDeviceParaDao.h"
 #include "TbTestingDevicePara.h"
 #include "TbTestingDeviceDao.h"
-#include "TbDetectedDeviceDao.h"
+#include "TbProductDao.h"
 #include "CommonUtil.h"
 
 class ProjectService
@@ -17,10 +17,11 @@ protected:
 	TbTestingDeviceDao m_testingDeviceDao;
 	TbProjectDao  m_projectDao;
 	TbTestingDeviceParaDao m_testingDeviceParaDao;
-	TbDetectedDeviceDao m_detectedDeviceDao;
+	TbProductDao m_productDao;
 public:
 	bool AddProject(TbProject & project);
-	bool GetAllProjectBySearchCondition(int testerId, CString projectName, CString startTime, CString endTime, vector<TbProject> &projectVector);
+
+	bool GetAllProjectBySearchCondition(TbProject project, CString startTime, CString endTime, vector<TbProject> &projectVector);
 	//bool GetAllProjectIdBySearchCondition(int testerId, CString projectName, CString startTime, CString endTime, vector<int> &projectIdVector);
 };
 
