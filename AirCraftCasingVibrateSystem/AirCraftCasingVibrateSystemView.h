@@ -30,6 +30,8 @@
 #include "SmartArray.h"
 #include "AirCraftCasingVibrateSystemDoc.h"
 #include "EchoSignal.h"
+#include "redisUtil.h"
+#include "RealTimeSignal.h"
 
 
 class CAirCraftCasingVibrateSystemView : public CFormView
@@ -39,8 +41,8 @@ protected: // 仅从序列化创建
 	DECLARE_DYNCREATE(CAirCraftCasingVibrateSystemView)
 	
 private:
-	CDuChartCtrl m_chart;
-	CChartLineSerieDu *m_pLineSerie;
+	CDuChartCtrl m_chart; // 画图控件
+	CChartLineSerieDu *m_pLineSerie; // 线
 	int m_flag = false;  // 调整控件大小标志
 	CSignalSelectView  m_signalSelectView;   //信号选择界面
 	CGraphAttributeView m_graphAttributeView; // 图形属性界面
@@ -55,6 +57,9 @@ private:
 
 	ThreadSafeQueue<AcquiredSignal> m_sampleDataQueue;
 	static int m_iwindowCount;//窗口数量
+	int m_realTimeSignalCaptureflag = true; // 采集实时数据时，第一次是push，接下来是赋值
+public:
+	ThreadSafeQueue<RealTimeSignal> m_realTimeSignal;
 
 public:
 	enum{ IDD = IDD_AIRCRAFTCASINGVIBRATESYSTEM_FORM };

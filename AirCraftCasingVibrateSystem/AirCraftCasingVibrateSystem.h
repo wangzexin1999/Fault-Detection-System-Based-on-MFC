@@ -43,7 +43,7 @@ public:
 
 	CNetConService  m_con;  // 网络通信连接
 	bool m_bcon = false;  // 判断网络通信是否连接成功
-
+	Redis *m_redisCon = new Redis;
 	// 多个传感器
 	//vector<CSensorService>  m_vSersor;
 

@@ -22,7 +22,7 @@
 #include "ProductManageView.h"
 #include "AlarmParaSetView.h"
 #include "ChartCtrl/DuChartCtrlStaticFunction.h"
-
+#include "FileUtil.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -75,6 +75,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_BTN_AUTO_SCALE, &CMainFrame::OnBtnAutoScale)
 	ON_COMMAND(ID_BTN_SELF_SCALE, &CMainFrame::OnBtnDefaultScale)
 	ON_COMMAND(ID_BTN_NO_CORROR, &CMainFrame::OnBtnNoCorror)
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 // CMainFrame 构造/析构
@@ -492,12 +493,14 @@ void CMainFrame::OnButtonStartCapture()
 			m_vsignalCaptureView[i]->OpenThread2CaptureData();
 		}
 	}
+	SetTimer(99, 1000, NULL);
 }
 
 // 停止采集
 void CMainFrame::OnBtnStopCapture()
 {
 	theApp.m_icollectionStatus = 0;
+	KillTimer(99);
 }
 
 // 停止回放
@@ -654,4 +657,38 @@ void CMainFrame::OnBtnNoCorror()
 	CAirCraftCasingVibrateSystemView *view;
 	view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
 	CDuChartCtrlStaticFunction::SetCursorNone(&view->GetChartCtrl());
+}
+
+void CMainFrame::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO:  在此添加消息处理程序代码和/或调用默认值
+	// 实时传输
+	if (nIDEvent == 99)
+	{
+		RealTimeSignal2Server();
+	}
+	CMDIFrameWndEx::OnTimer(nIDEvent);
+}
+
+void CMainFrame::RealTimeSignal2Server()
+{
+	vector<CString> jsonStr;
+	CString str2JSON = "";
+	CString separator = "";////逗号分隔符
+	// 转成字符串
+	for (int i = 0; i < m_vsignalCaptureView.size(); i++)
+	{
+		CString tempStr;
+		shared_ptr<RealTimeSignal >realTimeSignal = m_vsignalCaptureView[i]->m_realTimeSignal.wait_and_pop();
+		vector<double> realSignalData = realTimeSignal->GetRealTimeSignalData();
+		vector<CString> realSignalTime = realTimeSignal->GetRealTimeSignalTime();
+
+		CFileUtil::RealTimeSignal2JSON(realSignalData, realSignalTime, realSignalData.size(), i, tempStr);
+		str2JSON = str2JSON + separator + tempStr;
+		separator = ",";
+	}
+	str2JSON = "{" + str2JSON + "}";
+	//发送
+	//theApp.m_redisCon->SetValue("11", str2JSON.GetBuffer());
+
 }

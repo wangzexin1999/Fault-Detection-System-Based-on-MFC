@@ -142,6 +142,8 @@ void CAirCraftCasingVibrateSystemView::CaptureData(){
 		int countN = rand() % 100;
 		// 每次读取的数量按照用户在窗口的操作来选择
 		if (theApp.m_icollectionStatus == 2){ KillTimer(m_icurrentWindowNumber); };
+		vector<double> realTimeSignalData;
+		vector<CString> realTimeSignalTime;
 		for (int j = 0; j < theApp.m_signalEchoCount && theApp.m_icollectionStatus == 1; j++)
 		{
 			xData.push_back(j); ///X坐标
@@ -158,7 +160,20 @@ void CAirCraftCasingVibrateSystemView::CaptureData(){
 				////如果此时正在采样，将采样的数据存入到采样队列中。
 				m_sampleDataQueue.push(acquiredSignal);
 			}
+			// 传到服务器实时信号
+			if (true/*判断是否需要实时传输*/)
+			{
+				
+				realTimeSignalData.push_back(m_readFromCSVFile[countN][j]);
+				realTimeSignalTime.push_back(DateUtil::GetCurrentCStringTime().GetBuffer());
+			}
+			
 		}
+		// 实时数据队列
+		m_realTimeSignal.push(RealTimeSignal(realTimeSignalData, realTimeSignalTime));
+
+		m_realTimeSignalCaptureflag = false;
+		//
 		/////将一次采集的数据进行傅里叶变换
 		//////对传入的数据进行傅里叶变换处理
 		SmartFFTWComplexArray fftwOutput(fftwInput.size());
@@ -173,6 +188,10 @@ void CAirCraftCasingVibrateSystemView::CaptureData(){
 		fftwInput.clear();
 		xData.clear();
 		yData.clear();
+
+		//清空实时信号
+		//m_realTimeSignal.GetRealTimeSignalData().clear();
+		//m_realTimeSignal.GetRealTimeSignalTime().clear();
 	}
 	KillTimer(m_icurrentWindowNumber);
 }
@@ -201,7 +220,7 @@ void CAirCraftCasingVibrateSystemView::OnTimer(UINT_PTR nIDEvent){
 void  CAirCraftCasingVibrateSystemView::RefershChartCtrlData(){
 	m_pLineSerie->ClearSerie();
 	m_pLineSerie->SetNeedCalStatValue(TRUE);
-	TRACE("\n刷新%d窗口.......................................................\n", m_icurrentWindowNumber);
+	//TRACE("\n刷新%d窗口.......................................................\n", m_icurrentWindowNumber);
 	shared_ptr<EchoSignal> echoSignal = m_echoSignalQueue.wait_and_pop();
 	SmartArray<double> xData = echoSignal->GetXData();
 	SmartArray<double> yData = echoSignal->GetYData();

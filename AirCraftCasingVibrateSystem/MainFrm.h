@@ -74,6 +74,16 @@ protected:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	void InitializeCaptureView(); 
+	/**********************************************************************
+	 功能描述： 实时信号传输
+	 输入参数：
+	 输出参数： 
+	 返 回 值： 
+	 其它说明：
+	 修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void CMainFrame::RealTimeSignal2Server();
 
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnWindowManager();
@@ -122,6 +132,7 @@ public:
 	// 系统参数隐藏或显示
 	afx_msg void OnViewSystemPara();
 	afx_msg void OnUpdateViewSystemPara(CCmdUI* pCmdUI);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };
 
 

@@ -266,3 +266,86 @@ Result CFileUtil::SaveCollectionData(CString path, CString fileName, ThreadSafeQ
 	file.Close();
 	return Result(true, endTime);
 }
+
+
+// 转换成JSON格式
+bool  CFileUtil::RealTimeSignal2JSON(vector<double> dYValue, vector<CString> dXValue, int nDataLen, int nChannelIndex, CString &strData)
+{
+	try
+	{
+		// 拼接坐标
+		CString xy;
+		CString tailStr = "],";
+		for (int i = 0; i < nDataLen; i++)
+		{
+			char  ytemp[10];
+
+			sprintf_s(ytemp, "%.1lf", dYValue[i]);
+			if (i == nDataLen - 1)
+			{
+				tailStr = "]]\"";
+			}
+			xy = xy + "[" + dXValue[i] + "," + ytemp + tailStr;
+		}
+
+		xy = "\"[" + xy;
+		CString indexStr;
+		indexStr.Format("%d", nChannelIndex);
+		// 加入通道
+		strData = strData + "\"channel" + indexStr + "\":" + xy;
+	}
+	catch (CMemoryException* e)
+	{
+		return false;
+	}
+	catch (CFileException* e)
+	{
+		return false;
+		
+	}
+	catch (CException* e)
+	{
+		return false;
+	}
+	
+	return true;
+
+}
+
+bool  CFileUtil::RealTimeSignal2JSON(double dYValue[], string dXValue[], int nDataLen, int nChannelIndex, CString &strData)
+{
+
+	CString xy;
+	CString tailStr = "],";
+	int length = 800;
+	for (int i = 0; i < length; i++)
+	{
+	char  ytemp[10];
+
+	sprintf_s(ytemp, "%.1lf", dYValue[i]);
+	if (i == length - 1)
+	{
+	tailStr = "]]\"";
+	}
+	xy = xy + "[" + dXValue[i].c_str() + "," + ytemp + tailStr;
+	}
+
+	xy = "\"[" + xy;
+	CString indexStr;
+
+	//indexStr.Format("%d", i);
+
+	/*if (i != m_nChannelNums)
+	{
+	strData = strData + "\"channel" + indexStr + "\":" + xy + ",";
+	}
+	else
+	{
+	strData = strData + "\"channel" + indexStr + "\":" + xy;
+	}*/
+
+
+	//strData = "{" + strData + "}";
+	return 0;
+
+}
