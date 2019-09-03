@@ -1,7 +1,7 @@
 #pragma once
 
 #include"TbTesterDao.h"
-
+#include "TbTester.h"
 class TesterService
 {
 public:
@@ -9,11 +9,11 @@ public:
 
 	~TesterService();
 
-	bool getOneByCondition(TbTesterDao & TbTester, CString strWhere);
+	bool getOneByCondition(TbTester &tester);
 
 protected:
 
-	TbTesterDao m_TbTesterDao;
+	TbTesterDao m_testerDao;
 
 };
 

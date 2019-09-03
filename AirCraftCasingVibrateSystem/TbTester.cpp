@@ -32,3 +32,23 @@ int TbTester::GetTesterId(){
 void TbTester::SetTesterId(int testerId){
 	this->m_testerId = testerId;
 }
+
+CString TbTester::GetTesterName(){
+	return m_testerName;
+}
+void TbTester::SetTesterName(CString realName){
+	m_testerName = realName;
+}
+void TbTester::SetTesterPost(CString testerPost){
+	m_testerPost = testerPost;
+}
+CString TbTester::GetTesterPost(){
+	return m_testerPost;
+}
+
+void  TbTester::SetTesterTelephone(CString telephone){
+	m_testerTelephone = telephone;
+}
+CString TbTester::GetTesterTelephone(){
+	return m_testerTelephone;
+}

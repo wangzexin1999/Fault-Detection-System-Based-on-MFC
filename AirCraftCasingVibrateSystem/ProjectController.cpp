@@ -41,10 +41,7 @@ Result ProjectController::AddProject(TbProject &project){
 	}
 }
 
-Result ProjectController::LoadAllProjectBySearchCondition(int testerId, CString projectName, CString startTime, CString endTime, vector<TbProject> &projectVector){
-	TbProject project;
-	project.GetTester().SetTesterId(testerId);
-	project.SetProjectName(projectName);
+Result ProjectController::LoadAllProjectBySearchCondition(TbProject project, CString startTime, CString endTime, vector<TbProject> &projectVector){
 	bool flag = m_projectService.GetAllProjectBySearchCondition(project, startTime, endTime, projectVector);
 	if (flag){
 		return Result(true, "ÏîÄ¿²éÑ¯");

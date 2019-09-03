@@ -8,9 +8,7 @@
 //
 // 版权所有(C) Microsoft Corporation
 // 保留所有权利。
-
 // AirCraftCasingVibrateSystem.cpp : 定义应用程序的类行为。
-//
 
 #include "stdafx.h"
 #include "afxwinappex.h"
@@ -23,6 +21,8 @@
 #include "LoginView.h"
 #include "FileUtil.h"
 #include "Constant.h"
+#include "ProjectController.h"
+#include "TbProject.h"
 #ifdef _DEBUGE	
 #define new DEBUG_NEW
 #endif
@@ -71,11 +71,11 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	// 使用 ComCtl32.dll 版本 6 或更高版本来启用可视化方式，
 	//则需要 InitCommonControlsEx()。  否则，将无法创建窗口。
 	
-	if (!m_redisCon->Connect("127.0.0.1", 6379))
+	/*if (!m_redisCon->Connect("127.0.0.1", 6379))
 	{
 		printf("connect error!\n");
 		//return 0;
-	}
+	}*/
 
 	///设置mysql数据库信息
 	const char user[] = "root";         //username
@@ -88,10 +88,16 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	//弹出登录窗口
 	CLoginView loginView;
 	// 如果点击取消了，程序停止
-	if (loginView.DoModal() == CancelLogin)
-	{
-		return FALSE;
-	}
+	if (loginView.DoModal() == CancelLogin)	{return FALSE;}
+	// 根据当前登录用户，加载用户最后一次使用的项目
+	ProjectController projectController;
+	theApp.m_currentProject.SetProjectStatus(2);
+	vector<TbProject> selectProjectVec;
+	projectController.LoadAllProjectBySearchCondition(theApp.m_currentProject, "", "",selectProjectVec);
+	if (selectProjectVec.size()==1)	theApp.m_currentProject = selectProjectVec[0];
+	if (selectProjectVec.size() != 1) AfxMessageBox("项目加载有误");
+
+
 	// 从文件中读取数据->内存（模拟数据）
 	CFileUtil fileUtil;
 	fileUtil.ReadFile(_T(""), tempRead);
@@ -175,9 +181,6 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	// 主窗口已初始化，因此显示它并对其进行更新
 	pMainFrame->ShowWindow(m_nCmdShow);
 	pMainFrame->UpdateWindow();
-
-
-
 	return TRUE;
 }
 

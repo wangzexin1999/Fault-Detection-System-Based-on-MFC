@@ -11,8 +11,9 @@ TesterService::~TesterService()
 {
 }
 
-bool TesterService::getOneByCondition(TbTesterDao & TbTester,CString strWhere){
-	bool flag = m_TbTesterDao.SelectOneObjectByCondition(strWhere);
-	TbTester = m_TbTesterDao;
+bool TesterService::getOneByCondition(TbTester &tester){
+	CString strWhere = "login_name ='" + tester.GetLoginName() + "'";
+	bool flag = m_testerDao.SelectOneObjectByCondition(strWhere);
+	m_testerDao.GetTableFieldValues(tester);
 	return flag;
 }

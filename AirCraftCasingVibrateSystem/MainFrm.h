@@ -85,6 +85,8 @@ protected:
 	***********************************************************************/
 	void CMainFrame::RealTimeSignal2Server();
 
+
+
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnWindowManager();
 	afx_msg void OnApplicationLook(UINT id);
@@ -123,6 +125,8 @@ protected:
 	afx_msg void OnBtnAutoScale();///自动刻度 
 	afx_msg void OnBtnDefaultScale();///默认刻度
 	afx_msg void OnBtnNoCorror();///无光标
+	afx_msg LRESULT OnSetText(WPARAM wParam, LPARAM lParam);///修改程序标题的响应事件
+
 	DECLARE_MESSAGE_MAP()
 	BOOL CreateCaptionBar();
 public:

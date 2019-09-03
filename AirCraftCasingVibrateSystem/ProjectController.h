@@ -77,7 +77,7 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	Result LoadAllProjectBySearchCondition(int testerId, CString projectName, CString startTime, CString endTime,vector<TbProject> &projectVector);
+	Result LoadAllProjectBySearchCondition(TbProject project, CString startTime, CString endTime,vector<TbProject> &projectVector);
 	/**********************************************************************
 	功能描述：根据加载所有的项目
 	输入参数：

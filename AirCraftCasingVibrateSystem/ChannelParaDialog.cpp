@@ -13,6 +13,7 @@ IMPLEMENT_DYNAMIC(CChannelParaDialog, CDialogEx)
 CChannelParaDialog::CChannelParaDialog(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CChannelParaDialog::IDD, pParent)
 {
+
 }
 
 CChannelParaDialog::~CChannelParaDialog(){}
@@ -38,10 +39,12 @@ BOOL CChannelParaDialog::OnInitDialog()
 
 	// TODO:  在此添加额外的初始化
 	m_channelTab.InsertItem(0, _T("通用参数"));
-	//m_channelTab.InsertItem(1, _T("触发参数"));
-	//创建两个对话框  
+	m_channelTab.InsertItem(1, _T("触发参数"));
+	m_channelTab.InsertItem(2, _T("几何参数"));
+	//创建通道参数显示的试图  
 	m_generalParaView.Create(IDD_DIALOG_GENERAL_PARA, &m_channelTab);
-	//m_triggerParaView.Create(IDD_DIALOG_TRIGGER_PARA, &m_channelTab);
+	m_triggerParaView.Create(IDD_DIALOG_TRIGGER_PARA, &m_channelTab);
+	m_geometricParaView.Create(IDD_DIALOG_GEOMETRIC_PARA, &m_channelTab);
 	
 	//设定在Tab内显示的范围  
 	CRect tabRect;
@@ -50,15 +53,19 @@ BOOL CChannelParaDialog::OnInitDialog()
 	tabRect.right -= 1;
 	tabRect.top += 22;
 	tabRect.bottom -= 1;
+
 	//m_tabSystemPara.MoveWindow(tabRect);
 	m_generalParaView.MoveWindow(&tabRect);
-	//m_triggerParaView.MoveWindow(&tabRect);
+	m_triggerParaView.MoveWindow(&tabRect);
+	m_geometricParaView.MoveWindow(&tabRect);
 	//把对话框对象指针保存起来
 	pDialog[0] = &m_generalParaView;
-	//pDialog[1] = &m_triggerParaView;
+	pDialog[1] = &m_triggerParaView;
+	pDialog[2] = &m_geometricParaView;
 	//显示初始页面  
 	m_generalParaView.ShowWindow(SW_SHOW);
-	//m_triggerParaView.ShowWindow(SW_HIDE);
+	m_triggerParaView.ShowWindow(SW_HIDE);
+	m_geometricParaView.ShowWindow(SW_HIDE);
 	m_CurSelTab = 0;
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常:  OCX 属性页应返回 FALSE

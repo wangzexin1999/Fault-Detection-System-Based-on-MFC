@@ -2,12 +2,13 @@
 #include "TbProject.h"
 
 
-TbProject::TbProject(int projectId, CString  projectName  )
+TbProject::TbProject(int projectId, CString  projectName, int projectStatus)
 {
 	m_projectId = projectId;
 	m_projectName = projectName;
-
+	m_projectStatus = projectStatus;
 }
+
 TbProject::TbProject(int projectId, CString  projectName, CString projectCreatetime, TbTester tester, TbTestingDevicePara  testingDevicePara, TbProduct  product){
 	this->m_projectId = projectId;
 	this->m_tester = tester;

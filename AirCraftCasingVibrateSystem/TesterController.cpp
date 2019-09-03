@@ -19,16 +19,13 @@ Result TesterController::LoginCheck(TbTester & tester){
 	if (tester.GetPassWord() == ""){
 		return Result(false, "密码不能为空");
 	}
+	TbTester selectedTester;
+	selectedTester.SetLoginName(tester.GetLoginName());
+	bool  isSuccess = m_testerService.getOneByCondition(selectedTester);
+	if (!isSuccess){ return Result(false, "用户查询失败"); }
 
-	TbTesterDao testerDao;
-
-	testerDao.m_loginName.m_strValue = tester.GetLoginName();
-	
-	CString strWhere = "login_name ='" + tester.GetLoginName()+"'";
-
-	testerService.getOneByCondition(testerDao, strWhere);
-	if (testerDao.m_password.m_strValue == tester.GetPassWord()){
-		tester.SetTesterId(atoi(testerDao.m_testerId.m_strValue));
+	if (selectedTester.GetPassWord() == tester.GetPassWord()){
+		tester = selectedTester;
 		return Result(true,"登录成功");
 	}
 	else{

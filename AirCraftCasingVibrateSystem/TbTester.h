@@ -10,6 +10,13 @@ public:
 	void SetPassWord(CString password);
 	void SetTesterId(int testerId);
 	int GetTesterId();
+	CString GetTesterName();
+	void SetTesterName(CString realName);
+	void SetTesterPost(CString testerPost);
+	CString GetTesterPost();
+	void SetTesterTelephone(CString telephone);
+	CString GetTesterTelephone();
+
 protected:
 
 	int m_testerId;

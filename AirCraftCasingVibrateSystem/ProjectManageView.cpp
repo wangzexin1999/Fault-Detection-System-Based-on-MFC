@@ -10,7 +10,6 @@ IMPLEMENT_DYNAMIC(CProjectManageView, CDialogEx)
 
 CProjectManageView::CProjectManageView(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CProjectManageView::IDD, pParent)
-	
 {
 
 }
@@ -110,8 +109,10 @@ BOOL CProjectManageView::OnInitDialog()
 	m_dateSelectComboBox.SetCurSel(0);
 
 	int testerId = theApp.m_currentProject.GetTester().GetTesterId();
-	
-	Result res = m_projectController.LoadAllProjectBySearchCondition(testerId, "", "", "", m_projectVector);
+	TbProject project;
+	project.GetTester().SetTesterId(testerId);
+
+	Result res = m_projectController.LoadAllProjectBySearchCondition(project, "", "", m_projectVector);
 	if (res.GetIsSuccess()){
 		TRACE("\n项目个数为:%d\n", m_projectVector.size());
 		GridCtrlInit();
@@ -154,8 +155,13 @@ void CProjectManageView::OnBnClickedSearchbutton()
 	if (testingIndex == 5){ strStartTime = DateUtil::GetSeveralDaysAgoCStringDate(365); }
 	////清空项目集合
 	m_projectVector.clear();
+
 	int testerId = theApp.m_currentProject.GetTester().GetTesterId();
-	Result res = m_projectController.LoadAllProjectBySearchCondition(testerId, proSearchName, strStartTime, strEndTime, m_projectVector);
+	TbProject project;
+	project.GetTester().SetTesterId(testerId);
+	project.SetProjectName(proSearchName);
+
+	Result res = m_projectController.LoadAllProjectBySearchCondition(project, strStartTime, strEndTime, m_projectVector);
 	if (res.GetIsSuccess()){
 		TRACE("\n项目个数为:%d\n", m_projectVector.size());
 		GridCtrlInit();

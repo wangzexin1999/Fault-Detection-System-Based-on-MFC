@@ -211,7 +211,6 @@ void CAirCraftCasingVibrateSystemView::OpenThread2CaptureData(){
 	 ///开启线程自动保存采集数据
 	 OpenThread2SaveCollectionData();
 }
-
 void CAirCraftCasingVibrateSystemView::OnTimer(UINT_PTR nIDEvent){
 	if (m_icurrentWindowNumber == nIDEvent){ RefershChartCtrlData(); }
 }

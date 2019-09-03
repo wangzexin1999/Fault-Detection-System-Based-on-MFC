@@ -39,6 +39,7 @@ BOOL CGeneralParaView::OnInitDialog()
 	GridCtrlInit();
 	return TRUE;   
 }
+
 void CGeneralParaView::GridCtrlInit()
 {
 	/////如果当前已经打开了项目,则加载当前项目的所有传感器参数
@@ -48,7 +49,7 @@ void CGeneralParaView::GridCtrlInit()
 	m_generalParaGridCtrl.SetEditable(false);
 	m_generalParaGridCtrl.SetTextBkColor(RGB(0xFF, 0xFF, 0xE0));//黄色背景
 	m_generalParaGridCtrl.SetRowCount(theApp.m_currentProject.GetSensorParaVector().size()+1); //初始为n行
-	m_generalParaGridCtrl.SetColumnCount(21); //初始化为5列
+	m_generalParaGridCtrl.SetColumnCount(7); //初始化为7列
 	m_generalParaGridCtrl.SetFixedRowCount(1); //表头为一行
 	m_generalParaGridCtrl.SetRowResize(TRUE); ///自动设置行和列的大小
 	m_generalParaGridCtrl.SetListMode(true); ////在选定一个单元格时，选择整行
@@ -69,42 +70,27 @@ void CGeneralParaView::GridCtrlInit()
 
 			if (col == 0){	Item.strText.Format(_T("通道号"), 0);}
 			if (col == 1){Item.strText.Format(_T("通道状态"), 1);}
-			if (col == 2){Item.strText.Format(_T("测量类型"), 2);}
-			if (col == 3){Item.strText.Format(_T("通道描述"), 3);}
-			if (col == 4){Item.strText.Format(_T("窗类型"), 4);}
-			if (col == 5){ Item.strText.Format(_T("窗宽"), 5); }
-			if (col == 6){ Item.strText.Format(_T("参加触发"), 6); }
-			if (col == 7){ Item.strText.Format(_T("触发量级"), 7); }
-			if (col == 8){ Item.strText.Format(_T("触发极性"), 8); }
-			if (col == 8){ Item.strText.Format(_T("触发极性"), 8); }
-			if (col == 9){ Item.strText.Format(_T("测点号"), 9); }
-			if (col == 10){ Item.strText.Format(_T("坐标系"), 10); }
-			if (col == 11){ Item.strText.Format(_T("方向"), 11); }
-			if (col == 12){ Item.strText.Format(_T("参考标识"), 12); }
-			if (col == 13){ Item.strText.Format(_T("工程单位"), 13); }
-			if (col == 14){ Item.strText.Format(_T("灵敏度"), 14); }
-			if (col == 15){ Item.strText.Format(_T("里程范围"), 15); }
-			if (col == 16){ Item.strText.Format(_T("积分类型"), 16); }
-			if (col == 17){ Item.strText.Format(_T("积分单位"), 17); }
-			if (col == 18){ Item.strText.Format(_T("输入方式"), 18); }
-			if (col == 19){ Item.strText.Format(_T("抗混滤波"), 19); }
-			if (col == 20){ Item.strText.Format(_T("上限频率"), 20); }
+			if (col == 2){Item.strText.Format(_T("通道描述"), 2);}
+			if (col == 3){Item.strText.Format(_T("窗类型"), 3);}
+			if (col == 4){ Item.strText.Format(_T("灵敏度"), 4); }
+			if (col == 5){ Item.strText.Format(_T("输入方式"), 5); }
+			if (col == 6){ Item.strText.Format(_T("量程"), 6); }
 			m_generalParaGridCtrl.SetItem(&Item);
 			continue;
 		}
 
 		Item.nFormat = DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS;
-		CString strText;
+		CString strText; 
 		if (col == 0) strText = CommonUtil::Int2CString(row);
 		if (col == 1) strText =  theApp.m_currentProject.GetSensorParaVector()[row-1].GetSensorStatus().GetDictValue();
-		if (col == 2) strText = theApp.m_currentProject.GetSensorParaVector()[row-1].GetMessureType().GetDictValue();
-		if (col == 3) strText = theApp.m_currentProject.GetSensorParaVector()[row-1].GetSensorDesc();
-		if (col == 4) strText = theApp.m_currentProject.GetSensorParaVector()[row - 1].GetWindowType().GetDictValue();
-		if (col == 5) strText = "暂且保留了";
-		//if (col == 6) strText = theApp.m_currentProject.GetSensorParaVector()[row - 1].get;
-
-		
+		if (col == 2) strText = theApp.m_currentProject.GetSensorParaVector()[row-1].GetSensorDesc();
+		if (col == 3) strText = theApp.m_currentProject.GetSensorParaVector()[row - 1].GetWindowType().GetDictValue();
+		if (col == 4) strText = CommonUtil::DoubleOrFloat2CString(theApp.m_currentProject.GetSensorParaVector()[row - 1].GetSensitivity());
+		if (col == 5) strText = theApp.m_currentProject.GetSensorParaVector()[row - 1].GetInputMethod().GetDictValue();
+		if (col == 6) strText = CommonUtil::DoubleOrFloat2CString(theApp.m_currentProject.GetSensorParaVector()[row - 1].GetMileageRange());
+				
 		Item.strText.Format(_T(strText), row);
+
 		m_generalParaGridCtrl.SetItem(&Item);
 	}
 }

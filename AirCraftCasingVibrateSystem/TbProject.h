@@ -9,7 +9,7 @@ class TbProject
 {
 public:
 
-	TbProject(int projectId = 0,CString  projectName = "");
+	TbProject(int projectId = 0,CString  projectName = "",int projectStatus = 0);
 	TbProject(int projectId, CString  projectName, CString projectCreatetime, TbTester tester, TbTestingDevicePara  testingDevicePara, TbProduct  product);
 	~TbProject();
 

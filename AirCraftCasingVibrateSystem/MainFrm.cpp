@@ -34,6 +34,7 @@ IMPLEMENT_DYNAMIC(CMainFrame, CMDIFrameWndEx)
 
 BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_WM_CREATE()
+	ON_MESSAGE(WM_SETTEXT, &CMainFrame::OnSetText)
 	ON_COMMAND(ID_WINDOW_MANAGER, &CMainFrame::OnWindowManager)
 	ON_COMMAND_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnApplicationLook)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnUpdateApplicationLook)
@@ -86,8 +87,8 @@ CMainFrame::CMainFrame()
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_WINDOWS_7);
 }
 
-CMainFrame::~CMainFrame()
-{
+CMainFrame::~CMainFrame(){
+
 }
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -133,9 +134,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_channelPara.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_channelPara);// BOTTOM
 	DockPane(&m_systemPara);// LEFT
-
-
-
 	// 启用 Visual Studio 2005 样式停靠窗口行为
 	CDockingManager::SetDockingMode(DT_SMART);
 	// 启用 Visual Studio 2005 样式停靠窗口自动隐藏行为
@@ -160,9 +158,7 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
 	if( !CMDIFrameWndEx::PreCreateWindow(cs) )
 		return FALSE;
-	// TODO:  在此处通过修改
 	//  CREATESTRUCT cs 来修改窗口类或样式
-
 	return TRUE;
 }
 
@@ -401,9 +397,10 @@ void CMainFrame::OnButtonNewProject()
 // 项目管理
 void CMainFrame::OnButtonProjectManage()
 {
-	// TODO:  在此添加命令处理程序代码
 	CProjectManageView projectView;
 	int  i = projectView.DoModal();
+	///发送刷新主窗口标题的消息
+	SendMessage(WM_SETTEXT);
 }
 
 // 打开数据文件
@@ -691,4 +688,31 @@ void CMainFrame::RealTimeSignal2Server()
 	//发送
 	//theApp.m_redisCon->SetValue("11", str2JSON.GetBuffer());
 
+}
+
+
+///标题栏修改的响应事件
+LRESULT CMainFrame::OnSetText(WPARAM wParam, LPARAM lParam)
+{
+	CString title;
+	CString product = "未知产品";
+	CString project = "未知项目";
+	CString rotatingSpeed ="未知转速";
+	CString tester = "未知人";
+	CString sensor = "未知传感器";
+
+	if (theApp.m_currentProject.GetProduct().GetProductType() != "") product = theApp.m_currentProject.GetProduct().GetProductType();
+	if (theApp.m_currentProject.GetProjectName() != "") project = theApp.m_currentProject.GetProjectName();
+	if (theApp.m_currentProject.GetTester().GetTesterName() != "") tester = theApp.m_currentProject.GetTester().GetTesterName();
+	if (theApp.m_collectionRotatingSpeed != "") rotatingSpeed = theApp.m_collectionRotatingSpeed;
+	
+	CAirCraftCasingVibrateSystemView *selectedView;
+	selectedView = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
+	if (selectedView != NULL) sensor = selectedView->GetDocument()->GetTitle();
+	title = product + "-" + project + "-" + rotatingSpeed + "-" + tester + "-" + "(" + sensor + ")";
+
+	lParam = (LPARAM)title.GetBuffer();
+	DefWindowProc(WM_SETTEXT, wParam, lParam);
+	Invalidate();
+	return 0;
 }

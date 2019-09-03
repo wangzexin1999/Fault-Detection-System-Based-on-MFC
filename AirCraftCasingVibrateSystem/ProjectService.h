@@ -7,7 +7,7 @@
 #include "TbTestingDeviceDao.h"
 #include "TbProductDao.h"
 #include "CommonUtil.h"
-
+#include "TbTesterDao.h"
 class ProjectService
 {
 public:
@@ -18,6 +18,7 @@ protected:
 	TbProjectDao  m_projectDao;
 	TbTestingDeviceParaDao m_testingDeviceParaDao;
 	TbProductDao m_productDao;
+	TbTesterDao m_testerDao;
 public:
 	bool AddProject(TbProject & project);
 

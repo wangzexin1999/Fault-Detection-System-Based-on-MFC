@@ -17,8 +17,8 @@ Modification:
 修改内容：
 ************************************************************************/
 #pragma once
-
-
+#include "GridCtrl_src/GridCtrl.h"
+#include "SensorParaController.h"
 // CTriggerParaView 对话框
 
 class CTriggerParaView : public CDialogEx
@@ -34,9 +34,10 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
-
+	CGridCtrl m_triggerParaGridCtrl;
+	SensorParaController m_sensorParaController;
+	void GridCtrlInit();
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
-	CListCtrl m_triggerParaList;
 };

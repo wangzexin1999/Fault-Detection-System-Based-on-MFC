@@ -527,7 +527,7 @@
     </ClInclude>
     <ClInclude Include="ProductManageView.h">
       <Filter>头文件\View</Filter>
-     </ClInclude> 
+    </ClInclude>
     <ClInclude Include="RealTimeSignal.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -931,7 +931,7 @@
     </ClCompile>
     <ClCompile Include="ProductManageView.cpp">
       <Filter>源文件\View</Filter>
-    </ClCompile>  
+    </ClCompile>
     <ClCompile Include="RealTimeSignal.cpp">
       <Filter>源文件</Filter>
     </ClCompile>

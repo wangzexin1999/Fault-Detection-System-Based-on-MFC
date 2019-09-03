@@ -5,7 +5,7 @@
 #include "AirCraftCasingVibrateSystem.h"
 #include "TriggerParaView.h"
 #include "afxdialogex.h"
-
+#include "CommonUtil.h"
 
 // CTriggerParaView 对话框
 
@@ -24,7 +24,7 @@ CTriggerParaView::~CTriggerParaView()
 void CTriggerParaView::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_LIST_TRIGGER_PARA, m_triggerParaList);
+	DDX_Control(pDX, IDC_TRIGGERPARA_GRID, m_triggerParaGridCtrl);
 }
 
 
@@ -39,91 +39,55 @@ BOOL CTriggerParaView::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
-	// TODO:  在此添加额外的初始化
-	m_triggerParaList.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
-	CRect rect;
-	m_triggerParaList.GetClientRect(rect);
-	int nWidth = rect.Width();
-	int arr[][3] = {
-		0, LVCFMT_CENTER, (UINT)(10 / 50.0 * 4),
-		1, LVCFMT_CENTER, (UINT)(nWidth / 50.0 * 4),
-		2, LVCFMT_CENTER, (UINT)(nWidth / 50.0 * 4),
-		3, LVCFMT_CENTER, (UINT)(nWidth / 50.0 * 4),
-		4, LVCFMT_CENTER, (UINT)(nWidth / 50.0 * 4),
-		5, LVCFMT_CENTER, (UINT)(nWidth / 50.0 * 4),
-		6, LVCFMT_CENTER, (UINT)(nWidth / 50.0 * 4),
-	};
-	CStringArray strArray;
-	strArray.Add(_T(""));
-	strArray.Add(_T("通道号"));
-	strArray.Add(_T("参加触发"));
-	strArray.Add(_T("触发量级"));
-	strArray.Add(_T("触发极性"));
-	
-	for (int i = 0; i < 5; i++)
-	{
-		m_triggerParaList.InsertColumn(arr[i][0], strArray.GetAt(i), arr[i][1], arr[i][2]);
+	GridCtrlInit();
+	return TRUE;
+}
+
+void CTriggerParaView::GridCtrlInit()
+{
+	/////如果当前已经打开了项目,则加载当前项目的所有传感器参数
+	if (theApp.m_currentProject.GetProjectId() != 0){
+		m_sensorParaController.FindALLSensorParaByProjectId(theApp.m_currentProject);
 	}
 
-
-	/*for (int i = 0; i < length; i++)
+	m_triggerParaGridCtrl.SetEditable(false);
+	m_triggerParaGridCtrl.SetTextBkColor(RGB(0xFF, 0xFF, 0xE0));//黄色背景
+	m_triggerParaGridCtrl.SetRowCount(theApp.m_currentProject.GetSensorParaVector().size() + 1); //初始为n行
+	m_triggerParaGridCtrl.SetColumnCount(4); //初始化为7列
+	m_triggerParaGridCtrl.SetFixedRowCount(1); //表头为一行
+	m_triggerParaGridCtrl.SetRowResize(TRUE); ///自动设置行和列的大小
+	m_triggerParaGridCtrl.SetListMode(true); ////在选定一个单元格时，选择整行
+	m_triggerParaGridCtrl.ExpandColumnsToFit(true);
+	m_triggerParaGridCtrl.SetSingleRowSelection(true);
+	//m_triggerParaGridCtrl.OnGridClick();
+	for (int row = 0; row < m_triggerParaGridCtrl.GetRowCount(); row++)
+	for (int col = 0; col < m_triggerParaGridCtrl.GetColumnCount(); col++)
 	{
+		//设置表格显示属性
+		GV_ITEM Item;
+		Item.mask = GVIF_TEXT | GVIF_FORMAT;
+		Item.row = row;
+		Item.col = col;
+		///设置表头内容
+		if (row == 0){
+			Item.nFormat = DT_CENTER | DT_WORDBREAK;
 
-	}*/
-	m_triggerParaList.InsertItem(0, _T(""));   //第一行，第一列
-	m_triggerParaList.SetItemText(0, 1, _T("1-1"));//第一行，第二列
-	m_triggerParaList.SetItemText(0, 2, _T("√"));
-	m_triggerParaList.SetItemText(0, 3, _T("33%"));
-	m_triggerParaList.SetItemText(0, 4, _T("绝对值"));
-	
+			if (col == 0){ Item.strText.Format(_T("通道号"), 0); }
+			if (col == 1){ Item.strText.Format(_T("参加触发"), 1); }
+			if (col == 2){ Item.strText.Format(_T("触发量级"), 2); }
+			if (col == 3){ Item.strText.Format(_T("触发极性"), 3); }
+			m_triggerParaGridCtrl.SetItem(&Item);
+			continue;
+		}
 
-	m_triggerParaList.InsertItem(1, _T(""));   //第二行，第一列
-	m_triggerParaList.SetItemText(1, 1, _T("1-2"));//第一行，第二列
-	m_triggerParaList.SetItemText(1, 2, _T("√"));
-	m_triggerParaList.SetItemText(1, 3, _T("33%"));
-	m_triggerParaList.SetItemText(1, 4, _T("绝对值"));
-	
-
-	m_triggerParaList.InsertItem(2, _T(""));   //第二行，第一列
-	m_triggerParaList.SetItemText(2, 1, _T("1-3"));//第一行，第二列
-	m_triggerParaList.SetItemText(2, 2, _T("√"));
-	m_triggerParaList.SetItemText(2, 3, _T("33%"));
-	m_triggerParaList.SetItemText(2, 4, _T("绝对值"));
-	
-
-
-	m_triggerParaList.InsertItem(3, _T(""));   //第二行，第一列
-	m_triggerParaList.SetItemText(3, 1, _T("1-4"));//第一行，第二列
-	m_triggerParaList.SetItemText(3, 2, _T("√"));//第二行，第二列
-	m_triggerParaList.SetItemText(3, 3, _T("33%"));
-	m_triggerParaList.SetItemText(3, 4, _T("绝对值"));
-	
-
-	m_triggerParaList.InsertItem(4, _T(""));   //第二行，第一列
-	m_triggerParaList.SetItemText(4, 1, _T("1-5"));//第二行，第二列
-	m_triggerParaList.SetItemText(4, 2, _T("√"));//第二行，第二列
-	m_triggerParaList.SetItemText(4, 3, _T("33%"));
-	m_triggerParaList.SetItemText(4, 4, _T("绝对值"));
-	
-
-	m_triggerParaList.InsertItem(5, _T(""));   //第二行，第一列
-	m_triggerParaList.SetItemText(5, 1, _T("1-6"));//第二行，第二列
-	m_triggerParaList.SetItemText(5, 2, _T("√"));//第二行，第二列
-	m_triggerParaList.SetItemText(5, 3, _T("33%"));
-	m_triggerParaList.SetItemText(5, 4, _T("绝对值"));
-	
-
-
-
-	LOGFONT   logfont;//最好弄成类成员,全局变量,静态成员  
-	CFont   *pfont1 = m_triggerParaList.GetFont();
-	pfont1->GetLogFont(&logfont);
-	logfont.lfHeight = logfont.lfHeight * 1.3;   //这里可以修改字体的高比例
-	logfont.lfWidth = logfont.lfWidth * 1.3;   //这里可以修改字体的宽比例
-	static   CFont   font1;
-	font1.CreateFontIndirect(&logfont);
-	m_triggerParaList.SetFont(&font1);
-	font1.Detach();
-	return TRUE;  // return TRUE unless you set the focus to a control
-	// 异常:  OCX 属性页应返回 FALSE
+		Item.nFormat = DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS;
+		CString strText;
+		if (col == 0) strText = CommonUtil::Int2CString(row);
+		if (col == 1) strText = "保留";
+		if (col == 2) strText = CommonUtil::DoubleOrFloat2CString(theApp.m_currentProject.GetSensorParaVector()[row - 1].GetTriggerMagnitude());
+		if (col == 3) strText = theApp.m_currentProject.GetSensorParaVector()[row - 1].GetTriggerPolarity().GetDictValue();
+		
+		Item.strText.Format(_T(strText), row);
+		m_triggerParaGridCtrl.SetItem(&Item);
+	}
 }

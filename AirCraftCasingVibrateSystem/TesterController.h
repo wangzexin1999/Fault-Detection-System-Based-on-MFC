@@ -6,11 +6,12 @@
 class TesterController
 {
 
+private:
+	TesterService m_testerService;
 public:
 	TesterController();
 	~TesterController();
 
-	TesterService testerService;
 
 	Result LoginCheck(TbTester &TbTester);
 

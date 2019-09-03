@@ -85,6 +85,7 @@
 #define IDD_DIALOG_DETECT_DEVICE_MANAGE 362
 #define IDD_DIALOG_DETECTED_DEVICE_MANAGE 363
 #define IDD_COLLECTIONDATAINFO_DIALOG   368
+#define IDD_DIALOG1                     369
 #define IDC_TAB1                        1000
 #define IDC_LIST_GENERAL_PARA           1001
 #define IDC_COMBO1                      1002
@@ -173,7 +174,9 @@
 #define IDC_PRODUCTNAME_EDIT            1103
 #define IDC_ROTATINGSPEED_EDIT          1104
 #define IDC_DATE_COMBO                  1105
-#define IDC__COMBO                      1106
+#define IDC_TRIGGERPARA_GRID            1107
+#define IDC_GEOMETRICPARA_GRIDCTRL      1108
+#define IDC_TREE1                       1109
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_CHECK2                       32771
 #define ID_COMBO2                       32772
@@ -233,9 +236,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        369
+#define _APS_NEXT_RESOURCE_VALUE        371
 #define _APS_NEXT_COMMAND_VALUE         32830
-#define _APS_NEXT_CONTROL_VALUE         1107
+#define _APS_NEXT_CONTROL_VALUE         1110
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

@@ -2,7 +2,7 @@
 #include "afxcmn.h"
 #include "GeneralParaView.h"
 #include "TriggerParaView.h"
-
+#include "GeometricParaView.h"
 // CChannelParaDialog 对话框
 
 class CChannelParaDialog : public CDialogEx
@@ -18,7 +18,9 @@ public:
 private:
 	CTriggerParaView   m_triggerParaView;
 	CGeneralParaView   m_generalParaView;
-	CDialog* pDialog[2];  //用来保存对话框对象指针
+	CGeometricParaView m_geometricParaView;
+
+	CDialog* pDialog[5];  //用来保存对话框对象指针
 	int m_CurSelTab;
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持

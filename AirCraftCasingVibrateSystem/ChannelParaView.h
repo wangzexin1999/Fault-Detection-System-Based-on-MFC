@@ -31,7 +31,7 @@ public:
 	virtual ~CChannelParaView();
 	void RefreshView();
 private:
-	CDeviceParaView m_devicePara;
+
 	CMFCTabCtrl m_tab;
 	CChannelParaDialog m_channelParaDialog;
 

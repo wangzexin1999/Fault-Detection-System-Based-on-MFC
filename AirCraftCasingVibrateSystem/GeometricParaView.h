@@ -17,7 +17,8 @@ Modification:
 修改内容：
 ************************************************************************/
 #pragma once
-
+#include "GridCtrl_src/GridCtrl.h"
+#include "SensorParaController.h"
 
 // CGeometricParaView 对话框
 
@@ -30,10 +31,14 @@ public:
 	virtual ~CGeometricParaView();
 
 // 对话框数据
-	enum { IDD = IDD_DIALOG_GENERAL_PARA };
+	enum { IDD = IDD_DIALOG_GEOMETRIC_PARA };
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
-
+	CGridCtrl m_geometricParaGridCtrl;
+	SensorParaController m_sensorParaController;
+	void GridCtrlInit();
 	DECLARE_MESSAGE_MAP()
+public:
+	virtual BOOL OnInitDialog();
 };
