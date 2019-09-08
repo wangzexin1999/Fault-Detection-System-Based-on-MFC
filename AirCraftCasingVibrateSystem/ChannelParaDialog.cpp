@@ -78,6 +78,7 @@ void CChannelParaDialog::OnTcnSelchangeTab1(NMHDR *pNMHDR, LRESULT *pResult)
 	//把当前的页面隐藏起来
 	pDialog[m_CurSelTab]->ShowWindow(SW_HIDE);
 	//得到新的页面索引
+	
 	m_CurSelTab = m_channelTab.GetCurSel();
 	//把新的页面显示出来
 	pDialog[m_CurSelTab]->ShowWindow(SW_SHOW);

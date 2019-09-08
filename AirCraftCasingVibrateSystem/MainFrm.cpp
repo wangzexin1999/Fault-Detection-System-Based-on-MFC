@@ -344,6 +344,7 @@ void CMainFrame::InitializeCaptureView(){
 	}
 }
 
+////Í¨µÀ…¢”µ
 void CMainFrame::OnViewChannelPara()
 {
 	if (m_channelPara.IsVisible())

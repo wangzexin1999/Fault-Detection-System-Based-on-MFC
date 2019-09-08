@@ -20,6 +20,7 @@ Modification:
 #pragma once
 #include "DeviceParaView.h"
 #include "ChannelParaDialog.h"
+
 // CChannelParaView
 
 class CChannelParaView : public CDockablePane

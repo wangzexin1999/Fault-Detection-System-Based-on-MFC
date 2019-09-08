@@ -59,7 +59,7 @@ public:
 	CChannelParaView    m_channelPara;
 
 
-	CDockablePane m_Panes[5]; //
+	CDockablePane m_Panes[5];  
 // 生成的消息映射函数
 protected:
 

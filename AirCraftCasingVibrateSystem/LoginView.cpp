@@ -32,7 +32,6 @@ void CLoginView::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CLoginView, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CLoginView::OnBnClickedOk)
-	ON_BN_CLICKED(IDC_BUTTON1, &CLoginView::OnBnClickedButton1)
 	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
@@ -61,12 +60,6 @@ void CLoginView::OnBnClickedOk()
 		theApp.m_currentProject.SetTester(tester);
 		CDialogEx::OnOK();
 	}
-}
-
-/*取消登录按钮*/
-void CLoginView::OnBnClickedButton1()
-{
-	CDialogEx::OnCancel();
 }
 
 /*点击差号之后关闭当前程序*/

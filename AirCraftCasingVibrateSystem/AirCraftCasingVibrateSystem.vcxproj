@@ -200,7 +200,9 @@
     <ClInclude Include="AirCraftCasingVibrateSystemDoc.h" />
     <ClInclude Include="AirCraftCasingVibrateSystemView.h" />
     <ClInclude Include="AlarmParaSetView.h" />
+    <ClInclude Include="BaseProjectInfoView.h" />
     <ClInclude Include="ChannelParaDialog.h" />
+    <ClInclude Include="ChannelParaPresetView.h" />
     <ClInclude Include="ChartCtrl\ChartAxis.h" />
     <ClInclude Include="ChartCtrl\ChartAxisDu.h" />
     <ClInclude Include="ChartCtrl\ChartAxisLabel.h" />
@@ -249,11 +251,17 @@
     <ClInclude Include="ChartCtrl\MemDC.h" />
     <ClInclude Include="ChartCtrl\PointsOrdering.h" />
     <ClInclude Include="CollectionDataInfoDlg.h" />
+    <ClInclude Include="CollectionParaPresetView.h" />
     <ClInclude Include="Constant.h" />
     <ClInclude Include="DataStructure.h" />
     <ClInclude Include="EchoSignal.h" />
     <ClInclude Include="FFTWUtil.h" />
     <ClInclude Include="hiredis.h" />
+    <ClInclude Include="NewCellTypes\GridCellCheck.h" />
+    <ClInclude Include="NewCellTypes\GridCellCombo.h" />
+    <ClInclude Include="NewCellTypes\GridCellDateTime.h" />
+    <ClInclude Include="NewCellTypes\GridCellNumeric.h" />
+    <ClInclude Include="NewCellTypes\GridURLCell.h" />
     <ClInclude Include="RealTimeSignal.h" />
     <ClInclude Include="redisUtil.h" />
     <ClInclude Include="SensorController.h" />
@@ -315,6 +323,7 @@
     <ClInclude Include="SignalSelectView.h" />
     <ClInclude Include="SmartArray.h" />
     <ClInclude Include="SmartFFTWComplexArray.h" />
+    <ClInclude Include="StableStatusParaPresetView.h" />
     <ClInclude Include="StatisticView.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SubChannelParaView.h" />
@@ -354,7 +363,9 @@
     <ClCompile Include="AirCraftCasingVibrateSystemDoc.cpp" />
     <ClCompile Include="AirCraftCasingVibrateSystemView.cpp" />
     <ClCompile Include="AlarmParaSetView.cpp" />
+    <ClCompile Include="BaseProjectInfoView.cpp" />
     <ClCompile Include="ChannelParaDialog.cpp" />
+    <ClCompile Include="ChannelParaPresetView.cpp" />
     <ClCompile Include="ChannelParaView.cpp" />
     <ClCompile Include="ChartCtrl\ChartAxis.cpp" />
     <ClCompile Include="ChartCtrl\ChartAxisDu.cpp" />
@@ -394,8 +405,14 @@
     <ClCompile Include="ChartCtrl\DuChartCtrlShuxing.cpp" />
     <ClCompile Include="ChartCtrl\DuChartCtrlStaticFunction.cpp" />
     <ClCompile Include="CollectionDataInfoDlg.cpp" />
+    <ClCompile Include="CollectionParaPresetView.cpp" />
     <ClCompile Include="EchoSignal.cpp" />
     <ClCompile Include="FFTWUtil.cpp" />
+    <ClCompile Include="NewCellTypes\GridCellCheck.cpp" />
+    <ClCompile Include="NewCellTypes\GridCellCombo.cpp" />
+    <ClCompile Include="NewCellTypes\GridCellDateTime.cpp" />
+    <ClCompile Include="NewCellTypes\GridCellNumeric.cpp" />
+    <ClCompile Include="NewCellTypes\GridURLCell.cpp" />
     <ClCompile Include="RealTimeSignal.cpp" />
     <ClCompile Include="SensorController.cpp" />
     <ClCompile Include="CherryTree.cpp" />
@@ -451,6 +468,7 @@
     <ClCompile Include="SignalSaveView.cpp" />
     <ClCompile Include="SignalSelectView.cpp" />
     <ClCompile Include="SmartFFTWComplexArray.cpp" />
+    <ClCompile Include="StableStatusParaPresetView.cpp" />
     <ClCompile Include="StatisticView.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

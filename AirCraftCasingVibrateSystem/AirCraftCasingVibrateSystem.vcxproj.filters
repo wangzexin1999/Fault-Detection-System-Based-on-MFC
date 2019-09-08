@@ -67,6 +67,9 @@
     <Filter Include="Redis">
       <UniqueIdentifier>{0a6ada75-d743-4bad-b35a-41f254ae866d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NewCellTypes">
+      <UniqueIdentifier>{2a3d2024-2a8a-45c7-9c40-511f78656046}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -531,6 +534,33 @@
     <ClInclude Include="RealTimeSignal.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="BaseProjectInfoView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="NewCellTypes\GridCellCheck.h">
+      <Filter>NewCellTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="NewCellTypes\GridCellCombo.h">
+      <Filter>NewCellTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="NewCellTypes\GridCellDateTime.h">
+      <Filter>NewCellTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="NewCellTypes\GridCellNumeric.h">
+      <Filter>NewCellTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="NewCellTypes\GridURLCell.h">
+      <Filter>NewCellTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="CollectionParaPresetView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ChannelParaPresetView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="StableStatusParaPresetView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AirCraftCasingVibrateSystem.cpp">
@@ -933,6 +963,33 @@
       <Filter>源文件\View</Filter>
     </ClCompile>
     <ClCompile Include="RealTimeSignal.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseProjectInfoView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="NewCellTypes\GridCellCheck.cpp">
+      <Filter>NewCellTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="NewCellTypes\GridCellCombo.cpp">
+      <Filter>NewCellTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="NewCellTypes\GridCellDateTime.cpp">
+      <Filter>NewCellTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="NewCellTypes\GridCellNumeric.cpp">
+      <Filter>NewCellTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="NewCellTypes\GridURLCell.cpp">
+      <Filter>NewCellTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="CollectionParaPresetView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ChannelParaPresetView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="StableStatusParaPresetView.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

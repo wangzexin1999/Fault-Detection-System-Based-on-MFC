@@ -39,7 +39,6 @@ protected:
 	TesterController m_TbTesterControler;
 public:
 	afx_msg void OnBnClickedOk();
-	afx_msg void OnBnClickedButton1();
 	CEdit m_loginNameEdit;
 	CEdit m_passWordEdit;
 
