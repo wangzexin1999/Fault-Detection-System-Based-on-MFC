@@ -82,7 +82,7 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	//httplib::Client cli(_T("localhost"), 8000); //http连接
 	//m_cli = httplib::Client(_T("localhost"), 9999);
 	
-	m_cli = httplib::Client(_T("localhost"), 8000);
+	m_cli = httplib::Client(_T(ServerHttpAddress), ServerHttpPort);
 	///设置mysql数据库信息
 	const char user[] = "root";         //username
 	const char pswd[] = "123456";         //password

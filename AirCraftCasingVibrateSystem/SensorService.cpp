@@ -4,7 +4,7 @@
 #include "CommonUtil.h"
 #include "DateUtil.h"
 #include "AirCraftCasingVibrateSystem.h"
-
+#include "Constant.h"
 CSensorService::CSensorService()
 {
 	//m_signalBuff.CreateBuffer(102400);
@@ -86,19 +86,23 @@ Result CSensorService::AddCollectData(TbProject project, int sensorId, ThreadSaf
 	}
 
 	// 如果可以连接上服务器，传数据
-	CString temp = CommonUtil::Int2CString(sensorId);
-	temp = "+++" + temp;
-
 	httplib::MultipartFormDataItems items = {
 	{ "data", allData.GetBuffer(), "1.txt", "text/plain" },//数据
-	{ "projectID", temp.GetBuffer(), "", "" },
-	{ "checkDeviceID", temp.GetBuffer(), "", "" },
-	{ "sensorID", temp.GetBuffer(), "", "" },
-	{ "startTime", temp.GetBuffer(), "", "" },
+	{ "projectID", CommonUtil::Int2CString(project.GetProduct().GetProductId()).GetBuffer(), "", "" },
+	{ "checkDeviceID", CommonUtil::Int2CString(project.GetTestingDevicePara().GetTestingdevice().GetTestingdeviceId()).GetBuffer(), "", "" },
+	{ "sensorID", CommonUtil::Int2CString(sensorId).GetBuffer(), "", "" },
+	{ "startTime", startCollectTime.GetBuffer(), "", "" },
 	{ "endTime", endTime.GetBuffer(), "", "" },
-	{ "productID", temp.GetBuffer(), "", "" },
+	{ "productID", CommonUtil::Int2CString(project.GetProduct().GetProductId()).GetBuffer(), "", "" },
 	};
-	auto result = theApp.m_cli.Post("/hi", items);
+	auto result = theApp.m_cli.Post("/collection", items);
+	if (!result)//如果没有发送成功，则重新发送
+	{
+		httplib::Client cli(_T(ServerHttpAddress), ServerHttpPort);
+		theApp.m_cli = cli;
+		auto result = theApp.m_cli.Post("/collection", items);
+	}
+	
 	return res;
 }
 
