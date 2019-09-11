@@ -3,7 +3,7 @@
 #include "FileUtil.h"
 #include "CommonUtil.h"
 #include "DateUtil.h"
-
+#include "AirCraftCasingVibrateSystem.h"
 
 CSensorService::CSensorService()
 {
@@ -52,8 +52,10 @@ Result CSensorService::AddCollectData(TbProject project, int sensorId, ThreadSaf
 		+ ".csv";
 
 	CString startCollectTime = collectionData.front().GetAcquireTime();
+	
+	Result res;
 	//3.调用FileUtil保存文件，保存成功返回采集的结束时间
-	Result res = CFileUtil::SaveCollectionData(path, fileName, collectionData);
+	/*Result res = CFileUtil::SaveCollectionData(path, fileName, collectionData);
 	if (res.GetIsSuccess()){
 		///4.文件保存成功，将记录保存到数据库
 		TbSignal signal;
@@ -66,7 +68,37 @@ Result CSensorService::AddCollectData(TbProject project, int sensorId, ThreadSaf
 		signal.GetTestingDevice().SetTestingdeviceId(project.GetTestingDevicePara().GetTestingdevice().GetTestingdeviceId());
 		m_signalDao.SetTableFieldValues(signal);
 		m_signalDao.Insert(false);
+	}*/
+
+
+	CString separator = ",";////逗号分隔符
+	CString endTime;
+	CString allData = "";
+	int saveCount = collectionData.size();
+	for (int i = 0; i < saveCount; i++){
+		////循环采集数据的队列去保存数据
+		CString data = "";
+		shared_ptr<AcquiredSignal>	acquireSignal = collectionData.wait_and_pop();
+		data += acquireSignal->GetAcquireTime() + separator;
+		data += CommonUtil::DoubleOrFloat2CString(acquireSignal->GetSignalData()) + "\n";
+		if (i == saveCount - 1) endTime = acquireSignal->GetAcquireTime();
+		allData = allData + data;
 	}
+
+	// 如果可以连接上服务器，传数据
+	CString temp = CommonUtil::Int2CString(sensorId);
+	temp = "+++" + temp;
+
+	httplib::MultipartFormDataItems items = {
+	{ "data", allData.GetBuffer(), "1.txt", "text/plain" },//数据
+	{ "projectID", temp.GetBuffer(), "", "" },
+	{ "checkDeviceID", temp.GetBuffer(), "", "" },
+	{ "sensorID", temp.GetBuffer(), "", "" },
+	{ "startTime", temp.GetBuffer(), "", "" },
+	{ "endTime", endTime.GetBuffer(), "", "" },
+	{ "productID", temp.GetBuffer(), "", "" },
+	};
+	auto result = theApp.m_cli.Post("/hi", items);
 	return res;
 }
 

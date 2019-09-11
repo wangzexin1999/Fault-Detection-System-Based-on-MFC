@@ -491,7 +491,8 @@ void CMainFrame::OnButtonStartCapture()
 			m_vsignalCaptureView[i]->OpenThread2CaptureData();
 		}
 	}
-	SetTimer(99, 1000, NULL);
+	///实时数据传输
+	//SetTimer(99, 1000, NULL);
 }
 
 // 停止采集
@@ -663,7 +664,7 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 	// 实时传输
 	if (nIDEvent == 99)
 	{
-		RealTimeSignal2Server();
+		//RealTimeSignal2Server();
 	}
 	CMDIFrameWndEx::OnTimer(nIDEvent);
 }

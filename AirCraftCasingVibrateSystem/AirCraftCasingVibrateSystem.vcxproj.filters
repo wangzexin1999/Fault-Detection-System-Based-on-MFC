@@ -561,6 +561,9 @@
     <ClInclude Include="StableStatusParaPresetView.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="httplib.h">
+      <Filter>头文件\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AirCraftCasingVibrateSystem.cpp">

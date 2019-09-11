@@ -257,6 +257,7 @@
     <ClInclude Include="EchoSignal.h" />
     <ClInclude Include="FFTWUtil.h" />
     <ClInclude Include="hiredis.h" />
+    <ClInclude Include="httplib.h" />
     <ClInclude Include="NewCellTypes\GridCellCheck.h" />
     <ClInclude Include="NewCellTypes\GridCellCombo.h" />
     <ClInclude Include="NewCellTypes\GridCellDateTime.h" />
