@@ -77,6 +77,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_BTN_SELF_SCALE, &CMainFrame::OnBtnDefaultScale)
 	ON_COMMAND(ID_BTN_NO_CORROR, &CMainFrame::OnBtnNoCorror)
 	ON_WM_TIMER()
+	ON_COMMAND(ID_BTN_GRAPH_ATTR, &CMainFrame::OnBtnGraphAttribute)
 END_MESSAGE_MAP()
 
 // CMainFrame 构造/析构
@@ -116,6 +117,13 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	ASSERT(bNameValid);
 	m_wndStatusBar.AddElement(new CMFCRibbonStatusBarPane(ID_STATUSBAR_PANE1, strTitlePane1, TRUE), strTitlePane1);
 	m_wndStatusBar.AddExtendedElement(new CMFCRibbonStatusBarPane(ID_STATUSBAR_PANE2, strTitlePane2, TRUE), strTitlePane2);
+
+	//测试加入按钮
+	CMFCRibbonCategory *pCategory = m_wndRibbonBar.GetCategory(3);
+	CMFCRibbonPanel *pPanel = pCategory->GetPanel(6);
+	pPanel->Add(new CMFCRibbonButton(12, _T("1"), 3, -1));
+	pPanel->Add(new CMFCRibbonButton(32, _T("2"), 3, -1));
+	pPanel->Add(new CMFCRibbonButton(33, _T("3"), 7, -1));
 
 
 	if (!m_systemPara.Create(_T("系统参数"), this, CRect(0, 0, 200, 100), TRUE, 10000,
@@ -717,4 +725,22 @@ LRESULT CMainFrame::OnSetText(WPARAM wParam, LPARAM lParam)
 	DefWindowProc(WM_SETTEXT, wParam, lParam);
 	Invalidate();
 	return 0;
+}
+
+
+
+// 图形属性
+void CMainFrame::OnBtnGraphAttribute()
+{
+	// TODO:  在此添加命令处理程序代码
+	m_graphAttributeView.DoModal();
+
+	for (int i = 0; i < m_vsignalCaptureView.size(); i++)
+	{
+		
+		m_vsignalCaptureView[i]->GetChartCtrl().m_GraphBKColor = m_graphAttributeView.m_colorView.colGBKColor;
+		m_vsignalCaptureView[i]->GetChartCtrl().RefreshCtrl();
+	}
+	
+
 }

@@ -18,6 +18,7 @@
 #include "AirCraftCasingVibrateSystemView.h"
 #include <vector>
 #include "CollectionDataInfoDlg.h"
+#include "GraphAttributeView.h"
 
 class CMainFrame : public CMDIFrameWndEx
 {
@@ -52,10 +53,10 @@ protected:  // 控件条嵌入成员
 	CMFCToolBar       m_wndContrlBar;
 	
 	std::vector<CAirCraftCasingVibrateSystemView *> m_vsignalCaptureView;
+	CGraphAttributeView m_graphAttributeView; // 图形属性界面
 
 public:
 	CSystemParaView    m_systemPara; ///暂时无用
-
 	CChannelParaView    m_channelPara;
 
 
@@ -137,6 +138,7 @@ public:
 	afx_msg void OnViewSystemPara();
 	afx_msg void OnUpdateViewSystemPara(CCmdUI* pCmdUI);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnBtnGraphAttribute();//图形属性
 };
 
 

@@ -6,7 +6,14 @@
 class CFontView : public CDialogEx
 {
 	DECLARE_DYNAMIC(CFontView)
-
+public:
+	LOGFONT lFontXCoor;
+	LOGFONT lFontYCoor;
+	LOGFONT lFontXUnit;
+	LOGFONT lFontYUnit;
+	LOGFONT lFontCursorValue;
+	LOGFONT lFontStaValue;
+	LOGFONT lFontLegend;
 public:
 	CFontView(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CFontView();

@@ -198,6 +198,7 @@
 #define IDC_GRIDCTRL_STABLESTATUSPARA   1127
 #define IDC_BUTTON_ADD                  1128
 #define IDC_CHECK_APP_ALL_WIN           1129
+#define IDC_MFCCOLORBUTTON1             1130
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_CHECK2                       32771
 #define ID_COMBO2                       32772
@@ -252,14 +253,16 @@
 #define ID_BUTTON_DETECT_DEVICE         32827
 #define ID_BUTTON_DETECTED_DEVICE       32828
 #define ID_32829                        32829
+#define ID_COMBO3                       32830
+#define ID_COMBO4                       32831
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        375
-#define _APS_NEXT_COMMAND_VALUE         32830
-#define _APS_NEXT_CONTROL_VALUE         1130
+#define _APS_NEXT_COMMAND_VALUE         32837
+#define _APS_NEXT_CONTROL_VALUE         1131
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

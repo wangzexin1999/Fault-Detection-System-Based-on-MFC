@@ -38,7 +38,7 @@ BEGIN_MESSAGE_MAP(CAirCraftCasingVibrateSystemView, CFormView)
 	ON_WM_RBUTTONUP()
 	ON_WM_PAINT()
 	ON_COMMAND(ID_BUTTON_SIGNAL_SELECT, &CAirCraftCasingVibrateSystemView::OnButtonSignalSelect)
-	ON_COMMAND(ID_BTN_GRAPH_ATTR, &CAirCraftCasingVibrateSystemView::OnBtnGraphAttr)
+	
 	ON_WM_TIMER()
 
 END_MESSAGE_MAP()
@@ -84,30 +84,25 @@ void CAirCraftCasingVibrateSystemView::OnInitialUpdate()
 	CDuChartCtrl * pDuChartCtrl = &m_chart;
 	pDuChartCtrl->EnableRefresh(false);
 	// 显示光标值、统计值
-
 	int nSelectChannelCount = 1;
 	int nXAxisType = CDuChartCtrlShuxing::typeAxisLine;
 	int nYAxisType = CDuChartCtrlShuxing::typeAxisLine;
 	int nSerieType = CDuChartCtrlShuxing::typeSerieLine;
-	//int nBeipcBarCount = m_nCalcFreCountK + 1;
-
 	// 清空所有
 	CDuChartCtrlStaticFunction::RemoveAll(pDuChartCtrl);
 	// 构造坐标轴
 	//CDuChartCtrlStaticFunction::CreateAxis(pDuChartCtrl, nSelectChannelCount, nXAxisType, nYAxisType);
-	CChartStandardAxisDu* m_pBottomAxis22;
-	m_pBottomAxis22 = m_chart.CreateStandardAxisDu(CChartCtrl::BottomAxis, 0);
-	m_pBottomAxis22->SetMinMax(0, 500);//设置下刻度
-	m_pBottomAxis22->SetTickIncrement(false, 100);
-	CChartStandardAxisDu* pLeftAxis22 = m_chart.CreateStandardAxisDu(CChartCtrl::LeftAxis, 0);
-	pLeftAxis22->SetMinMax(-0.1, 0.1);
-	pLeftAxis22->SetTickIncrement(false, 0.05);
+	CChartStandardAxisDu* pBottomAxis;
+	pBottomAxis = m_chart.CreateStandardAxisDu(CChartCtrl::BottomAxis, 0);
+	pBottomAxis->SetMinMax(0, 500);//设置下刻度
+	pBottomAxis->SetTickIncrement(false, 100);
+	CChartStandardAxisDu* pLeftAxis = m_chart.CreateStandardAxisDu(CChartCtrl::LeftAxis, 0);
+	pLeftAxis->SetMinMax(-0.1, 0.1);
+	pLeftAxis->SetTickIncrement(false, 0.05);
 	// 构造曲线
 	CDuChartCtrlStaticFunction::CreateSeries(pDuChartCtrl, nSelectChannelCount, nSerieType);
 	// 构造光标
 	CDuChartCtrlStaticFunction::SetCursorNone(pDuChartCtrl);
-
-
 	// 坐标轴
 	for (int i = 0; i < nSelectChannelCount; i++)
 	{
@@ -115,7 +110,6 @@ void CAirCraftCasingVibrateSystemView::OnInitialUpdate()
 		if (pChartAxis != NULL)
 			pChartAxis->GetLabel()->SetText("Fre[Hz]");
 	}
-
 	// 曲线
 	for (int i = 0; i < nSelectChannelCount; i++)
 	{
@@ -124,12 +118,7 @@ void CAirCraftCasingVibrateSystemView::OnInitialUpdate()
 		pSerie->SetName("曲线");
 		//pSerie->SetNeedCalStatValue(true);
 	}
-
 	pDuChartCtrl->m_shuxing.m_bDrawStatValue = TRUE;
-
-	//CDuChartCtrlStaticFunction::AutoXScale(pDuChartCtrl, FALSE);
-	//CDuChartCtrlStaticFunction::AutoYScale(pDuChartCtrl, FALSE);
-	//pDuChartCtrl->SetCursorSingle(FALSE);
 	pDuChartCtrl->EnableRefresh(true);
 	m_flag = true;
 }
@@ -335,7 +324,7 @@ void CAirCraftCasingVibrateSystemView::OnPaint()
 	// 不为绘图消息调用 CFormView::OnPaint()
 	CRect rc;
 	GetClientRect(rc);
-	rc.DeflateRect(20, 20);
+	rc.DeflateRect(10, 10);
 	//rc.left = rc.left + 80;
 
 	m_chart.MoveWindow(rc);
@@ -426,9 +415,4 @@ void CAirCraftCasingVibrateSystemView::OnBtnNoCorror()
 	CDuChartCtrlStaticFunction::SetCursorNone(&this->m_chart);
 }
 
-// 图像属性
-void CAirCraftCasingVibrateSystemView::OnBtnGraphAttr()
-{
-	// TODO:  在此添加命令处理程序代码
-	m_graphAttributeView.DoModal();
-}
+

@@ -24,7 +24,7 @@
 #include "resource.h"
 #include "SignalSelectView.h"
 #include "SensorController.h"
-#include "GraphAttributeView.h"
+
 #include "TbSensor.h"
 #include "SmartFFTWComplexArray.h"
 #include "SmartArray.h"
@@ -45,7 +45,7 @@ private:
 	CChartLineSerieDu *m_pLineSerie; // 线
 	int m_flag = false;  // 调整控件大小标志
 	CSignalSelectView  m_signalSelectView;   //信号选择界面
-	CGraphAttributeView m_graphAttributeView; // 图形属性界面
+	
 
 	
 
@@ -213,7 +213,7 @@ protected:
 public:
 	afx_msg void OnPaint();
 	afx_msg void OnButtonSignalSelect();
-	afx_msg void OnBtnGraphAttr();
+	
 	
 	void OnBtnTransverseAmplification();
 	void OnBtnHorizontalReduction();
