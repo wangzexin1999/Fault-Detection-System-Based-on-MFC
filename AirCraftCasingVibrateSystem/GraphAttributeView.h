@@ -5,6 +5,7 @@
 #include "SelectView.h"
 #include "CoordinateView.h"
 #include "afxcmn.h"
+#include "afxwin.h"
 
 // CGraphAttributeView ¶Ô»°¿ò
 
@@ -34,4 +35,5 @@ public:
 	CTabCtrl m_tabGraphAttribute;
 	virtual BOOL OnInitDialog();
 	afx_msg void OnSelchangeTabGraphAttr(NMHDR *pNMHDR, LRESULT *pResult);
+	CButton m_appAllWinodw;
 };

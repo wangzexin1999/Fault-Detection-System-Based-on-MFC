@@ -23,6 +23,7 @@
 #include "Constant.h"
 #include "ProjectController.h"
 #include "TbProject.h"
+
 #ifdef _DEBUGE	
 #define new DEBUG_NEW
 #endif
@@ -76,11 +77,16 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 		printf("connect error!\n");
 		//return 0;
 	}*/
-
+	// 创建远程服务器连接
+	//m_cli = httplib::Client("10.10.211.89", 8000);
+	//httplib::Client cli(_T("localhost"), 8000); //http连接
+	//m_cli = httplib::Client(_T("localhost"), 9999);
+	
+	m_cli = httplib::Client(_T(ServerHttpAddress), ServerHttpPort);
 	///设置mysql数据库信息
 	const char user[] = "root";         //username
 	const char pswd[] = "123456";         //password
-	const char host[] = "39.107.96.162";    //or"127.0.0.1"
+	const char host[] = "39.107.96.162";    //or"127.0.0.1" 39.107.96.162
 	const char table[] = "aircraftfaultdetectdb";        //database
 	unsigned int port = 3306;           //server port
 	theApp.PDsql.SetMysql(host, user, pswd, table);
@@ -111,7 +117,7 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 
 	CWinAppEx::InitInstance();
 
-
+	
 	// 初始化 OLE 库
 	if (!AfxOleInit())
 	{

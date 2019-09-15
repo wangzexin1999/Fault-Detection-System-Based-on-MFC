@@ -24,6 +24,7 @@ void CGraphAttributeView::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_TAB_GRAPH_ATTR, m_tabGraphAttribute);
+	DDX_Control(pDX, IDC_CHECK_APP_ALL_WIN, m_appAllWinodw);
 }
 
 
@@ -80,6 +81,8 @@ BOOL CGraphAttributeView::OnInitDialog()
 	m_coordinateView.ShowWindow(SW_HIDE);
 	m_tabGraphAttribute.SetCurSel(0);
 	m_CurSelTab = 0;
+	// 默认应用同类型窗口选中
+	m_appAllWinodw.SetCheck(1);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常:  OCX 属性页应返回 FALSE
 }

@@ -104,6 +104,7 @@ protected:
 	unsigned m_uActiveSerieIndex;
 	// 活动光标ID
 	unsigned m_uActiveCursorID;
+public:
 	// 图形区背景颜色
 	COLORREF m_GraphBKColor;
 

@@ -678,6 +678,7 @@
     <ClInclude Include="ProductController.h">
       <Filter>头文件</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="TbCollectionPlan.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -686,6 +687,10 @@
     </ClInclude>
     <ClInclude Include="TbSignal.h">
       <Filter>头文件\entity</Filter>
+=======
+    <ClInclude Include="httplib.h">
+      <Filter>头文件\Utils</Filter>
+>>>>>>> 3e66b762c7cf684a54270aa8c402828f8aad76ca
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

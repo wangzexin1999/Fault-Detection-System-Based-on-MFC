@@ -29,6 +29,7 @@
 #include "AcquiredSignal.h"
 #include "SignalAcquisitionService.h"
 #include "redisUtil.h"
+#include "httplib.h"
 using namespace std;
 
 
@@ -54,7 +55,7 @@ public:
 
 	//vector<queue<EchoSignal>> m_sampleData;
 
-	int m_icollectSignalsStoreCount = 100000; ///采集信号的存储数量。 
+	int m_icollectSignalsStoreCount = 10000; ///采集信号的存储数量。 
 	int m_isampleSignalsStoreCount = 100000; ///采集信号的存储数量。 
 
 	bool m_bIsSample = false;//是否进行采样
@@ -74,6 +75,8 @@ public:
 	vector<ThreadSafeQueue<AcquiredSignal> > m_collectData; ///采集数据*/
 
 	double tempRead[100][1000]; ///模拟数据
+	//httplib::Client m_cli; //http连接
+	httplib::Client m_cli;
 // 重写
 public:
 	virtual BOOL InitInstance();
