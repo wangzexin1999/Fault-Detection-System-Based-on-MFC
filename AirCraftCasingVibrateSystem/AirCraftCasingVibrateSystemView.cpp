@@ -199,7 +199,7 @@ void CAirCraftCasingVibrateSystemView::CaptureData(){
 ///开启线程采集数据&设置定时器刷新数据
 void CAirCraftCasingVibrateSystemView::OpenThread2CaptureData(){
 	////如果当前未选择相应的传感器，则不能开线程采集数据
-	if (!m_signalSelectView.GetSelectedSensor().GetSensorId()){
+	if (!m_signalSelectView.GetSelectedSensor().GetId()){
 		AfxMessageBox("窗口"+CommonUtil::Int2CString(m_icurrentWindowNumber)+"还没有选择传感器");
 		theApp.m_icollectionStatus = 0; ///一旦出现没有选择传感器的情况，将当前采集状态置为0 
 		return;
@@ -255,7 +255,7 @@ void  CAirCraftCasingVibrateSystemView::AutoSaveCollectionData(){
 
 ////保存采集数据
 void CAirCraftCasingVibrateSystemView::SaveCollectionData(ThreadSafeQueue<AcquiredSignal> acquireSignalQueue){
-	m_sensorController.SaveCollectionData(m_signalSelectView.GetSelectedSensor().GetSensorId(), acquireSignalQueue);
+	m_sensorController.SaveCollectionData(m_signalSelectView.GetSelectedSensor().GetId(), acquireSignalQueue);
 }
 
 ////开启线程自动保存线程函数
@@ -265,7 +265,7 @@ void CAirCraftCasingVibrateSystemView::OpenThread2SaveCollectionData(){
 }
 void  CAirCraftCasingVibrateSystemView::SaveSampleData(){
 	////调用传感器Controller类保存采样数据
-	Result res = m_sensorController.SaveSampleData(m_signalSelectView.GetSelectedSensor().GetSensorId(),m_sampleDataQueue);
+	Result res = m_sensorController.SaveSampleData(m_signalSelectView.GetSelectedSensor().GetId(),m_sampleDataQueue);
 	if (!res.GetIsSuccess()){
 		AfxMessageBox(res.GetMessages());
 	}

@@ -52,7 +52,7 @@ void CTriggerParaView::GridCtrlInit()
 
 	m_triggerParaGridCtrl.SetEditable(false);
 	m_triggerParaGridCtrl.SetTextBkColor(RGB(0xFF, 0xFF, 0xE0));//黄色背景
-	m_triggerParaGridCtrl.SetRowCount(theApp.m_currentProject.GetSensorParaVector().size() + 1); //初始为n行
+	m_triggerParaGridCtrl.SetRowCount(theApp.m_currentProject.GetSensorVector().size() + 1); //初始为n行
 	m_triggerParaGridCtrl.SetColumnCount(4); //初始化为7列
 	m_triggerParaGridCtrl.SetFixedRowCount(1); //表头为一行
 	m_triggerParaGridCtrl.SetRowResize(TRUE); ///自动设置行和列的大小
@@ -84,10 +84,10 @@ void CTriggerParaView::GridCtrlInit()
 		CString strText;
 		if (col == 0) strText = CommonUtil::Int2CString(row);
 		if (col == 1) strText = "保留";
-		if (col == 2) strText = CommonUtil::DoubleOrFloat2CString(theApp.m_currentProject.GetSensorParaVector()[row - 1].GetTriggerMagnitude());
-		if (col == 3) strText = theApp.m_currentProject.GetSensorParaVector()[row - 1].GetTriggerPolarity().GetDictValue();
+		if (col == 2) strText = CommonUtil::DoubleOrFloat2CString(theApp.m_currentProject.GetSensorVector()[row - 1].GetTriggerMagnitude());
+		if (col == 3) strText = theApp.m_currentProject.GetSensorVector()[row - 1].GetTriggerPolarity().GetDictValue();
 		
-		Item.strText.Format(_T(strText), row);
+		Item.strText=strText;
 		m_triggerParaGridCtrl.SetItem(&Item);
 	}
 }

@@ -17,15 +17,15 @@ Modification:
 修改内容：
 ************************************************************************/
 #pragma once
+#include "TbSensorDao.h"
+#include "TbSensor.h"
 #include <vector>
-#include "TbSensorPara.h"
-#include "TbSensorParaDao.h"
 using namespace std;
 class SensorParaService
 {
 
 private:
-	TbSensorParaDao m_sensorParaDao;
+	TbSensorDao m_sensorDao;
 public:
 	SensorParaService();
 	~SensorParaService();
@@ -39,6 +39,6 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	bool GetALLSensorParaByProjectId(int projectId, std::vector<TbSensorPara> &vsensorPara);
+	bool GetALLSensorParaByProjectId(int projectId, std::vector<TbSensor> &vsensorPara);
 };
 

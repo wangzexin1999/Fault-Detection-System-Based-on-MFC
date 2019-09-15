@@ -78,7 +78,7 @@ void TbSignalDao::GetTableFieldValues(TbSignal &signal){
 	signal.SetStartTime(m_startTime.m_strValue);
 	signal.SetEndTime(m_endTime.m_strValue);
 	////清空传感器参数集合
-	signal.GetSensor().SetSensorId(m_sensorId.GetInt());
+	signal.GetSensor().SetId(m_sensorId.GetInt());
 	signal.SetSignalType(m_signalType.m_strValue);
 	signal.GetProject().SetProjectId(m_projectId.GetInt());
 	signal.GetTestingDevice().SetTestingdeviceId(m_testingDeviceId.GetInt());

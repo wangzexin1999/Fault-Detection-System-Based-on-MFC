@@ -48,7 +48,7 @@ void CGeneralParaView::GridCtrlInit()
 	}
 	m_generalParaGridCtrl.SetEditable(false);
 	m_generalParaGridCtrl.SetTextBkColor(RGB(0xFF, 0xFF, 0xE0));//黄色背景
-	m_generalParaGridCtrl.SetRowCount(theApp.m_currentProject.GetSensorParaVector().size()+1); //初始为n行
+	m_generalParaGridCtrl.SetRowCount(theApp.m_currentProject.GetSensorVector().size()+1); //初始为n行
 	m_generalParaGridCtrl.SetColumnCount(7); //初始化为7列
 	m_generalParaGridCtrl.SetFixedRowCount(1); //表头为一行
 	m_generalParaGridCtrl.SetRowResize(TRUE); ///自动设置行和列的大小
@@ -82,14 +82,14 @@ void CGeneralParaView::GridCtrlInit()
 		Item.nFormat = DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS;
 		CString strText; 
 		if (col == 0) strText = CommonUtil::Int2CString(row);
-		if (col == 1) strText =  theApp.m_currentProject.GetSensorParaVector()[row-1].GetSensorStatus().GetDictValue();
-		if (col == 2) strText = theApp.m_currentProject.GetSensorParaVector()[row-1].GetSensorDesc();
-		if (col == 3) strText = theApp.m_currentProject.GetSensorParaVector()[row - 1].GetWindowType().GetDictValue();
-		if (col == 4) strText = CommonUtil::DoubleOrFloat2CString(theApp.m_currentProject.GetSensorParaVector()[row - 1].GetSensitivity());
-		if (col == 5) strText = theApp.m_currentProject.GetSensorParaVector()[row - 1].GetInputMethod().GetDictValue();
-		if (col == 6) strText = CommonUtil::DoubleOrFloat2CString(theApp.m_currentProject.GetSensorParaVector()[row - 1].GetMileageRange());
+		if (col == 1) strText =  theApp.m_currentProject.GetSensorVector()[row-1].GetSensorStatus().GetDictValue();
+		if (col == 2) strText = theApp.m_currentProject.GetSensorVector()[row-1].GetSensorDesc();
+		if (col == 3) strText = theApp.m_currentProject.GetSensorVector()[row - 1].GetWindowType().GetDictValue();
+		if (col == 4) strText = CommonUtil::DoubleOrFloat2CString(theApp.m_currentProject.GetSensorVector()[row - 1].GetSensitivity());
+		if (col == 5) strText = theApp.m_currentProject.GetSensorVector()[row - 1].GetInputMethod().GetDictValue();
+		if (col == 6) strText = CommonUtil::DoubleOrFloat2CString(theApp.m_currentProject.GetSensorVector()[row - 1].GetMileageRange());
 				
-		Item.strText.Format(_T(strText), row);
+		Item.strText=strText;
 
 		m_generalParaGridCtrl.SetItem(&Item);
 	}

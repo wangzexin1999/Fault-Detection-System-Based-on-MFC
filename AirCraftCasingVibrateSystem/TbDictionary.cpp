@@ -2,8 +2,11 @@
 #include "TbDictionary.h"
 
 
-TbDictionary::TbDictionary()
+TbDictionary::TbDictionary(int dictId  , CString dictName , CString dictValue  )
 {
+	m_dictId = dictId;
+	m_dictName = dictName;
+	m_dictValue = dictValue;
 }
 
 

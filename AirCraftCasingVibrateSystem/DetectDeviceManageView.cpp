@@ -46,7 +46,7 @@ BOOL CDetectDeviceManageView::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 	////获取检测设备的数据
-	Result res = m_testingDeviceController.LoadAllTestingDeviceBySearchCondition("",m_vtestingDevice);
+	Result res = m_testingDeviceController.FindAllTestingDeviceBySearchCondition("",m_vtestingDevice);
 	if (!res.GetIsSuccess()){ AfxMessageBox(res.GetMessages()); }
 	////初始化GridCtrl控件
 	GridCtrlInit();
@@ -96,7 +96,7 @@ void CDetectDeviceManageView::GridCtrlInit(){
 		if (col == 3) strText = m_vtestingDevice[row - 1].GetTestingdeviceBorndate();
 		if (col == 4) strText = m_vtestingDevice[row - 1].GetTestingdeviceImportdate();
 
-		Item.strText.Format(_T(strText), row);
+		Item.strText=strText;
 		m_testingDeviceGridCtrl.SetItem(&Item);
 	}
 }
@@ -105,7 +105,7 @@ void CDetectDeviceManageView::OnBnClickedSearchButton()
 {
 	CString testingDeviceName="";
 	m_testingDeviceNameEdit.GetWindowTextA(testingDeviceName);
-	Result res = m_testingDeviceController.LoadAllTestingDeviceBySearchCondition(testingDeviceName, m_vtestingDevice);
+	Result res = m_testingDeviceController.FindAllTestingDeviceBySearchCondition(testingDeviceName, m_vtestingDevice);
 	if (!res.GetIsSuccess()){ AfxMessageBox(res.GetMessages()); }
 	GridCtrlInit();
 }
@@ -125,7 +125,7 @@ void CDetectDeviceManageView::OnBnClickedDeleteButton(){
 	if (res.GetIsSuccess()){
 		m_selectedTestingDevice.SetTestingdeviceId(0);
 		///删除成功之后刷新页面
-		res = m_testingDeviceController.LoadAllTestingDeviceBySearchCondition("", m_vtestingDevice);
+		res = m_testingDeviceController.FindAllTestingDeviceBySearchCondition("", m_vtestingDevice);
 		if (!res.GetIsSuccess()){ AfxMessageBox(res.GetMessages()); }
 		///重新加载表格
 		GridCtrlInit();
@@ -176,7 +176,7 @@ void CDetectDeviceManageView::OnBnClickedSaveButton(){
 		if (!res.GetIsSuccess()){ AfxMessageBox(res.GetMessages()); }
 	}
 	///刷新表格
-	res = m_testingDeviceController.LoadAllTestingDeviceBySearchCondition("", m_vtestingDevice);
+	res = m_testingDeviceController.FindAllTestingDeviceBySearchCondition("", m_vtestingDevice);
 	if (!res.GetIsSuccess()){ AfxMessageBox(res.GetMessages()); }
 	///重新加载表格
 	GridCtrlInit();

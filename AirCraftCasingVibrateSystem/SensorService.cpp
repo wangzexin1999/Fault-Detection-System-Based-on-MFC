@@ -62,7 +62,7 @@ Result CSensorService::AddCollectData(TbProject project, int sensorId, ThreadSaf
 		signal.SetProduct(project.GetProduct());
 		signal.SetStartTime(startCollectTime);
 		signal.SetEndTime(res.GetMessages());
-		signal.GetSensor().SetSensorId(sensorId);
+		signal.GetSensor().SetId(sensorId);
 		signal.GetTestingDevice().SetTestingdeviceId(project.GetTestingDevicePara().GetTestingdevice().GetTestingdeviceId());
 		m_signalDao.SetTableFieldValues(signal);
 		m_signalDao.Insert(false);
@@ -105,7 +105,7 @@ Result CSensorService::AddSampleData(TbProject project, int sensorId, ThreadSafe
 		signal.SetProduct(project.GetProduct());
 		signal.SetStartTime(startCollectTime);
 		signal.SetEndTime(res.GetMessages());
-		signal.GetSensor().SetSensorId(sensorId);
+		signal.GetSensor().SetId(sensorId);
 		signal.GetTestingDevice().SetTestingdeviceId(project.GetTestingDevicePara().GetTestingdevice().GetTestingdeviceId());
 		m_recordSignalDao.SetTableFieldValues(signal);
 		m_recordSignalDao.Insert(false);

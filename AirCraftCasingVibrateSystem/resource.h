@@ -115,6 +115,7 @@
 #define IDC_EDIT_LOGNNAME               1019
 #define IDC_COMBO_TESTINGDEVICE         1020
 #define IDC_COMBO_DETECTEDDEVICE        1021
+#define IDC_COMBO_PRODUCT               1021
 #define IDC_BUTTON2                     1024
 #define IDC_TAB_ENGINEER_UNIT           1025
 #define IDC_CHECK2                      1026
@@ -197,6 +198,12 @@
 #define IDC_GRIDCTRL_CHANNELPARA        1126
 #define IDC_GRIDCTRL_STABLESTATUSPARA   1127
 #define IDC_BUTTON_ADD                  1128
+#define IDC_EDIT_DELAYBLOCKCOUNT        1129
+#define IDC_EDIT_COLLECTIONBATCH        1130
+#define IDC_EDIT_TRIGGERCOUNT           1131
+#define IDC_BUTTON_OK                   1133
+#define IDC_BUTTON_CANNEL               1134
+#define IDC_BUTTON_CANCEL               1134
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_CHECK2                       32771
 #define ID_COMBO2                       32772
@@ -258,7 +265,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        375
 #define _APS_NEXT_COMMAND_VALUE         32830
-#define _APS_NEXT_CONTROL_VALUE         1129
+#define _APS_NEXT_CONTROL_VALUE         1135
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

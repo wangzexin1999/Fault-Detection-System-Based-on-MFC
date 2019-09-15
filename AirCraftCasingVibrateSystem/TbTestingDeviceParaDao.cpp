@@ -40,28 +40,30 @@ TbTestingDeviceParaDao::~TbTestingDeviceParaDao()
 }
 
 void TbTestingDeviceParaDao::SetTableFieldValues(TbTestingDevicePara testingDevicePara){
-	m_analysisFrequency.SetValue(testingDevicePara.GetAnalysisFrequency());
-	m_datablockCount.SetValue(testingDevicePara.GetDatablockCount());
+	m_analysisFrequency.SetValue(testingDevicePara.GetAnalysisFrequency().GetDictId());
+	m_datablockCount.SetValue(testingDevicePara.GetDatablockCount().GetDictId());
 	m_delayblockCount.SetValue(testingDevicePara.GetDelayblockCount());
-	m_samplingBatchs.SetValue(testingDevicePara.GetSamplingBatchs());
-	m_samplingFrequency.SetValue(testingDevicePara.GetSamplingFrequency());
-	m_samplingMethod.SetValue(testingDevicePara.GetSamplingMethod());
+	m_samplingBatchs.SetValue(testingDevicePara.GetCollectionBatchs());
+	m_samplingFrequency.SetValue(testingDevicePara.GetCollectionFrequency().GetDictId());
+	m_samplingMethod.SetValue(testingDevicePara.GetCollectionMethod().GetDictId());
 	m_testingdeviceId.SetValue(testingDevicePara.GetTestingdevice().GetTestingdeviceId());
 	m_triggerCount.SetValue(testingDevicePara.GetTriggerCount());
-	m_triggerMethod.SetValue(testingDevicePara.GetTriggerMethod());
+	m_triggerMethod.SetValue(testingDevicePara.GetTriggerMethod().GetDictId());
 
 }
 void TbTestingDeviceParaDao::GetTableFieldValues(TbTestingDevicePara &testingDevicePara){
 	testingDevicePara.SetAnalysisFrequency(m_analysisFrequency.GetInt());
 	testingDevicePara.SetDatablockCount(m_datablockCount.GetInt());
 	testingDevicePara.SetDelayblockCount(m_delayblockCount.GetInt());
-	testingDevicePara.SetSamplingBatchs(m_samplingBatchs.GetInt());
-	testingDevicePara.SetSamplingFrequency(m_samplingFrequency.GetInt());
-	testingDevicePara.SetSamplingMethod(m_samplingMethod.GetInt());
+	testingDevicePara.GetCollectionBatchs();
+
+	testingDevicePara.SetCollectionBatchs(m_samplingBatchs.GetInt());
+	testingDevicePara.GetCollectionFrequency().SetDictId(m_samplingFrequency.GetInt());
+	testingDevicePara.GetCollectionMethod().SetDictId(m_samplingMethod.GetInt());
 	TbTestingDevice g_testingDevice;
 	g_testingDevice.SetTestingdeviceId(m_testingdeviceId.GetInt());
 	testingDevicePara.SetTestingdevice(g_testingDevice);
 	testingDevicePara.SetTestingdeviceparaId(m_testingDeviceParaId.GetInt());
 	testingDevicePara.SetTriggerCount(m_triggerCount.GetInt());
-	testingDevicePara.SetTriggerMethod(m_triggerMethod.GetInt());
+	testingDevicePara.GetTriggerMethod().SetDictId(m_triggerMethod.GetInt());
 }

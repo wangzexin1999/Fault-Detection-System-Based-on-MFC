@@ -19,8 +19,8 @@ Modification:
 ************************************************************************/
 #include"TbRecordSignalDao.h"
 #include"TbSignal.h"
-#include "TbSensorPara.h"
-#include "TbSensorParaDao.h"
+#include "TbSensor.h"
+#include "TbSensorDao.h"
 #include "CommonUtil.h"
 #include "TbProductDao.h"
 class SignalService
@@ -30,7 +30,7 @@ public:
 	~SignalService();
 
 protected:
-	TbSensorParaDao m_sensorParaDao;
+	TbSensorDao m_sensorParaDao;
 	TbRecordSignalDao m_recordSignalDao;
 	TbProductDao m_productDao;
 public:

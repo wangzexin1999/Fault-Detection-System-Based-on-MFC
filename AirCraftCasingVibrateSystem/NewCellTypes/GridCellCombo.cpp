@@ -434,7 +434,43 @@ void CGridCellCombo::EndEdit()
     if (m_pEditWnd)
         ((CInPlaceList*)m_pEditWnd)->EndEdit();
 }
+///设置选中的下标
+int CGridCellCombo::SetCurSel(int nSelect)
+{
+	int nRet = -1;
+	if (nSelect >= 0 && nSelect < m_Strings.GetCount())
+	{
+		CString szItem = m_Strings.GetAt(nSelect);
+		CWnd *pWnd = GetEditWnd();
+		if (pWnd && pWnd->GetSafeHwnd())
+		{
+			pWnd->SetWindowText(szItem);
+		}
 
+		SetText(szItem);
+		nRet = nSelect;
+	}
+	return nRet;
+}
+///得到选中的下标
+int CGridCellCombo::GetCurSel() const
+{
+	int nRet = -1;
+	CString szItem = GetText();
+	CWnd *pWnd = GetEditWnd();
+	if (pWnd && pWnd->GetSafeHwnd())
+		pWnd->GetWindowText(szItem);
+
+	for (INT_PTR nPos = 0; nPos < m_Strings.GetCount(); nPos++)
+	{
+		if (szItem == m_Strings.GetAt(nPos))
+		{
+			nRet = nPos;
+			break;
+		}
+	}
+	return nRet;
+}
 // Override draw so that when the cell is selected, a drop arrow is shown in the RHS.
 BOOL CGridCellCombo::Draw(CDC* pDC, int nRow, int nCol, CRect rect,  BOOL bEraseBkgnd /*=TRUE*/)
 {

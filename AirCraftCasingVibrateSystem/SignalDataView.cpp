@@ -59,7 +59,7 @@ BOOL CSignalDataView::OnInitDialog()
 
 	////////查询数据文件表格数据
 	GridCtrlInit();
-	/*Result res = m_signalController.LoadAllRecordedSignalBySearchCondition(theApp.m_currentProject.GetProjectName(), "", "", "", m_signalVector);
+	/*Result res = m_signalController.FindAllRecordedSignalBySearchCondition(theApp.m_currentProject.GetProjectName(), "", "", "", m_signalVector);
 	if (res.GetIsSuccess()){
 		GridCtrlInit();
 	}
@@ -123,7 +123,7 @@ void CSignalDataView::GridCtrlInit(){
 		if (col == 3) strText = m_signalVector[row - 1].GetEndTime();
 		if (col == 4) strText = m_signalVector[row - 1].GetSignalType();
 		if (col == 5) strText = m_signalVector[row - 1].GetProduct().GetProductName();
-		Item.strText.Format(_T(strText), row);
+		Item.strText=strText;
 		m_signalDataGridCtrl.SetItem(&Item);
 	}
 }

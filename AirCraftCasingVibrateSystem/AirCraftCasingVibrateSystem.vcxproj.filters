@@ -70,6 +70,18 @@
     <Filter Include="NewCellTypes">
       <UniqueIdentifier>{2a3d2024-2a8a-45c7-9c40-511f78656046}</UniqueIdentifier>
     </Filter>
+    <Filter Include="rapidjson">
+      <UniqueIdentifier>{5817417a-6a17-48f7-9c69-df59a82e7108}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rapidjson\error">
+      <UniqueIdentifier>{ea224cd6-c574-4fcf-b1f7-9e39c0ce428b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rapidjson\internal">
+      <UniqueIdentifier>{fda6f38a-a4c2-4135-9b39-fd4a8d88e071}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rapidjson\msinttypes">
+      <UniqueIdentifier>{c8c9f03e-5362-4acd-8287-288fdd875b19}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -444,17 +456,8 @@
     <ClInclude Include="TbSignalDao.h">
       <Filter>头文件\dao</Filter>
     </ClInclude>
-    <ClInclude Include="TbSignal.h">
-      <Filter>头文件\entity</Filter>
-    </ClInclude>
     <ClInclude Include="SignalService.h">
       <Filter>头文件\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="TbSensorPara.h">
-      <Filter>头文件\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="TbSensorParaDao.h">
-      <Filter>头文件\dao</Filter>
     </ClInclude>
     <ClInclude Include="SignalController.h">
       <Filter>头文件\Controller</Filter>
@@ -504,9 +507,6 @@
     <ClInclude Include="CollectionDataInfoDlg.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CollectionDataInfoDlg.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Constant.h">
       <Filter>源文件\Utils</Filter>
     </ClInclude>
@@ -534,9 +534,6 @@
     <ClInclude Include="RealTimeSignal.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="BaseProjectInfoView.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="NewCellTypes\GridCellCheck.h">
       <Filter>NewCellTypes</Filter>
     </ClInclude>
@@ -552,14 +549,143 @@
     <ClInclude Include="NewCellTypes\GridURLCell.h">
       <Filter>NewCellTypes</Filter>
     </ClInclude>
-    <ClInclude Include="CollectionParaPresetView.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="include\rapidjson\allocators.h">
+      <Filter>rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\cursorstreamwrapper.h">
+      <Filter>rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\document.h">
+      <Filter>rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\encodedstream.h">
+      <Filter>rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\encodings.h">
+      <Filter>rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\filereadstream.h">
+      <Filter>rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\filewritestream.h">
+      <Filter>rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\fwd.h">
+      <Filter>rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\istreamwrapper.h">
+      <Filter>rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\memorybuffer.h">
+      <Filter>rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\memorystream.h">
+      <Filter>rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\ostreamwrapper.h">
+      <Filter>rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\pointer.h">
+      <Filter>rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\prettywriter.h">
+      <Filter>rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\rapidjson.h">
+      <Filter>rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\reader.h">
+      <Filter>rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\schema.h">
+      <Filter>rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\stream.h">
+      <Filter>rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\stringbuffer.h">
+      <Filter>rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\writer.h">
+      <Filter>rapidjson</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\error\en.h">
+      <Filter>rapidjson\error</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\error\error.h">
+      <Filter>rapidjson\error</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\internal\biginteger.h">
+      <Filter>rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\internal\diyfp.h">
+      <Filter>rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\internal\dtoa.h">
+      <Filter>rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\internal\ieee754.h">
+      <Filter>rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\internal\itoa.h">
+      <Filter>rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\internal\meta.h">
+      <Filter>rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\internal\pow10.h">
+      <Filter>rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\internal\regex.h">
+      <Filter>rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\internal\stack.h">
+      <Filter>rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\internal\strfunc.h">
+      <Filter>rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\internal\strtod.h">
+      <Filter>rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\internal\swap.h">
+      <Filter>rapidjson\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\msinttypes\inttypes.h">
+      <Filter>rapidjson\msinttypes</Filter>
+    </ClInclude>
+    <ClInclude Include="include\rapidjson\msinttypes\stdint.h">
+      <Filter>rapidjson\msinttypes</Filter>
     </ClInclude>
     <ClInclude Include="ChannelParaPresetView.h">
+      <Filter>头文件\View</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseProjectInfoView.h">
+      <Filter>头文件\View</Filter>
+    </ClInclude>
+    <ClInclude Include="CollectionDataInfoDlg.h">
+      <Filter>头文件\View</Filter>
+    </ClInclude>
+    <ClInclude Include="CollectionParaPresetView.h">
+      <Filter>头文件\View</Filter>
+    </ClInclude>
+    <ClInclude Include="DictionaryController.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="StableStatusParaPresetView.h">
+    <ClInclude Include="DictionaryService.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ProductController.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TbCollectionPlan.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CollectionPlanParaPresetView.h">
+      <Filter>头文件\View</Filter>
+    </ClInclude>
+    <ClInclude Include="TbSignal.h">
+      <Filter>头文件\entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -887,20 +1013,11 @@
     <ClCompile Include="TbRecordSignalDao.cpp">
       <Filter>源文件\dao</Filter>
     </ClCompile>
-    <ClCompile Include="TbSignalDao.cpp">
-      <Filter>源文件\dao</Filter>
-    </ClCompile>
     <ClCompile Include="TbSignal.cpp">
       <Filter>源文件\entity</Filter>
     </ClCompile>
     <ClCompile Include="SignalService.cpp">
       <Filter>源文件\Service</Filter>
-    </ClCompile>
-    <ClCompile Include="TbSensorPara.cpp">
-      <Filter>源文件\entity</Filter>
-    </ClCompile>
-    <ClCompile Include="TbSensorParaDao.cpp">
-      <Filter>源文件\dao</Filter>
     </ClCompile>
     <ClCompile Include="SensorController.cpp">
       <Filter>源文件\Controller</Filter>
@@ -989,7 +1106,22 @@
     <ClCompile Include="ChannelParaPresetView.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="StableStatusParaPresetView.cpp">
+    <ClCompile Include="DictionaryController.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DictionaryService.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ProductController.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TbCollectionPlan.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CollectionPlanParaPresetView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TbSignalDao.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

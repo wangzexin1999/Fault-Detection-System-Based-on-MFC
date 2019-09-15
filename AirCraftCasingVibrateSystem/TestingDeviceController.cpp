@@ -10,7 +10,7 @@ TestingDeviceController::TestingDeviceController()
 TestingDeviceController::~TestingDeviceController()
 {
 }
-Result TestingDeviceController::LoadAllTestingDeviceBySearchCondition(CString testingDeviceName, vector<TbTestingDevice> &testingDeviceVector){
+Result TestingDeviceController::FindAllTestingDeviceBySearchCondition(CString testingDeviceName, vector<TbTestingDevice> &testingDeviceVector){
 	testingDeviceVector.clear();
 	bool isSuccess = m_testingDeviceService.GetAllTestingDeviceBySearchCondition(testingDeviceName, testingDeviceVector);
 	if (isSuccess){

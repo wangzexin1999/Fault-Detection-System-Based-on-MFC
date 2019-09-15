@@ -1,7 +1,19 @@
 #pragma once
 #include "GridCtrl_src/GridCtrl.h"
 #include "NewCellTypes/GridCellCheck.h"
+#include "include/rapidjson/document.h"
+#include "include/rapidjson/writer.h"
+#include "include/rapidjson/stringbuffer.h"
+#include "TbDictionary.h"
+#include <iostream>
+#include "ProductController.h"
+#include "DictionaryController.h"
+#include <vector>
+#include "afxwin.h"
+#include "TbProject.h"
 
+using namespace std;
+using namespace rapidjson;
 // BaseProjectInfoView 对话框
 
 class BaseProjectInfoView : public CDialogEx
@@ -16,8 +28,17 @@ public:
 	enum { IDD = IDD_PROJECTBASEINFO_DIALOG };
 
 protected:
+
+	vector<TbDictionary> m_collectionPlanVec;
+
+	DictionaryController m_dictionaryController;
+
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 	
+	vector<TbProduct> m_productVector;
+	
+	ProductController m_productController;
+
 	CGridCtrl m_projectPlanGridCtrl;
 	
 	void GridCtrlInit();
@@ -34,7 +55,37 @@ protected:
 	afx_msg void OnGridClick(NMHDR *pNotifyStruct, LRESULT* pResult);
 
 	void SetGridCellCheck(int row,int col,bool isChecked);
+	
+	CString m_projectName;
+
+	TbProduct m_selectedProduct;
+
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
+
+	/**********************************************************************
+	功能描述：得到选中的项目采集计划
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void GetSelectedCollectionPlan(vector<TbDictionary> &selectedPlan);
+	CComboBox m_productCombo;
+	afx_msg void OnBnClickedButtonOk();
+	afx_msg void OnBnClickedButtonCancel();
+	CEdit m_projectNameEdit;
+	/**********************************************************************
+	功能描述：得到项目的基本信息
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void GetProjectBaseInfo(TbProject &project);
 };

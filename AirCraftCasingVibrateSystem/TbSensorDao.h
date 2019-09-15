@@ -9,10 +9,27 @@ public:
 	TbSensorDao(const TbSensorDao & sensor);
 	~TbSensorDao();
 
+	PDAttribute m_id;
 	PDAttribute m_sensorId;
-	PDAttribute m_testingDeviceId;
-	PDAttribute m_sensorType;
-	PDAttribute m_sensorName;
+	PDAttribute m_sensorDesc;
+	PDAttribute m_projectId;
+	PDAttribute m_sersorStatus;
+	PDAttribute m_messureType;
+	PDAttribute m_windowType;
+	PDAttribute m_triggerMagnitude;
+	PDAttribute m_triggerPolarity;
+	PDAttribute m_pointNum;
+	PDAttribute m_coordinateSystem;
+	PDAttribute m_coordinateSystemDirection;
+	PDAttribute m_isReference;
+	PDAttribute m_engineeringUnits;
+	PDAttribute m_sensitivity;
+	PDAttribute m_mileageRange;
+	PDAttribute m_integralType;
+	PDAttribute m_integralUnits;
+	PDAttribute m_inputMethod;
+	PDAttribute m_antiAliasingFiltering;
+	PDAttribute m_maxFrequency;
 
 	void SetTableFieldValues(TbSensor sensor);
 

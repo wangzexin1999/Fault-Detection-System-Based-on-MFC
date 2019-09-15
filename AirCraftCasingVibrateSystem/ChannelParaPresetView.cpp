@@ -5,7 +5,7 @@
 #include "AirCraftCasingVibrateSystem.h"
 #include "ChannelParaPresetView.h"
 #include "afxdialogex.h"
-
+#include "CommonUtil.h"
 
 // ChannelParaPresetView 对话框
 
@@ -40,29 +40,24 @@ END_MESSAGE_MAP()
 BOOL ChannelParaPresetView::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
+	///查询所有的窗类型
+	m_dictionController.FindAllBySearchCondition(m_vwindowTypes, 0, "windowtype");
+	m_dictionController.FindAllBySearchCondition(m_vinputMethods, 0, "inputmethod");
 	GridCtrlInit();
 	return TRUE; 
 }
 void ChannelParaPresetView::GridCtrlInit()
 {
-	m_channelParaGridCtrl.SetEditable(true);
-	m_channelParaGridCtrl.SetEditable(true);
 	m_channelParaGridCtrl.SetEditable(false);
 	m_channelParaGridCtrl.SetTextBkColor(RGB(0xFF, 0xFF, 0xE0));//黄色背景
 	m_channelParaGridCtrl.SetRowCount(3); //初始为n行
-	m_channelParaGridCtrl.SetColumnCount(8); //初始化为8列
+	m_channelParaGridCtrl.SetColumnCount(7); //初始化为8列
 	m_channelParaGridCtrl.SetFixedRowCount(1); //表头为一行
 	m_channelParaGridCtrl.SetRowResize(TRUE); ///自动设置行和列的大小
 	m_channelParaGridCtrl.SetColumnResize(TRUE);
 	m_channelParaGridCtrl.SetListMode(true); ////在选定一个单元格时，选择整行
 	m_channelParaGridCtrl.ExpandColumnsToFit(true);
 	
-	
-	/*m_channelParaGridCtrl.SetColumnWidth(0, 50);
-	m_channelParaGridCtrl.SetColumnWidth(1, 90);
-	m_channelParaGridCtrl.SetColumnWidth(2, 380);
-	m_channelParaGridCtrl.SetColumnWidth(3, 447);*/
-
 	m_channelParaGridCtrl.SetSingleRowSelection(true);
 	//m_channelParaGridCtrl.OnGridClick();
 	for (int row = 0; row < m_channelParaGridCtrl.GetRowCount(); row++)
@@ -80,25 +75,22 @@ void ChannelParaPresetView::GridCtrlInit()
 				m_channelParaGridCtrl.SetCellType(0, 0, RUNTIME_CLASS(CGridCellCheck));
 			}
 			if (col == 1){
-				Item.strText.Format(_T("序号"), 1);
+				Item.strText = "序号";
 			}
 			if (col == 2){
-				Item.strText.Format(_T("通道描述"), 2);
+				Item.strText = "通道描述";
 			}
 			if (col == 3){
-				Item.strText.Format(_T("通道状态"), 3);
+				Item.strText = "窗类型";
 			}
 			if (col == 4){
-				Item.strText.Format(_T("窗类型"), 3);
+				Item.strText = "灵敏度";
 			}
 			if (col == 5){
-				Item.strText.Format(_T("灵敏度"), 3);
+				Item.strText = "输入方式";
 			}
 			if (col == 6){
-				Item.strText.Format(_T("输入方式"), 3);
-			}
-			if (col == 7){
-				Item.strText.Format(_T("量程"), 3);
+				Item.strText = "量程";
 			}
 			m_channelParaGridCtrl.SetItem(&Item);
 			continue;
@@ -107,16 +99,39 @@ void ChannelParaPresetView::GridCtrlInit()
 		Item.nFormat = DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS;
 		CString strText;
 		if (col == 0){ m_channelParaGridCtrl.SetCellType(row, 0, RUNTIME_CLASS(CGridCellCheck)); }
-		if (col == 1) strText = "1";
-		if (col == 2) strText = "一号通道";
-		if (col == 3) strText = "正在使用";
-		if (col == 4) strText = "窗类型未知";
-		if (col == 5) strText = "灵敏度未知";
-		if (col == 6) strText = "输入方式未知";
-		if (col == 7) strText = "量程未知";
-		Item.strText.Format(_T(strText), row);
+		if (col == 1) Item.strText = CommonUtil::Int2CString(row);
+		if (col == 2) Item.strText = "通道" + CommonUtil::Int2CString(row);
+		if (col == 3) {
+			m_channelParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCombo));
+			CGridCellCombo* pCellCombo = (CGridCellCombo*)m_channelParaGridCtrl.GetCell(row, col);
+			pCellCombo->SetStyle(CBS_DROPDOWN);
+			CStringArray OptionsType;
+			for (auto windowType : m_vwindowTypes){
+				OptionsType.Add(_T(windowType.GetDictValue()));
+			}
+			pCellCombo->SetOptions(OptionsType);
+			pCellCombo->SetCurSel(0);
+			Item.strText = OptionsType[0];
+		}
+		if (col == 4) Item.strText = "";
+		if (col == 5) {
+			m_channelParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCombo));
+			CGridCellCombo* pCellCombo = (CGridCellCombo*)m_channelParaGridCtrl.GetCell(row, col);
+			pCellCombo->SetStyle(CBS_DROPDOWN);
+			CStringArray OptionsType;
+			for (auto inputMethod : m_vinputMethods){
+				OptionsType.Add(_T(inputMethod.GetDictValue()));
+			}
+			pCellCombo->SetOptions(OptionsType);
+			pCellCombo->SetCurSel(0);
+			Item.strText = OptionsType[0];
+		}
+		if (col == 6) Item.strText = "";
 		m_channelParaGridCtrl.SetItem(&Item);
-
+	}
+	///默认选中所有通道
+	for (int row = 0; row < m_channelParaGridCtrl.GetRowCount(); row++){
+		SetGridCellCheck(row, 0,TRUE);
 	}
 }
 
@@ -148,4 +163,32 @@ void ChannelParaPresetView::SetGridCellCheck(int row, int col, bool isChecked){
 
 void ChannelParaPresetView::OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult){
 	m_channelParaGridCtrl.SetEditable(TRUE);
+}
+
+void ChannelParaPresetView::GetSelectedChannels(vector<TbSensor> & vsensors){
+	for (int row = 1; row < m_channelParaGridCtrl.GetRowCount(); row++){
+		if (!m_channelParaGridCtrl.GetCell(row, 0)->IsKindOf(RUNTIME_CLASS(CGridCellCheck)))
+			m_channelParaGridCtrl.SetCellType(row, 0, RUNTIME_CLASS(CGridCellCheck));
+		CGridCellCheck* pCell = (CGridCellCheck*)m_channelParaGridCtrl.GetCell(row, 0);
+		if (pCell->GetCheck()){
+			TbSensor currentSensor;
+			for (int col = 1; col < m_channelParaGridCtrl.GetColumnCount();col++){
+				if (col == 2) currentSensor.SetSensorDesc(m_channelParaGridCtrl.GetItemText(row,col));
+				if (col == 3){
+					///拿到选择的窗类型
+					CGridCellCombo* pCellCombo = (CGridCellCombo*)m_channelParaGridCtrl.GetCell(row, col);
+					int index = pCellCombo->GetCurSel();
+					currentSensor.SetWindowType(m_vwindowTypes[index]);
+				}
+				if (col == 4) currentSensor.SetSensitivity(atoi(m_channelParaGridCtrl.GetItemText(row, col)));
+				if (col == 5){
+					///拿到选择的窗类型
+					CGridCellCombo* pCellCombo = (CGridCellCombo*)m_channelParaGridCtrl.GetCell(row, col);
+					int index = pCellCombo->GetCurSel();
+					currentSensor.SetInputMethod(m_vinputMethods[index]); 
+				}
+				if (col == 6) currentSensor.SetMileageRange(atoi(m_channelParaGridCtrl.GetItemText(row, col)));
+			}
+		}
+	}
 }

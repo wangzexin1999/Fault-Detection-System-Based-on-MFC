@@ -44,18 +44,7 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	Result LoadAllTestingDevice(vector<TbTestingDeviceDao> & tbTestingVec);
-
-	/**********************************************************************
-	功能描述：加载所有的产品
-	输入参数：
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
-	***********************************************************************/
-	Result LoadAllProduct(vector<TbProduct> & TbProductDaoVec);
+	Result FindAllTestingDevice(vector<TbTestingDeviceDao> & tbTestingVec);
 
 	/**********************************************************************
 	功能描述：新建项目
@@ -77,7 +66,7 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	Result LoadAllProjectBySearchCondition(TbProject project, CString startTime, CString endTime,vector<TbProject> &projectVector);
+	Result FindAllProjectBySearchCondition(TbProject project, CString startTime, CString endTime,vector<TbProject> &projectVector);
 	/**********************************************************************
 	功能描述：根据加载所有的项目
 	输入参数：
@@ -87,7 +76,7 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-//	Result LoadAllProjectBySearchCondition(int testerId, CString projectName, CString startTime, CString endTime, vector<TbProject> &projectVector);
+//	Result FindAllProjectBySearchCondition(int testerId, CString projectName, CString startTime, CString endTime, vector<TbProject> &projectVector);
 
 };
 

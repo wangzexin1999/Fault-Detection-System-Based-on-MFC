@@ -87,7 +87,7 @@ void CProjectManageView::GridCtrlInit(){
 		if (col == 2) strText = m_projectVector[row - 1].GetProjectCreateTime();
 		if (col == 3) strText = m_projectVector[row - 1].GetTestingDevicePara().GetTestingdevice().GetTestingdeviceIp();
 		if (col == 4) strText = m_projectVector[row - 1].GetProduct().GetProductName();
-		Item.strText.Format(_T(strText), row);
+		Item.strText=strText;
 		m_projectGrid.SetItem(&Item);  
 
 	}
@@ -112,7 +112,7 @@ BOOL CProjectManageView::OnInitDialog()
 	TbProject project;
 	project.GetTester().SetTesterId(testerId);
 
-	Result res = m_projectController.LoadAllProjectBySearchCondition(project, "", "", m_projectVector);
+	Result res = m_projectController.FindAllProjectBySearchCondition(project, "", "", m_projectVector);
 	if (res.GetIsSuccess()){
 		TRACE("\n项目个数为:%d\n", m_projectVector.size());
 		GridCtrlInit();
@@ -161,7 +161,7 @@ void CProjectManageView::OnBnClickedSearchbutton()
 	project.GetTester().SetTesterId(testerId);
 	project.SetProjectName(proSearchName);
 
-	Result res = m_projectController.LoadAllProjectBySearchCondition(project, strStartTime, strEndTime, m_projectVector);
+	Result res = m_projectController.FindAllProjectBySearchCondition(project, strStartTime, strEndTime, m_projectVector);
 	if (res.GetIsSuccess()){
 		TRACE("\n项目个数为:%d\n", m_projectVector.size());
 		GridCtrlInit();

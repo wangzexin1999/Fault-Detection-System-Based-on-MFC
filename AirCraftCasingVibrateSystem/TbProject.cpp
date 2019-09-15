@@ -67,12 +67,12 @@ CString TbProject::GetProjectName(){
 	return this->m_projectName;
 }
 
-vector<TbSensorPara> & TbProject::GetSensorParaVector(){
-	return this->m_sensorParaVector;
+vector<TbSensor> & TbProject::GetSensorVector(){
+	return this->m_sensorVector;
 }
 
-void TbProject::SetSensorParaVector(vector<TbSensorPara> sensorParaVector){
-	this->m_sensorParaVector = sensorParaVector;
+void TbProject::SetSensorVector(vector<TbSensor> sensorVector){
+	this->m_sensorVector = sensorVector;
 }
 int TbProject::GetProjectId(){
 	return this->m_projectId;

@@ -6,7 +6,7 @@ private:
 	CString m_dictName;
 	CString m_dictValue;
 public:
-	TbDictionary();
+	TbDictionary(int dictId = 0,	CString dictName = "",	CString dictValue = "");
 	~TbDictionary();
 	
 	void SetDictValue(CString dictValue);

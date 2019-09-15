@@ -392,7 +392,6 @@ void CMainFrame::OnButtonNewProject()
 	//打开窗口
 	CNewProjectView newProjectView;
 	newProjectView.DoModal();
-
 }
 
 // 项目管理

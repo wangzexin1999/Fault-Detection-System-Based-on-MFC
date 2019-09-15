@@ -47,6 +47,9 @@ public:
     virtual CWnd* GetEditWnd() const;
     virtual void  EndEdit();
 
+	int SetCurSel(int nSelect);
+	int GetCurSel() const;
+
 // Operations
 public:
 	virtual CSize GetCellExtent(CDC* pDC);

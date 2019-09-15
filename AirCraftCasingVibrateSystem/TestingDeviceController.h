@@ -40,7 +40,7 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	Result LoadAllTestingDeviceBySearchCondition(CString testingDeviceName, vector<TbTestingDevice> &testingDeviceVector);
+	Result FindAllTestingDeviceBySearchCondition(CString testingDeviceName, vector<TbTestingDevice> &testingDeviceVector);
 
 	/**********************************************************************
 	功能描述： 根据检测设备id删除检测设备

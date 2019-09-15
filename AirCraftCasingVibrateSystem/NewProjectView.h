@@ -8,7 +8,18 @@
 #include "BaseProjectInfoView.h"
 #include "CollectionParaPresetView.h"
 #include "ChannelParaPresetView.h"
-#include "StableStatusParaPresetView.h"
+#include "CollectionPlanParaPresetView.h"
+#include "TbProject.h"
+#include "TbTestingDevicePara.h"
+#include "TbCollectionPlan.h"
+#include "include/rapidjson/document.h"
+#include "include/rapidjson/writer.h"
+#include "include/rapidjson/stringbuffer.h"
+#include "TbDictionary.h"
+#include <iostream>
+using namespace std;
+using namespace rapidjson;
+
 // CNewProjectView 对话框
 
 class CNewProjectView : public CDialogEx
@@ -25,30 +36,26 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 
+	TbProject m_project;
 	BaseProjectInfoView m_baseProjectInfoView;
 	CollectionParaPresetView m_collectionParaPresetView;
 	ChannelParaPresetView m_channelParaPresetView;
-	StableStatusParaPresetView m_stableStatusParaPresetView;
 
+	//CollectionPlanParaPresetView m_collectionPlanParaPresetView;
+	int m_newDialogIndex;
+
+	TbTestingDevicePara m_testingDevicePara;
+	vector<TbCollectionPlan> m_collectionPlans;
+	vector<TbSensor> m_vsensors;
 	DECLARE_MESSAGE_MAP()
-	void InitProjectOperatorTree();
-	vector<TbProduct> m_productVector;
 	vector<CDialog*> m_pDialogVec;  //用来保存对话框对象指针
 	int  m_icurSelTabIndex;
-public:
 	afx_msg void OnBnClickedOk();
-
-
 	virtual BOOL OnInitDialog();
 	ProjectController m_projectController;
-
 	CGridCtrl m_projectOperatorDataGridCtrl;
 	void GridCtrlInit();
-
-	CCherryTree m_projectOperatorTreeCtrl;
 	CTabCtrl m_projectNavigationTab;
-
-
 	afx_msg void OnTcnSelchangeTabProjectnavigation(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedButtonLaststep();
 	afx_msg void OnBnClickedButtonNextstep();

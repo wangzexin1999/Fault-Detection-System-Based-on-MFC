@@ -11,7 +11,7 @@ ProjectController::ProjectController()
 ProjectController::~ProjectController()
 {
 }
-Result ProjectController::LoadAllTestingDevice(vector<TbTestingDeviceDao> & tbTestingVec){
+Result ProjectController::FindAllTestingDevice(vector<TbTestingDeviceDao> & tbTestingVec){
 	bool flag = m_testingDeviceService.GetAllTestingDevice(tbTestingVec);
 	if (flag){
 		return Result(true, "检测设备加载失败");
@@ -21,16 +21,7 @@ Result ProjectController::LoadAllTestingDevice(vector<TbTestingDeviceDao> & tbTe
 	}
 
 }
-Result ProjectController::LoadAllProduct(vector<TbProduct> & productVec){
-	
-	bool flag = m_productService.GetAllProductBySearchCondition(TbProduct(),productVec);
-	if (flag){
-		return Result(true,"产品加载成功");
-	}
-	else{
-		return Result(false, "产品加载失败");
-	}
-}
+
 Result ProjectController::AddProject(TbProject &project){
 	bool flag = m_projectService.AddProject(project);
 	if (flag){
@@ -41,7 +32,7 @@ Result ProjectController::AddProject(TbProject &project){
 	}
 }
 
-Result ProjectController::LoadAllProjectBySearchCondition(TbProject project, CString startTime, CString endTime, vector<TbProject> &projectVector){
+Result ProjectController::FindAllProjectBySearchCondition(TbProject project, CString startTime, CString endTime, vector<TbProject> &projectVector){
 	bool flag = m_projectService.GetAllProjectBySearchCondition(project, startTime, endTime, projectVector);
 	if (flag){
 		return Result(true, "项目查询");

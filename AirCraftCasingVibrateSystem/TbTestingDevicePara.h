@@ -1,5 +1,6 @@
 #pragma once
 #include "TbTestingDevice.h"
+#include "TbDictionary.h"
 class TbTestingDevicePara
 {
 public:
@@ -10,40 +11,46 @@ public:
 	int m_testingdeviceparaId;
 	
 	TbTestingDevice m_testingDevice;
-
+	 
 	int m_projetId;
+	 
+	TbDictionary m_collectionFrequency;
 
-	int m_samplingFrequency;
+	TbDictionary m_analysisFrequency;
 
-	int m_analysisFrequency;
+	TbDictionary m_collectionMethod;
+	TbDictionary m_triggerMethod;
+	TbDictionary m_datablockCount;
 
-	int m_samplingMethod;
-	int m_triggerMethod;
-	int m_datablockCount;
 	int m_delayblockCount;
 	int m_triggerCount;
-	int m_samplingBatchs;
+	int m_collectionBatchs;
 
 	int GetTestingdeviceparaId();
+
 	TbTestingDevice & GetTestingdevice();
-	int GetSamplingFrequency();
-	int GetAnalysisFrequency();
-	int GetSamplingMethod();
-	int GetTriggerMethod();
-	int GetDatablockCount();
+
+	TbDictionary  & GetCollectionFrequency();
+	TbDictionary  & GetAnalysisFrequency();
+	TbDictionary  & GetCollectionMethod();
+	TbDictionary  & GetTriggerMethod();
+	TbDictionary  & GetDatablockCount();
+
 	int GetDelayblockCount();
 	int GetTriggerCount();
-	int GetSamplingBatchs();
+	int GetCollectionBatchs();
 
 	void SetTestingdeviceparaId(int testingdeviceparaId);
 	void SetTestingdevice(TbTestingDevice testingDevice);
-	void SetSamplingFrequency(int samplingFrequency);
-	void SetAnalysisFrequency(int analysisFrequency);
-	void SetSamplingMethod(int samplingMethod);
-	void SetTriggerMethod(int triggerMethod);
-	void SetDatablockCount(int datablockCount);
+
+	void SetCollectionFrequency(TbDictionary collectionFrequency);
+	void SetAnalysisFrequency(TbDictionary analysisFrequency);
+	void SetCollectionMethod(TbDictionary collectionMethod);
+	void SetTriggerMethod(TbDictionary triggerMethod);
+	void SetDatablockCount(TbDictionary datablockCount);
+
 	void SetDelayblockCount(int delayblockCount);
 	void SetTriggerCount(int triggerCount);
-	void SetSamplingBatchs(int samplingBatchs);
+	void SetCollectionBatchs(int collectionBatchs);
 };
 

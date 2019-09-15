@@ -11,6 +11,7 @@
 #include "TbTester.h"
 #include "Result.h"
 #include "DateUtil.h"
+#include "TbDictionary.h"
 // CNewProjectView 对话框
 
 IMPLEMENT_DYNAMIC(CNewProjectView, CDialogEx)
@@ -46,57 +47,46 @@ END_MESSAGE_MAP()
 /*新建项目按钮*/
 void CNewProjectView::OnBnClickedOk()
 {
-	/*CString projectName;
-	m_projectNameEdit.GetWindowTextA(projectName);
-	if (projectName == ""){ AfxMessageBox("项目名不能为空"); return;}
-	int detectedIndex = m_productCombo.GetCurSel();
+	m_project;
+	m_testingDevicePara;
+	m_collectionPlans;
+	m_vsensors;
+	AfxMessageBox("点击完成之后的操作逻辑");
 
-	if (detectedIndex > 0) {
-	detectedIndex--;
-	}
-	else{
-	AfxMessageBox("请选择产品");
-	return;
-	}
+	///封装project对象
 	TbTester tester = theApp.m_currentProject.GetTester();
-
-	TbProduct product;
-	product.SetProductId(m_productVector[detectedIndex].GetProductId());
-
-	TbProject project;
-	project.SetProjectName(projectName);
-	project.SetProduct(product);
-	project.SetTester(tester);
-	project.SetProjectCreateTime(DateUtil::GetCurrentCStringTime());
-
-	project.GetTestingDevicePara().GetTestingdevice().SetTestingdeviceId(1);
-	Result res = m_projectController.AddProject(project);
-
+	m_project.SetTester(tester);
+	m_project.SetProjectCreateTime(DateUtil::GetCurrentCStringTime());
+	m_project.SetTestingDevicePara(m_testingDevicePara);
+	///保存项目数据
+	Result res = m_projectController.AddProject(m_project);
 	if (!res.GetIsSuccess()){
-	AfxMessageBox(res.GetMessages());
+		AfxMessageBox(res.GetMessages());
 	}
 	else{
-	AfxMessageBox(res.GetMessages());
-	CDialogEx::OnOK();
-	}*/
+		AfxMessageBox(res.GetMessages());
+
+		CDialogEx::OnOK();
+	}
 }
 
 BOOL CNewProjectView::OnInitDialog()
 {
+	//弹出基本信息选择框
+	int res = m_baseProjectInfoView.DoModal();
+	if (res != IDOK){
+		///如果没有点击确定按钮，则直接退出程序
+		this->OnCancel();
+		return FALSE;
+	}
 	CDialogEx::OnInitDialog();
+	///得到用户选择的计划信息
+	vector<TbDictionary> selectedCollctionPlans;
+	m_baseProjectInfoView.GetSelectedCollectionPlan(selectedCollctionPlans);
 
-	///创建tab窗口
-	// TODO:  在此添加额外的初始化
-	m_projectNavigationTab.InsertItem(0, _T("基本信息"));
-	m_projectNavigationTab.InsertItem(1, _T("采集设置"));
-	m_projectNavigationTab.InsertItem(2, _T("通道设置"));
-	m_projectNavigationTab.InsertItem(3, _T("平稳采集状态参数设置"));
-	//创建通道参数显示的试图  
-	m_baseProjectInfoView.Create(IDD_PROJECTBASEINFO_DIALOG, &m_projectNavigationTab);
-	m_collectionParaPresetView.Create(IDD_DIALOG_COLLECTIONPARAPRESET, &m_projectNavigationTab);
-	m_channelParaPresetView.Create(IDD_DIALOG_CHANNELPARAPRESET, &m_projectNavigationTab);
-	m_stableStatusParaPresetView.Create(IDD_DIALOG_STABLESTATUSPRESET, &m_projectNavigationTab);
-	//设定在Tab内显示的范围  
+	m_baseProjectInfoView.GetProjectBaseInfo(m_project);
+	////创建基本的窗口信息
+
 	CRect tabRect;
 	GetClientRect(tabRect);
 	tabRect.left += 1;
@@ -104,76 +94,50 @@ BOOL CNewProjectView::OnInitDialog()
 	tabRect.top += 22;
 	tabRect.bottom -= 1;
 
-	//m_tabSystemPara.MoveWindow(tabRect);
-	m_baseProjectInfoView.MoveWindow(&tabRect);
+	m_projectNavigationTab.InsertItem(0, _T("采集设置"));
+	m_collectionParaPresetView.Create(IDD_DIALOG_COLLECTIONPARAPRESET, &m_projectNavigationTab);
 	m_collectionParaPresetView.MoveWindow(&tabRect);
-	m_channelParaPresetView.MoveWindow(&tabRect);
-	m_stableStatusParaPresetView.MoveWindow(&tabRect);
-
-	//把对话框对象指针保存起来
-	m_pDialogVec.push_back(&m_baseProjectInfoView);
 	m_pDialogVec.push_back(&m_collectionParaPresetView);
+	m_collectionParaPresetView.ShowWindow(SW_SHOW);
+
+	m_projectNavigationTab.InsertItem(1, _T("通道设置"));
+	m_channelParaPresetView.Create(IDD_DIALOG_CHANNELPARAPRESET, &m_projectNavigationTab);
+	m_channelParaPresetView.MoveWindow(&tabRect);
 	m_pDialogVec.push_back(&m_channelParaPresetView);
-	m_pDialogVec.push_back(&m_stableStatusParaPresetView);
-	//显示初始页面  
-	m_baseProjectInfoView.ShowWindow(SW_SHOW);
-	m_collectionParaPresetView.ShowWindow(SW_HIDE);
 	m_channelParaPresetView.ShowWindow(SW_HIDE);
-	m_stableStatusParaPresetView.ShowWindow(SW_HIDE);
-	//当前选择的tab的索引
+	
+	////记录动态创建的对话框的起始索引值
+	m_newDialogIndex = m_projectNavigationTab.GetItemCount();
+	int count = m_newDialogIndex;
+	for (auto plan : selectedCollctionPlans){
+		// 根据用户选择的计划创建相应的窗口
+		Document doc;
+		doc.Parse(plan.GetDictValue());
+		const Value& planName = doc["planName"];
+		CollectionPlanParaPresetView * collectionParaPresetView = new CollectionPlanParaPresetView(plan);
+		m_projectNavigationTab.InsertItem(count++, planName.GetString());
+		collectionParaPresetView->Create(IDD_DIALOG_STABLESTATUSPRESET, &m_projectNavigationTab);
+		collectionParaPresetView->MoveWindow(&tabRect);
+		m_pDialogVec.push_back(collectionParaPresetView);
+		// 创建窗口对应的采集计划对象
+		m_collectionPlans.push_back(TbCollectionPlan());
+	}
+	//设置当前选择的tab的索引
 	m_icurSelTabIndex = 0;
 
-	////初始化树形控件
-	//InitProjectOperatorTree();
-	////初始化表格控件
+	// 对话框屏幕居中
+	ShowWindow(SW_NORMAL);
+	CRect rtDesk;
+	CRect rtDlg;
+	::GetWindowRect(::GetDesktopWindow(), &rtDesk);
+	GetWindowRect(&rtDlg);
+	int iXpos = rtDesk.Width() / 2 - rtDlg.Width() / 2;
+	int iYpos = rtDesk.Height() / 2 - rtDlg.Height() / 2;
+	SetWindowPos(NULL, iXpos, iYpos, 0, 0, SWP_NOOWNERZORDER | SWP_NOSIZE | SWP_NOZORDER);
 
-	//GridCtrlInit();
-	
-	/*2.调用ProjectController去查询产品的下拉列表的数据*/
-	Result res = m_projectController.LoadAllProduct(m_productVector);
-	if (res.GetIsSuccess()){
-		int i = 0;
-	/*	m_productCombo.InsertString(i,"暂不选择2");
-		for (auto product : m_productVector){
-			m_productCombo.InsertString(++i,product.GetProductType());
-		}
-		m_productCombo.SetCurSel(0);*/
-	}
-	else
-	{
-		AfxMessageBox(res.GetMessages());
-	}
 	return TRUE;  
 }
 
-void CNewProjectView::InitProjectOperatorTree(){
-	m_projectOperatorTreeCtrl.DeleteAllItems();
-
-	// 树的根节点的句柄   
-	HBITMAP hDirBmp;
-	hDirBmp = ::LoadBitmap(_AtlBaseModule.m_hInstResource, MAKEINTRESOURCE(ID_BMPSIGNALRED));
-	m_projectOperatorTreeCtrl.ModifyStyle(0, TVS_TRACKGROUPSELECT | TVS_SINGLECLICKEXPAND | TVS_HASBUTTONS | TVS_HASLINES);
-	CFont font;
-	font.CreatePointFont(100, _T("Book Antiqua"));
-
-	m_projectOperatorTreeCtrl.SetFont(&font);
-	m_projectOperatorTreeCtrl.SetFocus();
-	m_projectOperatorTreeCtrl.SetBkColor(RGB(255, 255, 255));
-
-	HTREEITEM hCurrent;
-	HTREEITEM childItem;
-	HBITMAP childBmp = ::LoadBitmap(_AtlBaseModule.m_hInstResource, MAKEINTRESOURCE(IDB_BMPSIGNALGREEN));
-	
-	hCurrent = m_projectOperatorTreeCtrl.InsertItem(_T("通道选择"), TVI_ROOT, TVI_LAST);
-	m_projectOperatorTreeCtrl.AddItemBitmap(hCurrent, hDirBmp, ppLastLeft);
-
-	hCurrent = m_projectOperatorTreeCtrl.InsertItem(_T("转速"), TVI_ROOT, TVI_LAST);
-	m_projectOperatorTreeCtrl.AddItemBitmap(hCurrent, hDirBmp, ppLastLeft);
-
-	/*childItem = m_projectOperatorTreeCtrl.InsertItem(_T("转速"), hCurrent, TVI_LAST);
-	m_projectOperatorTreeCtrl.AddItemBitmap(childItem, childBmp, ppLastLeft);*/
-
-}
 void CNewProjectView::GridCtrlInit(){
 	m_projectOperatorDataGridCtrl.SetEditable(false);
 	m_projectOperatorDataGridCtrl.SetTextBkColor(RGB(0xFF, 0xFF, 0xE0));//黄色背景
@@ -248,8 +212,31 @@ void CNewProjectView::OnBnClickedButtonLaststep()
 ////下一步
 void CNewProjectView::OnBnClickedButtonNextstep()
 {
+	
+	if (m_icurSelTabIndex == 0) {
+		// 得到当前检测设备的参数
+		m_collectionParaPresetView.GetSelectedTestingDevicePara(m_testingDevicePara);
+	}
+
+	if (m_icurSelTabIndex == 1) {
+		// 得到所有的通道
+		m_channelParaPresetView.GetSelectedChannels(m_vsensors);
+	}
+	if (m_icurSelTabIndex >= m_newDialogIndex) {
+		// 采集计划窗口点击下一步时，对相应的采集计划对象操作
+		CollectionPlanParaPresetView* collectionPlanPresetView = dynamic_cast<CollectionPlanParaPresetView*>(m_pDialogVec[m_icurSelTabIndex]);
+		if (collectionPlanPresetView != NULL){
+			collectionPlanPresetView->GetCollectionPlan(m_collectionPlans[m_icurSelTabIndex  - m_newDialogIndex]);
+		}
+		AfxMessageBox(m_collectionPlans[m_icurSelTabIndex - m_newDialogIndex].GetPlanPara());
+	}
+
+	if (m_icurSelTabIndex == m_pDialogVec.size() - 1) {
+		////最后一个页面的下一步,也即实现完成按钮的功能
+		OnBnClickedOk();
+		return;
+	}
 	///判断是否越界
-	if (m_icurSelTabIndex == m_pDialogVec.size()-1) return;
 	m_pDialogVec[m_icurSelTabIndex]->ShowWindow(SW_HIDE);
 	m_icurSelTabIndex++;
 	m_pDialogVec[m_icurSelTabIndex]->ShowWindow(SW_SHOW);

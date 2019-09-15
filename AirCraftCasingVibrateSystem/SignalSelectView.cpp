@@ -78,7 +78,7 @@ void CSignalSelectView::InitSensorSelectTree(){
 	HBITMAP itemBmp = ::LoadBitmap(_AtlBaseModule.m_hInstResource, MAKEINTRESOURCE(IDB_BMPSIGNALGREEN));
 	int num = 1;
 	for (auto sensor : m_sensorVector){
-		hCurrent1 = m_treeSignalSelect.InsertItem(_T(CommonUtil::Int2CString(num++) + "-" + sensor.GetSensorName()), hCurrent, TVI_LAST);
+		hCurrent1 = m_treeSignalSelect.InsertItem(_T(CommonUtil::Int2CString(num++) + "-" + sensor.GetSensorDesc()), hCurrent, TVI_LAST);
 		m_treeSignalSelect.AddItemBitmap(hCurrent1, itemBmp, ppLastLeft);
 	}
 }
@@ -93,10 +93,10 @@ void CSignalSelectView::InitSensorSelectedTree(){
 	m_treeSignalSelected.SetFocus();
 	m_treeSignalSelected.SetBkColor(RGB(255, 255, 255));
 
-	if (m_selectedSensor.GetSensorId()!=0){
+	if (m_selectedSensor.GetId()!=0){
 		////如果已经选择了传感器，则显示已经显示的传感器
 		HBITMAP hDirBmp = ::LoadBitmap(_AtlBaseModule.m_hInstResource, MAKEINTRESOURCE(ID_BMPSIGNALRED));
-		HTREEITEM hCurrent = m_treeSignalSelected.InsertItem(_T(m_selectedSensor.GetSensorName()), TVI_ROOT, TVI_LAST);
+		HTREEITEM hCurrent = m_treeSignalSelected.InsertItem(_T(m_selectedSensor.GetSensorDesc()), TVI_ROOT, TVI_LAST);
 		m_treeSignalSelected.AddItemBitmap(hCurrent, hDirBmp, ppLastLeft);
 	}
 
@@ -122,7 +122,7 @@ void CSignalSelectView::OnNMDblclkTreeSelectChannel(NMHDR *pNMHDR, LRESULT *pRes
 	/////删除选中的所有节点
 	m_treeSignalSelected.DeleteAllItems();
 	HBITMAP hDirBmp = ::LoadBitmap(_AtlBaseModule.m_hInstResource, MAKEINTRESOURCE(ID_BMPSIGNALRED));
-	HTREEITEM hCurrent = m_treeSignalSelected.InsertItem(_T(m_tempSelectedSensor.GetSensorName()), TVI_ROOT, TVI_LAST);
+	HTREEITEM hCurrent = m_treeSignalSelected.InsertItem(_T(m_tempSelectedSensor.GetSensorDesc()), TVI_ROOT, TVI_LAST);
 	m_treeSignalSelected.AddItemBitmap(hCurrent, hDirBmp, ppLastLeft);
 }
 
