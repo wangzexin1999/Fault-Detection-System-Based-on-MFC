@@ -734,12 +734,62 @@ void CMainFrame::OnBtnGraphAttribute()
 {
 	// TODO:  在此添加命令处理程序代码
 	m_graphAttributeView.DoModal();
-
+	InitializeCaptureView();
 	for (int i = 0; i < m_vsignalCaptureView.size(); i++)
-	{
+	{	/*颜色*/
+		// 窗口背景
+		m_vsignalCaptureView[i]->GetChartCtrl().SetBackColor(m_graphAttributeView.m_colorView.m_colBKColor);
+		//图形区域背景
+		m_vsignalCaptureView[i]->GetChartCtrl().m_GraphBKColor = m_graphAttributeView.m_colorView.m_colGBKColor;
+		// 信息区域背景
+		m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_colTBKColor = m_graphAttributeView.m_colorView.m_colTBKColor;
+		//光标颜色
+		m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_colCursorColor1 = m_graphAttributeView.m_colorView.m_colCursor1;
+		// 曲线颜色
+		m_vsignalCaptureView[i]->GetChartCtrl().GetSerieFromIndexDu(0)->SetColor(m_graphAttributeView.m_colorView.m_colSerie[0]);
+		//网格颜色
+		m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0)->GetGrid()->SetColor(m_graphAttributeView.m_colorView.m_colGridLineColor);
+		m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0)->GetGrid()->SetColor(m_graphAttributeView.m_colorView.m_colGridLineColor);
+		// 坐标轴颜色
+		m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0)->SetAxisColor(m_graphAttributeView.m_colorView.m_colXCoor);
+		m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0)->SetAxisColor(m_graphAttributeView.m_colorView.m_colYCoor);
+		// 刻度颜色
+		m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0)->SetTextColor(m_graphAttributeView.m_colorView.m_colScale);
+		m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0)->SetTextColor(m_graphAttributeView.m_colorView.m_colScale);
+		// 标注颜色
+		m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0)->GetLabel()->SetColor(m_graphAttributeView.m_colorView.m_colScale);
+		m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0)->GetLabel()->SetColor(m_graphAttributeView.m_colorView.m_colScale);
 		
-		m_vsignalCaptureView[i]->GetChartCtrl().m_GraphBKColor = m_graphAttributeView.m_colorView.colGBKColor;
+		/*字体*/
+		// 坐标轴
+		m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0)->SetFont(
+			(-m_graphAttributeView.m_fontView.m_lFontXCoor->lfHeight)*5.0 + 0.5, m_graphAttributeView.m_fontView.m_lFontXCoor->lfFaceName);
+		m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0)->SetFont(
+			(-m_graphAttributeView.m_fontView.m_lFontYCoor->lfHeight)*5.0 + 0.5, m_graphAttributeView.m_fontView.m_lFontYCoor->lfFaceName);
+		
+		// 坐标单位
+		m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0)->GetLabel()->SetFont(
+			(-m_graphAttributeView.m_fontView.m_lFontXUnit->lfHeight)*5.0 + 0.5, m_graphAttributeView.m_fontView.m_lFontXUnit->lfFaceName);
+
+		m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0)->GetLabel()->SetFont(
+			(-m_graphAttributeView.m_fontView.m_lFontYUnit->lfHeight)*5.0 + 0.5, m_graphAttributeView.m_fontView.m_lFontYUnit->lfFaceName);
+		//光标读数
+		// 光标标注
+		// 统计信息
+		// 文本注释
+		//工程信息
+		/*线性*/
+
+
+		/*选项*/
+
+
+		/*坐标*/
+		//刷新
 		m_vsignalCaptureView[i]->GetChartCtrl().RefreshCtrl();
+
+		//m_graphAttributeView.m_fontView.m_lFontXCoor->lfHeight*72.0 / GetDeviceCaps(this->GetDC()->m_hDC, LOGPIXELSY) + 0.5
+		
 	}
 	
 

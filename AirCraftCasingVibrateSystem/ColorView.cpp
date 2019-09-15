@@ -65,112 +65,112 @@ END_MESSAGE_MAP()
 void CColorView::OnBnClickedMfcbuttonWinBg()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	colBKColor = GetColorDiag();
-	SetMFCButtonColor(m_windowBGColor, colBKColor);
+	m_colBKColor = GetColorDiag();
+	SetMFCButtonColor(m_windowBGColor, m_colBKColor);
 }
 
 // 图形区域背景
 void CColorView::OnBnClickedMfcbuttonGraphBg()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	colGBKColor = GetColorDiag();
-	SetMFCButtonColor(m_graphBGColor, colGBKColor);
+	m_colGBKColor = GetColorDiag();
+	SetMFCButtonColor(m_graphBGColor, m_colGBKColor);
 }
 
 // 信息窗背景
 void CColorView::OnBnClickedMfcbuttonInfBg()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	colTBKColor = GetColorDiag();
-	SetMFCButtonColor(m_infWinBGColor, colTBKColor);
+	m_colTBKColor = GetColorDiag();
+	SetMFCButtonColor(m_infWinBGColor, m_colTBKColor);
 }
 
 // 曲线1
 void CColorView::OnBnClickedMfcbuttonSeris1Bg()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	colSerie[0] = GetColorDiag();
-	SetMFCButtonColor(m_series1Color, colSerie[0]);
+	m_colSerie[0] = GetColorDiag();
+	SetMFCButtonColor(m_series1Color, m_colSerie[0]);
 }
 
 // 曲线2
 void CColorView::OnBnClickedMfcbuttonSeris2Bg()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	colSerie[1] = GetColorDiag();
-	SetMFCButtonColor(m_series2Color, colSerie[1]);
+	m_colSerie[1] = GetColorDiag();
+	SetMFCButtonColor(m_series2Color, m_colSerie[1]);
 }
 
 // 曲线3
 void CColorView::OnBnClickedMfcbuttonSeris33Bg()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	colSerie[2] = GetColorDiag();
-	SetMFCButtonColor(m_series3Color, colSerie[2]);
+	m_colSerie[2] = GetColorDiag();
+	SetMFCButtonColor(m_series3Color, m_colSerie[2]);
 }
 
 // 曲线4
 void CColorView::OnBnClickedMfcbuttonSeris4Bg()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	colSerie[3] = GetColorDiag();
-	SetMFCButtonColor(m_series4Color, colSerie[3]);
+	m_colSerie[3] = GetColorDiag();
+	SetMFCButtonColor(m_series4Color, m_colSerie[3]);
 }
 
 // 网络
 void CColorView::OnBnClickedMfcbuttonGridBg()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	colGridLineColor = GetColorDiag();
-	SetMFCButtonColor(m_gridColor, colGridLineColor);
+	m_colGridLineColor = GetColorDiag();
+	SetMFCButtonColor(m_gridColor, m_colGridLineColor);
 }
 
 // 坐标
 void CColorView::OnBnClickedMfcbuttonCoorBg()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	colCoorColor = GetColorDiag();
-	SetMFCButtonColor(m_coordinateColor, colCoorColor);
+	m_colCoorColor = GetColorDiag();
+	SetMFCButtonColor(m_coordinateColor, m_colCoorColor);
 }
 
 //刻度
 void CColorView::OnBnClickedMfcbuttonScaleBg()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	colScale = GetColorDiag();
-	SetMFCButtonColor(m_scaleColor, colScale);
+	m_colScale = GetColorDiag();
+	SetMFCButtonColor(m_scaleColor, m_colScale);
 }
 
 //光标
 void CColorView::OnBnClickedMfcbuttonCurlorBg()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	colCursor1 = GetColorDiag();
-	SetMFCButtonColor(m_cursorColor, colCursor1);
+	m_colCursor1 = GetColorDiag();
+	SetMFCButtonColor(m_cursorColor, m_colCursor1);
 }
 
 //X轴
 void CColorView::OnBnClickedMfcbuttonXBg()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	colXCoor= GetColorDiag();
-	SetMFCButtonColor(m_xAxisColor, colBKColor);
+	m_colXCoor = GetColorDiag();
+	SetMFCButtonColor(m_xAxisColor, m_colBKColor);
 }
 
 //Y轴
 void CColorView::OnBnClickedMfcbuttonYBg()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	colYCoor = GetColorDiag();
-	SetMFCButtonColor(m_yAxisColor, colYCoor);
+	m_colYCoor = GetColorDiag();
+	SetMFCButtonColor(m_yAxisColor, m_colYCoor);
 }
 
 // 统计信息
 void CColorView::OnBnClickedMfcbuttonStatiscBg()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	colStatisticInf = GetColorDiag();
-	SetMFCButtonColor(m_statisticsInfColor, colStatisticInf);
+	m_colStatisticInf = GetColorDiag();
+	SetMFCButtonColor(m_statisticsInfColor, m_colStatisticInf);
 	
 }
 
@@ -202,8 +202,33 @@ BOOL CColorView::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  在此添加额外的初始化
-	m_statisticsInfColor.m_bDrawFocus = FALSE;
-	m_statisticsInfColor.m_bHighlightChecked = FALSE;
+	// 加载默认颜色
+	 m_colSerie[0] = RGB(255,0,0);					       // 曲线颜色
+	 m_colBKColor = RGB(192, 192, 192);                    // 背景颜色
+	 m_colGBKColor = RGB(255, 255, 255);                   // 图形区背景颜色
+	 m_colTBKColor = RGB(192, 192, 192);                   // 信息窗背景颜色
+	 m_colGridLineColor = RGB(192, 192, 192);              // 网格线颜色
+	 m_colCoorColor = RGB(0, 64, 128);                  // 坐标轴颜色
+	 m_colCursor1 = RGB(0, 0, 255);                    // 光标1颜色
+	 m_colCursor2 = RGB(0, 0, 255);                    // 光标2颜色
+	 m_colScale = RGB(128, 0, 64);						// 刻度颜色
+	 m_colXCoor = RGB(128, 0, 128);						// X坐标颜色
+	 m_colYCoor = RGB(128, 0, 128);						// Y坐标颜色
+	 m_colStatisticInf = RGB(192, 192, 192);               // 统计信息颜色
+
+	 // 设置按钮默认颜色
+	 SetMFCButtonColor(m_series1Color, m_colSerie[0]);
+	 SetMFCButtonColor(m_windowBGColor, m_colBKColor);
+	 SetMFCButtonColor(m_graphBGColor, m_colGBKColor);
+	 SetMFCButtonColor(m_infWinBGColor, m_colTBKColor);
+	 SetMFCButtonColor(m_gridColor, m_colGridLineColor);
+	 SetMFCButtonColor(m_coordinateColor, m_colCoorColor);
+	 SetMFCButtonColor(m_cursorColor, m_colCursor1);
+	 SetMFCButtonColor(m_cursorColor, m_colCursor2);
+	 SetMFCButtonColor(m_scaleColor, m_colScale);
+	 SetMFCButtonColor(m_xAxisColor, m_colXCoor);
+	 SetMFCButtonColor(m_yAxisColor, m_colYCoor);
+	 SetMFCButtonColor(m_statisticsInfColor, m_colStatisticInf);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常:  OCX 属性页应返回 FALSE
 }

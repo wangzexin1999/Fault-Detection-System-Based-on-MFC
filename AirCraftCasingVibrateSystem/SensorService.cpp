@@ -88,12 +88,12 @@ Result CSensorService::AddCollectData(TbProject project, int sensorId, ThreadSaf
 	// 如果可以连接上服务器，传数据
 	httplib::MultipartFormDataItems items = {
 	{ "data", allData.GetBuffer(), "1.txt", "text/plain" },//数据
-	{ "projectID", CommonUtil::Int2CString(project.GetProduct().GetProductId()).GetBuffer(), "", "" },
+	/*{ "projectID", CommonUtil::Int2CString(project.GetProduct().GetProductId()).GetBuffer(), "", "" },
 	{ "checkDeviceID", CommonUtil::Int2CString(project.GetTestingDevicePara().GetTestingdevice().GetTestingdeviceId()).GetBuffer(), "", "" },
 	{ "sensorID", CommonUtil::Int2CString(sensorId).GetBuffer(), "", "" },
 	{ "startTime", startCollectTime.GetBuffer(), "", "" },
 	{ "endTime", endTime.GetBuffer(), "", "" },
-	{ "productID", CommonUtil::Int2CString(project.GetProduct().GetProductId()).GetBuffer(), "", "" },
+	{ "productID", CommonUtil::Int2CString(project.GetProduct().GetProductId()).GetBuffer(), "", "" },*/
 	};
 	auto result = theApp.m_cli.Post("/collection", items);
 	if (!result)//如果没有发送成功，则重新发送

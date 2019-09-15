@@ -15,18 +15,18 @@ public:
 // 对话框数据
 	enum { IDD = IDD_DIALOG_CORLOR };
 public:
-	COLORREF colSerie[4];					 // 曲线颜色
-	COLORREF colBKColor;                    // 背景颜色
-	COLORREF colGBKColor;                   // 图形区背景颜色
-	COLORREF colTBKColor;                   // 信息窗背景颜色
-	COLORREF colGridLineColor;              // 网格线颜色
-	COLORREF colCoorColor;                  // 坐标轴颜色
-	COLORREF colCursor1;                    // 光标1颜色
-	COLORREF colCursor2;                    // 光标2颜色
-	COLORREF colScale;						// 刻度颜色
-	COLORREF colXCoor;						// X坐标颜色
-	COLORREF colYCoor;						// Y坐标颜色
-	COLORREF colStatisticInf;               // 统计信息颜色
+	COLORREF m_colSerie[4];					 // 曲线颜色
+	COLORREF m_colBKColor;                    // 背景颜色
+	COLORREF m_colGBKColor;                   // 图形区背景颜色
+	COLORREF m_colTBKColor;                   // 信息窗背景颜色
+	COLORREF m_colGridLineColor;              // 网格线颜色
+	COLORREF m_colCoorColor;                  // 坐标轴颜色
+	COLORREF m_colCursor1;                    // 光标1颜色
+	COLORREF m_colCursor2;                    // 光标2颜色
+	COLORREF m_colScale;						// 刻度颜色
+	COLORREF m_colXCoor;						// X坐标颜色
+	COLORREF m_colYCoor;						// Y坐标颜色
+	COLORREF m_colStatisticInf;               // 统计信息颜色
 public:
 	/**********************************************************************
 	 功能描述： 颜色控件

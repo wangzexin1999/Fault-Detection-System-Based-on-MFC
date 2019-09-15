@@ -86,7 +86,7 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	///设置mysql数据库信息
 	const char user[] = "root";         //username
 	const char pswd[] = "123456";         //password
-	const char host[] = "39.107.96.162";    //or"127.0.0.1"
+	const char host[] = "39.107.96.162";    //or"127.0.0.1" 39.107.96.162
 	const char table[] = "aircraftfaultdetectdb";        //database
 	unsigned int port = 3306;           //server port
 	theApp.PDsql.SetMysql(host, user, pswd, table);

@@ -106,9 +106,12 @@ void CAirCraftCasingVibrateSystemView::OnInitialUpdate()
 	// 坐标轴
 	for (int i = 0; i < nSelectChannelCount; i++)
 	{
-		CChartAxis * pChartAxis = pDuChartCtrl->GetAxisDu(CChartCtrl::BottomAxis, i);
-		if (pChartAxis != NULL)
-			pChartAxis->GetLabel()->SetText("Fre[Hz]");
+		CChartAxis * pChartAxisBottomAxis = pDuChartCtrl->GetAxisDu(CChartCtrl::BottomAxis, i);
+		if (pChartAxisBottomAxis != NULL)
+			pChartAxisBottomAxis->GetLabel()->SetText("Fre[Hz]");
+		CChartAxis * pChartAxisLeftAxis = pDuChartCtrl->GetAxisDu(CChartCtrl::LeftAxis, i);
+		if (pChartAxisLeftAxis != NULL)
+			pChartAxisLeftAxis->GetLabel()->SetText("MV");
 	}
 	// 曲线
 	for (int i = 0; i < nSelectChannelCount; i++)
@@ -138,8 +141,8 @@ void CAirCraftCasingVibrateSystemView::CaptureData(){
 			xData.push_back(j); ///X坐标
 			
 			///采集数据存入到队列中。
-			AcquiredSignal acquiredSignal(m_readFromCSVFile[countN][j], DateUtil::GetCurrentCStringTime());
-			m_collectionDataQueue.push(acquiredSignal);
+			//AcquiredSignal acquiredSignal(m_readFromCSVFile[countN][j], DateUtil::GetCurrentCStringTime());
+			//m_collectionDataQueue.push(acquiredSignal);
 			///采集数据存入到回显信号的输入数组
 			fftw_complex fftw;
 			fftw[0] = m_readFromCSVFile[countN][j];
@@ -198,7 +201,7 @@ void CAirCraftCasingVibrateSystemView::OpenThread2CaptureData(){
 	 SetTimer(m_icurrentWindowNumber, 100, NULL);
 	 ///开启线程自动保存采集数据
 	 // 如果可连接服务器，发http到服务器，否则保存到本地数据库。
-	OpenThread2SaveCollectionData();
+	//OpenThread2SaveCollectionData();
 }
 void CAirCraftCasingVibrateSystemView::OnTimer(UINT_PTR nIDEvent){
 	if (m_icurrentWindowNumber == nIDEvent){ RefershChartCtrlData(); }
