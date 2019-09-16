@@ -3,17 +3,14 @@
 
 
 TbTestingDevice::TbTestingDevice(int testingdeviceID){
-	m_testingdeviceId = testingdeviceID;
+	m_id = testingdeviceID;
 }
 
 bool TbTestingDevice::operator == (TbTestingDevice testingDevice){
 	bool tag = true;
-	if (m_testingdeviceId != testingDevice.GetTestingdeviceId()) tag = false;
-	if (m_testingdeviceIp != testingDevice.GetTestingdeviceIp()) tag = false;
-	if (m_testingdeviceName != testingDevice.GetTestingdeviceName()) tag = false;
-	if (m_testingdeviceBorndate!= testingDevice.GetTestingdeviceBorndate()) tag = false;
-	if (m_testingdeviceImportdate != testingDevice.GetTestingdeviceImportdate()) tag = false;
-	if (m_testingdeviceStatus != testingDevice.GetTestingDeviceStatus()) tag = false;
+	if (m_id != testingDevice.GetId()) tag = false;
+	if (m_testingDeviceIp != testingDevice.GetTestingDeviceIp()) tag = false;
+	//////
 	return tag;
 }
 
@@ -23,49 +20,76 @@ bool TbTestingDevice::operator != (TbTestingDevice testingDevice){
 TbTestingDevice::~TbTestingDevice()
 {
 }
-int TbTestingDevice::GetTestingdeviceId() {
-	return m_testingdeviceId;
+
+void TbTestingDevice::SetId(int id){
+	m_id = id;
+}
+int TbTestingDevice::GetId(){
+	return m_id;
 }
 
-void TbTestingDevice::SetTestingdeviceId(int testingdeviceId) {
-	this->m_testingdeviceId = testingdeviceId;
+CString TbTestingDevice::GetTestingDeviceIp() {
+	return m_testingDeviceIp;
 }
 
-CString TbTestingDevice::GetTestingdeviceIp() {
-	return m_testingdeviceIp;
+void TbTestingDevice::SetTestingDeviceIp(CString testingdeviceIp) {
+	this->m_testingDeviceIp = testingdeviceIp;
 }
 
-void TbTestingDevice::SetTestingdeviceIp(CString testingdeviceIp) {
-	this->m_testingdeviceIp = testingdeviceIp;
+
+
+TbDictionary  &  TbTestingDevice::GetCollectionFrequency(){
+	return m_collectionFrequency;
+}
+TbDictionary  &  TbTestingDevice::GetAnalysisFrequency(){
+	return m_analysisFrequency;
+}
+TbDictionary  &  TbTestingDevice::GetCollectionMethod(){
+	return m_collectionMethod;
+}
+TbDictionary  &  TbTestingDevice::GetTriggerMethod(){
+	return m_triggerMethod;
+}
+TbDictionary  &  TbTestingDevice::GetDatablockCount(){
+	return m_datablockCount;
 }
 
-CString TbTestingDevice::GetTestingdeviceName() {
-	return m_testingdeviceName;
+void TbTestingDevice::SetCollectionFrequency(TbDictionary collectionFrequency){
+	m_collectionFrequency = collectionFrequency;
+}
+void TbTestingDevice::SetAnalysisFrequency(TbDictionary analysisFrequency){
+	m_analysisFrequency = analysisFrequency;
+}
+void TbTestingDevice::SetCollectionMethod(TbDictionary collectionMethod){
+	m_collectionMethod = collectionMethod;
+}
+void TbTestingDevice::SetTriggerMethod(TbDictionary triggerMethod){
+	m_triggerMethod = triggerMethod;
+}
+void TbTestingDevice::SetDatablockCount(TbDictionary datablockCount){
+	m_datablockCount = datablockCount;
 }
 
-void TbTestingDevice::SetTestingdeviceName(CString testingdeviceName) {
-	this->m_testingdeviceName = testingdeviceName ;
+int TbTestingDevice::GetDelayblockCount() {
+	return m_delayblockCount;
 }
 
-CString TbTestingDevice::GetTestingdeviceBorndate() {
-	return m_testingdeviceBorndate;
+void TbTestingDevice::SetDelayblockCount(int delayblockCount) {
+	this->m_delayblockCount = delayblockCount;
 }
 
-void TbTestingDevice::SetTestingdeviceBorndate(CString testingdeviceBorndate) {
-	this->m_testingdeviceBorndate = testingdeviceBorndate ;
+int TbTestingDevice::GetTriggerCount() {
+	return m_triggerCount;
 }
 
-CString TbTestingDevice::GetTestingdeviceImportdate() {
-	return m_testingdeviceImportdate;
+void TbTestingDevice::SetTriggerCount(int triggerCount) {
+	this->m_triggerCount = triggerCount;
 }
 
-void TbTestingDevice::SetTestingdeviceImportdate(CString testingdeviceImportdate) {
-	this->m_testingdeviceImportdate = testingdeviceImportdate ;
+int TbTestingDevice::GetCollectionBatchs() {
+	return m_collectionBatchs;
 }
 
-void TbTestingDevice::SetTestingDeviceStatus(int status){
-	m_testingdeviceStatus = status;
-}
-int TbTestingDevice::GetTestingDeviceStatus(){
-	return m_testingdeviceStatus;
+void TbTestingDevice::SetCollectionBatchs(int collectionBatchs) {
+	this->m_collectionBatchs = collectionBatchs;
 }

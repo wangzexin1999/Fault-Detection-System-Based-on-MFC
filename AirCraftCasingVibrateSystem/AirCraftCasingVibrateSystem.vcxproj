@@ -259,7 +259,6 @@
     <ClInclude Include="EchoSignal.h" />
     <ClInclude Include="FFTWUtil.h" />
     <ClInclude Include="hiredis.h" />
-<<<<<<< HEAD
     <ClInclude Include="include\rapidjson\allocators.h" />
     <ClInclude Include="include\rapidjson\cursorstreamwrapper.h" />
     <ClInclude Include="include\rapidjson\document.h" />
@@ -296,9 +295,7 @@
     <ClInclude Include="include\rapidjson\stream.h" />
     <ClInclude Include="include\rapidjson\stringbuffer.h" />
     <ClInclude Include="include\rapidjson\writer.h" />
-=======
     <ClInclude Include="httplib.h" />
->>>>>>> 3e66b762c7cf684a54270aa8c402828f8aad76ca
     <ClInclude Include="NewCellTypes\GridCellCheck.h" />
     <ClInclude Include="NewCellTypes\GridCellCombo.h" />
     <ClInclude Include="NewCellTypes\GridCellDateTime.h" />
@@ -388,8 +385,6 @@
     <ClInclude Include="TbTesterDao.h" />
     <ClInclude Include="TbTestingDevice.h" />
     <ClInclude Include="TbTestingDeviceDao.h" />
-    <ClInclude Include="TbTestingDevicePara.h" />
-    <ClInclude Include="TbTestingDeviceParaDao.h" />
     <ClInclude Include="TbTester.h" />
     <ClInclude Include="TesterController.h" />
     <ClInclude Include="TesterService.h" />
@@ -539,8 +534,6 @@
     <ClCompile Include="TbTesterDao.cpp" />
     <ClCompile Include="TbTestingDevice.cpp" />
     <ClCompile Include="TbTestingDeviceDao.cpp" />
-    <ClCompile Include="TbTestingDevicePara.cpp" />
-    <ClCompile Include="TbTestingDeviceParaDao.cpp" />
     <ClCompile Include="TbTester.cpp" />
     <ClCompile Include="TesterController.cpp" />
     <ClCompile Include="TesterService.cpp" />

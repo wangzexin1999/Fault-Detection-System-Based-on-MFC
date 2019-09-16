@@ -20,7 +20,7 @@ Result TestingDeviceController::FindAllTestingDeviceBySearchCondition(CString te
 }
 
 Result TestingDeviceController::DeleteByTestingDeviceId(TbTestingDevice testingDevice){
-	testingDevice.SetTestingDeviceStatus(-1);
+	//testingDevice.SetTestingDeviceStatus(-1);
 	bool isSuccess = m_testingDeviceService.UpdateByTestingDevice(testingDevice);
 	if (isSuccess){
 		return Result(true, "删除成功");
@@ -28,7 +28,7 @@ Result TestingDeviceController::DeleteByTestingDeviceId(TbTestingDevice testingD
 	return Result(false, "删除失败");
 }
 Result TestingDeviceController::AddTestingDevice(TbTestingDevice testingDevice){
-	testingDevice.SetTestingDeviceStatus(0);
+	//testingDevice.SetTestingDeviceStatus(0);
 	bool isSuccess = m_testingDeviceService.AddTestingDevice(testingDevice);
 	if(isSuccess){
 		return Result(true, "添加成功");

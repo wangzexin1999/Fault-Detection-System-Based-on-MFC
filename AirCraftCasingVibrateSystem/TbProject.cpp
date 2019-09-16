@@ -9,12 +9,12 @@ TbProject::TbProject(int projectId, CString  projectName, int projectStatus)
 	m_projectStatus = projectStatus;
 }
 
-TbProject::TbProject(int projectId, CString  projectName, CString projectCreatetime, TbTester tester, TbTestingDevicePara  testingDevicePara, TbProduct  product){
+TbProject::TbProject(int projectId, CString  projectName, CString projectCreatetime, TbTester tester, TbTestingDevice  testingDevice, TbProduct  product){
 	this->m_projectId = projectId;
 	this->m_tester = tester;
 	this->m_projectName = projectName;
 	this->m_projectCreatetime = projectCreatetime;
-	this->m_testingDevicePara = testingDevicePara;
+	this->m_testingDevice = testingDevice;
 	this->m_product = product;
 }
 
@@ -39,8 +39,8 @@ void TbProject::SetTester(TbTester tester){
 	this->m_tester = tester;
 }
 
-void TbProject::SetTestingDevicePara(TbTestingDevicePara testingDevicePara){
-	this->m_testingDevicePara = testingDevicePara;
+void TbProject::SetTestingDevice(TbTestingDevice testingDevice){
+	this->m_testingDevice = testingDevice;
 }
 
 TbTester & TbProject::GetTester(){
@@ -51,8 +51,8 @@ void TbProject::SetProjectCreateTime(CString m_projectCreatetime){
 	this->m_projectCreatetime = m_projectCreatetime;
 }
 
-TbTestingDevicePara & TbProject::GetTestingDevicePara(){
-	return this->m_testingDevicePara;
+TbTestingDevice & TbProject::GetTestingDevice(){
+	return this->m_testingDevice;
 }
 
 TbProduct & TbProject::GetProduct(){

@@ -54,7 +54,7 @@ BOOL CSignalSelectView::OnInitDialog()
 
 void CSignalSelectView::InitSensorSelectTree(){
 	m_treeSignalSelect.DeleteAllItems();
-	int testingDeviceId = theApp.m_currentProject.GetTestingDevicePara().GetTestingdevice().GetTestingdeviceId();
+	int testingDeviceId = theApp.m_currentProject.GetTestingDevice().GetId();
 	Result res = m_sensorController.FindAllSensorByTestingDeviceId(testingDeviceId, m_sensorVector);
 	if (!res.GetIsSuccess()){
 		AfxMessageBox(res.GetMessages());

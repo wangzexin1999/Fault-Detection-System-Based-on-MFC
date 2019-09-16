@@ -13,11 +13,11 @@ ProjectService::~ProjectService()
 bool ProjectService::AddProject(TbProject & project){
 	/*1.先添加采集设备参数表*/
 
-	m_testingDeviceParaDao.SetTableFieldValues(project.GetTestingDevicePara());
+	m_testingDeviceDao.SetTableFieldValues(project.GetTestingDevice());
 
-	m_testingDeviceParaDao.Insert(false);
+	m_testingDeviceDao.Insert(false);
 
-	project.GetTestingDevicePara().SetTestingdeviceparaId(m_testingDeviceParaDao.m_testingDeviceParaId.GetInt());
+	project.GetTestingDevice().SetId(m_testingDeviceDao.m_id.GetInt());
 
 	/*2.添加项目表*/
 	m_projectDao.SetTableFieldValues(project);
@@ -49,17 +49,17 @@ bool ProjectService::GetAllProjectBySearchCondition(TbProject project, CString s
 		for (auto tbProjectDao : selectedValueVector){
 			TbProject tbProject;
 			tbProjectDao.GetTableFieldValues(tbProject);
-			m_testingDeviceParaDao.m_testingDeviceParaId.SetValue(tbProjectDao.m_testingDeviceParaid.GetInt());
-			isSuccess = m_testingDeviceParaDao.SelectByKey();
+			m_testingDeviceDao.m_id.SetValue(tbProjectDao.m_testingDeviceid.GetInt());
+			isSuccess = m_testingDeviceDao.SelectByKey();
 			if (isSuccess){
 				////封装查询到的设备参数信息
-				m_testingDeviceParaDao.GetTableFieldValues(tbProject.GetTestingDevicePara());
+				m_testingDeviceDao.GetTableFieldValues(tbProject.GetTestingDevice());
 				////查询设备参数信息中的检测设备
-				m_testingDeviceDao.m_testingDeviceId.SetValue(tbProject.GetTestingDevicePara().GetTestingdevice().GetTestingdeviceId());
+				m_testingDeviceDao.m_id.SetValue(tbProject.GetTestingDevice().GetId());
 				isSuccess = m_testingDeviceDao.SelectByKey();
 				if (isSuccess){
 					///封装检测设备对象
-					m_testingDeviceDao.GetTableFieldValues(tbProject.GetTestingDevicePara().GetTestingdevice());
+					m_testingDeviceDao.GetTableFieldValues(tbProject.GetTestingDevice());
 				}
 			}
 			tbProject.SetProjectCreateTime(tbProjectDao.m_projectCreatetime.m_strValue);

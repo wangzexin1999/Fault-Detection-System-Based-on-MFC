@@ -85,7 +85,7 @@ void CProjectManageView::GridCtrlInit(){
 		if (col == 0) strText = CommonUtil::Int2CString(m_projectVector[row - 1].GetProjectId());
 		if (col == 1) strText = m_projectVector[row - 1].GetProjectName();
 		if (col == 2) strText = m_projectVector[row - 1].GetProjectCreateTime();
-		if (col == 3) strText = m_projectVector[row - 1].GetTestingDevicePara().GetTestingdevice().GetTestingdeviceIp();
+		if (col == 3) strText = m_projectVector[row - 1].GetTestingDevice().GetTestingDeviceIp();
 		if (col == 4) strText = m_projectVector[row - 1].GetProduct().GetProductName();
 		Item.strText=strText;
 		m_projectGrid.SetItem(&Item);  

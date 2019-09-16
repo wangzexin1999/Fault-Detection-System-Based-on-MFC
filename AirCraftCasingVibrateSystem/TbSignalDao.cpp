@@ -81,7 +81,7 @@ void TbSignalDao::GetTableFieldValues(TbSignal &signal){
 	signal.GetSensor().SetId(m_sensorId.GetInt());
 	signal.SetSignalType(m_signalType.m_strValue);
 	signal.GetProject().SetProjectId(m_projectId.GetInt());
-	signal.GetTestingDevice().SetTestingdeviceId(m_testingDeviceId.GetInt());
+	signal.GetTestingDevice().SetId(m_testingDeviceId.GetInt());
 }
 
 void TbSignalDao::SetTableFieldValues(TbSignal signal){
@@ -96,5 +96,5 @@ void TbSignalDao::SetTableFieldValues(TbSignal signal){
 	m_endTime.SetValue(signal.GetEndTime());
 	m_dataUrl.SetValue(signal.GetDataUrl());
 	m_productId.SetValue(signal.GetProduct().GetProductId());
-	m_testingDeviceId.SetValue(signal.GetTestingDevice().GetTestingdeviceId());
+	m_testingDeviceId.SetValue(signal.GetTestingDevice().GetId());
 }

@@ -210,16 +210,10 @@
     <ClInclude Include="TbTestingDeviceDao.h">
       <Filter>头文件\dao</Filter>
     </ClInclude>
-    <ClInclude Include="TbTestingDeviceParaDao.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
     <ClInclude Include="TbTester.h">
       <Filter>头文件\entity</Filter>
     </ClInclude>
     <ClInclude Include="TbProject.h">
-      <Filter>头文件\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="TbTestingDevicePara.h">
       <Filter>头文件\entity</Filter>
     </ClInclude>
     <ClInclude Include="DateUtil.h">
@@ -678,7 +672,6 @@
     <ClInclude Include="ProductController.h">
       <Filter>头文件</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="TbCollectionPlan.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -687,10 +680,9 @@
     </ClInclude>
     <ClInclude Include="TbSignal.h">
       <Filter>头文件\entity</Filter>
-=======
+    </ClInclude>
     <ClInclude Include="httplib.h">
       <Filter>头文件\Utils</Filter>
->>>>>>> 3e66b762c7cf684a54270aa8c402828f8aad76ca
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -814,13 +806,7 @@
     <ClCompile Include="TbTestingDeviceDao.cpp">
       <Filter>源文件\dao</Filter>
     </ClCompile>
-    <ClCompile Include="TbTestingDeviceParaDao.cpp">
-      <Filter>源文件\dao</Filter>
-    </ClCompile>
     <ClCompile Include="TbTester.cpp">
-      <Filter>源文件\entity</Filter>
-    </ClCompile>
-    <ClCompile Include="TbTestingDevicePara.cpp">
       <Filter>源文件\entity</Filter>
     </ClCompile>
     <ClCompile Include="TbProject.cpp">
@@ -1012,9 +998,6 @@
     <ClCompile Include="MyGridCtrl.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="TbTestingDevice.cpp">
-      <Filter>源文件\entity</Filter>
-    </ClCompile>
     <ClCompile Include="TbRecordSignalDao.cpp">
       <Filter>源文件\dao</Filter>
     </ClCompile>
@@ -1127,6 +1110,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="TbSignalDao.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TbTestingDevice.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

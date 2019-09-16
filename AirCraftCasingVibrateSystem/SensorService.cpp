@@ -46,7 +46,7 @@ Result CSensorService::AddCollectData(TbProject project, int sensorId, ThreadSaf
 	CString path = "C:\\collectionData\\";
 	//2.拼装文件名 项目id_测试设备id_传感器id_产品id_时间戳
 	CString fileName = CommonUtil::Int2CString(project.GetProjectId()) + "-"
-		+ CommonUtil::Int2CString(project.GetTestingDevicePara().GetTestingdevice().GetTestingdeviceId())
+		+ CommonUtil::Int2CString(project.GetTestingDevice().GetId())
 		+ "-" + CommonUtil::Int2CString(sensorId) + "-" + CommonUtil::Int2CString(project.GetProduct().GetProductId())
 		+ "-" + DateUtil::GetTimeStampCString()
 		+ ".csv";
@@ -65,7 +65,7 @@ Result CSensorService::AddCollectData(TbProject project, int sensorId, ThreadSaf
 		signal.SetStartTime(startCollectTime);
 		signal.SetEndTime(res.GetMessages());
 		signal.GetSensor().SetId(sensorId);
-		signal.GetTestingDevice().SetTestingdeviceId(project.GetTestingDevicePara().GetTestingdevice().GetTestingdeviceId());
+		signal.GetTestingDevice().SetTestingdeviceId(project.GetTestingDevicePara().GetTestingdevice().GetId());
 		m_signalDao.SetTableFieldValues(signal);
 		m_signalDao.Insert(false);
 	}*/
@@ -89,7 +89,7 @@ Result CSensorService::AddCollectData(TbProject project, int sensorId, ThreadSaf
 	httplib::MultipartFormDataItems items = {
 	{ "data", allData.GetBuffer(), "1.txt", "text/plain" },//数据
 	/*{ "projectID", CommonUtil::Int2CString(project.GetProduct().GetProductId()).GetBuffer(), "", "" },
-	{ "checkDeviceID", CommonUtil::Int2CString(project.GetTestingDevicePara().GetTestingdevice().GetTestingdeviceId()).GetBuffer(), "", "" },
+	{ "checkDeviceID", CommonUtil::Int2CString(project.GetTestingDevicePara().GetTestingdevice().GetId()).GetBuffer(), "", "" },
 	{ "sensorID", CommonUtil::Int2CString(sensorId).GetBuffer(), "", "" },
 	{ "startTime", startCollectTime.GetBuffer(), "", "" },
 	{ "endTime", endTime.GetBuffer(), "", "" },
@@ -125,7 +125,7 @@ Result CSensorService::AddSampleData(TbProject project, int sensorId, ThreadSafe
 	CString path = "I:\\SampleData\\";
 	//2.拼装文件名 项目id_测试设备id_传感器id_产品id_时间戳
 	CString fileName = CommonUtil::Int2CString(project.GetProjectId()) + "-"
-		+ CommonUtil::Int2CString(project.GetTestingDevicePara().GetTestingdevice().GetTestingdeviceId())
+		+ CommonUtil::Int2CString(project.GetTestingDevice().GetId())
 		+ "-" + CommonUtil::Int2CString(sensorId) + "-" + CommonUtil::Int2CString(project.GetProduct().GetProductId())
 		+ "-" + DateUtil::GetTimeStampCString()
 		+ ".csv";
@@ -142,7 +142,7 @@ Result CSensorService::AddSampleData(TbProject project, int sensorId, ThreadSafe
 		signal.SetStartTime(startCollectTime);
 		signal.SetEndTime(res.GetMessages());
 		signal.GetSensor().SetId(sensorId);
-		signal.GetTestingDevice().SetTestingdeviceId(project.GetTestingDevicePara().GetTestingdevice().GetTestingdeviceId());
+		signal.GetTestingDevice().SetId(project.GetTestingDevice().GetId());
 		m_recordSignalDao.SetTableFieldValues(signal);
 		m_recordSignalDao.Insert(false);
 	}

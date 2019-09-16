@@ -10,7 +10,6 @@
 #include "ChannelParaPresetView.h"
 #include "CollectionPlanParaPresetView.h"
 #include "TbProject.h"
-#include "TbTestingDevicePara.h"
 #include "TbCollectionPlan.h"
 #include "include/rapidjson/document.h"
 #include "include/rapidjson/writer.h"
@@ -44,7 +43,7 @@ protected:
 	//CollectionPlanParaPresetView m_collectionPlanParaPresetView;
 	int m_newDialogIndex;
 
-	TbTestingDevicePara m_testingDevicePara;
+	TbTestingDevice m_testingDevice;
 	vector<TbCollectionPlan> m_collectionPlans;
 	vector<TbSensor> m_vsensors;
 	DECLARE_MESSAGE_MAP()

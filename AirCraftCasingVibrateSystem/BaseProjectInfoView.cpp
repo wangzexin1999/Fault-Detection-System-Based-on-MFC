@@ -168,16 +168,14 @@ void BaseProjectInfoView::GetSelectedCollectionPlan(vector<TbDictionary> &select
 
 void BaseProjectInfoView::OnBnClickedButtonOk()
 {
-	CString projectName;
-	m_projectNameEdit.GetWindowTextA(projectName);
-	if (projectName == ""){ AfxMessageBox("项目名不能为空"); return;}
+	m_projectNameEdit.GetWindowTextA(m_projectName);
+	if (m_projectName == ""){ AfxMessageBox("项目名不能为空"); return; }
 	int detectedIndex = m_productCombo.GetCurSel();
 	///产品未选择状态
 	if (detectedIndex < 0) {
 		AfxMessageBox("请选择产品");
 		return;
 	}
-	m_projectNameEdit.GetWindowTextA(projectName);
 	m_selectedProduct = m_productVector[detectedIndex];
 	CDialogEx::OnOK();
 }

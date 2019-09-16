@@ -1,10 +1,6 @@
 // NewProjectView.cpp : 实现文件
-//
-
 #include "stdafx.h"
-
 #include "AirCraftCasingVibrateSystem.h"
-
 #include "NewProjectView.h"
 #include "afxdialogex.h"
 #include "TbProject.h"
@@ -47,17 +43,26 @@ END_MESSAGE_MAP()
 /*新建项目按钮*/
 void CNewProjectView::OnBnClickedOk()
 {
-	m_project;
-	m_testingDevicePara;
-	m_collectionPlans;
-	m_vsensors;
-	AfxMessageBox("点击完成之后的操作逻辑");
+	// 得到当前检测设备的参数
+	m_collectionParaPresetView.GetSelectedTestingDevice(m_testingDevice);
 
+	// 得到所有的通道
+	m_channelParaPresetView.GetSelectedChannels(m_vsensors);
+
+	for (int i = m_newDialogIndex; i < m_pDialogVec.size();i++){
+		CollectionPlanParaPresetView* collectionPlanPresetView = dynamic_cast<CollectionPlanParaPresetView*>(m_pDialogVec[i]);
+		if (collectionPlanPresetView != NULL){
+			collectionPlanPresetView->GetCollectionPlan(m_collectionPlans[i - m_newDialogIndex]);
+		}
+	}
+	AfxMessageBox("点击完成之后的操作逻辑");
 	///封装project对象
 	TbTester tester = theApp.m_currentProject.GetTester();
 	m_project.SetTester(tester);
 	m_project.SetProjectCreateTime(DateUtil::GetCurrentCStringTime());
-	m_project.SetTestingDevicePara(m_testingDevicePara);
+	m_project.SetTestingDevice(m_testingDevice);
+	m_project.SetSensorVector(m_vsensors);
+
 	///保存项目数据
 	Result res = m_projectController.AddProject(m_project);
 	if (!res.GetIsSuccess()){
@@ -212,25 +217,24 @@ void CNewProjectView::OnBnClickedButtonLaststep()
 ////下一步
 void CNewProjectView::OnBnClickedButtonNextstep()
 {
-	
-	if (m_icurSelTabIndex == 0) {
-		// 得到当前检测设备的参数
-		m_collectionParaPresetView.GetSelectedTestingDevicePara(m_testingDevicePara);
-	}
 
-	if (m_icurSelTabIndex == 1) {
-		// 得到所有的通道
-		m_channelParaPresetView.GetSelectedChannels(m_vsensors);
-	}
-	if (m_icurSelTabIndex >= m_newDialogIndex) {
-		// 采集计划窗口点击下一步时，对相应的采集计划对象操作
-		CollectionPlanParaPresetView* collectionPlanPresetView = dynamic_cast<CollectionPlanParaPresetView*>(m_pDialogVec[m_icurSelTabIndex]);
-		if (collectionPlanPresetView != NULL){
-			collectionPlanPresetView->GetCollectionPlan(m_collectionPlans[m_icurSelTabIndex  - m_newDialogIndex]);
-		}
-		AfxMessageBox(m_collectionPlans[m_icurSelTabIndex - m_newDialogIndex].GetPlanPara());
-	}
+	//if (m_icurSelTabIndex == 0) {
+	//	// 得到当前检测设备的参数
+	//	m_collectionParaPresetView.GetSelectedTestingDevicePara(m_testingDevicePara);
+	//}
 
+	//if (m_icurSelTabIndex == 1) {
+	//	// 得到所有的通道
+	//	m_channelParaPresetView.GetSelectedChannels(m_vsensors);
+	//}
+	//if (m_icurSelTabIndex >= m_newDialogIndex) {
+	//	// 采集计划窗口点击下一步时，对相应的采集计划对象操作
+	//	CollectionPlanParaPresetView* collectionPlanPresetView = dynamic_cast<CollectionPlanParaPresetView*>(m_pDialogVec[m_icurSelTabIndex]);
+	//	if (collectionPlanPresetView != NULL){
+	//		collectionPlanPresetView->GetCollectionPlan(m_collectionPlans[m_icurSelTabIndex - m_newDialogIndex]);
+	//	}
+	//	AfxMessageBox(m_collectionPlans[m_icurSelTabIndex - m_newDialogIndex].GetPlanPara());
+	//}
 	if (m_icurSelTabIndex == m_pDialogVec.size() - 1) {
 		////最后一个页面的下一步,也即实现完成按钮的功能
 		OnBnClickedOk();

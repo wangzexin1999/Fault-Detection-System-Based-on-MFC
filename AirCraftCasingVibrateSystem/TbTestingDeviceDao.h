@@ -15,12 +15,15 @@ public:
 	void GetTableFieldValues(TbTestingDevice &testingDevice);
 	void SetTableFieldValues(TbTestingDevice testingDevice);
 public:
-	PDAttribute m_testingDeviceId;
+	PDAttribute m_id;
 	PDAttribute m_testingDeviceIp;
-	PDAttribute m_testingDeviceName;
-	PDAttribute m_testingDeviceBornDate;
-	PDAttribute m_testingDevicImportDate;
-	PDAttribute m_testingDevicStatus;
-
+	PDAttribute m_collectionFrequency;
+	PDAttribute m_analysisFrequency;
+	PDAttribute m_collectionMethod;
+	PDAttribute m_triggerMethod;
+	PDAttribute m_datablockCount;
+	PDAttribute m_delayblockCount;
+	PDAttribute m_triggerCount;
+	PDAttribute m_collectionBatchs;
 };
 

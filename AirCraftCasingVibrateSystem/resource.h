@@ -199,14 +199,12 @@
 #define IDC_GRIDCTRL_CHANNELPARA        1126
 #define IDC_GRIDCTRL_STABLESTATUSPARA   1127
 #define IDC_BUTTON_ADD                  1128
-<<<<<<< HEAD
 #define IDC_EDIT_DELAYBLOCKCOUNT        1129
 #define IDC_EDIT_COLLECTIONBATCH        1130
 #define IDC_EDIT_TRIGGERCOUNT           1131
 #define IDC_BUTTON_OK                   1133
 #define IDC_BUTTON_CANNEL               1134
 #define IDC_BUTTON_CANCEL               1134
-=======
 #define IDC_CHECK_APP_ALL_WIN           1129
 #define IDC_BUTTON_Y_UNIT               1131
 #define IDC_BUTTON_STATISTIS_INF        1133
@@ -217,7 +215,6 @@
 #define IDC_BUTTON_YCOOR                1137
 #define IDC_BUTTON_CURSOR_VALUE         1138
 #define IDC_BUTTON_CURSOR_MARK          1139
->>>>>>> 3e66b762c7cf684a54270aa8c402828f8aad76ca
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_CHECK2                       32771
 #define ID_COMBO2                       32772
@@ -280,13 +277,10 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        375
-<<<<<<< HEAD
-#define _APS_NEXT_COMMAND_VALUE         32830
+//#define _APS_NEXT_COMMAND_VALUE         32830
 #define _APS_NEXT_CONTROL_VALUE         1135
-=======
 #define _APS_NEXT_COMMAND_VALUE         32837
 #define _APS_NEXT_CONTROL_VALUE         1140
->>>>>>> 3e66b762c7cf684a54270aa8c402828f8aad76ca
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

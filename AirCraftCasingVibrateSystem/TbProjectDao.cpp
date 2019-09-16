@@ -10,11 +10,9 @@ TbProjectDao::TbProjectDao()
 	SetVectorAndField("tester_id", "int", m_testerId);
 	SetVectorAndField("project_name", "CString", m_projectName);
 	SetVectorAndField("project_createtime", "CString", m_projectCreatetime);
-	SetVectorAndField("testingdevice_paraid", "int", m_testingDeviceParaid);
+	SetVectorAndField("testingdevice_id", "int", m_testingDeviceid);
 	SetVectorAndField("product_id", "int", m_productId);
 	SetVectorAndField("project_status", "int", m_projectStatus);
-
-
 }
 
 
@@ -29,7 +27,7 @@ TbProjectDao::TbProjectDao(const TbProjectDao &project){
 	SetVectorAndField("tester_id", "int", m_testerId);
 	SetVectorAndField("project_name", "CString", m_projectName);
 	SetVectorAndField("project_createtime", "CString", m_projectCreatetime);
-	SetVectorAndField("testingdevice_paraid", "int", m_testingDeviceParaid);
+	SetVectorAndField("testingdevice_id", "int", m_testingDeviceid);
 	SetVectorAndField("product_id", "int", m_productId);
 	SetVectorAndField("project_status", "int", m_projectStatus);
 	operator = (project);
@@ -72,7 +70,7 @@ void TbProjectDao::SetTableFieldValues(TbProject project){
 	this->m_projectCreatetime.SetValue(project.GetProjectCreateTime());
 	this->m_projectName.SetValue(project.GetProjectName());
 	this->m_testerId.SetValue(project.GetTester().GetTesterId());
-	this->m_testingDeviceParaid.SetValue(project.GetTestingDevicePara().GetTestingdeviceparaId());
+	this->m_testingDeviceid.SetValue(project.GetTestingDevice().GetId());
 	this->m_projectStatus.SetValue(project.GetProjectStatus());
 }
 
@@ -83,5 +81,5 @@ void TbProjectDao::GetTableFieldValues(TbProject &project){
 	project.SetProjectStatus(m_projectStatus.GetInt());
 	project.GetTester().SetTesterId(m_testerId.GetInt());
 	project.GetProduct().SetProductId(m_productId.GetInt());
-	project.GetTestingDevicePara().SetTestingdeviceparaId(m_testingDeviceParaid.GetInt());
+	project.GetTestingDevice().SetId(m_testingDeviceid.GetInt());
 }

@@ -91,10 +91,10 @@ void CDetectDeviceManageView::GridCtrlInit(){
 
 		CString strText;
 		if (col == 0) strText = CommonUtil::Int2CString(row);
-		if (col == 1) strText = m_vtestingDevice[row - 1].GetTestingdeviceIp();
+		/*if (col == 1) strText = m_vtestingDevice[row - 1].GetTestingdeviceIp();
 		if (col == 2) strText = m_vtestingDevice[row - 1].GetTestingdeviceName();
 		if (col == 3) strText = m_vtestingDevice[row - 1].GetTestingdeviceBorndate();
-		if (col == 4) strText = m_vtestingDevice[row - 1].GetTestingdeviceImportdate();
+		if (col == 4) strText = m_vtestingDevice[row - 1].GetTestingdeviceImportdate();*/
 
 		Item.strText=strText;
 		m_testingDeviceGridCtrl.SetItem(&Item);
@@ -116,20 +116,20 @@ void CDetectDeviceManageView::OnGridClick(NMHDR *pNotifyStruct, LRESULT* pResult
 }
 
 void CDetectDeviceManageView::OnBnClickedDeleteButton(){
-	if (m_selectedTestingDevice.GetTestingdeviceId() == 0){
+	/*if (m_selectedTestingDevice.GetId() == 0){
 		AfxMessageBox("请选择需要删除的设备");
 		return;
 	}
 	if (MessageBox("是否删除 " + m_selectedTestingDevice.GetTestingdeviceName(), "删除设备", MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL) return;
 	Result res = m_testingDeviceController.DeleteByTestingDeviceId(m_selectedTestingDevice);
 	if (res.GetIsSuccess()){
-		m_selectedTestingDevice.SetTestingdeviceId(0);
+		m_selectedTestingDevice.SetId(0);
 		///删除成功之后刷新页面
 		res = m_testingDeviceController.FindAllTestingDeviceBySearchCondition("", m_vtestingDevice);
 		if (!res.GetIsSuccess()){ AfxMessageBox(res.GetMessages()); }
 		///重新加载表格
 		GridCtrlInit();
-	}
+	}*/
 
 }
 
@@ -146,38 +146,38 @@ void CDetectDeviceManageView::OnBnClickedAddButton()
 
 
 void CDetectDeviceManageView::OnBnClickedSaveButton(){
-	if (MessageBox("是否保存当前修改", "保存设备", MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL) return;
-	int rows = m_testingDeviceGridCtrl.GetRowCount();
-	int cols = m_testingDeviceGridCtrl.GetColumnCount();
-	///遍历表格的所有数据进行保存
-	Result res;
-	for (int row = 1; row < rows; row++){
-		TbTestingDevice testingDevice;
-		if (row < m_vtestingDevice.size() + 1){
-			////对于需要更新的单元格，对检测设备id进行赋值
-			testingDevice.SetTestingdeviceId(m_vtestingDevice[row-1].GetTestingdeviceId()); 
-			testingDevice.SetTestingDeviceStatus(m_vtestingDevice[row - 1].GetTestingDeviceStatus());
-		}
-		for (int col = 1; col < cols; col++){
-			CString itemText = m_testingDeviceGridCtrl.GetItemText(row, col);
-			if (col == 1){testingDevice.SetTestingdeviceIp(itemText);}
-			if (col == 2){testingDevice.SetTestingdeviceName(itemText);}
-			if (col == 3){ testingDevice.SetTestingdeviceBorndate(itemText); }
-			if (col == 4){ testingDevice.SetTestingdeviceImportdate(itemText); }
-		}
-		////如果修改了没保存
-		if (testingDevice.GetTestingdeviceId() != 0 && testingDevice != m_vtestingDevice[row - 1]){
-			res = m_testingDeviceController.UpdateTestingDevice(testingDevice);
-		}
-		////如果添加了之后没有保存。
-		if (testingDevice.GetTestingdeviceId()== 0){
-			res = m_testingDeviceController.AddTestingDevice(testingDevice);
-		}
-		if (!res.GetIsSuccess()){ AfxMessageBox(res.GetMessages()); }
-	}
-	///刷新表格
-	res = m_testingDeviceController.FindAllTestingDeviceBySearchCondition("", m_vtestingDevice);
-	if (!res.GetIsSuccess()){ AfxMessageBox(res.GetMessages()); }
-	///重新加载表格
-	GridCtrlInit();
+	//if (MessageBox("是否保存当前修改", "保存设备", MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL) return;
+	//int rows = m_testingDeviceGridCtrl.GetRowCount();
+	//int cols = m_testingDeviceGridCtrl.GetColumnCount();
+	/////遍历表格的所有数据进行保存
+	//Result res;
+	//for (int row = 1; row < rows; row++){
+	//	TbTestingDevice testingDevice;
+	//	if (row < m_vtestingDevice.size() + 1){
+	//		////对于需要更新的单元格，对检测设备id进行赋值
+	//		testingDevice.SetTestingdeviceId(m_vtestingDevice[row-1].GetId()); 
+	//		testingDevice.SetTestingDeviceStatus(m_vtestingDevice[row - 1].GetTestingDeviceStatus());
+	//	}
+	//	for (int col = 1; col < cols; col++){
+	//		CString itemText = m_testingDeviceGridCtrl.GetItemText(row, col);
+	//		if (col == 1){testingDevice.SetTestingdeviceIp(itemText);}
+	//		if (col == 2){testingDevice.SetTestingdeviceName(itemText);}
+	//		if (col == 3){ testingDevice.SetTestingdeviceBorndate(itemText); }
+	//		if (col == 4){ testingDevice.SetTestingdeviceImportdate(itemText); }
+	//	}
+	//	////如果修改了没保存
+	//	if (testingDevice.GetId() != 0 && testingDevice != m_vtestingDevice[row - 1]){
+	//		res = m_testingDeviceController.UpdateTestingDevice(testingDevice);
+	//	}
+	//	////如果添加了之后没有保存。
+	//	if (testingDevice.GetId()== 0){
+	//		res = m_testingDeviceController.AddTestingDevice(testingDevice);
+	//	}
+	//	if (!res.GetIsSuccess()){ AfxMessageBox(res.GetMessages()); }
+	//}
+	/////刷新表格
+	//res = m_testingDeviceController.FindAllTestingDeviceBySearchCondition("", m_vtestingDevice);
+	//if (!res.GetIsSuccess()){ AfxMessageBox(res.GetMessages()); }
+	/////重新加载表格
+	//GridCtrlInit();
 }

@@ -1,6 +1,6 @@
 #pragma once
 #include "TbTester.h"
-#include"TbTestingDevicePara.h"
+#include"TbTestingDevice.h"
 #include "TbProduct.h"
 #include "TbSensor.h"
 #include <vector>
@@ -10,7 +10,7 @@ class TbProject
 public:
 
 	TbProject(int projectId = 0,CString  projectName = "",int projectStatus = 0);
-	TbProject(int projectId, CString  projectName, CString projectCreatetime, TbTester tester, TbTestingDevicePara  testingDevicePara, TbProduct  product);
+	TbProject(int projectId, CString  projectName, CString projectCreatetime, TbTester tester, TbTestingDevice  testingDevice, TbProduct  product);
 	~TbProject();
 
 protected:
@@ -19,7 +19,7 @@ protected:
 	TbTester m_tester;
 	CString  m_projectName;
 	CString m_projectCreatetime;
-	TbTestingDevicePara  m_testingDevicePara;
+	TbTestingDevice  m_testingDevice;
 	TbProduct m_product;
 	vector<TbSensor> m_sensorVector;
 	int m_projectStatus;
@@ -28,8 +28,8 @@ public:
 	void SetProjectId(int projectId);
 	void SetProjectName(CString projectName);
 	void SetTester(TbTester tester);
-	void SetTestingDevicePara(TbTestingDevicePara testingDevicePara);
-	TbTestingDevicePara & GetTestingDevicePara();
+	void SetTestingDevice(TbTestingDevice testingDevice);
+	TbTestingDevice & GetTestingDevice();
 	TbProduct & GetProduct();
 	void SetProduct(TbProduct  product);
 	void SetProjectCreateTime(CString m_projectCreatetime);

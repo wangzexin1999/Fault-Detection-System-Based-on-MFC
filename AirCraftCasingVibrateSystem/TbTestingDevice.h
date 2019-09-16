@@ -16,6 +16,7 @@ Modification:
 修 改 人：
 修改内容：
 ************************************************************************/
+#include "TbDictionary.h"
 #pragma once
 class TbTestingDevice
 {
@@ -26,34 +27,40 @@ public:
 	bool operator == (TbTestingDevice testingDevice);
 	bool operator != (TbTestingDevice testingDevice);
 protected:
-	int m_testingdeviceId;
-	CString m_testingdeviceIp;
-	CString m_testingdeviceName;
-	CString m_testingdeviceBorndate;
-	CString m_testingdeviceImportdate;
-	int m_testingdeviceStatus;
+
+	int m_id;
+	CString m_testingDeviceIp;
+	TbDictionary m_collectionFrequency;
+	TbDictionary m_analysisFrequency;
+	TbDictionary m_collectionMethod;
+	TbDictionary m_triggerMethod;
+	TbDictionary m_datablockCount;
+	int m_delayblockCount;
+	int m_triggerCount;
+	int m_collectionBatchs;
 
 public:
-	int GetTestingdeviceId();
-
-	void SetTestingdeviceId(int testingdeviceId);
-
-	CString GetTestingdeviceIp();
-
-	void SetTestingdeviceIp(CString testingdeviceIp);
-
-	CString GetTestingdeviceName();
-
-	void SetTestingdeviceName(CString testingdeviceName);
-
-	CString GetTestingdeviceBorndate();
-
-	void SetTestingdeviceBorndate(CString testingdeviceBorndate);
-	CString GetTestingdeviceImportdate();
-	void SetTestingdeviceImportdate(CString testingdeviceImportdate);
-
-	void SetTestingDeviceStatus(int status);
-	int GetTestingDeviceStatus();
+	
+	void SetId(int id);
+	int GetId(); 
+	void SetTestingDeviceIp(CString testingDeviceIp);
+	CString GetTestingDeviceIp();
+	TbDictionary  & GetCollectionFrequency();
+	void SetCollectionFrequency(TbDictionary collectionFrequency);
+	TbDictionary  & GetAnalysisFrequency();
+	void SetAnalysisFrequency(TbDictionary analysisFrequency);
+	TbDictionary  & GetCollectionMethod();
+	void SetCollectionMethod(TbDictionary collectionMethod);
+	TbDictionary  & GetTriggerMethod();
+	void SetTriggerMethod(TbDictionary triggerMethod);
+	TbDictionary  & GetDatablockCount();
+	void SetDatablockCount(TbDictionary datablockCount);
+	int GetDelayblockCount();
+	void SetDelayblockCount(int delayblockCount);
+	int GetTriggerCount();
+	void SetTriggerCount(int triggerCount);
+	int GetCollectionBatchs();
+	void SetCollectionBatchs(int collectionBatchs);
 
 };
 

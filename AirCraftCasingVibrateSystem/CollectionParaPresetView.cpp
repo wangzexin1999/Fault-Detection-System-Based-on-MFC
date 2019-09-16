@@ -113,7 +113,7 @@ BOOL CollectionParaPresetView::OnInitDialog()
 
 	return TRUE; 
 }
-void CollectionParaPresetView::GetSelectedTestingDevicePara(TbTestingDevicePara &testingDevicePara){
+void CollectionParaPresetView::GetSelectedTestingDevice(TbTestingDevice &testingDevicePara){
 	int index = m_collectionFrequencyCombo.GetCurSel();
 	testingDevicePara.SetCollectionFrequency(m_vcollectionFrequency[index]);
 
