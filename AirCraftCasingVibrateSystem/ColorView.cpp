@@ -5,7 +5,7 @@
 #include "AirCraftCasingVibrateSystem.h"
 #include "ColorView.h"
 #include "afxdialogex.h"
-
+#include "CommonUtil.h"
 
 // CColorView 对话框
 
@@ -181,7 +181,6 @@ COLORREF CColorView::GetColorDiag()
 	COLORREF color = RGB(255, 0, 0);      // 颜色对话框的初始颜色为红色  
 	CColorDialog colorDlg(color);
 	colorDlg.DoModal();
-
 	return colorDlg.GetColor();
 }
 
@@ -203,19 +202,7 @@ BOOL CColorView::OnInitDialog()
 
 	// TODO:  在此添加额外的初始化
 	// 加载默认颜色
-	 m_colSerie[0] = RGB(255,0,0);					       // 曲线颜色
-	 m_colBKColor = RGB(192, 192, 192);                    // 背景颜色
-	 m_colGBKColor = RGB(255, 255, 255);                   // 图形区背景颜色
-	 m_colTBKColor = RGB(192, 192, 192);                   // 信息窗背景颜色
-	 m_colGridLineColor = RGB(192, 192, 192);              // 网格线颜色
-	 m_colCoorColor = RGB(0, 64, 128);                  // 坐标轴颜色
-	 m_colCursor1 = RGB(0, 0, 255);                    // 光标1颜色
-	 m_colCursor2 = RGB(0, 0, 255);                    // 光标2颜色
-	 m_colScale = RGB(128, 0, 64);						// 刻度颜色
-	 m_colXCoor = RGB(128, 0, 128);						// X坐标颜色
-	 m_colYCoor = RGB(128, 0, 128);						// Y坐标颜色
-	 m_colStatisticInf = RGB(192, 192, 192);               // 统计信息颜色
-
+	InitAttri();
 	 // 设置按钮默认颜色
 	 SetMFCButtonColor(m_series1Color, m_colSerie[0]);
 	 SetMFCButtonColor(m_windowBGColor, m_colBKColor);
@@ -229,6 +216,44 @@ BOOL CColorView::OnInitDialog()
 	 SetMFCButtonColor(m_xAxisColor, m_colXCoor);
 	 SetMFCButtonColor(m_yAxisColor, m_colYCoor);
 	 SetMFCButtonColor(m_statisticsInfColor, m_colStatisticInf);
+
+	 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常:  OCX 属性页应返回 FALSE
+}
+
+
+void CColorView::InitAttri()
+{
+	LPTSTR lpPath = new char[MAX_PATH];
+	strcpy(lpPath, "..\\IniFileNameTest.ini");
+	int length = 10;
+	LPSTR lpstrTemp = new char[length];
+
+	GetPrivateProfileString(m_color, "colSerie", "", lpstrTemp, length, lpPath);
+	m_colSerie[0] = CommonUtil::CString2Long(lpstrTemp);					       // 曲线颜色
+	GetPrivateProfileString(m_color, "colBKColor", "", lpstrTemp, length, lpPath);
+	m_colBKColor = CommonUtil::CString2Long(lpstrTemp);                   // 背景颜色
+	GetPrivateProfileString(m_color, "colGBKColor", "", lpstrTemp, length, lpPath);
+	m_colGBKColor = CommonUtil::CString2Long(lpstrTemp);                  // 图形区背景颜色
+	GetPrivateProfileString(m_color, "colTBKColor", "", lpstrTemp, length, lpPath);
+	m_colTBKColor = CommonUtil::CString2Long(lpstrTemp);                  // 信息窗背景颜色
+	GetPrivateProfileString(m_color, "colGridLineColor", "", lpstrTemp, length, lpPath);
+	m_colGridLineColor = CommonUtil::CString2Long(lpstrTemp);              // 网格线颜色
+	GetPrivateProfileString(m_color, "colCoorColor", "", lpstrTemp, length, lpPath);
+	m_colCoorColor = CommonUtil::CString2Long(lpstrTemp);                  // 坐标轴颜色
+	GetPrivateProfileString(m_color, "colCursor1", "", lpstrTemp, length, lpPath);
+	m_colCursor1 = CommonUtil::CString2Long(lpstrTemp);                    // 光标1颜色
+	GetPrivateProfileString(m_color, "colCursor1", "", lpstrTemp, length, lpPath);
+	m_colCursor2 = CommonUtil::CString2Long(lpstrTemp);                    // 光标2颜色
+	GetPrivateProfileString(m_color, "colScale", "", lpstrTemp, length, lpPath);
+	m_colScale = CommonUtil::CString2Long(lpstrTemp);						// 刻度颜色
+	GetPrivateProfileString(m_color, "colXCoor", "", lpstrTemp, length, lpPath);
+	m_colXCoor = CommonUtil::CString2Long(lpstrTemp);						// X坐标颜色
+	GetPrivateProfileString(m_color, "colYCoor", "", lpstrTemp, length, lpPath);
+	m_colYCoor = CommonUtil::CString2Long(lpstrTemp);					// Y坐标颜色
+	GetPrivateProfileString(m_color, "colStatisticInf", "", lpstrTemp, length, lpPath);
+	m_colStatisticInf = CommonUtil::CString2Long(lpstrTemp);               // 统计信息颜色
+	delete[] lpPath;
+	delete[] lpstrTemp;
 }

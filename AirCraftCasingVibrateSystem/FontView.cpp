@@ -6,7 +6,7 @@
 #include "FontView.h"
 #include "afxdialogex.h"
 
-
+#include "FileUtil.h"
 // CFontView 对话框
 
 IMPLEMENT_DYNAMIC(CFontView, CDialogEx)
@@ -57,7 +57,7 @@ BOOL CFontView::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  在此添加额外的初始化
-	
+	InitAttri(); // 初始化成员变量，字体名，字体大小
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常:  OCX 属性页应返回 FALSE
 }
@@ -67,10 +67,15 @@ BOOL CFontView::OnInitDialog()
 void CFontView::OnBnClickedButtonXcoor()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	if (IDOK == m_fontDlg.DoModal())
+	
+
+	// 构造字体对话框，初始选择字体名为“宋体”   
+	CFontDialog fontDlg(&InitFontDialog());
+	if (IDOK == fontDlg.DoModal())
 	{
-		// 如果用户选择了字体对话框的OK按钮，则获取被选择字体的名称并显示到编辑框里   
-		m_lFontXCoor = m_fontDlg.m_cf.lpLogFont;
+		// 如果用户选择了字体对话框的OK按钮，  
+		m_lFontXCoor.m_lFont = *(fontDlg.m_cf.lpLogFont);
+		m_lFontXCoor.m_lFontSize = fontDlg.GetSize();
 	}
 	
 	
@@ -80,10 +85,12 @@ void CFontView::OnBnClickedButtonXcoor()
 void CFontView::OnBnClickedButtonYcoor()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	if (IDOK == m_fontDlg.DoModal())
+	CFontDialog fontDlg(&InitFontDialog());
+	if (IDOK == fontDlg.DoModal())
 	{
-		// 如果用户选择了字体对话框的OK按钮，则获取被选择字体的名称并显示到编辑框里   
-		m_lFontYCoor = m_fontDlg.m_cf.lpLogFont;
+		// 如果用户选择了字体对话框的OK按钮，  
+		m_lFontYCoor.m_lFont = *(fontDlg.m_cf.lpLogFont);
+		m_lFontYCoor.m_lFontSize = fontDlg.GetSize();
 	}
 }
 
@@ -91,10 +98,12 @@ void CFontView::OnBnClickedButtonYcoor()
 void CFontView::OnBnClickedButtonCursorValue()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	if (IDOK == m_fontDlg.DoModal())
+	CFontDialog fontDlg(&InitFontDialog());
+	if (IDOK == fontDlg.DoModal())
 	{
-		// 如果用户选择了字体对话框的OK按钮，则获取被选择字体的名称并显示到编辑框里   
-		m_lFontXCoor = m_fontDlg.m_cf.lpLogFont;
+		// 如果用户选择了字体对话框的OK按钮，  
+		m_lFontXCoor.m_lFont = *(fontDlg.m_cf.lpLogFont);
+		m_lFontXCoor.m_lFontSize = fontDlg.GetSize();
 	}
 }
 
@@ -102,10 +111,13 @@ void CFontView::OnBnClickedButtonCursorValue()
 void CFontView::OnBnClickedButtonXUnit()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	if (IDOK == m_fontDlg.DoModal())
+	CFontDialog fontDlg(&InitFontDialog());
+
+	if (IDOK == fontDlg.DoModal())
 	{
-		// 如果用户选择了字体对话框的OK按钮，则获取被选择字体的名称并显示到编辑框里   
-		m_lFontXUnit = m_fontDlg.m_cf.lpLogFont;
+		// 如果用户选择了字体对话框的OK按钮， 
+		m_lFontXUnit.m_lFont = *(fontDlg.m_cf.lpLogFont);
+		m_lFontXUnit.m_lFontSize = fontDlg.GetSize();
 	}
 }
 
@@ -113,10 +125,12 @@ void CFontView::OnBnClickedButtonXUnit()
 void CFontView::OnBnClickedButtonYUnit()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	if (IDOK == m_fontDlg.DoModal())
+	CFontDialog fontDlg(&InitFontDialog());
+	if (IDOK == fontDlg.DoModal())
 	{
-		// 如果用户选择了字体对话框的OK按钮，则获取被选择字体的名称并显示到编辑框里   
-		m_lFontYUnit = m_fontDlg.m_cf.lpLogFont;
+		// 如果用户选择了字体对话框的OK按钮，
+		m_lFontYUnit.m_lFont = *(fontDlg.m_cf.lpLogFont);
+		m_lFontYUnit.m_lFontSize = fontDlg.GetSize();
 	}
 }
 
@@ -124,10 +138,12 @@ void CFontView::OnBnClickedButtonYUnit()
 void CFontView::OnBnClickedButtonCursorMark()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	if (IDOK == m_fontDlg.DoModal())
+	CFontDialog fontDlg(&InitFontDialog());
+	if (IDOK == fontDlg.DoModal())
 	{
-		// 如果用户选择了字体对话框的OK按钮，则获取被选择字体的名称并显示到编辑框里   
-		m_lFontCursorValue = m_fontDlg.m_cf.lpLogFont;
+		// 如果用户选择了字体对话框的OK按钮，  
+		m_lFontCursorValue.m_lFont = *(fontDlg.m_cf.lpLogFont);
+		m_lFontCursorValue.m_lFontSize = fontDlg.GetSize();
 	}
 }
 
@@ -135,10 +151,12 @@ void CFontView::OnBnClickedButtonCursorMark()
 void CFontView::OnBnClickedButtonStatistisInf()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	if (IDOK == m_fontDlg.DoModal())
+	CFontDialog fontDlg(&InitFontDialog());
+	if (IDOK == fontDlg.DoModal())
 	{
-		// 如果用户选择了字体对话框的OK按钮，则获取被选择字体的名称并显示到编辑框里   
-		m_lFontStaValue = m_fontDlg.m_cf.lpLogFont;
+		// 如果用户选择了字体对话框的OK按钮， 
+		m_lFontStaValue.m_lFont = *(fontDlg.m_cf.lpLogFont);
+		m_lFontStaValue.m_lFontSize = fontDlg.GetSize();
 	}
 }
 
@@ -146,10 +164,12 @@ void CFontView::OnBnClickedButtonStatistisInf()
 void CFontView::OnBnClickedButtonTextInf()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	if (IDOK == m_fontDlg.DoModal())
+	CFontDialog fontDlg(&InitFontDialog());
+	if (IDOK == fontDlg.DoModal())
 	{
-		// 如果用户选择了字体对话框的OK按钮，则获取被选择字体的名称并显示到编辑框里   
-		m_lFontLegend = m_fontDlg.m_cf.lpLogFont;
+		// 如果用户选择了字体对话框的OK按钮， 
+		m_lFontLegend.m_lFont = *(fontDlg.m_cf.lpLogFont);
+		m_lFontLegend.m_lFontSize = fontDlg.GetSize();
 	}
 }
 
@@ -157,11 +177,74 @@ void CFontView::OnBnClickedButtonTextInf()
 void CFontView::OnBnClickedButtonProjectInf()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	if (IDOK == m_fontDlg.DoModal())
+	CFontDialog fontDlg(&InitFontDialog());
+	if (IDOK == fontDlg.DoModal())
 	{
-		// 如果用户选择了字体对话框的OK按钮，则获取被选择字体的名称并显示到编辑框里   
-		m_lFontLegend = m_fontDlg.m_cf.lpLogFont;
+		// 如果用户选择了字体对话框的OK按钮  
+		m_lFontLegend.m_lFont = *(fontDlg.m_cf.lpLogFont);
+		m_lFontLegend.m_lFontSize = fontDlg.GetSize();
 	}
 }
 
 
+// 字体控件得默认选择
+LOGFONT CFontView::InitFontDialog()
+{
+	  
+	LOGFONT lf;             // LOGFONT变量   
+	// 将lf所有字节清零   
+	memset(&lf, 0, sizeof(LOGFONT));
+	// 将lf中的元素字体名设为“宋体”   
+	_tcscpy_s(lf.lfFaceName, LF_FACESIZE, _T("宋体"));
+	return lf;
+}
+
+void CFontView::InitFont(FontAttri &fonAttri, CString strInput)
+{
+	// 构建字体
+	LOGFONT lf;             // LOGFONT变量   
+	// 将lf所有字节清零   
+	memset(&lf, 0, sizeof(LOGFONT));
+	CString strExtractSub[] = { "", "" };
+	char sepator = ',';  // 分隔符
+	AfxExtractSubString(strExtractSub[0], strInput, 0, sepator);
+	AfxExtractSubString(strExtractSub[1], strInput, 1, sepator);
+	// 将lf中的元素字体名  
+	_tcscpy_s(lf.lfFaceName, LF_FACESIZE, _T(strExtractSub[0]));
+	fonAttri.m_lFont = lf;
+	// 初始化字体大小
+	fonAttri.m_lFontSize = _ttoi(strExtractSub[1]);
+}
+
+
+void CFontView::InitAttri()
+{
+
+	// 构建字体
+	LOGFONT lf;             // LOGFONT变量   
+	// 将lf所有字节清零   
+	memset(&lf, 0, sizeof(LOGFONT));
+
+	// 设置默认的字体
+	LPTSTR lpPath = new char[MAX_PATH];
+	strcpy(lpPath, "..\\IniFileNameTest.ini");  // ini 配置文件路径
+	int length = 15;  // 长度
+	LPSTR lpstrTemp = new char[length];
+	GetPrivateProfileString(m_font, "lFontXCoor", "", lpstrTemp, length, lpPath);
+	InitFont(m_lFontXCoor, lpstrTemp);
+	GetPrivateProfileString(m_font, "lFontYCoor", "", lpstrTemp, length, lpPath);
+	InitFont(m_lFontYCoor, lpstrTemp);
+	GetPrivateProfileString(m_font, "lFontXUnit", "", lpstrTemp, length, lpPath);
+	InitFont(m_lFontXUnit, lpstrTemp);
+	GetPrivateProfileString(m_font, "lFontYUnit", "", lpstrTemp, length, lpPath);
+	InitFont(m_lFontYUnit, lpstrTemp);
+	GetPrivateProfileString(m_font, "lFontCursorValue", "", lpstrTemp, length, lpPath);
+	InitFont(m_lFontCursorValue, lpstrTemp);
+	GetPrivateProfileString(m_font, "lFontStaValue", "", lpstrTemp, length, lpPath);
+	InitFont(m_lFontStaValue, lpstrTemp);
+	GetPrivateProfileString(m_font, "lFontLegend", "", lpstrTemp, length, lpPath);
+	InitFont(m_lFontLegend, lpstrTemp);
+	delete[] lpstrTemp;
+	delete[] lpPath;
+
+}

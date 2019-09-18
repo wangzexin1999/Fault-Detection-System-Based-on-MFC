@@ -58,3 +58,20 @@ CString CommonUtil::GetMergeCString(CString str1, CString separtor, CString str2
 	CString  str = str1 + separtor + str2;
 	return str;
 }
+
+
+CString CommonUtil::Long2CString(long lValue)
+{
+
+	CString str;
+	str.Format("%ld", lValue);
+	return str;
+
+}
+
+long CommonUtil::CString2Long(CString strValue)
+{
+
+	return _ttol(strValue);
+
+}

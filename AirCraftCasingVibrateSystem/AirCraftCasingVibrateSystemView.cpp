@@ -25,6 +25,7 @@
 #include <thread>
 #include "fftw3.h"
 #include "CommonUtil.h"
+#include "GraphAttributeView.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -124,6 +125,7 @@ void CAirCraftCasingVibrateSystemView::OnInitialUpdate()
 	pDuChartCtrl->m_shuxing.m_bDrawStatValue = TRUE;
 	pDuChartCtrl->EnableRefresh(true);
 	m_flag = true;
+	RefreshGraphAttri();
 }
 
 ////采集数据
@@ -190,11 +192,11 @@ void CAirCraftCasingVibrateSystemView::CaptureData(){
 ///开启线程采集数据&设置定时器刷新数据
 void CAirCraftCasingVibrateSystemView::OpenThread2CaptureData(){
 	////如果当前未选择相应的传感器，则不能开线程采集数据
-	if (!m_signalSelectView.GetSelectedSensor().GetId()){
+	/*if (!m_signalSelectView.GetSelectedSensor().GetId()){
 		AfxMessageBox("窗口"+CommonUtil::Int2CString(m_icurrentWindowNumber)+"还没有选择传感器");
 		theApp.m_icollectionStatus = 0; ///一旦出现没有选择传感器的情况，将当前采集状态置为0 
 		return;
-	}
+	}*/
      thread t(&CAirCraftCasingVibrateSystemView::CaptureData,this);
 	 t.detach();
 	 ///开启定时器去刷新页面
@@ -419,3 +421,72 @@ void CAirCraftCasingVibrateSystemView::OnBtnNoCorror()
 }
 
 
+
+
+void CAirCraftCasingVibrateSystemView::RefreshGraphAttri()
+{
+	CGraphAttributeView graphAttributeView;
+	graphAttributeView.m_fontView.InitAttri();
+	graphAttributeView.m_colorView.InitAttri();
+	graphAttributeView.m_selectView.InitAttri2();
+	/*颜色*/
+	// 窗口背景
+	m_chart.SetBackColor(graphAttributeView.m_colorView.m_colBKColor);
+	//图形区域背景
+	m_chart.m_GraphBKColor = graphAttributeView.m_colorView.m_colGBKColor;
+	// 信息区域背景
+	m_chart.m_shuxing.m_colTBKColor = graphAttributeView.m_colorView.m_colTBKColor;
+	//光标颜色
+	m_chart.m_shuxing.m_colCursorColor1 = graphAttributeView.m_colorView.m_colCursor1;
+	// 曲线颜色
+	m_chart.GetSerieFromIndexDu(0)->SetColor(graphAttributeView.m_colorView.m_colSerie[0]);
+	//网格颜色
+	m_chart.GetAxisDu(CChartCtrl::BottomAxis, 0)->GetGrid()->SetColor(graphAttributeView.m_colorView.m_colGridLineColor);
+	m_chart.GetAxisDu(CChartCtrl::LeftAxis, 0)->GetGrid()->SetColor(graphAttributeView.m_colorView.m_colGridLineColor);
+	// 坐标轴颜色
+	m_chart.GetAxisDu(CChartCtrl::BottomAxis, 0)->SetAxisColor(graphAttributeView.m_colorView.m_colXCoor);
+	m_chart.GetAxisDu(CChartCtrl::LeftAxis, 0)->SetAxisColor(graphAttributeView.m_colorView.m_colYCoor);
+	// 刻度颜色
+	m_chart.GetAxisDu(CChartCtrl::BottomAxis, 0)->SetTextColor(graphAttributeView.m_colorView.m_colScale);
+	m_chart.GetAxisDu(CChartCtrl::LeftAxis, 0)->SetTextColor(graphAttributeView.m_colorView.m_colScale);
+	// 标注颜色
+	m_chart.GetAxisDu(CChartCtrl::BottomAxis, 0)->GetLabel()->SetColor(graphAttributeView.m_colorView.m_colScale);
+	m_chart.GetAxisDu(CChartCtrl::LeftAxis, 0)->GetLabel()->SetColor(graphAttributeView.m_colorView.m_colScale);
+
+	/*字体*/
+	// 坐标轴
+	m_chart.GetAxisDu(CChartCtrl::BottomAxis, 0)->SetFont(
+		graphAttributeView.m_fontView.m_lFontXCoor.m_lFontSize, graphAttributeView.m_fontView.m_lFontXCoor.m_lFont.lfFaceName);
+	m_chart.GetAxisDu(CChartCtrl::LeftAxis, 0)->SetFont(
+		graphAttributeView.m_fontView.m_lFontYCoor.m_lFontSize, graphAttributeView.m_fontView.m_lFontYCoor.m_lFont.lfFaceName);
+
+	// 坐标单位
+	m_chart.GetAxisDu(CChartCtrl::BottomAxis, 0)->GetLabel()->SetFont(
+		graphAttributeView.m_fontView.m_lFontXUnit.m_lFontSize, graphAttributeView.m_fontView.m_lFontXUnit.m_lFont.lfFaceName);
+
+	m_chart.GetAxisDu(CChartCtrl::LeftAxis, 0)->GetLabel()->SetFont(
+		graphAttributeView.m_fontView.m_lFontYUnit.m_lFontSize, graphAttributeView.m_fontView.m_lFontYUnit.m_lFont.lfFaceName);
+	//光标读数
+
+	// 光标标注
+	// 统计信息
+	// 文本注释
+	//工程信息
+	/*选项*/
+	//统计信息
+	m_chart.m_shuxing.m_bDrawStatValue = graphAttributeView.m_selectView.m_bStaValue;
+	// 最大值
+	m_chart.m_shuxing.m_bDrawStatMax = graphAttributeView.m_selectView.m_bMax;
+	// 最小值
+	m_chart.m_shuxing.m_bDrawStatMin = graphAttributeView.m_selectView.m_bMin;
+	//平均值
+	m_chart.m_shuxing.m_bDrawStatAve = graphAttributeView.m_selectView.m_bAve;
+	// 峰值
+	m_chart.m_shuxing.m_bDrawStatPeak = graphAttributeView.m_selectView.m_bPeak;
+	// 有效值
+	m_chart.m_shuxing.m_bDrawStatRms = graphAttributeView.m_selectView.m_bEffectiveValue;
+	//刷新
+	m_chart.RefreshCtrl();
+
+
+}

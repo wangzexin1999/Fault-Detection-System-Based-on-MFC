@@ -85,8 +85,7 @@ protected:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	void CMainFrame::RealTimeSignal2Server();
-
-
+	
 
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnWindowManager();

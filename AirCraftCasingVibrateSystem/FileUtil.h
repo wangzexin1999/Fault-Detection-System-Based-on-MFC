@@ -101,5 +101,16 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	static bool  CFileUtil::RealTimeSignal2JSON(double dYValue[], string dXValue[], int nDataLen, int nChannelIndex, CString &strData);
+	/**********************************************************************
+	 功能描述： 字符串分割
+	 输入参数：strInput -- 源字符；cSeparator -- 分隔符；strOutput--分割后的字符串
+	 输出参数： 
+	 返 回 值： 
+	 其它说明：
+	 修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	static void SeparateCString(CString strInput, char cSeparator,vector<CString> &strOutput);
+
 };
 

@@ -82,6 +82,12 @@
     <Filter Include="rapidjson\msinttypes">
       <UniqueIdentifier>{c8c9f03e-5362-4acd-8287-288fdd875b19}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\View\图形属性">
+      <UniqueIdentifier>{58f0ba61-4c04-4db6-9fbb-afdd62807a4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\View\图形属性">
+      <UniqueIdentifier>{2d2a8143-5526-41d5-8f59-502f0fdf323b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -112,9 +118,6 @@
       <Filter>头文件\View</Filter>
     </ClInclude>
     <ClInclude Include="GeometricParaView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicAttributeView.h">
       <Filter>头文件\View</Filter>
     </ClInclude>
     <ClInclude Include="LoginView.h">
@@ -221,24 +224,6 @@
     </ClInclude>
     <ClInclude Include="ProjectService.h">
       <Filter>头文件\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="ColorView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="FontView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="CoordinateView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphAttributeView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="SelectView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="LineView.h">
-      <Filter>头文件\View</Filter>
     </ClInclude>
     <ClInclude Include="fftw3.h">
       <Filter>头文件\FFT</Filter>
@@ -438,9 +423,6 @@
     <ClInclude Include="ChartCtrl\PointsOrdering.h">
       <Filter>ChartCtrl</Filter>
     </ClInclude>
-    <ClInclude Include="MyGridCtrl.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="TbTestingDevice.h">
       <Filter>头文件\entity</Filter>
     </ClInclude>
@@ -495,12 +477,6 @@
     <ClInclude Include="DataStructure.h">
       <Filter>头文件\entity</Filter>
     </ClInclude>
-    <ClInclude Include="EchoSignal.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="CollectionDataInfoDlg.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Constant.h">
       <Filter>源文件\Utils</Filter>
     </ClInclude>
@@ -524,9 +500,6 @@
     </ClInclude>
     <ClInclude Include="ProductManageView.h">
       <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="RealTimeSignal.h">
-      <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="NewCellTypes\GridCellCheck.h">
       <Filter>NewCellTypes</Filter>
@@ -663,18 +636,6 @@
     <ClInclude Include="CollectionParaPresetView.h">
       <Filter>头文件\View</Filter>
     </ClInclude>
-    <ClInclude Include="DictionaryController.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="DictionaryService.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ProductController.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="TbCollectionPlan.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="CollectionPlanParaPresetView.h">
       <Filter>头文件\View</Filter>
     </ClInclude>
@@ -683,6 +644,51 @@
     </ClInclude>
     <ClInclude Include="httplib.h">
       <Filter>头文件\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="CollectionDataInfoDlg.h">
+      <Filter>头文件\View</Filter>
+    </ClInclude>
+    <ClInclude Include="DictionaryController.h">
+      <Filter>头文件\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="ProductController.h">
+      <Filter>头文件\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="EchoSignal.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="RealTimeSignal.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="DictionaryService.h">
+      <Filter>头文件\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="MyGridCtrl.h">
+      <Filter>头文件\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="TbCollectionPlan.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorView.h">
+      <Filter>头文件\View\图形属性</Filter>
+    </ClInclude>
+    <ClInclude Include="FontView.h">
+      <Filter>头文件\View\图形属性</Filter>
+    </ClInclude>
+    <ClInclude Include="CoordinateView.h">
+      <Filter>头文件\View\图形属性</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphAttributeView.h">
+      <Filter>头文件\View\图形属性</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicAttributeView.h">
+      <Filter>头文件\View\图形属性</Filter>
+    </ClInclude>
+    <ClInclude Include="LineView.h">
+      <Filter>头文件\View\图形属性</Filter>
+    </ClInclude>
+    <ClInclude Include="SelectView.h">
+      <Filter>头文件\View\图形属性</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -817,24 +823,6 @@
     </ClCompile>
     <ClCompile Include="ProjectService.cpp">
       <Filter>源文件\Service</Filter>
-    </ClCompile>
-    <ClCompile Include="ColorView.cpp">
-      <Filter>源文件\View</Filter>
-    </ClCompile>
-    <ClCompile Include="CoordinateView.cpp">
-      <Filter>源文件\View</Filter>
-    </ClCompile>
-    <ClCompile Include="FontView.cpp">
-      <Filter>源文件\View</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphAttributeView.cpp">
-      <Filter>源文件\View</Filter>
-    </ClCompile>
-    <ClCompile Include="LineView.cpp">
-      <Filter>源文件\View</Filter>
-    </ClCompile>
-    <ClCompile Include="SelectView.cpp">
-      <Filter>源文件\View</Filter>
     </ClCompile>
     <ClCompile Include="ClassifierController.cpp">
       <Filter>源文件\Controller</Filter>
@@ -995,9 +983,6 @@
     <ClCompile Include="ChartCtrl\DuChartCtrlStaticFunction.cpp">
       <Filter>ChartCtrl</Filter>
     </ClCompile>
-    <ClCompile Include="MyGridCtrl.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="TbRecordSignalDao.cpp">
       <Filter>源文件\dao</Filter>
     </ClCompile>
@@ -1040,12 +1025,6 @@
     <ClCompile Include="SmartFFTWComplexArray.cpp">
       <Filter>源文件\entity</Filter>
     </ClCompile>
-    <ClCompile Include="EchoSignal.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CollectionDataInfoDlg.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="win32fixes.c">
       <Filter>Redis</Filter>
     </ClCompile>
@@ -1067,12 +1046,6 @@
     <ClCompile Include="ProductManageView.cpp">
       <Filter>源文件\View</Filter>
     </ClCompile>
-    <ClCompile Include="RealTimeSignal.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseProjectInfoView.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="NewCellTypes\GridCellCheck.cpp">
       <Filter>NewCellTypes</Filter>
     </ClCompile>
@@ -1088,32 +1061,65 @@
     <ClCompile Include="NewCellTypes\GridURLCell.cpp">
       <Filter>NewCellTypes</Filter>
     </ClCompile>
-    <ClCompile Include="CollectionParaPresetView.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="BaseProjectInfoView.cpp">
+      <Filter>源文件\View</Filter>
     </ClCompile>
     <ClCompile Include="ChannelParaPresetView.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\View</Filter>
     </ClCompile>
-    <ClCompile Include="DictionaryController.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="DictionaryService.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="ProductController.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="TbCollectionPlan.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="CollectionParaPresetView.cpp">
+      <Filter>源文件\View</Filter>
     </ClCompile>
     <ClCompile Include="CollectionPlanParaPresetView.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\View</Filter>
+    </ClCompile>
+    <ClCompile Include="CollectionDataInfoDlg.cpp">
+      <Filter>源文件\View</Filter>
+    </ClCompile>
+    <ClCompile Include="ProductController.cpp">
+      <Filter>源文件\View</Filter>
+    </ClCompile>
+    <ClCompile Include="TbCollectionPlan.cpp">
+      <Filter>源文件\dao</Filter>
     </ClCompile>
     <ClCompile Include="TbSignalDao.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\dao</Filter>
     </ClCompile>
     <ClCompile Include="TbTestingDevice.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\dao</Filter>
+    </ClCompile>
+    <ClCompile Include="RealTimeSignal.cpp">
+      <Filter>源文件\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="DictionaryService.cpp">
+      <Filter>源文件\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="EchoSignal.cpp">
+      <Filter>源文件\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="MyGridCtrl.cpp">
+      <Filter>源文件\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorView.cpp">
+      <Filter>源文件\View\图形属性</Filter>
+    </ClCompile>
+    <ClCompile Include="FontView.cpp">
+      <Filter>源文件\View\图形属性</Filter>
+    </ClCompile>
+    <ClCompile Include="LineView.cpp">
+      <Filter>源文件\View\图形属性</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphAttributeView.cpp">
+      <Filter>源文件\View\图形属性</Filter>
+    </ClCompile>
+    <ClCompile Include="DictionaryController.cpp">
+      <Filter>源文件\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectView.cpp">
+      <Filter>源文件\View\图形属性</Filter>
+    </ClCompile>
+    <ClCompile Include="CoordinateView.cpp">
+      <Filter>源文件\View\图形属性</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -27,6 +27,17 @@ public:
 	CCoordinateView	m_coordinateView;
 	CDialog* pDialog[5];  //用来保存对话框对象指针
 	int m_CurSelTab;
+public:
+	/**********************************************************************
+	 功能描述： 写入配置文件
+	 输入参数：
+	 输出参数： 
+	 返 回 值： 
+	 其它说明：
+	 修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void Write2INIFile();
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 
@@ -36,4 +47,5 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnSelchangeTabGraphAttr(NMHDR *pNMHDR, LRESULT *pResult);
 	CButton m_appAllWinodw;
+	afx_msg void OnClose();
 };

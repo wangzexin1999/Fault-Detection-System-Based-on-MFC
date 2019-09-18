@@ -312,6 +312,7 @@ bool  CFileUtil::RealTimeSignal2JSON(vector<double> dYValue, vector<CString> dXV
 
 }
 
+// 实时数据转成JSON格式
 bool  CFileUtil::RealTimeSignal2JSON(double dYValue[], string dXValue[], int nDataLen, int nChannelIndex, CString &strData)
 {
 
@@ -348,4 +349,22 @@ bool  CFileUtil::RealTimeSignal2JSON(double dYValue[], string dXValue[], int nDa
 	//strData = "{" + strData + "}";
 	return 0;
 
+}
+
+
+void CFileUtil::SeparateCString(CString strInput, char cSeparator, vector<CString> &strOutput)
+{
+
+	while (TRUE)
+	{
+		int index = strInput.Find(_T(cSeparator));
+		if (index == -1)
+		{
+			strOutput.push_back(strInput);
+			break;
+		}
+		CString test1 = strInput.Left(index);
+		strOutput.push_back(test1);
+		strInput = strInput.Right(strInput.GetLength() - index - 1);
+	}
 }
