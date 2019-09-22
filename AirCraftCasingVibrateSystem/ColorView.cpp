@@ -6,7 +6,7 @@
 #include "ColorView.h"
 #include "afxdialogex.h"
 #include "CommonUtil.h"
-
+#include "Constant.h"
 // CColorView ¶Ô»°¿ò
 
 IMPLEMENT_DYNAMIC(CColorView, CDialogEx)
@@ -226,7 +226,7 @@ BOOL CColorView::OnInitDialog()
 void CColorView::InitAttri()
 {
 	LPTSTR lpPath = new char[MAX_PATH];
-	strcpy(lpPath, "..\\IniFileNameTest.ini");
+	strcpy(lpPath, INIFilePath);
 	int length = 10;
 	LPSTR lpstrTemp = new char[length];
 

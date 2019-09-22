@@ -82,6 +82,7 @@ public:
 	virtual BOOL InitInstance();
 	virtual int ExitInstance();
 	PDSQL PDsql;
+	PDSQL m_conPDLocalSql;
 // й╣ож
 	UINT  m_nAppLook;
 	virtual void PreLoadState();

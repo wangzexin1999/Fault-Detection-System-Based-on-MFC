@@ -368,3 +368,30 @@ void CFileUtil::SeparateCString(CString strInput, char cSeparator, vector<CStrin
 		strInput = strInput.Right(strInput.GetLength() - index - 1);
 	}
 }
+
+bool CFileUtil::ReadSampleDataByPath(CString strFilePath, vector<AcquiredSignal> &sampleSignal)
+{
+
+	// 打开文件
+	// 读数据
+	CStdioFile fileRead;
+	if (!fileRead.Open(strFilePath, CFile::modeRead))//以读模式打开文本文件
+	{
+		return false;
+	}
+	CString strFileData;           //定义一个CString变量作为缓冲区,读取一行
+	CString strSplitDataAndTime;  // 时间
+	double dSplitData;    // 数据
+	while (fileRead.ReadString(strFileData))
+	{
+		AcquiredSignal signalTemp;
+		AfxExtractSubString(strSplitDataAndTime, strFileData, 0, _T(','));
+		signalTemp.SetAcquireTime(strSplitDataAndTime); // 时间
+		AfxExtractSubString(strSplitDataAndTime, strFileData, 1, _T(','));
+		dSplitData = _ttof(strSplitDataAndTime);//ecg data
+		signalTemp.SetSignalData(dSplitData);
+		sampleSignal.push_back(signalTemp);
+	}
+	fileRead.Close();
+
+}

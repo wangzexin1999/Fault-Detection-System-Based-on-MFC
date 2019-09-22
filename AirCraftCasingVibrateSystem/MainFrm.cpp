@@ -1,15 +1,15 @@
-// Õâ¶Î MFC Ê¾ÀıÔ´´úÂëÑİÊ¾ÈçºÎÊ¹ÓÃ MFC Microsoft Office Fluent ÓÃ»§½çÃæ 
-// (¡°Fluent UI¡±)¡£¸ÃÊ¾Àı½ö¹©²Î¿¼£¬
-// ÓÃÒÔ²¹³ä¡¶Microsoft »ù´¡Àà²Î¿¼¡·ºÍ 
-// MFC C++ ¿âÈí¼şËæ¸½µÄÏà¹Øµç×ÓÎÄµµ¡£  
-// ¸´ÖÆ¡¢Ê¹ÓÃ»ò·Ö·¢ Fluent UI µÄĞí¿ÉÌõ¿îÊÇµ¥¶ÀÌá¹©µÄ¡£  
-// ÈôÒªÁË½âÓĞ¹Ø Fluent UI Ğí¿É¼Æ»®µÄÏêÏ¸ĞÅÏ¢£¬Çë·ÃÎÊ  
-// http://go.microsoft.com/fwlink/?LinkId=238214¡£
+ï»¿// è¿™æ®µ MFC ç¤ºä¾‹æºä»£ç æ¼”ç¤ºå¦‚ä½•ä½¿ç”¨ MFC Microsoft Office Fluent ç”¨æˆ·ç•Œé¢ 
+// (â€œFluent UIâ€)ã€‚è¯¥ç¤ºä¾‹ä»…ä¾›å‚è€ƒï¼Œ
+// ç”¨ä»¥è¡¥å……ã€ŠMicrosoft åŸºç¡€ç±»å‚è€ƒã€‹å’Œ 
+// MFC C++ åº“è½¯ä»¶éšé™„çš„ç›¸å…³ç”µå­æ–‡æ¡£ã€‚  
+// å¤åˆ¶ã€ä½¿ç”¨æˆ–åˆ†å‘ Fluent UI çš„è®¸å¯æ¡æ¬¾æ˜¯å•ç‹¬æä¾›çš„ã€‚  
+// è‹¥è¦äº†è§£æœ‰å…³ Fluent UI è®¸å¯è®¡åˆ’çš„è¯¦ç»†ä¿¡æ¯ï¼Œè¯·è®¿é—®  
+// http://go.microsoft.com/fwlink/?LinkId=238214ã€‚
 //
-// °æÈ¨ËùÓĞ(C) Microsoft Corporation
-// ±£ÁôËùÓĞÈ¨Àû¡£
+// ç‰ˆæƒæ‰€æœ‰(C) Microsoft Corporation
+// ä¿ç•™æ‰€æœ‰æƒåˆ©ã€‚
 
-// MainFrm.cpp : CMainFrame ÀàµÄÊµÏÖ
+// MainFrm.cpp : CMainFrame ç±»çš„å®ç°
 
 #include "stdafx.h"
 #include "AirCraftCasingVibrateSystem.h"
@@ -80,11 +80,11 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_BTN_GRAPH_ATTR, &CMainFrame::OnBtnGraphAttribute)
 END_MESSAGE_MAP()
 
-// CMainFrame ¹¹Ôì/Îö¹¹
+// CMainFrame æ„é€ /ææ„
 
 CMainFrame::CMainFrame()
 {
-	// TODO:  ÔÚ´ËÌí¼Ó³ÉÔ±³õÊ¼»¯´úÂë
+	// TODO:  åœ¨æ­¤æ·»åŠ æˆå‘˜åˆå§‹åŒ–ä»£ç 
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_WINDOWS_7);
 }
 
@@ -104,10 +104,10 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	if (!m_wndStatusBar.Create(this))
 	{
-		TRACE0("Î´ÄÜ´´½¨×´Ì¬À¸\n");
-		return -1;      // Î´ÄÜ´´½¨
+		TRACE0("æœªèƒ½åˆ›å»ºçŠ¶æ€æ \n");
+		return -1;      // æœªèƒ½åˆ›å»º
 	}
-	// ÉèÖÃÄ¬ÈÏÏÔÊ¾µÄÀà±ğ
+	// è®¾ç½®é»˜è®¤æ˜¾ç¤ºçš„ç±»åˆ«
 	m_wndRibbonBar.SetActiveCategory(m_wndRibbonBar.GetCategory(3));
 	CString strTitlePane1;
 	CString strTitlePane2;
@@ -118,7 +118,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndStatusBar.AddElement(new CMFCRibbonStatusBarPane(ID_STATUSBAR_PANE1, strTitlePane1, TRUE), strTitlePane1);
 	m_wndStatusBar.AddExtendedElement(new CMFCRibbonStatusBarPane(ID_STATUSBAR_PANE2, strTitlePane2, TRUE), strTitlePane2);
 
-	//²âÊÔ¼ÓÈë°´Å¥
+	//æµ‹è¯•åŠ å…¥æŒ‰é’®
 	CMFCRibbonCategory *pCategory = m_wndRibbonBar.GetCategory(3);
 	CMFCRibbonPanel *pPanel = pCategory->GetPanel(6);
 	pPanel->Add(new CMFCRibbonButton(12, _T("1"), 3, -1));
@@ -126,13 +126,13 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	pPanel->Add(new CMFCRibbonButton(33, _T("3"), 7, -1));
 
 
-	if (!m_systemPara.Create(_T("ÏµÍ³²ÎÊı"), this, CRect(0, 0, 200, 100), TRUE, 10000,
+	if (!m_systemPara.Create(_T("ç³»ç»Ÿå‚æ•°"), this, CRect(0, 0, 200, 100), TRUE, 10000,
 		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS |
 		WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI))
 	{
 		return FALSE;
 	}
-	if (!m_channelPara.Create(_T("Í¨µÀ²ÎÊı"), this, CRect(0, 0, 200, 100), TRUE, 10033,
+	if (!m_channelPara.Create(_T("é€šé“å‚æ•°"), this, CRect(0, 0, 200, 100), TRUE, 10033,
 		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS |
 		WS_CLIPCHILDREN | CBRS_BOTTOM | CBRS_FLOAT_MULTI))
 	{
@@ -142,21 +142,21 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_channelPara.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_channelPara);// BOTTOM
 	DockPane(&m_systemPara);// LEFT
-	// ÆôÓÃ Visual Studio 2005 ÑùÊ½Í£¿¿´°¿ÚĞĞÎª
+	// å¯ç”¨ Visual Studio 2005 æ ·å¼åœé çª—å£è¡Œä¸º
 	CDockingManager::SetDockingMode(DT_SMART);
-	// ÆôÓÃ Visual Studio 2005 ÑùÊ½Í£¿¿´°¿Ú×Ô¶¯Òş²ØĞĞÎª
+	// å¯ç”¨ Visual Studio 2005 æ ·å¼åœé çª—å£è‡ªåŠ¨éšè—è¡Œä¸º
 	EnableAutoHidePanes(CBRS_ALIGN_ANY);
 
-	// ´´½¨±êÌâÀ¸: 
+	// åˆ›å»ºæ ‡é¢˜æ : 
 	if (!CreateCaptionBar())
 	{
-		TRACE0("Î´ÄÜ´´½¨±êÌâÀ¸\n");
-		return -1;      // Î´ÄÜ´´½¨
+		TRACE0("æœªèƒ½åˆ›å»ºæ ‡é¢˜æ \n");
+		return -1;      // æœªèƒ½åˆ›å»º
 	}
-	// »ùÓÚ³Ö¾ÃÖµÉèÖÃÊÓ¾õ¹ÜÀíÆ÷ºÍÑùÊ½
+	// åŸºäºæŒä¹…å€¼è®¾ç½®è§†è§‰ç®¡ç†å™¨å’Œæ ·å¼
 	OnApplicationLook(theApp.m_nAppLook);
 
-	// ÆôÓÃÔöÇ¿µÄ´°¿Ú¹ÜÀí¶Ô»°¿ò
+	// å¯ç”¨å¢å¼ºçš„çª—å£ç®¡ç†å¯¹è¯æ¡†
 	EnableWindowsDialog(ID_WINDOW_MANAGER, ID_WINDOW_MANAGER, TRUE);
 
 	return 0;
@@ -166,7 +166,7 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
 	if( !CMDIFrameWndEx::PreCreateWindow(cs) )
 		return FALSE;
-	//  CREATESTRUCT cs À´ĞŞ¸Ä´°¿ÚÀà»òÑùÊ½
+	//  CREATESTRUCT cs æ¥ä¿®æ”¹çª—å£ç±»æˆ–æ ·å¼
 	return TRUE;
 }
 
@@ -174,7 +174,7 @@ BOOL CMainFrame::CreateCaptionBar()
 {
 	if (!m_wndCaptionBar.Create(WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS, this, ID_VIEW_CAPTION_BAR, -1, TRUE))
 	{
-		TRACE0("Î´ÄÜ´´½¨±êÌâÀ¸\n");
+		TRACE0("æœªèƒ½åˆ›å»ºæ ‡é¢˜æ \n");
 		return FALSE;
 	}
 
@@ -202,7 +202,7 @@ BOOL CMainFrame::CreateCaptionBar()
 	return TRUE;
 }
 
-// CMainFrame Õï¶Ï
+// CMainFrame è¯Šæ–­
 
 #ifdef _DEBUG
 void CMainFrame::AssertValid() const
@@ -217,7 +217,7 @@ void CMainFrame::Dump(CDumpContext& dc) const
 #endif //_DEBUG
 
 
-// CMainFrame ÏûÏ¢´¦Àí³ÌĞò
+// CMainFrame æ¶ˆæ¯å¤„ç†ç¨‹åº
 
 void CMainFrame::OnWindowManager()
 {
@@ -328,17 +328,17 @@ void CMainFrame::OnOptions()
 }
 
 
-////³õÊ¼»¯²É¼¯´°¿Úvector
-void CMainFrame::InitializeCaptureView(){
-	// ÏÔÊ¾
+////åˆå§‹åŒ–é‡‡é›†çª—å£vector
+void CMainFrame::InitializeCaptureView(int nWindowInitial){
+	// æ˜¾ç¤º
 	POSITION curTemplatePos = theApp.GetFirstDocTemplatePosition();
 	CDocTemplate *m_doc = theApp.GetNextDocTemplate(curTemplatePos);
-	//»ñµÃÎÄµµ:
+	//è·å¾—æ–‡æ¡£:
 	curTemplatePos = m_doc->GetFirstDocPosition();
-	int viewNumber = 0;
+	int viewNumber = nWindowInitial;
 	while(curTemplatePos != NULL){
 		CAirCraftCasingVibrateSystemDoc * pdoc = (CAirCraftCasingVibrateSystemDoc*)m_doc->GetNextDoc(curTemplatePos);
-		//»ñµÃÊÓÍ¼:
+		//è·å¾—è§†å›¾:
 		POSITION curViewPos;
 		curViewPos = pdoc->GetFirstViewPosition();
 		while (curViewPos != NULL)
@@ -352,7 +352,32 @@ void CMainFrame::InitializeCaptureView(){
 	}
 }
 
-////Í¨µÀ…¢”µ
+void CMainFrame::InitializeSampleDataEchoView(int nWindowInitial)
+{
+	// æ˜¾ç¤º
+	POSITION curTemplatePos = theApp.GetFirstDocTemplatePosition();
+	CDocTemplate *m_doc = theApp.GetNextDocTemplate(curTemplatePos);
+	//è·å¾—æ–‡æ¡£:
+	curTemplatePos = m_doc->GetFirstDocPosition();
+	int viewNumber = nWindowInitial;
+	while (curTemplatePos != NULL){
+		CAirCraftCasingVibrateSystemDoc * pdoc = (CAirCraftCasingVibrateSystemDoc*)m_doc->GetNextDoc(curTemplatePos);
+		//è·å¾—è§†å›¾:
+		POSITION curViewPos;
+		curViewPos = pdoc->GetFirstViewPosition();
+		while (curViewPos != NULL)
+		{
+			CAirCraftCasingVibrateSystemView* currentView = (CAirCraftCasingVibrateSystemView*)pdoc->GetNextView(curViewPos);
+			currentView->SetSampleDataEchoTimerNum(viewNumber);
+			currentView->ResetView();
+			m_vsignalCaptureView.push_back(currentView);
+		}
+		viewNumber++;
+	}
+
+}
+
+////é€šé“åƒæ•¸
 void CMainFrame::OnViewChannelPara()
 {
 	if (m_channelPara.IsVisible())
@@ -394,91 +419,129 @@ void CMainFrame::OnUpdateViewSystemPara(CCmdUI* pCmdUI)
 }
 
 
-// ĞÂ½¨ÏîÄ¿
+// æ–°å»ºé¡¹ç›®
 void CMainFrame::OnButtonNewProject()
 {
-	//´ò¿ª´°¿Ú
+	//æ‰“å¼€çª—å£
 	CNewProjectView newProjectView;
 	newProjectView.DoModal();
 }
 
-// ÏîÄ¿¹ÜÀí
+// é¡¹ç›®ç®¡ç†
 void CMainFrame::OnButtonProjectManage()
 {
 	CProjectManageView projectView;
 	int  i = projectView.DoModal();
-	///·¢ËÍË¢ĞÂÖ÷´°¿Ú±êÌâµÄÏûÏ¢
+	///å‘é€åˆ·æ–°ä¸»çª—å£æ ‡é¢˜çš„æ¶ˆæ¯
 	SendMessage(WM_SETTEXT);
 }
 
-// ´ò¿ªÊı¾İÎÄ¼ş
+// æ‰“å¼€æ•°æ®æ–‡ä»¶
 void CMainFrame::OnButtonOpenDataFile()
 {
-	// TODO:  ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
+	// TODO:  åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
 	CSignalDataView signalDataView;
-	signalDataView.DoModal();
+	if (signalDataView.DoModal() == IDOK)
+	{
+		// å¦‚æœå¯ä»¥è¿æ¥æœåŠ¡å™¨ï¼Œæ ¹æ®æ¡ä»¶æŸ¥è¯¢æœåŠ¡å™¨æ•°æ®
+		// å¦åˆ™æŸ¥è¯¢æœ¬ä½“æ•°æ®
+		if (strcmp(theApp.PDsql.m_mysql.host, "127.0.0.1") == 0)/*è¿æ¥æœ¬åœ°*/
+		{
+			//æŸ¥è¯¢ä¼ æ„Ÿå™¨ä¸ªæ•°
+			int nSersor = 4;
+			// æ‰“å¼€çª—å£
+			NewDoc(nSersor);
+			// åˆå§‹åŒ–view
+			InitializeSampleDataEchoView(16);
+
+			// æ ¹æ®ä¼ æ„Ÿå™¨ä¿¡æ¯æŸ¥æ‰¾æ–‡ä»¶è·¯å¾„
+
+
+			for (int i = 0; i < m_vsignalCaptureView.size(); i++)
+			{
+				// æ ¹æ®è·¯å¾„æŸ¥æ‰¾æ–‡ä»¶ï¼Œæ”¾åˆ°å„è‡ªçš„viewé‡‡æ ·é˜Ÿåˆ—é‡Œé¢
+				CFileUtil::ReadSampleDataByPath("C:\\collectionData\\3-1-1-1-1566998168677.csv",
+					m_vsignalCaptureView[i]->m_sampleFromFileDataQueue);
+			}
+			// çª—å£å¹³é“º
+			WindowsVerticalOrHorizontal(1);
+
+		}
+		else/*è¿æ¥æœåŠ¡å™¨*/
+		{
+
+
+		}
+
+	}
+	
+	
+
+	
+		
+	
 }
 
 
-// µ¼³öÍ¨µÀ²ÎÊı
+// å¯¼å‡ºé€šé“å‚æ•°
 void CMainFrame::OnButtonExportChannelPara()
 {
-	// TODO:  ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
+	// TODO:  åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
 }
 
-//µ¼ÈëÍ¨µÀ²ÎÊı
+//å¯¼å…¥é€šé“å‚æ•°
 void CMainFrame::OnButtonImportChannelPara()
 {
-	// TODO:  ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
+	// TODO:  åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
 }
 
-// µ¼³öÏµÍ³²ÎÊı
+// å¯¼å‡ºç³»ç»Ÿå‚æ•°
 void CMainFrame::OnButtonExportSysPara()
 {
-	// TODO:  ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
+	// TODO:  åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
 }
 
-// µ¼ÈëÏµÍ³²ÎÊı
+// å¯¼å…¥ç³»ç»Ÿå‚æ•°
 void CMainFrame::OnButtonImportSysPara()
 {
-	// TODO:  ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
+	// TODO:  åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
 }
 
 
-//ÔİÍ£²É¼¯
+//æš‚åœé‡‡é›†
 void CMainFrame::OnButtonSuspendCapture()
 {
 	theApp.m_icollectionStatus = 2;
 }
 
 
-//¿ªÊ¼²É¼¯
+//å¼€å§‹é‡‡é›†
 void CMainFrame::OnButtonStartCapture()
 {
-	// ÉèÖÃµ×²¿×ø±êÖáÎª×Ô¶¯
+	// è®¾ç½®åº•éƒ¨åæ ‡è½´ä¸ºè‡ªåŠ¨
 	int projectId = theApp.m_currentProject.GetProjectId();
 	if (projectId <= 0){
-		AfxMessageBox("ÇëÏÈ´ò¿ª»òÕßĞÂ½¨ÏîÄ¿");
+		AfxMessageBox("è¯·å…ˆæ‰“å¼€æˆ–è€…æ–°å»ºé¡¹ç›®");
 		return;
 	}
-	////m_icollectionStatus == 0 ÊÇÎ´²É¼¯
+	////m_icollectionStatus == 0 æ˜¯æœªé‡‡é›†
 	if (!theApp.m_icollectionStatus){
-		//// ³õÊ¼»¯²É¼¯´°¿ÚView
-		InitializeCaptureView();
-		//// ÉèÖÃĞÅºÅ²É¼¯×´Ì¬Îª1
+		//// åˆå§‹åŒ–é‡‡é›†çª—å£View
+		InitializeCaptureView(0);
+		//// è®¾ç½®ä¿¡å·é‡‡é›†çŠ¶æ€ä¸º1
 		theApp.m_icollectionStatus = 1;
 
-		//// ÉèÖÃÏÔÊ¾ĞÅÏ¢Ïß³Ì±êÖ¾
+		//// è®¾ç½®æ˜¾ç¤ºä¿¡æ¯çº¿ç¨‹æ ‡å¿—
 		//theApp.m_bShowInfThreadActive = true;
 
-		//// ¼ÆËãÍ¨µÀ¸öÊı
+		//// è®¡ç®—é€šé“ä¸ªæ•°
 		//CalculateChannelNum(m_nChannelNums);
 
-		///// ³õÊ¼»¯ĞÅºÅ²É¼¯View
+		///// åˆå§‹åŒ–ä¿¡å·é‡‡é›†View
 
 		for (int i = 0; i < m_vsignalCaptureView.size(); i++){
-			///Ìí¼ÓÊı¾İ¶ÓÁĞµ½²É¼¯Êı¾İ¶ÓÁĞ¼¯ºÏ
-			////¸ø´«¸ĞÆ÷Êı¾İ¸³Öµ
+			///æ·»åŠ æ•°æ®é˜Ÿåˆ—åˆ°é‡‡é›†æ•°æ®é˜Ÿåˆ—é›†åˆ
+			////ç»™ä¼ æ„Ÿå™¨æ•°æ®èµ‹å€¼
 				for (int m = 0; m < 100; m++)
 				{
 					for (int n = 0; n < 1000; n++)
@@ -487,102 +550,110 @@ void CMainFrame::OnButtonStartCapture()
 					}
 				}
 		}
-		/////ÊäÈë²É¼¯Êı¾İĞÅÏ¢
-		CollectionDataInfoDlg m_collectionDataInfoDlg;
-		m_collectionDataInfoDlg.DoModal();
+		/////è¾“å…¥é‡‡é›†æ•°æ®ä¿¡æ¯
+		/*CollectionDataInfoDlg m_collectionDataInfoDlg;
+		m_collectionDataInfoDlg.DoModal();*/
 		
-		if (theApp.m_collectionRotatingSpeed == ""){ theApp.m_icollectionStatus = 0; return; }
+		//if (theApp.m_collectionRotatingSpeed == ""){ theApp.m_icollectionStatus = 0; return; }
 
-		////¿ªÆôËùÓĞ´°¿ÚµÄ²É¼¯Ïß³Ì
+		////å¼€å¯æ‰€æœ‰çª—å£çš„é‡‡é›†çº¿ç¨‹
 		for (int i = 0; i < m_vsignalCaptureView.size(); i++){
 			m_vsignalCaptureView[i]->OpenThread2CaptureData();
 		}
 	}
-	///ÊµÊ±Êı¾İ´«Êä
+	///å®æ—¶æ•°æ®ä¼ è¾“
 	//SetTimer(99, 1000, NULL);
 }
 
-// Í£Ö¹²É¼¯
+// åœæ­¢é‡‡é›†
 void CMainFrame::OnBtnStopCapture()
 {
 	theApp.m_icollectionStatus = 0;
 	KillTimer(99);
 }
 
-// Í£Ö¹»Ø·Å
+// åœæ­¢å›æ”¾
 void CMainFrame::OnBtnStopPlayback()
 {
-	// TODO:  ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
+	// TODO:  åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+	for (int i = 0; i < m_vsignalCaptureView.size(); i++){
+		m_vsignalCaptureView[i]->StopSampleEncho();
+	}
 }
 
-//¿ªÊ¼»Ø·Å
+//å¼€å§‹å›æ”¾
 void CMainFrame::OnBtnStartPlayback()
 {
-	// TODO:  ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
+	// TODO:  åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
+	////å¼€å¯æ‰€æœ‰çª—å£çš„é‡‡æ ·å›æ”¾
+	for (int i = 0; i < m_vsignalCaptureView.size(); i++){
+
+		m_vsignalCaptureView[i]->StartSampleEncho();
+	}
 }
 
-// ¹Ø±ÕËùÓĞ´°¿Ú
+// å…³é—­æ‰€æœ‰çª—å£
 void CMainFrame::OnBtnCloseAllWindow()
 {
-	// TODO:  ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
+	// TODO:  åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
 }
 
-/*¼ì²âÉè±¸¹ÜÀí*/
+/*æ£€æµ‹è®¾å¤‡ç®¡ç†*/
 void CMainFrame::OnButtonDetectDevice()
 {
-	// TODO:  ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
+	// TODO:  åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
 	CDetectDeviceManageView detectDeviceManageView;
 	detectDeviceManageView.DoModal();
 }
 
-/*²úÆ·¹ÜÀí*/
+/*äº§å“ç®¡ç†*/
 void CMainFrame::OnButtonProduct()
 {
-	// TODO:  ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
+	// TODO:  åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
 	CProductManageView productManegeView;
 	productManegeView.DoModal();
 }
 
-//¿ªÊ¼²ÉÑù
+//å¼€å§‹é‡‡æ ·
 void CMainFrame::OnBtnStartSmaple()
 {
 	int projectId = theApp.m_currentProject.GetProjectId();
 	if (projectId <= 0){
-		AfxMessageBox("ÇëÏÈ´ò¿ª»òÕßĞÂ½¨ÏîÄ¿");
+		AfxMessageBox("è¯·å…ˆæ‰“å¼€æˆ–è€…æ–°å»ºé¡¹ç›®");
 		return;
 	}
 	theApp.m_bIsSample = true;
 }
 
-// Í£Ö¹²ÉÑù
+// åœæ­¢é‡‡æ ·
 void CMainFrame::OnBtnStopSample()
 {
 	theApp.m_bIsSample = false;
-	//±éÀúËùÓĞ²É¼¯´°¿ÚÈ¥±£´æ²ÉÑùÊı¾İ
+	//éå†æ‰€æœ‰é‡‡é›†çª—å£å»ä¿å­˜é‡‡æ ·æ•°æ®
 	for (int i = 0; i < m_vsignalCaptureView.size(); i++){
 		m_vsignalCaptureView[i]->OpenThread2SaveSampleData();
 	}
 
 }
 
-//¹¤³Ìµ¥Î»
+//å·¥ç¨‹å•ä½
 void CMainFrame::OnBtnEngineeringUnit()
 {
-	// TODO:  ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
+	// TODO:  åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
 	CEngineerUnitView engineerUnitView;
 	engineerUnitView.DoModal();
 }
 
-// ±¨¾¯ÉèÖÃ
+// æŠ¥è­¦è®¾ç½®
 void CMainFrame::OnBtnAlarmSet()
 {
-	// TODO:  ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
+	// TODO:  åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
 	CAlarmParaSetView alarmView;
 	alarmView.DoModal();
 
 }
 
-// ºáÏò·Å´ó
+// æ¨ªå‘æ”¾å¤§
 void CMainFrame::OnBtnTransverseAmplification()
 {
 	CAirCraftCasingVibrateSystemView *view;
@@ -590,7 +661,7 @@ void CMainFrame::OnBtnTransverseAmplification()
 	CDuChartCtrlStaticFunction::HengxiangFangda(&view->GetChartCtrl());
 }
 
-// ºáÏòËõĞ¡
+// æ¨ªå‘ç¼©å°
 void CMainFrame::OnBtnHorizontalReduction()
 {
 	CAirCraftCasingVibrateSystemView *view;
@@ -599,7 +670,7 @@ void CMainFrame::OnBtnHorizontalReduction()
 
 }
 
-// ×İÏòËõĞ¡
+// çºµå‘ç¼©å°
 void CMainFrame::OnBtnVerticalReduction()
 {
 	CAirCraftCasingVibrateSystemView *view;
@@ -607,7 +678,7 @@ void CMainFrame::OnBtnVerticalReduction()
 	CDuChartCtrlStaticFunction::ZongxiangSuoxiao(&view->GetChartCtrl());
 }
 
-//×İÏò·Å´ó
+//çºµå‘æ”¾å¤§
 void CMainFrame::OnBtnVerticalAmplification()
 {
 	CAirCraftCasingVibrateSystemView *view;
@@ -615,7 +686,7 @@ void CMainFrame::OnBtnVerticalAmplification()
 	CDuChartCtrlStaticFunction::ZongxiangFangda(&view->GetChartCtrl());
 }
 
-//µ¥¹â±ê
+//å•å…‰æ ‡
 void CMainFrame::OnBtnSingleCursor()
 {
 	CAirCraftCasingVibrateSystemView *view;
@@ -623,7 +694,7 @@ void CMainFrame::OnBtnSingleCursor()
 	CDuChartCtrlStaticFunction::SetCursorSingle(&view->GetChartCtrl());
 }
 
-//·åÖµ
+//å³°å€¼
 void CMainFrame::OnBtnPeakValue()
 {
 	CAirCraftCasingVibrateSystemView *view;
@@ -632,7 +703,7 @@ void CMainFrame::OnBtnPeakValue()
 }
 
 
-// ×Ô¶¯¿Ì¶È
+// è‡ªåŠ¨åˆ»åº¦
 void CMainFrame::OnBtnAutoScale()
 {
 	CAirCraftCasingVibrateSystemView *view;
@@ -642,7 +713,7 @@ void CMainFrame::OnBtnAutoScale()
 
 }
 
-// Ä¬ÈÏ¿Ì¶È
+// é»˜è®¤åˆ»åº¦
 void CMainFrame::OnBtnDefaultScale()
 {
 	CAirCraftCasingVibrateSystemView *view;
@@ -650,14 +721,14 @@ void CMainFrame::OnBtnDefaultScale()
 	//CDuChartCtrlStaticFunction::SetCursorNone(&view->GetChartCtrl());
 	CChartStandardAxisDu * leftAxis = (CChartStandardAxisDu*)view->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0);
 	CChartStandardAxisDu * bottomAxis = (CChartStandardAxisDu*)view->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0);
-	bottomAxis->SetMinMax(0, 1000);//ÉèÖÃÏÂ¿Ì¶È
+	bottomAxis->SetMinMax(0, 1000);//è®¾ç½®ä¸‹åˆ»åº¦
 	bottomAxis->SetTickIncrement(false, 100);
 
 	leftAxis->SetMinMax(-0.1, 0.1);
 	leftAxis->SetTickIncrement(false, 0.05);
 }
 
-// ÎŞ¹â±ê
+// æ— å…‰æ ‡
 void CMainFrame::OnBtnNoCorror()
 {
 	CAirCraftCasingVibrateSystemView *view;
@@ -667,8 +738,8 @@ void CMainFrame::OnBtnNoCorror()
 
 void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 {
-	// TODO:  ÔÚ´ËÌí¼ÓÏûÏ¢´¦Àí³ÌĞò´úÂëºÍ/»òµ÷ÓÃÄ¬ÈÏÖµ
-	// ÊµÊ±´«Êä
+	// TODO:  åœ¨æ­¤æ·»åŠ æ¶ˆæ¯å¤„ç†ç¨‹åºä»£ç å’Œ/æˆ–è°ƒç”¨é»˜è®¤å€¼
+	// å®æ—¶ä¼ è¾“
 	if (nIDEvent == 99)
 	{
 		//RealTimeSignal2Server();
@@ -680,8 +751,8 @@ void CMainFrame::RealTimeSignal2Server()
 {
 	vector<CString> jsonStr;
 	CString str2JSON = "";
-	CString separator = "";////¶ººÅ·Ö¸ô·û
-	// ×ª³É×Ö·û´®
+	CString separator = "";////é€—å·åˆ†éš”ç¬¦
+	// è½¬æˆå­—ç¬¦ä¸²
 	for (int i = 0; i < m_vsignalCaptureView.size(); i++)
 	{
 		CString tempStr;
@@ -694,21 +765,21 @@ void CMainFrame::RealTimeSignal2Server()
 		separator = ",";
 	}
 	str2JSON = "{" + str2JSON + "}";
-	//·¢ËÍ
+	//å‘é€
 	//theApp.m_redisCon->SetValue("11", str2JSON.GetBuffer());
 
 }
 
 
-///±êÌâÀ¸ĞŞ¸ÄµÄÏìÓ¦ÊÂ¼ş
+///æ ‡é¢˜æ ä¿®æ”¹çš„å“åº”äº‹ä»¶
 LRESULT CMainFrame::OnSetText(WPARAM wParam, LPARAM lParam)
 {
 	CString title;
-	CString product = "Î´Öª²úÆ·";
-	CString project = "Î´ÖªÏîÄ¿";
-	CString rotatingSpeed ="Î´Öª×ªËÙ";
-	CString tester = "Î´ÖªÈË";
-	CString sensor = "Î´Öª´«¸ĞÆ÷";
+	CString product = "æœªçŸ¥äº§å“";
+	CString project = "æœªçŸ¥é¡¹ç›®";
+	CString rotatingSpeed ="æœªçŸ¥è½¬é€Ÿ";
+	CString tester = "æœªçŸ¥äºº";
+	CString sensor = "æœªçŸ¥ä¼ æ„Ÿå™¨";
 
 	if (theApp.m_currentProject.GetProduct().GetProductType() != "") product = theApp.m_currentProject.GetProduct().GetProductType();
 	if (theApp.m_currentProject.GetProjectName() != "") project = theApp.m_currentProject.GetProjectName();
@@ -728,74 +799,74 @@ LRESULT CMainFrame::OnSetText(WPARAM wParam, LPARAM lParam)
 
 
 
-// Í¼ĞÎÊôĞÔ
+// å›¾å½¢å±æ€§
 void CMainFrame::OnBtnGraphAttribute()
 {
 
-	// TODO:  ÔÚ´ËÌí¼ÓÃüÁî´¦Àí³ÌĞò´úÂë
+	// TODO:  åœ¨æ­¤æ·»åŠ å‘½ä»¤å¤„ç†ç¨‹åºä»£ç 
 	if (m_graphAttributeView.DoModal() == IDOK)
 	{
-		InitializeCaptureView();
+		InitializeCaptureView(0);
 		for (int i = 0; i < m_vsignalCaptureView.size(); i++)
 		{	
 			m_graphAttributeView.Write2INIFile();
-			/*ÑÕÉ«*/
-			// ´°¿Ú±³¾°
+			/*é¢œè‰²*/
+			// çª—å£èƒŒæ™¯
 			m_vsignalCaptureView[i]->GetChartCtrl().SetBackColor(m_graphAttributeView.m_colorView.m_colBKColor);
-			//Í¼ĞÎÇøÓò±³¾°
+			//å›¾å½¢åŒºåŸŸèƒŒæ™¯
 			m_vsignalCaptureView[i]->GetChartCtrl().m_GraphBKColor = m_graphAttributeView.m_colorView.m_colGBKColor;
-			// ĞÅÏ¢ÇøÓò±³¾°
+			// ä¿¡æ¯åŒºåŸŸèƒŒæ™¯
 			m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_colTBKColor = m_graphAttributeView.m_colorView.m_colTBKColor;
-			//¹â±êÑÕÉ«
+			//å…‰æ ‡é¢œè‰²
 			m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_colCursorColor1 = m_graphAttributeView.m_colorView.m_colCursor1;
-			// ÇúÏßÑÕÉ«
+			// æ›²çº¿é¢œè‰²
 			m_vsignalCaptureView[i]->GetChartCtrl().GetSerieFromIndexDu(0)->SetColor(m_graphAttributeView.m_colorView.m_colSerie[0]);
-			//Íø¸ñÑÕÉ«
+			//ç½‘æ ¼é¢œè‰²
 			m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0)->GetGrid()->SetColor(m_graphAttributeView.m_colorView.m_colGridLineColor);
 			m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0)->GetGrid()->SetColor(m_graphAttributeView.m_colorView.m_colGridLineColor);
-			// ×ø±êÖáÑÕÉ«
+			// åæ ‡è½´é¢œè‰²
 			m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0)->SetAxisColor(m_graphAttributeView.m_colorView.m_colXCoor);
 			m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0)->SetAxisColor(m_graphAttributeView.m_colorView.m_colYCoor);
-			// ¿Ì¶ÈÑÕÉ«
+			// åˆ»åº¦é¢œè‰²
 			m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0)->SetTextColor(m_graphAttributeView.m_colorView.m_colScale);
 			m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0)->SetTextColor(m_graphAttributeView.m_colorView.m_colScale);
-			// ±ê×¢ÑÕÉ«
+			// æ ‡æ³¨é¢œè‰²
 			m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0)->GetLabel()->SetColor(m_graphAttributeView.m_colorView.m_colScale);
 			m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0)->GetLabel()->SetColor(m_graphAttributeView.m_colorView.m_colScale);
 
-			/*×ÖÌå*/
-			// ×ø±êÖá
+			/*å­—ä½“*/
+			// åæ ‡è½´
 			m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0)->SetFont(
 				m_graphAttributeView.m_fontView.m_lFontXCoor.m_lFontSize, m_graphAttributeView.m_fontView.m_lFontXCoor.m_lFont.lfFaceName);
 			m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0)->SetFont(
 				m_graphAttributeView.m_fontView.m_lFontYCoor.m_lFontSize, m_graphAttributeView.m_fontView.m_lFontYCoor.m_lFont.lfFaceName);
 
-			// ×ø±êµ¥Î»
+			// åæ ‡å•ä½
 			m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0)->GetLabel()->SetFont(
 				m_graphAttributeView.m_fontView.m_lFontXUnit.m_lFontSize, m_graphAttributeView.m_fontView.m_lFontXUnit.m_lFont.lfFaceName);
 
 			m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0)->GetLabel()->SetFont(
 				m_graphAttributeView.m_fontView.m_lFontYUnit.m_lFontSize, m_graphAttributeView.m_fontView.m_lFontYUnit.m_lFont.lfFaceName);
-			//¹â±ê¶ÁÊı
+			//å…‰æ ‡è¯»æ•°
 
-			// ¹â±ê±ê×¢
-			// Í³¼ÆĞÅÏ¢
-			// ÎÄ±¾×¢ÊÍ
-			//¹¤³ÌĞÅÏ¢
-			/*Ñ¡Ïî*/
-			//Í³¼ÆĞÅÏ¢
+			// å…‰æ ‡æ ‡æ³¨
+			// ç»Ÿè®¡ä¿¡æ¯
+			// æ–‡æœ¬æ³¨é‡Š
+			//å·¥ç¨‹ä¿¡æ¯
+			/*é€‰é¡¹*/
+			//ç»Ÿè®¡ä¿¡æ¯
 			m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_bDrawStatValue = m_graphAttributeView.m_selectView.m_bStaValue;
-			// ×î´óÖµ
+			// æœ€å¤§å€¼
 			m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_bDrawStatMax = m_graphAttributeView.m_selectView.m_bMax;
-			// ×îĞ¡Öµ
+			// æœ€å°å€¼
 			m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_bDrawStatMin = m_graphAttributeView.m_selectView.m_bMin;
-			//Æ½¾ùÖµ
+			//å¹³å‡å€¼
 			m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_bDrawStatAve = m_graphAttributeView.m_selectView.m_bAve;
-			// ·åÖµ
+			// å³°å€¼
 			m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_bDrawStatPeak = m_graphAttributeView.m_selectView.m_bPeak;
-			// ÓĞĞ§Öµ
+			// æœ‰æ•ˆå€¼
 			m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_bDrawStatRms = m_graphAttributeView.m_selectView.m_bEffectiveValue;
-			//Ë¢ĞÂ
+			//åˆ·æ–°
 			m_vsignalCaptureView[i]->GetChartCtrl().RefreshCtrl();
 
 
@@ -807,3 +878,39 @@ void CMainFrame::OnBtnGraphAttribute()
 
 }
 
+
+// 
+void CMainFrame::NewDoc(int nWinNums)
+{
+
+	for (int i = 0; i < nWinNums-1; i++)
+	{
+		// æ–°å»ºæ–‡æ¡£
+		CWinApp* pApp = AfxGetApp();
+		POSITION curTemplatePos = pApp->GetFirstDocTemplatePosition();
+		if (curTemplatePos != NULL)
+		{
+			CDocTemplate* curTemplate = pApp->GetNextDocTemplate(curTemplatePos);
+			curTemplate->OpenDocumentFile(NULL);
+		}
+	}
+	
+}
+
+
+void CMainFrame::WindowsVerticalOrHorizontal(int nVerOrHor)
+{
+	CMainFrame*pFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+	switch (nVerOrHor)
+	{
+	case 0:
+		pFrame->MDITile(MDITILE_VERTICAL);//çºµå‘å¹³é“º
+		break;
+	case 1:
+		pFrame->MDITile(MDITILE_HORIZONTAL);//æ¨ªå‘å¹³é“º
+		break;
+	case 2:
+		pFrame->MDITile(MDITILE_SKIPDISABLED); // å±‚å 
+		break;
+	}
+}

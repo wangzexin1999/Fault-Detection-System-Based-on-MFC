@@ -7,6 +7,7 @@
 #include "afxdialogex.h"
 
 #include "FileUtil.h"
+#include "Constant.h"
 // CFontView 对话框
 
 IMPLEMENT_DYNAMIC(CFontView, CDialogEx)
@@ -227,7 +228,7 @@ void CFontView::InitAttri()
 
 	// 设置默认的字体
 	LPTSTR lpPath = new char[MAX_PATH];
-	strcpy(lpPath, "..\\IniFileNameTest.ini");  // ini 配置文件路径
+	strcpy(lpPath, INIFilePath);  // ini 配置文件路径
 	int length = 15;  // 长度
 	LPSTR lpstrTemp = new char[length];
 	GetPrivateProfileString(m_font, "lFontXCoor", "", lpstrTemp, length, lpPath);

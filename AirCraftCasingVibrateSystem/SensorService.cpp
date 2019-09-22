@@ -54,10 +54,13 @@ Result CSensorService::AddCollectData(TbProject project, int sensorId, ThreadSaf
 	CString startCollectTime = collectionData.front().GetAcquireTime();
 	
 	Result res;
-	//3.调用FileUtil保存文件，保存成功返回采集的结束时间
-	/*Result res = CFileUtil::SaveCollectionData(path, fileName, collectionData);
-	if (res.GetIsSuccess()){
-		///4.文件保存成功，将记录保存到数据库
+	/*如果可以连接到远程服务器则发送数据到远程，否则保存到本地*/
+	if ((strcmp(theApp.PDsql.m_mysql.host, "127.0.0.1") == 0) || (strcmp(theApp.PDsql.m_mysql.host, "localhost") == 0))
+	{
+		//调用FileUtil保存文件，保存成功返回采集的结束时间
+		res = CFileUtil::SaveCollectionData(path, fileName, collectionData);
+		if (res.GetIsSuccess()){
+		///文件保存成功，将记录保存到数据库
 		TbSignal signal;
 		signal.SetDataUrl(path + fileName);
 		signal.SetProject (project);
@@ -65,44 +68,45 @@ Result CSensorService::AddCollectData(TbProject project, int sensorId, ThreadSaf
 		signal.SetStartTime(startCollectTime);
 		signal.SetEndTime(res.GetMessages());
 		signal.GetSensor().SetId(sensorId);
-		signal.GetTestingDevice().SetTestingdeviceId(project.GetTestingDevicePara().GetTestingdevice().GetId());
+		//signal.GetTestingDevice().SetTestingdeviceId(project.GetTestingDevicePara().GetTestingdevice().GetId());
 		m_signalDao.SetTableFieldValues(signal);
 		m_signalDao.Insert(false);
-	}*/
-
-
-	CString separator = ",";////逗号分隔符
-	CString endTime;
-	CString allData = "";
-	int saveCount = collectionData.size();
-	for (int i = 0; i < saveCount; i++){
-		////循环采集数据的队列去保存数据
-		CString data = "";
-		shared_ptr<AcquiredSignal>	acquireSignal = collectionData.wait_and_pop();
-		data += acquireSignal->GetAcquireTime() + separator;
-		data += CommonUtil::DoubleOrFloat2CString(acquireSignal->GetSignalData()) + "\n";
-		if (i == saveCount - 1) endTime = acquireSignal->GetAcquireTime();
-		allData = allData + data;
+		}
 	}
-
-	// 如果可以连接上服务器，传数据
-	httplib::MultipartFormDataItems items = {
-	{ "data", allData.GetBuffer(), "1.txt", "text/plain" },//数据
-	/*{ "projectID", CommonUtil::Int2CString(project.GetProduct().GetProductId()).GetBuffer(), "", "" },
-	{ "checkDeviceID", CommonUtil::Int2CString(project.GetTestingDevicePara().GetTestingdevice().GetId()).GetBuffer(), "", "" },
-	{ "sensorID", CommonUtil::Int2CString(sensorId).GetBuffer(), "", "" },
-	{ "startTime", startCollectTime.GetBuffer(), "", "" },
-	{ "endTime", endTime.GetBuffer(), "", "" },
-	{ "productID", CommonUtil::Int2CString(project.GetProduct().GetProductId()).GetBuffer(), "", "" },*/
-	};
-	auto result = theApp.m_cli.Post("/collection", items);
-	if (!result)//如果没有发送成功，则重新发送
+	else
 	{
-		httplib::Client cli(_T(ServerHttpAddress), ServerHttpPort);
-		theApp.m_cli = cli;
+		CString separator = ",";////逗号分隔符
+		CString endTime;
+		CString allData = "";
+		int saveCount = collectionData.size();
+		for (int i = 0; i < saveCount; i++){
+			////循环采集数据的队列去保存数据
+			CString data = "";
+			shared_ptr<AcquiredSignal>	acquireSignal = collectionData.wait_and_pop();
+			data += acquireSignal->GetAcquireTime() + separator;
+			data += CommonUtil::DoubleOrFloat2CString(acquireSignal->GetSignalData()) + "\n";
+			if (i == saveCount - 1) endTime = acquireSignal->GetAcquireTime();
+			allData = allData + data;
+		}
+
+		// 如果可以连接上服务器，传数据
+		httplib::MultipartFormDataItems items = {
+			{ "data", allData.GetBuffer(), "1.txt", "text/plain" },//数据
+			{ "projectID", CommonUtil::Int2CString(project.GetProduct().GetProductId()).GetBuffer(), "", "" },
+			//{ "checkDeviceID", CommonUtil::Int2CString(project.GetTestingDevicePara().GetTestingdevice().GetId()).GetBuffer(), "", "" },
+			{ "sensorID", CommonUtil::Int2CString(sensorId).GetBuffer(), "", "" },
+			{ "startTime", startCollectTime.GetBuffer(), "", "" },
+			{ "endTime", endTime.GetBuffer(), "", "" },
+			{ "productID", CommonUtil::Int2CString(project.GetProduct().GetProductId()).GetBuffer(), "", "" },
+		};
 		auto result = theApp.m_cli.Post("/collection", items);
+		if (!result)//如果没有发送成功，则重新发送
+		{
+			httplib::Client cli(_T(ServerHttpAddress), ServerHttpPort);
+			theApp.m_cli = cli;
+			auto result = theApp.m_cli.Post("/collection", items);
+		}
 	}
-	
 	return res;
 }
 

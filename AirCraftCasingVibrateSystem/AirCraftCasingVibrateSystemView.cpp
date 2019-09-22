@@ -98,8 +98,8 @@ void CAirCraftCasingVibrateSystemView::OnInitialUpdate()
 	pBottomAxis->SetMinMax(0, 500);//设置下刻度
 	pBottomAxis->SetTickIncrement(false, 100);
 	CChartStandardAxisDu* pLeftAxis = m_chart.CreateStandardAxisDu(CChartCtrl::LeftAxis, 0);
-	pLeftAxis->SetMinMax(-0.1, 0.1);
-	pLeftAxis->SetTickIncrement(false, 0.05);
+	pLeftAxis->SetMinMax(0, 0.8);
+	pLeftAxis->SetTickIncrement(false, 0.1);
 	// 构造曲线
 	CDuChartCtrlStaticFunction::CreateSeries(pDuChartCtrl, nSelectChannelCount, nSerieType);
 	// 构造光标
@@ -125,7 +125,7 @@ void CAirCraftCasingVibrateSystemView::OnInitialUpdate()
 	pDuChartCtrl->m_shuxing.m_bDrawStatValue = TRUE;
 	pDuChartCtrl->EnableRefresh(true);
 	m_flag = true;
-	RefreshGraphAttri();
+	RefreshGraphAttri(); //加载图形属性
 }
 
 ////采集数据
@@ -143,15 +143,15 @@ void CAirCraftCasingVibrateSystemView::CaptureData(){
 			xData.push_back(j); ///X坐标
 			
 			///采集数据存入到队列中。
-			//AcquiredSignal acquiredSignal(m_readFromCSVFile[countN][j], DateUtil::GetCurrentCStringTime());
-			//m_collectionDataQueue.push(acquiredSignal);
+			AcquiredSignal acquiredSignal(m_readFromCSVFile[countN][j], DateUtil::GetCurrentCStringTime());
+			m_collectionDataQueue.push(acquiredSignal);
 			///采集数据存入到回显信号的输入数组
 			fftw_complex fftw;
 			fftw[0] = m_readFromCSVFile[countN][j];
 			fftwInput.push_back(fftw);
 			if (theApp.m_bIsSample){
 				////如果此时正在采样，将采样的数据存入到采样队列中。
-				//m_sampleDataQueue.push(acquiredSignal);
+				m_sampleDataQueue.push(acquiredSignal);
 			}
 			// 传到服务器实时信号
 			//if (true/*判断是否需要实时传输*/)
@@ -162,6 +162,7 @@ void CAirCraftCasingVibrateSystemView::CaptureData(){
 			//}
 			
 		}
+
 		// 实时数据队列
 		//m_realTimeSignal.push(RealTimeSignal(realTimeSignalData, realTimeSignalTime));
 
@@ -181,7 +182,7 @@ void CAirCraftCasingVibrateSystemView::CaptureData(){
 		fftwInput.clear();
 		xData.clear();
 		yData.clear();
-		
+		Sleep(15);
 		//清空实时信号
 		//m_realTimeSignal.GetRealTimeSignalData().clear();
 		//m_realTimeSignal.GetRealTimeSignalTime().clear();
@@ -203,10 +204,17 @@ void CAirCraftCasingVibrateSystemView::OpenThread2CaptureData(){
 	 SetTimer(m_icurrentWindowNumber, 100, NULL);
 	 ///开启线程自动保存采集数据
 	 // 如果可连接服务器，发http到服务器，否则保存到本地数据库。
-	//OpenThread2SaveCollectionData();
+	OpenThread2SaveCollectionData();
 }
 void CAirCraftCasingVibrateSystemView::OnTimer(UINT_PTR nIDEvent){
-	if (m_icurrentWindowNumber == nIDEvent){ RefershChartCtrlData(); }
+	if (m_icurrentWindowNumber == nIDEvent){
+		RefershChartCtrlData();  // 实时采集
+	}
+	if (m_iSampleDataEchoTimerNum == nIDEvent)
+	{
+		SampleDataEcho();  //采样数据回显
+	}
+	
 }
 
 ////刷新图标控件的数据
@@ -259,6 +267,8 @@ void CAirCraftCasingVibrateSystemView::OpenThread2SaveCollectionData(){
 	thread t(&CAirCraftCasingVibrateSystemView::AutoSaveCollectionData, this);
 	t.detach();
 }
+
+
 void  CAirCraftCasingVibrateSystemView::SaveSampleData(){
 	////调用传感器Controller类保存采样数据
 	Result res = m_sensorController.SaveSampleData(m_signalSelectView.GetSelectedSensor().GetId(),m_sampleDataQueue);
@@ -422,7 +432,6 @@ void CAirCraftCasingVibrateSystemView::OnBtnNoCorror()
 
 
 
-
 void CAirCraftCasingVibrateSystemView::RefreshGraphAttri()
 {
 	CGraphAttributeView graphAttributeView;
@@ -488,5 +497,70 @@ void CAirCraftCasingVibrateSystemView::RefreshGraphAttri()
 	//刷新
 	m_chart.RefreshCtrl();
 
+
+}
+
+
+void CAirCraftCasingVibrateSystemView::SampleDataEcho()
+{
+
+	m_pLineSerie->ClearSerie();
+	SmartArray<double> dXData, dYData;
+	m_pLineSerie->SetNeedCalStatValue(TRUE);
+	
+	// 截取一部分
+	SplitVector(dXData, dYData,1000);
+	m_pLineSerie->AddPoints(dXData.GetSmartArray(), dYData.GetSmartArray(), dXData.size() / 2);
+		
+	
+	
+	
+}
+
+
+void CAirCraftCasingVibrateSystemView::SetSampleDataEchoTimerNum(int nSampleDataEchoTimerNums)
+{
+	m_iSampleDataEchoTimerNum = nSampleDataEchoTimerNums;
+
+}
+
+int CAirCraftCasingVibrateSystemView::SetSampleDataEchoTimerNum()
+{
+	return m_iSampleDataEchoTimerNum;
+}
+
+void CAirCraftCasingVibrateSystemView::StartSampleEncho()
+{
+
+	SetTimer(m_iSampleDataEchoTimerNum, 100, 0);
+}
+
+void CAirCraftCasingVibrateSystemView::StopSampleEncho()
+{
+	KillTimer(m_iSampleDataEchoTimerNum);
+}
+
+
+void CAirCraftCasingVibrateSystemView::SplitVector(SmartArray<double> &dXData, SmartArray<double> &dYData, int nNums)
+{
+
+	for (int i = 0; i < nNums; i++)
+	{
+		if (m_icountNumsReadDraw < 90000)
+		{
+			double yTemp = m_sampleFromFileDataQueue[m_icountNumsReadDraw].GetSignalData();
+			double xTemp;
+			xTemp = i*1.0;
+			dYData.push_back(yTemp);
+			dXData.push_back(xTemp);
+			m_icountNumsReadDraw++;
+		}
+		else
+		{
+			m_icountNumsReadDraw = 0;
+			KillTimer(m_iSampleDataEchoTimerNum);
+		}
+		
+	}
 
 }

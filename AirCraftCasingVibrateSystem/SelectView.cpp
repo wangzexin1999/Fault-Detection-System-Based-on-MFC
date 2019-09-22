@@ -5,7 +5,7 @@
 #include "AirCraftCasingVibrateSystem.h"
 #include "SelectView.h"
 #include "afxdialogex.h"
-
+#include "Constant.h"
 
 // CSelectView ¶Ô»°¿ò
 
@@ -142,7 +142,7 @@ void CSelectView::InitCtrlAndAttri(CString strFromINI, BOOL &bAttri,CButton &btn
 void CSelectView::InitAttri()
 {
 	LPTSTR lpPath = new char[MAX_PATH];
-	strcpy(lpPath, "..\\IniFileNameTest.ini");
+	strcpy(lpPath, INIFilePath);
 	int length = 10;
 	LPSTR lpstrTemp = new char[length];
 
@@ -172,7 +172,7 @@ void CSelectView::InitAttri2()
 {
 
 	LPTSTR lpPath = new char[MAX_PATH];
-	strcpy(lpPath, "..\\IniFileNameTest.ini");
+	strcpy(lpPath, INIFilePath);
 	int length = 10;
 	LPSTR lpstrTemp = new char[length];
 

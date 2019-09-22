@@ -162,7 +162,7 @@ void  CGraphAttributeView::Write2INIFile()
 
 	PTSTR lpPath = new char[MAX_PATH];
 
-	strcpy(lpPath, "..//IniFileNameTest.ini");
+	strcpy(lpPath, "..//IniFileGraphAttri.ini");
 
 	// ÑÕÉ«
 	WritePrivateProfileString(m_colorView.m_color, "colSerie", CommonUtil::Long2CString(m_colorView.m_colSerie[0]), lpPath);

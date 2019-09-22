@@ -71,26 +71,37 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	// 如果一个运行在 Windows XP 上的应用程序清单指定要
 	// 使用 ComCtl32.dll 版本 6 或更高版本来启用可视化方式，
 	//则需要 InitCommonControlsEx()。  否则，将无法创建窗口。
-	
+	/*redis 传输*/
 	/*if (!m_redisCon->Connect("127.0.0.1", 6379))
 	{
 		printf("connect error!\n");
 		//return 0;
 	}*/
 	// 创建远程服务器连接
-	//m_cli = httplib::Client("10.10.211.89", 8000);
-	//httplib::Client cli(_T("localhost"), 8000); //http连接
-	//m_cli = httplib::Client(_T("localhost"), 9999);
-	
 	m_cli = httplib::Client(_T(ServerHttpAddress), ServerHttpPort);
 	///设置mysql数据库信息
 	const char user[] = "root";         //username
-	const char pswd[] = "123456";         //password
-	const char host[] = "127.0.0.1";    //or"127.0.0.1" 39.107.96.162
+	const char pswd[] = "oxygen";         //password
+	const char host[] = "39.107.96.16";    //or"127.0.0.1" 39.107.96.162
 	const char table[] = "aircraftfaultdetectdb";        //database
 	unsigned int port = 3306;           //server port
+	/*连接远程数据库*/
 	theApp.PDsql.SetMysql(host, user, pswd, table);
 	theApp.PDsql.OpenSql();
+	/*连接本地数据库*/
+	const char localUser[] = "root";         //local username
+	const char localPswd[] = "123456";         //local password
+	const char localHost[] = "127.0.0.1";    //local ip "127.0.0.1" 
+	const char localTable[] = "aircraftfaultdetectdb";        //local database
+	theApp.m_conPDLocalSql.SetMysql(localHost, localUser, localPswd, localTable);
+	theApp.m_conPDLocalSql.OpenSql();
+	/*如果连接不到服务器，则建立本地连接*/
+	if (theApp.PDsql.m_mysql.host = "")
+	{
+		theApp.PDsql = theApp.m_conPDLocalSql;
+	}
+
+
 	//弹出登录窗口
 	CLoginView loginView;
 	// 如果点击取消了，程序停止
