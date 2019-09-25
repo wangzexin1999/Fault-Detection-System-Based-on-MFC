@@ -45,17 +45,12 @@ private:
 	CChartLineSerieDu *m_pLineSerie; // 线
 	int m_flag = false;  // 调整控件大小标志
 	CSignalSelectView  m_signalSelectView;   //信号选择界面
-
 	SensorController m_sensorController; ///传感器控制类
 	ThreadSafeQueue<EchoSignal>  m_echoSignalQueue;
-
-	int m_icurrentWindowNumber;
+	int m_icurrentWindowNumber;  // 窗口
 	ThreadSafeQueue<AcquiredSignal> m_collectionDataQueue;  //采集队列
-
 	ThreadSafeQueue<AcquiredSignal> m_sampleDataQueue;  // 采样队列
-
 	int m_iSampleDataEchoTimerNum;
-	
 	static int m_iwindowCount;//窗口数量
 	int m_realTimeSignalCaptureflag = true; // 采集实时数据时，第一次是push，接下来是赋值
 	int m_icountNumsReadDraw = 0; //采样数据截取时的索引

@@ -149,10 +149,6 @@ void CAirCraftCasingVibrateSystemView::CaptureData(){
 			fftw_complex fftw;
 			fftw[0] = m_readFromCSVFile[countN][j];
 			fftwInput.push_back(fftw);
-			if (theApp.m_bIsSample){
-				////如果此时正在采样，将采样的数据存入到采样队列中。
-				m_sampleDataQueue.push(acquiredSignal);
-			}
 			// 传到服务器实时信号
 			//if (true/*判断是否需要实时传输*/)
 			//{

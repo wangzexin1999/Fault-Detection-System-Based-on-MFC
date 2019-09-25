@@ -120,7 +120,16 @@ public:
 	 修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	static bool ReadSampleDataByPath(CString strFilePath, vector<AcquiredSignal> &sampleSignal);
-
+	static bool ReadSampleDataByPath(CString strFilePath, vector<AcquiredSignal> &vSampleSignal);
+	/**********************************************************************
+	 功能描述： 根据多个路径查找采样数据，放到一个通道里面
+	 输入参数：vStrFilePaths--路径；
+	 输出参数： vSampleSignal--从多个文件中读取的采集信号
+	 返 回 值： true--读出成功；false--读出失败
+	 其它说明：
+	 修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	static bool ReadSampleDataByPaths(vector<CString> vStrFilePaths, vector<AcquiredSignal> &vSampleSignal);
 };
 

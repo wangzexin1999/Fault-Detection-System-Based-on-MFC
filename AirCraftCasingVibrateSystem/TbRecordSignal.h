@@ -1,0 +1,75 @@
+/************************************************************************
+Copyright (C), 2018-2020. 哈尔滨理工大学人工智能实验室
+文件名称： FileController.h
+内容摘要： 记录实体类对象。对应的实现类文件为TbRecordSignal.cpp。
+其它说明：飞机机匣振动检测系统
+当前版本： 1.0
+作 者： 马善涛
+创建日期： 2019-08-19
+完成日期:
+History:
+1. Date:    2019-08-19         Author:马善涛
+Modification:
+修改记录 1： // 修改历史记录，包括修改日期、修改者及修改内容
+修改日期：
+版 本 号：
+修 改 人：
+修改内容：
+************************************************************************/
+#pragma once
+#include "TbProduct.h"
+#include "TbSensor.h"
+#include "TbTestingDevice.h"
+#include <vector>
+#include "TbProject.h"
+using namespace std;
+
+class TbRecordSignal
+{
+public:
+	TbRecordSignal();
+	~TbRecordSignal();
+
+
+private:
+	int m_signalId;
+
+	TbProject m_project;
+	CString m_startTime;
+	CString m_endTime;
+	CString m_signalType;
+	TbSensor m_sensor;
+	TbProduct m_product;
+	char m_signalStatus;
+	TbTestingDevice m_testingDevice;
+	int m_sensorCount; ////传感器数量
+
+public:
+	int GetSignalId();
+	void SetSignalId(int signalId);
+	CString GetStartTime();
+	void SetStartTime(CString startTime);
+	CString GetEndTime();
+	void SetEndTime(CString endTime);
+	CString GetSignalType();
+	void SetSignalType(CString signalType);
+	TbProduct & GetProduct();
+	void SetProduct(TbProduct product);
+	char GetSignalStatus();
+	void SetSignalStatus(char signal_status);
+
+	void SetProject(TbProject project);
+	TbProject & GetProject();
+
+	TbSensor & GetSensor();
+	void SetSensor(TbSensor  sensor);
+
+
+	TbTestingDevice & GetTestingDevice();
+	void SetTesingDevice(TbTestingDevice  testingDevice);
+
+	void SetSensorCount(int sensorCount);
+	int GetSensorCount();
+
+};
+
