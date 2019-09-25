@@ -377,6 +377,7 @@
     <ClInclude Include="TbDictionaryDao.h" />
     <ClInclude Include="TbProject.h" />
     <ClInclude Include="TbProjectDao.h" />
+    <ClInclude Include="TbRecordSignal.h" />
     <ClInclude Include="TbRecordSignalDao.h" />
     <ClInclude Include="TbSensor.h" />
     <ClInclude Include="TbSensorDao.h" />
@@ -526,6 +527,7 @@
     <ClCompile Include="TbDictionaryDao.cpp" />
     <ClCompile Include="TbProject.cpp" />
     <ClCompile Include="TbProjectDao.cpp" />
+    <ClCompile Include="TbRecordSignal.cpp" />
     <ClCompile Include="TbRecordSignalDao.cpp" />
     <ClCompile Include="TbSensor.cpp" />
     <ClCompile Include="TbSensorDao.cpp" />

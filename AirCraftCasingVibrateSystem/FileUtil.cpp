@@ -395,3 +395,34 @@ bool CFileUtil::ReadSampleDataByPath(CString strFilePath, vector<AcquiredSignal>
 	fileRead.Close();
 
 }
+
+bool CFileUtil::ReadSampleDataByPaths(vector<CString> vStrFilePaths, vector<AcquiredSignal> &sampleSignal)
+{
+	int nFileNums = vStrFilePaths.size();
+	
+	for (int i = 0; i < nFileNums; i++)
+	{
+		// 读数据
+		CStdioFile fileRead;
+		// 打开文件
+		if (!fileRead.Open(vStrFilePaths[i], CFile::modeRead))//以读模式打开文本文件
+		{
+			return false;
+		}
+		CString strFileData;           //定义一个CString变量作为缓冲区,读取一行
+		CString strSplitDataAndTime;  // 时间
+		double dSplitData;    // 数据
+		while (fileRead.ReadString(strFileData))
+		{
+			AcquiredSignal signalTemp;
+			AfxExtractSubString(strSplitDataAndTime, strFileData, 0, _T(',')); // 数据
+			signalTemp.SetAcquireTime(strSplitDataAndTime); // 时间
+			AfxExtractSubString(strSplitDataAndTime, strFileData, 1, _T(','));  // 时间
+			dSplitData = _ttof(strSplitDataAndTime);//ecg data
+			signalTemp.SetSignalData(dSplitData);
+			sampleSignal.push_back(signalTemp);
+		}
+		fileRead.Close();//关闭文件
+	}
+	
+}

@@ -690,6 +690,9 @@
     <ClInclude Include="SelectView.h">
       <Filter>头文件\View\图形属性</Filter>
     </ClInclude>
+    <ClInclude Include="TbRecordSignal.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AirCraftCasingVibrateSystem.cpp">
@@ -1120,6 +1123,9 @@
     </ClCompile>
     <ClCompile Include="CoordinateView.cpp">
       <Filter>源文件\View\图形属性</Filter>
+    </ClCompile>
+    <ClCompile Include="TbRecordSignal.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

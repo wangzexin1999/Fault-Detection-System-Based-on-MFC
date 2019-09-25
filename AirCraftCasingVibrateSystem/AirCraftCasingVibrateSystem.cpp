@@ -96,7 +96,7 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	theApp.m_conPDLocalSql.SetMysql(localHost, localUser, localPswd, localTable);
 	theApp.m_conPDLocalSql.OpenSql();
 	/*如果连接不到服务器，则建立本地连接*/
-	if (theApp.PDsql.m_mysql.host = "")
+	if (theApp.PDsql.m_mysql.host == NULL)
 	{
 		theApp.PDsql = theApp.m_conPDLocalSql;
 	}

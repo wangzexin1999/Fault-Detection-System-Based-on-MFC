@@ -78,6 +78,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_BTN_NO_CORROR, &CMainFrame::OnBtnNoCorror)
 	ON_WM_TIMER()
 	ON_COMMAND(ID_BTN_GRAPH_ATTR, &CMainFrame::OnBtnGraphAttribute)
+	ON_COMMAND(ID_BUTTON9, &CMainFrame::OnButton9)
 END_MESSAGE_MAP()
 
 // CMainFrame 构造/析构
@@ -449,11 +450,12 @@ void CMainFrame::OnButtonOpenDataFile()
 		{
 			//查询传感器个数
 			int nSersor = 4;
+			CMainFrame*pFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+			CloseAllWindows();
 			// 打开窗口
 			NewDoc(nSersor);
 			// 初始化view
 			InitializeSampleDataEchoView(16);
-
 			// 根据传感器信息查找文件路径
 
 
@@ -463,8 +465,8 @@ void CMainFrame::OnButtonOpenDataFile()
 				CFileUtil::ReadSampleDataByPath("C:\\collectionData\\3-1-1-1-1566998168677.csv",
 					m_vsignalCaptureView[i]->m_sampleFromFileDataQueue);
 			}
-			// 窗口平铺
-			WindowsVerticalOrHorizontal(1);
+			// 窗口水平平铺
+			WindowsHorizontal();
 
 		}
 		else/*连接服务器*/
@@ -596,6 +598,8 @@ void CMainFrame::OnBtnStartPlayback()
 void CMainFrame::OnBtnCloseAllWindow()
 {
 	// TODO:  在此添加命令处理程序代码
+	// 关闭所有窗口
+	CloseAllWindows();
 }
 
 /*检测设备管理*/
@@ -622,13 +626,15 @@ void CMainFrame::OnBtnStartSmaple()
 		AfxMessageBox("请先打开或者新建项目");
 		return;
 	}
-	theApp.m_bIsSample = true;
+	/*开始采样，记录开始采集时间*/
+	CString strCurrentTime = DateUtil::GetCurrentCStringTime();
+	
 }
 
 // 停止采样
 void CMainFrame::OnBtnStopSample()
 {
-	theApp.m_bIsSample = false;
+	
 	//遍历所有采集窗口去保存采样数据
 	for (int i = 0; i < m_vsignalCaptureView.size(); i++){
 		m_vsignalCaptureView[i]->OpenThread2SaveSampleData();
@@ -883,7 +889,7 @@ void CMainFrame::OnBtnGraphAttribute()
 void CMainFrame::NewDoc(int nWinNums)
 {
 
-	for (int i = 0; i < nWinNums-1; i++)
+	for (int i = 0; i < nWinNums; i++)
 	{
 		// 新建文档
 		CWinApp* pApp = AfxGetApp();
@@ -898,19 +904,45 @@ void CMainFrame::NewDoc(int nWinNums)
 }
 
 
-void CMainFrame::WindowsVerticalOrHorizontal(int nVerOrHor)
+void CMainFrame::WindowsVertical()
 {
 	CMainFrame*pFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
-	switch (nVerOrHor)
+	pFrame->MDITile(MDITILE_VERTICAL);//纵向平铺
+	
+}
+
+void CMainFrame::WindowsHorizontal()
+{
+
+	CMainFrame*pFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+	pFrame->MDITile(MDITILE_HORIZONTAL);//横向平铺
+
+}
+
+
+void CMainFrame::CloseAllWindows()
+{
+	CMDIFrameWnd* pFrame = (CMDIFrameWnd*)AfxGetMainWnd();
+	
+	while ((pFrame->MDIGetActive())!=NULL)
 	{
-	case 0:
-		pFrame->MDITile(MDITILE_VERTICAL);//纵向平铺
-		break;
-	case 1:
-		pFrame->MDITile(MDITILE_HORIZONTAL);//横向平铺
-		break;
-	case 2:
-		pFrame->MDITile(MDITILE_SKIPDISABLED); // 层叠
-		break;
-	}
+		this->GetActiveFrame()->SendMessage(WM_CLOSE);
+	}	
+
+}
+
+
+// 程序测试
+void CMainFrame::OnButton9()
+{
+	// TODO:  在此添加命令处理程序代码
+	vector<CString> test;
+	test.push_back("C:\\collectionData\\3-1-1-1-1566998168677.csv");
+	test.push_back("C:\\collectionData\\3-1-1-1-1566998168677.csv");
+	test.push_back("C:\\collectionData\\3-1-1-1-1566998168677.csv");
+	test.push_back("C:\\collectionData\\3-1-1-1-1566998168677.csv");
+	test.push_back("C:\\collectionData\\3-1-1-1-1566998168677.csv");
+	vector<AcquiredSignal> sampleSignal;
+	CFileUtil::ReadSampleDataByPaths(test, sampleSignal);
+	
 }
