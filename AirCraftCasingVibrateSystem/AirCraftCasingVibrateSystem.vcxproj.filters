@@ -666,9 +666,6 @@
     <ClInclude Include="MyGridCtrl.h">
       <Filter>头文件\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="TbCollectionPlan.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
     <ClInclude Include="ColorView.h">
       <Filter>头文件\View\图形属性</Filter>
     </ClInclude>
@@ -689,6 +686,12 @@
     </ClInclude>
     <ClInclude Include="SelectView.h">
       <Filter>头文件\View\图形属性</Filter>
+    </ClInclude>
+    <ClInclude Include="TbCollectionPlan.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="TbCollectionPlanDao.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1120,6 +1123,9 @@
     </ClCompile>
     <ClCompile Include="CoordinateView.cpp">
       <Filter>源文件\View\图形属性</Filter>
+    </ClCompile>
+    <ClCompile Include="TbCollectionPlanDao.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

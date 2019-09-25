@@ -11,23 +11,10 @@ ProjectService::~ProjectService()
 
 }
 bool ProjectService::AddProject(TbProject & project){
-	/*1.先添加采集设备参数表*/
-
-	m_testingDeviceDao.SetTableFieldValues(project.GetTestingDevice());
-
-	m_testingDeviceDao.Insert(false);
-
-	project.GetTestingDevice().SetId(m_testingDeviceDao.m_id.GetInt());
-
-	/*2.添加项目表*/
 	m_projectDao.SetTableFieldValues(project);
-	m_projectDao.Insert(false);
+	bool isSuccess = m_projectDao.Insert(false);
 	project.SetProjectId(m_projectDao.m_projectId.GetInt());
-
-	/*3.添加传感器参数表*/ 
-
-	/*4.将添加的传感器参数赋值给project*/
-	return true;
+	return isSuccess;
 }
 
 bool ProjectService::GetAllProjectBySearchCondition(TbProject project, CString startTime, CString endTime, vector<TbProject> &projectVector){

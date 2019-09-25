@@ -85,4 +85,9 @@ void TbProject::SetProjectStatus(int status){
 int TbProject::GetProjectStatus(){
 	return m_projectStatus;
 }
-
+void TbProject::SetCollectionPlans(CString collectionPlans){
+	m_collectionPlans = collectionPlans;
+}
+CString TbProject::GetCollectionPlans(){
+	return m_collectionPlans;
+}

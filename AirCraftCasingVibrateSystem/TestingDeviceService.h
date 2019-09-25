@@ -68,6 +68,6 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	bool AddTestingDevice(TbTestingDevice testingDevice);
+	bool AddTestingDevice(TbTestingDevice &testingDevice);
 };
 

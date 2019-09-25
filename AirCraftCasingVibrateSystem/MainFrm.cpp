@@ -424,7 +424,19 @@ void CMainFrame::OnButtonNewProject()
 {
 	//打开窗口
 	CNewProjectView newProjectView;
-	newProjectView.DoModal();
+	int res =  newProjectView.DoModal();
+	if (res == IDOK){
+		//根据选择的项目刷新窗口
+		//1.生成指定数量的传感器采集窗口，并给每个传感器采集窗口设置传感器
+
+		//2.刷新关于项目的显示
+		////2.1 刷新项目标题的显示
+		SendMessage(WM_SETTEXT);
+		////2.2 刷新采集参数的显示
+
+		////2.3 刷新通道参数的显示
+
+	}
 }
 
 // 项目管理

@@ -16,7 +16,8 @@ public:
 	PDAttribute m_testingDeviceid;
 	PDAttribute m_productId;
 	PDAttribute m_projectStatus;
-	
+	PDAttribute m_collectionPlans;
+
 	void SetTableFieldValues(TbProject project);
 	void GetTableFieldValues(TbProject &project);
 

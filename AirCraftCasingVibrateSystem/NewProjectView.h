@@ -44,7 +44,8 @@ protected:
 	int m_newDialogIndex;
 
 	TbTestingDevice m_testingDevice;
-	vector<TbCollectionPlan> m_collectionPlans;
+	
+
 	vector<TbSensor> m_vsensors;
 	DECLARE_MESSAGE_MAP()
 	vector<CDialog*> m_pDialogVec;  //用来保存对话框对象指针

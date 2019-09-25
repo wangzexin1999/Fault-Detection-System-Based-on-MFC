@@ -170,8 +170,8 @@ void ChannelParaPresetView::GetSelectedChannels(vector<TbSensor> & vsensors){
 		if (!m_channelParaGridCtrl.GetCell(row, 0)->IsKindOf(RUNTIME_CLASS(CGridCellCheck)))
 			m_channelParaGridCtrl.SetCellType(row, 0, RUNTIME_CLASS(CGridCellCheck));
 		CGridCellCheck* pCell = (CGridCellCheck*)m_channelParaGridCtrl.GetCell(row, 0);
+		TbSensor currentSensor;
 		if (pCell->GetCheck()){
-			TbSensor currentSensor;
 			for (int col = 1; col < m_channelParaGridCtrl.GetColumnCount();col++){
 				if (col == 2) currentSensor.SetSensorDesc(m_channelParaGridCtrl.GetItemText(row,col));
 				if (col == 3){
@@ -190,5 +190,6 @@ void ChannelParaPresetView::GetSelectedChannels(vector<TbSensor> & vsensors){
 				if (col == 6) currentSensor.SetMileageRange(atoi(m_channelParaGridCtrl.GetItemText(row, col)));
 			}
 		}
+		vsensors.push_back(currentSensor);
 	}
 }

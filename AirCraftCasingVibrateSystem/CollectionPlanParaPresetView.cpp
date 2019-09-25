@@ -159,16 +159,18 @@ void CollectionPlanParaPresetView::OnBnClickedButtonAdd()
 }
 */
 
-void  CollectionPlanParaPresetView::GetCollectionPlan(TbCollectionPlan &collectionPlan){
-
-	collectionPlan.SetPlanId( m_collectionPlan.GetDictId());
+void  CollectionPlanParaPresetView::GetCollectionPlan(Value &planEntity, Document::AllocatorType & allocator){
 	///解析原计划模板
 	Document planDoc;
 	planDoc.Parse(m_collectionPlan.GetDictValue());
+
 	Value& planParaContent = planDoc["planParaContent"];
+
+	Value planId(kNumberType);
+	planId.SetInt(m_collectionPlan.GetDictId());
+
 	/// 清空
 	planParaContent.GetArray().Clear();
-
 	for (int row = 1; row < m_stableStatusGridCtrl.GetRowCount(); row++){
 		if (!m_stableStatusGridCtrl.GetCell(row, 0)->IsKindOf(RUNTIME_CLASS(CGridCellCheck)))
 			m_stableStatusGridCtrl.SetCellType(row, 0, RUNTIME_CLASS(CGridCellCheck));
@@ -178,7 +180,6 @@ void  CollectionPlanParaPresetView::GetCollectionPlan(TbCollectionPlan &collecti
 			for (int col = 1; col < m_stableStatusGridCtrl.GetColumnCount();col++){
 				///获得每一行每一列的参数
 				Value  para(kStringType);
-				//////乱码
 				string  temp;
 				temp = m_stableStatusGridCtrl.GetItemText(row, col).GetString();
 				para.SetString(temp.c_str(), temp.size(), planDoc.GetAllocator());
@@ -187,44 +188,5 @@ void  CollectionPlanParaPresetView::GetCollectionPlan(TbCollectionPlan &collecti
 			planParaContent.GetArray().PushBack(lineData, planDoc.GetAllocator());
 		}
 	}
-
-	//Document document;
-	////获得分配器
-	//Document::AllocatorType& allocator = document.GetAllocator();
-	/////创建根节点
-	//Value root(kObjectType);
-	/////创建rotatingSpeed节点
-	//Value rotatingSpeed(kArrayType);
-	////rotatingSpeed.SetString("rotatingSpeed");
-	//for (int row = 1; row < m_stableStatusGridCtrl.GetRowCount();row++){
-	//	if (!m_stableStatusGridCtrl.GetCell(row, 0)->IsKindOf(RUNTIME_CLASS(CGridCellCheck)))
-	//		m_stableStatusGridCtrl.SetCellType(row, 0, RUNTIME_CLASS(CGridCellCheck));
-	//	CGridCellCheck* pCell = (CGridCellCheck*)m_stableStatusGridCtrl.GetCell(row, 0);
-	//	if (pCell->GetCheck()){
-
-	//		Value  rotatingSpeedEntity(kObjectType);
-
-	//		////获得选中的，将其记录下来，拼成json数据
-	//		Value  speed(kStringType);
-	//		Value  remarks(kStringType);
-	//		string  temp;
-	//		///获得转速
-	//		temp= m_stableStatusGridCtrl.GetItemText(row, 1).GetString();
-	//		speed.SetString(temp.c_str(), temp.size(), allocator);
-	//		///获得备注
-	//		temp = m_stableStatusGridCtrl.GetItemText(row, 2).GetString();
-	//		remarks.SetString(temp.c_str(), temp.size(), allocator);
-	//		///将转速和备注添加到转速实体中
-	//		rotatingSpeedEntity.AddMember("speed", speed, allocator);
-	//		rotatingSpeedEntity.AddMember("remarks", remarks, allocator);
-	//		///将转速实体添加到数组中
-	//		rotatingSpeed.PushBack(rotatingSpeedEntity,allocator);
-	//	}
-	//}
-	//root.AddMember("rotatingSpeed", rotatingSpeed, allocator);
-	StringBuffer buffer;
-	Writer<StringBuffer> writer(buffer);
-	planDoc.Accept(writer);
-	std::string result = buffer.GetString();
-	collectionPlan.SetPlanPara(result.c_str());
+	planEntity.CopyFrom(planDoc,allocator);
 }

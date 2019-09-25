@@ -45,32 +45,54 @@ void CNewProjectView::OnBnClickedOk()
 {
 	// 得到当前检测设备的参数
 	m_collectionParaPresetView.GetSelectedTestingDevice(m_testingDevice);
-
 	// 得到所有的通道
+	m_vsensors.clear();
 	m_channelParaPresetView.GetSelectedChannels(m_vsensors);
-
-	for (int i = m_newDialogIndex; i < m_pDialogVec.size();i++){
+	
+	////封装采集计划参数
+	Document plansDoc;
+	//获得分配器
+	Document::AllocatorType & allocator = plansDoc.GetAllocator();
+	//root为kObjectType
+	Value root(kObjectType);
+	//采集计划类型的数量
+	Value collectionPlanTypeCount(kNumberType);
+	collectionPlanTypeCount.SetInt(m_pDialogVec.size()-m_newDialogIndex);
+	//采集计划的内容
+	Value collectionPlans(kArrayType);
+	for (int i = m_newDialogIndex; i < m_pDialogVec.size(); i++){
 		CollectionPlanParaPresetView* collectionPlanPresetView = dynamic_cast<CollectionPlanParaPresetView*>(m_pDialogVec[i]);
 		if (collectionPlanPresetView != NULL){
-			collectionPlanPresetView->GetCollectionPlan(m_collectionPlans[i - m_newDialogIndex]);
+			Value planEntity(kObjectType);
+			collectionPlanPresetView->GetCollectionPlan(planEntity, allocator);
+			collectionPlans.PushBack(planEntity, allocator);
 		}
 	}
-	AfxMessageBox("点击完成之后的操作逻辑");
+
+	root.AddMember("collectionPlanTypeCount", collectionPlanTypeCount, allocator);
+	root.AddMember("collectionPlans", collectionPlans, allocator);
+
+	StringBuffer buffer;
+	Writer<StringBuffer> writer(buffer);
+	root.Accept(writer);
+	std::string result = buffer.GetString();
+	///给项目对象设置采集
+	m_project.SetCollectionPlans(result.c_str());
 	///封装project对象
 	TbTester tester = theApp.m_currentProject.GetTester();
 	m_project.SetTester(tester);
 	m_project.SetProjectCreateTime(DateUtil::GetCurrentCStringTime());
 	m_project.SetTestingDevice(m_testingDevice);
 	m_project.SetSensorVector(m_vsensors);
-
 	///保存项目数据
 	Result res = m_projectController.AddProject(m_project);
 	if (!res.GetIsSuccess()){
 		AfxMessageBox(res.GetMessages());
+		CDialogEx::OnCancel();
 	}
 	else{
+		theApp.m_currentProject = m_project;
 		AfxMessageBox(res.GetMessages());
-
 		CDialogEx::OnOK();
 	}
 }
@@ -125,7 +147,6 @@ BOOL CNewProjectView::OnInitDialog()
 		collectionParaPresetView->MoveWindow(&tabRect);
 		m_pDialogVec.push_back(collectionParaPresetView);
 		// 创建窗口对应的采集计划对象
-		m_collectionPlans.push_back(TbCollectionPlan());
 	}
 	//设置当前选择的tab的索引
 	m_icurSelTabIndex = 0;

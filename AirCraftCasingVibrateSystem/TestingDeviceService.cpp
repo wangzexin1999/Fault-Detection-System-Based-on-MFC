@@ -38,8 +38,10 @@ bool TestingDeviceService::UpdateByTestingDevice(TbTestingDevice testingDevice){
 	return isSuccess;
 }
 
-bool TestingDeviceService::AddTestingDevice(TbTestingDevice testingDevice){
+bool TestingDeviceService::AddTestingDevice(TbTestingDevice & testingDevice){
 	TbTestingDeviceDao testingDeviceDao;
 	testingDeviceDao.SetTableFieldValues(testingDevice);
-	return testingDeviceDao.Insert(false);
+	bool isSuccess =  testingDeviceDao.Insert(false);
+	testingDeviceDao.GetTableFieldValues(testingDevice);
+	return isSuccess;
 }

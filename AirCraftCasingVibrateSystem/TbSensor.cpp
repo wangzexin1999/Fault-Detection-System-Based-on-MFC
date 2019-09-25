@@ -2,7 +2,16 @@
 #include "TbSensor.h"
 
 
-TbSensor::TbSensor(int id){ m_id = id; }
+TbSensor::TbSensor(int id){
+	m_id = id; 
+	SetProjectId(0);
+	SetSensitivity(0);
+	SetTriggerMagnitude(0);
+	SetIsReference(0);
+	SetPointNum(0);
+	SetAntiAliasingFiltering(0);
+	SetMaxFrequency(0);
+}
 
 
 TbSensor::~TbSensor(){}

@@ -115,3 +115,26 @@ void  TbSensorDao::GetTableFieldValues(TbSensor & sensor){
 	sensor.GetTriggerPolarity().SetDictId(m_triggerPolarity.GetInt());
 	sensor.GetWindowType().SetDictId(m_windowType.GetInt());
 }
+void TbSensorDao::SetTableFieldValues(TbSensor sensor){
+	m_antiAliasingFiltering.SetValue(sensor.GetAntiAliasingFiltering());
+	m_coordinateSystem.SetValue(sensor.GetCoordinateSystem().GetDictId());
+	m_coordinateSystemDirection.SetValue(sensor.GetCoordinateSystemDirection().GetDictId());
+	m_engineeringUnits.SetValue(sensor.GetEngineeringUnits().GetDictId());
+	m_id.SetValue(sensor.GetId());
+	m_inputMethod.SetValue(sensor.GetInputMethod().GetDictId());
+	m_integralType.SetValue(sensor.GetIntegralType().GetDictId());
+	m_integralUnits.SetValue(sensor.GetIntegralUnits().GetDictId());
+	m_isReference.SetValue(sensor.GetIsReference());
+	m_maxFrequency.SetValue(sensor.GetMaxFrequency());
+	m_messureType.SetValue(sensor.GetIntegralType().GetDictId());
+	m_mileageRange.SetValue(sensor.GetMileageRange());
+	m_pointNum.SetValue(sensor.GetPointNum());
+	m_projectId.SetValue(sensor.GetProjectId());
+	m_sensitivity.SetValue(sensor.GetSensitivity());
+	m_sensorDesc.SetValue(sensor.GetSensorDesc());
+	m_sensorId.SetValue(sensor.GetSensorId());
+	m_sersorStatus.SetValue(sensor.GetSensorStatus().GetDictId());
+	m_triggerMagnitude.SetValue(sensor.GetTriggerMagnitude());
+	m_triggerPolarity.SetValue(sensor.GetTriggerPolarity().GetDictId());
+	m_windowType.SetValue(sensor.GetWindowType().GetDictId());
+}

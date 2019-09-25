@@ -23,6 +23,7 @@ protected:
 	TbProduct m_product;
 	vector<TbSensor> m_sensorVector;
 	int m_projectStatus;
+	CString m_collectionPlans;
 
 public:
 	void SetProjectId(int projectId);
@@ -41,6 +42,7 @@ public:
 	int GetProjectId();
 	void SetProjectStatus(int status);
 	int GetProjectStatus();
-
+	void SetCollectionPlans(CString collectionPlans);
+	CString GetCollectionPlans();
 };
 

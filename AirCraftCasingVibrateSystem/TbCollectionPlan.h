@@ -21,7 +21,6 @@ class TbCollectionPlan
 {
 private:
 	int m_id;
-	
 	int m_planId;
 	CString m_planPara;
 	int m_projectId;
@@ -36,7 +35,6 @@ public:
 	int GetPlanId();
 	void SetPlanPara(CString planPara);
 	CString GetPlanPara();
-
 	void SetProjectId(int projectId);
 	int GetProjectId();
 

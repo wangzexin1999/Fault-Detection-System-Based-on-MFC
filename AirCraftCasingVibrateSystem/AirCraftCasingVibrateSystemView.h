@@ -39,15 +39,12 @@ class CAirCraftCasingVibrateSystemView : public CFormView
 protected: // 仅从序列化创建
 	CAirCraftCasingVibrateSystemView();
 	DECLARE_DYNCREATE(CAirCraftCasingVibrateSystemView)
-	
 private:
+
 	CDuChartCtrl m_chart; // 画图控件
 	CChartLineSerieDu *m_pLineSerie; // 线
 	int m_flag = false;  // 调整控件大小标志
 	CSignalSelectView  m_signalSelectView;   //信号选择界面
-	
-
-	
 
 	SensorController m_sensorController; ///传感器控制类
 	ThreadSafeQueue<EchoSignal>  m_echoSignalQueue;

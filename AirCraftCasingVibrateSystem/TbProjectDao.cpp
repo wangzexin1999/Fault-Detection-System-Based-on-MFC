@@ -13,6 +13,7 @@ TbProjectDao::TbProjectDao()
 	SetVectorAndField("testingdevice_id", "int", m_testingDeviceid);
 	SetVectorAndField("product_id", "int", m_productId);
 	SetVectorAndField("project_status", "int", m_projectStatus);
+	SetVectorAndField("collection_plan", "CString", m_collectionPlans);
 }
 
 
@@ -30,6 +31,7 @@ TbProjectDao::TbProjectDao(const TbProjectDao &project){
 	SetVectorAndField("testingdevice_id", "int", m_testingDeviceid);
 	SetVectorAndField("product_id", "int", m_productId);
 	SetVectorAndField("project_status", "int", m_projectStatus);
+	SetVectorAndField("collection_plan", "CString", m_collectionPlans);
 	operator = (project);
 }
 
@@ -72,6 +74,7 @@ void TbProjectDao::SetTableFieldValues(TbProject project){
 	this->m_testerId.SetValue(project.GetTester().GetTesterId());
 	this->m_testingDeviceid.SetValue(project.GetTestingDevice().GetId());
 	this->m_projectStatus.SetValue(project.GetProjectStatus());
+	this->m_collectionPlans.m_strValue = project.GetCollectionPlans();
 }
 
 void TbProjectDao::GetTableFieldValues(TbProject &project){
@@ -82,4 +85,5 @@ void TbProjectDao::GetTableFieldValues(TbProject &project){
 	project.GetTester().SetTesterId(m_testerId.GetInt());
 	project.GetProduct().SetProductId(m_productId.GetInt());
 	project.GetTestingDevice().SetId(m_testingDeviceid.GetInt());
+	project.SetCollectionPlans(m_collectionPlans.m_strValue);
 }

@@ -31,7 +31,7 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	void GetCollectionPlan(TbCollectionPlan &collectionPlan);
+	void GetCollectionPlan(Value &planEntity,  Document::AllocatorType & allocator);
 
 protected:
 

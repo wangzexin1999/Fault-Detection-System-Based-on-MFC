@@ -21,19 +21,22 @@ Modification:
 #include "ProductService.h"
 #include "TestingDeviceService.h"
 #include "TbProject.h"
+#include "SensorService.h"
 #include "ProjectService.h"
+//#include "Colle"
 #include"Result.h"
 class ProjectController
 {
+
+private:
+	TestingDeviceService m_testingDeviceService;
+	ProductService m_productService;
+	ProjectService m_projectService;
+	CSensorService m_sensorService;
+
 public:
 	ProjectController();
 	~ProjectController();
-
-	TestingDeviceService m_testingDeviceService;
-
-	ProductService m_productService;
-
-	ProjectService m_projectService;
 
 	/**********************************************************************
 	功能描述：加载所有的测试设备

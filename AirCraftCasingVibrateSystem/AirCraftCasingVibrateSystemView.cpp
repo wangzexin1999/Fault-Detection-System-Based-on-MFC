@@ -511,10 +511,6 @@ void CAirCraftCasingVibrateSystemView::SampleDataEcho()
 	// 截取一部分
 	SplitVector(dXData, dYData,1000);
 	m_pLineSerie->AddPoints(dXData.GetSmartArray(), dYData.GetSmartArray(), dXData.size() / 2);
-		
-	
-	
-	
 }
 
 
