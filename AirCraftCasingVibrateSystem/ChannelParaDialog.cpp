@@ -11,12 +11,11 @@
 IMPLEMENT_DYNAMIC(CChannelParaDialog, CDialogEx)
 
 CChannelParaDialog::CChannelParaDialog(CWnd* pParent /*=NULL*/)
-	: CDialogEx(CChannelParaDialog::IDD, pParent)
-{
-
+	: CDialogEx(CChannelParaDialog::IDD, pParent){
 }
 
 CChannelParaDialog::~CChannelParaDialog(){}
+
 void CChannelParaDialog::RefreshDlg(){
 	m_generalParaView.GridCtrlInit();
 }
@@ -27,6 +26,7 @@ void CChannelParaDialog::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CChannelParaDialog, CDialogEx)
+	
 	ON_NOTIFY(TCN_SELCHANGE, IDC_TAB1, &CChannelParaDialog::OnTcnSelchangeTab1)
 	ON_WM_SIZE()
 END_MESSAGE_MAP()

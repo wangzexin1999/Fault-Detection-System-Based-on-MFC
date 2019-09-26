@@ -31,17 +31,17 @@ public:
 	CChannelParaView();
 	virtual ~CChannelParaView();
 	void RefreshView();
-private:
 
+private:
 	CMFCTabCtrl m_tab;
 	CChannelParaDialog m_channelParaDialog;
-
 protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnPaint();
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
+	//void ShowPane(BOOL bShow, BOOL bDelay, BOOL bActivate);
 };
 
 

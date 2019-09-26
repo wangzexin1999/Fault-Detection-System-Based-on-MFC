@@ -24,13 +24,7 @@ BEGIN_MESSAGE_MAP(CSystemParaView, CDockablePane)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 END_MESSAGE_MAP()
-
-
-
 // CSystemParaView 消息处理程序
-
-
-
 
 int CSystemParaView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {

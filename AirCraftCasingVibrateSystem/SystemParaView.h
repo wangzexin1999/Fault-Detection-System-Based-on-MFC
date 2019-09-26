@@ -30,7 +30,11 @@ public:
 	CSystemParaView();
 	virtual ~CSystemParaView();
 public:
+
+
 	CSystemParaDialog   m_systemParaDialog;
+
+
 protected:
 	DECLARE_MESSAGE_MAP()
 public:

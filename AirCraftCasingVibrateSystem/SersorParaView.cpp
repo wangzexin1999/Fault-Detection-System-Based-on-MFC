@@ -49,7 +49,6 @@ BOOL CSersorParaView::OnInitDialog()
 
 	// TODO:  在此添加额外的初始化
 
-
 	m_cbSamplingFrequency.AddString(_T("1.28Hz"));
 	m_cbSamplingFrequency.AddString(_T("1.28Hz"));
 	m_cbSamplingFrequency.AddString(_T("1.28Hz"));

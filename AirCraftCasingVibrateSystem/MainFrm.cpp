@@ -383,14 +383,15 @@ void CMainFrame::OnViewChannelPara()
 {
 	if (m_channelPara.IsVisible())
 	{
+		AfxMessageBox("1");
 		m_channelPara.ShowPane(FALSE, FALSE, FALSE);
 	}
 	else
 	{
-		m_channelPara.RefreshView();
+		AfxMessageBox("2");
 		m_channelPara.ShowPane(TRUE, TRUE, TRUE);
 	}
-	
+
 	RecalcLayout(FALSE);
 }
 
@@ -404,10 +405,12 @@ void CMainFrame::OnViewSystemPara()
 {
 	if (m_systemPara.IsVisible())
 	{
+		AfxMessageBox("1");
 		m_systemPara.ShowPane(FALSE, FALSE, FALSE);
 	}
 	else
 	{
+		AfxMessageBox("2");
 		m_systemPara.ShowPane(TRUE, TRUE, TRUE);
 	}
 
@@ -419,7 +422,6 @@ void CMainFrame::OnUpdateViewSystemPara(CCmdUI* pCmdUI)
 	pCmdUI->SetCheck(m_systemPara.IsVisible());
 }
 
-
 // 新建项目
 void CMainFrame::OnButtonNewProject()
 {
@@ -429,13 +431,16 @@ void CMainFrame::OnButtonNewProject()
 	if (res == IDOK){
 		//根据选择的项目刷新窗口
 		//1.生成指定数量的传感器采集窗口，并给每个传感器采集窗口设置传感器
-
+		CloseAllWindows();
+		CreateSensorWindow(theApp.m_currentProject.GetSensorVector());
+		WindowsVertical();
 		//2.刷新关于项目的显示
 		////2.1 刷新项目标题的显示
 		SendMessage(WM_SETTEXT);
 		////2.2 刷新采集参数的显示
 
 		////2.3 刷新通道参数的显示
+		m_channelPara.RefreshView();
 
 	}
 }
@@ -890,13 +895,23 @@ void CMainFrame::OnBtnGraphAttribute()
 
 		}
 	}
-	
-	
-	
-
 }
 
+void CMainFrame::CreateSensorWindow(vector<TbSensor> vsensor){
 
+	for (int i = 0; i < vsensor.size(); i++)
+	{
+		// 新建文档
+		CWinApp* pApp = AfxGetApp();
+		POSITION curTemplatePos = pApp->GetFirstDocTemplatePosition();
+		if (curTemplatePos != NULL)
+		{
+			CDocTemplate* curTemplate = pApp->GetNextDocTemplate(curTemplatePos);
+			CDocument * pdoc = curTemplate->OpenDocumentFile(NULL);
+			pdoc->SetTitle(vsensor[i].GetSensorDesc());
+		}
+	}
+}
 //新建窗口 
 void CMainFrame::NewDoc(int nWinNums)
 {

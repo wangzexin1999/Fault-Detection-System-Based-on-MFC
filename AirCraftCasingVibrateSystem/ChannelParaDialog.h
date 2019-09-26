@@ -16,6 +16,7 @@ public:
 // 对话框数据
 	enum { IDD = IDD_DIALOG_CHANNEL_PARA };
 private:
+
 	CTriggerParaView   m_triggerParaView;
 	CGeneralParaView   m_generalParaView;
 	CGeometricParaView m_geometricParaView;
