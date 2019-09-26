@@ -696,6 +696,12 @@
     <ClInclude Include="CollectionParaView.h">
       <Filter>头文件\View</Filter>
     </ClInclude>
+    <ClInclude Include="StateSetDockPanelView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="StateSetDialog.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AirCraftCasingVibrateSystem.cpp">
@@ -1132,6 +1138,12 @@
     </ClCompile>
     <ClCompile Include="CollectionParaView.cpp">
       <Filter>源文件\View</Filter>
+    </ClCompile>
+    <ClCompile Include="StateSetDockPanelView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="StateSetDialog.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

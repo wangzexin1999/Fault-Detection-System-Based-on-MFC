@@ -364,6 +364,8 @@
     <ClInclude Include="SmartArray.h" />
     <ClInclude Include="SmartFFTWComplexArray.h" />
     <ClInclude Include="CollectionPlanParaPresetView.h" />
+    <ClInclude Include="StateSetDialog.h" />
+    <ClInclude Include="StateSetDockPanelView.h" />
     <ClInclude Include="StatisticView.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SubChannelParaView.h" />
@@ -511,6 +513,8 @@
     <ClCompile Include="SignalSelectView.cpp" />
     <ClCompile Include="SmartFFTWComplexArray.cpp" />
     <ClCompile Include="CollectionPlanParaPresetView.cpp" />
+    <ClCompile Include="StateSetDialog.cpp" />
+    <ClCompile Include="StateSetDockPanelView.cpp" />
     <ClCompile Include="StatisticView.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

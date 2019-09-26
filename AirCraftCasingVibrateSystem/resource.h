@@ -85,11 +85,11 @@
 #define IDD_DIALOG_DETECT_DEVICE_MANAGE 362
 #define IDD_DIALOG_DETECTED_DEVICE_MANAGE 363
 #define IDD_COLLECTIONDATAINFO_DIALOG   368
-#define IDD_DIALOG1                     369
 #define IDD_PROJECTBASEINFO_DIALOG      371
 #define IDD_DIALOG_COLLECTIONPARAPRESET 372
 #define IDD_DIALOG_CHANNELPARAPRESET    373
 #define IDD_DIALOG_STABLESTATUSPRESET   374
+#define IDD_DIALOG_STATE_SET            377
 #define IDC_TAB1                        1000
 #define IDC_LIST_GENERAL_PARA           1001
 #define IDC_COMBO1                      1002
@@ -223,6 +223,7 @@
 #define IDC_CHECK_STATISTIC_INF         1141
 #define IDC_CHECK_PEAK_VALUE            1142
 #define IDC_EDIT_COLLECTIONBATCHS       1143
+#define IDC_MFCBUTTON2                  1145
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_CHECK2                       32771
 #define ID_COMBO2                       32772
@@ -283,13 +284,19 @@
 #define ID_BUTTON6                      32838
 #define ID_BUTTON7                      32839
 #define ID_BUTTON9                      32840
+#define ID_CHECK_STA_SET                32841
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
+<<<<<<< HEAD
 #define _APS_NEXT_RESOURCE_VALUE        375
 #define _APS_NEXT_COMMAND_VALUE         32841
+=======
+#define _APS_NEXT_RESOURCE_VALUE        379
+#define _APS_NEXT_COMMAND_VALUE         32842
+>>>>>>> 8faf41cd56ed38133de3f624041c0016b4874915
 #define _APS_NEXT_CONTROL_VALUE         1144
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
