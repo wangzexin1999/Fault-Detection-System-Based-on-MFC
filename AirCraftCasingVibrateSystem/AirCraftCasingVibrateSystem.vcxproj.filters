@@ -693,6 +693,15 @@
     <ClInclude Include="TbRecordSignal.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="TbCollectionPlanDao.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="StateSetDockPanelView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="StateSetDialog.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AirCraftCasingVibrateSystem.cpp">
@@ -1124,8 +1133,16 @@
     <ClCompile Include="CoordinateView.cpp">
       <Filter>源文件\View\图形属性</Filter>
     </ClCompile>
-
     <ClCompile Include="TbRecordSignal.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TbCollectionPlanDao.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="StateSetDockPanelView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="StateSetDialog.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

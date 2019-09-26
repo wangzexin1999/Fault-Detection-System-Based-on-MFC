@@ -19,7 +19,7 @@
 #include <vector>
 #include "CollectionDataInfoDlg.h"
 #include "GraphAttributeView.h"
-
+#include "StateSetDockPanelView.h"
 class CMainFrame : public CMDIFrameWndEx
 {
 	DECLARE_DYNAMIC(CMainFrame)
@@ -58,6 +58,7 @@ protected:  // 控件条嵌入成员
 public:
 	CSystemParaView    m_systemPara; ///暂时无用
 	CChannelParaView    m_channelPara;
+	CStateSetDockPanelView m_stateSet;
 	CDockablePane m_Panes[5];  
 // 生成的消息映射函数
 protected:
@@ -197,6 +198,8 @@ public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnBtnGraphAttribute();//图形属性
 	afx_msg void OnButton9();
+	afx_msg void OnCheckStaSet();
+	afx_msg void OnUpdateCheckStaSet(CCmdUI *pCmdUI);
 };
 
 

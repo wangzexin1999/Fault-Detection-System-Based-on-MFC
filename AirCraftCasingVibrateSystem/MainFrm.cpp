@@ -79,6 +79,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_WM_TIMER()
 	ON_COMMAND(ID_BTN_GRAPH_ATTR, &CMainFrame::OnBtnGraphAttribute)
 	ON_COMMAND(ID_BUTTON9, &CMainFrame::OnButton9)
+	ON_COMMAND(ID_CHECK_STA_SET, &CMainFrame::OnCheckStaSet)
+	ON_UPDATE_COMMAND_UI(ID_CHECK_STA_SET, &CMainFrame::OnUpdateCheckStaSet)
 END_MESSAGE_MAP()
 
 // CMainFrame 构造/析构
@@ -139,10 +141,20 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	{
 		return FALSE;
 	}
+	if (!m_stateSet.Create(_T("状态设置"), this, CRect(0, 0, 200, 100), TRUE, 10034,
+		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS |
+		WS_CLIPCHILDREN | CBRS_RIGHT| CBRS_FLOAT_MULTI))
+	{
+		return FALSE;
+	}
+
+	
 	m_systemPara.EnableDocking(CBRS_ALIGN_ANY);
 	m_channelPara.EnableDocking(CBRS_ALIGN_ANY);
+	m_stateSet.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_channelPara);// BOTTOM
 	DockPane(&m_systemPara);// LEFT
+	DockPane(&m_stateSet);// RIGHT
 	// 启用 Visual Studio 2005 样式停靠窗口行为
 	CDockingManager::SetDockingMode(DT_SMART);
 	// 启用 Visual Studio 2005 样式停靠窗口自动隐藏行为
@@ -974,4 +986,31 @@ void CMainFrame::OnButton9()
 	vector<AcquiredSignal> sampleSignal;
 	CFileUtil::ReadSampleDataByPaths(test, sampleSignal);
 	
+}
+
+
+
+
+
+void CMainFrame::OnCheckStaSet()
+{
+	// TODO:  在此添加命令处理程序代码
+	if (m_stateSet.IsVisible())
+	{
+		m_stateSet.ShowPane(FALSE, FALSE, FALSE);
+	}
+	else
+	{
+		m_stateSet.ShowPane(TRUE, TRUE, TRUE);
+	}
+
+	RecalcLayout(FALSE);
+}
+
+
+void CMainFrame::OnUpdateCheckStaSet(CCmdUI *pCmdUI)
+{
+	// TODO:  在此添加命令更新用户界面处理程序代码
+	pCmdUI->SetCheck(m_stateSet.IsVisible());
+
 }
