@@ -33,7 +33,6 @@
 #include "redisUtil.h"
 #include "RealTimeSignal.h"
 
-
 class CAirCraftCasingVibrateSystemView : public CFormView
 {
 protected: // 仅从序列化创建
@@ -46,17 +45,18 @@ private:
 	int m_flag = false;  // 调整控件大小标志
 	CSignalSelectView  m_signalSelectView;   //信号选择界面
 	SensorController m_sensorController; ///传感器控制类
-	ThreadSafeQueue<EchoSignal>  m_echoSignalQueue;
+	ThreadSafeQueue<EchoSignal>  m_echoSignalQueue; // 回显信号队列
 	int m_icurrentWindowNumber;  // 窗口
 	ThreadSafeQueue<AcquiredSignal> m_collectionDataQueue;  //采集队列
-	ThreadSafeQueue<AcquiredSignal> m_sampleDataQueue;  // 采样队列
-	int m_iSampleDataEchoTimerNum;
+	int m_iSampleDataEchoTimerNum;  //采样数据回显窗口
 	static int m_iwindowCount;//窗口数量
 	int m_realTimeSignalCaptureflag = true; // 采集实时数据时，第一次是push，接下来是赋值
 	int m_icountNumsReadDraw = 0; //采样数据截取时的索引
+	
 public:
 	ThreadSafeQueue<RealTimeSignal> m_realTimeSignal;  // 实时数据队列
 	vector<AcquiredSignal> m_sampleFromFileDataQueue;  // 采样队列从文件中获得
+	TbRecordSignal m_recordSignal; // 采样信号
 public:
 	enum{ IDD = IDD_AIRCRAFTCASINGVIBRATESYSTEM_FORM };
 

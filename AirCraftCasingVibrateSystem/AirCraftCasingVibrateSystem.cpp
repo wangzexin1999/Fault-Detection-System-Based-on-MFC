@@ -82,7 +82,7 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	///设置mysql数据库信息
 	const char user[] = "root";         //username
 	const char pswd[] = "oxygen";         //password
-	const char host[] = "39.107.96.162";    //or"127.0.0.1" 39.107.96.162
+	const char host[] = "39.107.96.16";    //or"127.0.0.1" 39.107.96.162
 	const char table[] = "aircraftfaultdetectdb";        //database
 	unsigned int port = 3306;           //server port
 	/*连接远程数据库*/
@@ -96,7 +96,7 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	theApp.m_conPDLocalSql.SetMysql(localHost, localUser, localPswd, localTable);
 	theApp.m_conPDLocalSql.OpenSql();
 	/*如果连接不到服务器，则建立本地连接*/
-	if (theApp.PDsql.m_mysql.host == "")
+	if (theApp.PDsql.m_mysql.host == NULL)
 	{
 		theApp.PDsql = theApp.m_conPDLocalSql;
 	}
