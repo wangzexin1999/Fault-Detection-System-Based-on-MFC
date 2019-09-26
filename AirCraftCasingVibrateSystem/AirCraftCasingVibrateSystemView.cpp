@@ -48,7 +48,6 @@ END_MESSAGE_MAP()
 
 int CAirCraftCasingVibrateSystemView::m_iwindowCount = 0;
 
-
 CAirCraftCasingVibrateSystemView::CAirCraftCasingVibrateSystemView()
 	: CFormView(CAirCraftCasingVibrateSystemView::IDD)
 {
@@ -270,6 +269,7 @@ void  CAirCraftCasingVibrateSystemView::SaveSampleData(){
 		AfxMessageBox(res.GetMessages());
 	}
 }
+
 void  CAirCraftCasingVibrateSystemView::OpenThread2SaveSampleData(){
 	thread t(&CAirCraftCasingVibrateSystemView::SaveSampleData, this);
 	t.detach();

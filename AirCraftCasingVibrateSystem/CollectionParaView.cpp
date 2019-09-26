@@ -1,81 +1,68 @@
-// CollectionParaPresetView.cpp : 实现文件
+// SersorParaView.cpp : 实现文件
 //
 
 #include "stdafx.h"
 #include "AirCraftCasingVibrateSystem.h"
-#include "CollectionParaPresetView.h"
+#include "CollectionParaView.h"
 #include "afxdialogex.h"
+#include "TbTestingDevice.h"
 
+// CollectionParaView 对话框
 
-// CollectionParaPresetView 对话框
+IMPLEMENT_DYNAMIC(CollectionParaView, CDialogEx)
 
-IMPLEMENT_DYNAMIC(CollectionParaPresetView, CDialogEx)
-
-CollectionParaPresetView::CollectionParaPresetView(CWnd* pParent /*=NULL*/)
-	: CDialogEx(CollectionParaPresetView::IDD, pParent)
+CollectionParaView::CollectionParaView(CWnd* pParent /*=NULL*/)
+	: CDialogEx(CollectionParaView::IDD, pParent)
 {
 
 }
 
-CollectionParaPresetView::~CollectionParaPresetView()
+CollectionParaView::~CollectionParaView()
 {
 }
 
-void CollectionParaPresetView::DoDataExchange(CDataExchange* pDX)
+CComboBox m_collectionFrequencyCombo;
+CComboBox m_collectionMethodCombo;
+CComboBox m_analysisFrequencyCombo;
+CComboBox m_triggerMethodCombo;
+CComboBox m_dataBlockCountCombo;
+CEdit m_triggerCountEdit;
+CEdit m_delayBlockCountEdit;
+CEdit m_collectionBatchEdit;
+
+void CollectionParaView::DoDataExchange(CDataExchange* pDX)
 {
+	DDX_Control(pDX, IDC_COMBO1, m_collectionFrequencyCombo);
+	DDX_Control(pDX, IDC_COMBO2, m_analysisFrequencyCombo);
+	DDX_Control(pDX, IDC_COMBO3, m_collectionMethodCombo);
+	DDX_Control(pDX, IDC_COMBO4, m_triggerMethodCombo);
+	DDX_Control(pDX, IDC_COMBO5, m_dataBlockCountCombo);
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_COMBO_COLLECTIONFREQUENCY, m_collectionFrequencyCombo);
-	DDX_Control(pDX, IDC_COMBO_COLLECTIONMETHOD, m_collectionMethodCombo);
-	DDX_Control(pDX, IDC_COMBO_ANALYSISFREQUENCY, m_analysisFrequencyCombo);
-	DDX_Control(pDX, IDC_COMBO_TRIGGERMETHOD, m_triggerMethodCombo);
-	DDX_Control(pDX, IDC_COMBO_DATABLOCKCOUNT, m_dataBlockCountCombo);
 	DDX_Control(pDX, IDC_EDIT_TRIGGERCOUNT, m_triggerCountEdit);
 	DDX_Control(pDX, IDC_EDIT_DELAYBLOCKCOUNT, m_delayBlockCountEdit);
-	DDX_Control(pDX, IDC_EDIT_COLLECTIONBATCH, m_collectionBatchEdit);
+	DDX_Control(pDX, IDC_EDIT_COLLECTIONBATCHS, m_collectionBatchEdit);
 }
 
 
-BEGIN_MESSAGE_MAP(CollectionParaPresetView, CDialogEx)
+BEGIN_MESSAGE_MAP(CollectionParaView, CDialogEx)
 END_MESSAGE_MAP()
 
 
-// CollectionParaPresetView 消息处理程序
+// CollectionParaView 消息处理程序
 
 
-BOOL CollectionParaPresetView::OnInitDialog()
+BOOL CollectionParaView::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
-	////查询所有可以选择的参数
+
+	// TODO:  在此添加额外的初始化
 	CollectionParaInit();
 	return TRUE; 
 }
-void CollectionParaPresetView::GetSelectedTestingDevice(TbTestingDevice &testingDevicePara){
-	int index = m_collectionFrequencyCombo.GetCurSel();
-	testingDevicePara.SetCollectionFrequency(m_vcollectionFrequency[index]);
 
-	index = m_analysisFrequencyCombo.GetCurSel();
-	testingDevicePara.SetAnalysisFrequency(m_vanalysisFrequency[index]);
-
-	index = m_triggerMethodCombo.GetCurSel(); 
-	testingDevicePara.SetTriggerMethod(m_vtriggerMethod[index]);
-
-	index = m_collectionMethodCombo.GetCurSel();
-	testingDevicePara.SetCollectionMethod(m_vcollectionMethod[index]);
-
-	index = m_dataBlockCountCombo.GetCurSel();
-	testingDevicePara.SetDatablockCount(m_vdataBlockCount[index]);
-
-	CString delayBlockCount, triggerCount, collectionBaths;
-
-	m_collectionBatchEdit.GetWindowTextA(collectionBaths);
-	m_delayBlockCountEdit.GetWindowTextA(delayBlockCount);
-	m_triggerCountEdit.GetWindowTextA(triggerCount);
-	testingDevicePara.SetCollectionBatchs(atoi(collectionBaths));
-	testingDevicePara.SetDelayblockCount(atoi(delayBlockCount));
-	testingDevicePara.SetTriggerCount(atoi(triggerCount));
-}
-
-void CollectionParaPresetView::CollectionParaInit(){
+void CollectionParaView::CollectionParaInit(){
+	////拿到全局的项目对象的采集设备
+	TbTestingDevice testingDevice = theApp.m_currentProject.GetTestingDevice();
 	Result res;
 	res = m_dictionaryController.FindAllBySearchCondition(m_vcollectionFrequency, 0, "collectionfrequency");
 	if (!res.GetIsSuccess()){

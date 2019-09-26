@@ -126,9 +126,6 @@
     <ClInclude Include="Resource.h">
       <Filter>头文件\View</Filter>
     </ClInclude>
-    <ClInclude Include="SersorParaView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
     <ClInclude Include="SignalSaveView.h">
       <Filter>头文件\View</Filter>
     </ClInclude>
@@ -693,6 +690,12 @@
     <ClInclude Include="TbRecordSignal.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="TbCollectionPlanDao.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CollectionParaView.h">
+      <Filter>头文件\View</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AirCraftCasingVibrateSystem.cpp">
@@ -726,9 +729,6 @@
       <Filter>源文件\View</Filter>
     </ClCompile>
     <ClCompile Include="LoginView.cpp">
-      <Filter>源文件\View</Filter>
-    </ClCompile>
-    <ClCompile Include="SersorParaView.cpp">
       <Filter>源文件\View</Filter>
     </ClCompile>
     <ClCompile Include="SignalSaveView.cpp">
@@ -1124,9 +1124,14 @@
     <ClCompile Include="CoordinateView.cpp">
       <Filter>源文件\View\图形属性</Filter>
     </ClCompile>
-
     <ClCompile Include="TbRecordSignal.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TbCollectionPlanDao.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CollectionParaView.cpp">
+      <Filter>源文件\View</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

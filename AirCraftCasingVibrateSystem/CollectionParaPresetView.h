@@ -42,5 +42,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
+	void CollectionParaInit();
 	void GetSelectedTestingDevice(TbTestingDevice &testingDevice);
 };

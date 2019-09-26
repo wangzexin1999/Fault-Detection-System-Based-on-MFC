@@ -354,7 +354,7 @@
     <ClInclude Include="SensorParaController.h" />
     <ClInclude Include="SensorParaService.h" />
     <ClInclude Include="SensorService.h" />
-    <ClInclude Include="SersorParaView.h" />
+    <ClInclude Include="CollectionParaView.h" />
     <ClInclude Include="SignalAcquisitionService.h" />
     <ClInclude Include="SignalController.h" />
     <ClInclude Include="SignalDataView.h" />
@@ -502,7 +502,7 @@
     <ClCompile Include="SensorParaController.cpp" />
     <ClCompile Include="SensorParaService.cpp" />
     <ClCompile Include="SensorService.cpp" />
-    <ClCompile Include="SersorParaView.cpp" />
+    <ClCompile Include="CollectionParaView.cpp" />
     <ClCompile Include="SignalAcquisitionService.cpp" />
     <ClCompile Include="SignalController.cpp" />
     <ClCompile Include="SignalDataView.cpp" />

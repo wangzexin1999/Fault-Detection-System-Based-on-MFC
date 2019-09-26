@@ -222,6 +222,7 @@
 #define IDC_CHECK_GRID_LINE             1140
 #define IDC_CHECK_STATISTIC_INF         1141
 #define IDC_CHECK_PEAK_VALUE            1142
+#define IDC_EDIT_COLLECTIONBATCHS       1143
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_CHECK2                       32771
 #define ID_COMBO2                       32772
@@ -289,7 +290,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        375
 #define _APS_NEXT_COMMAND_VALUE         32841
-#define _APS_NEXT_CONTROL_VALUE         1143
+#define _APS_NEXT_CONTROL_VALUE         1144
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

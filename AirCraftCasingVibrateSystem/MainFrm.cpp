@@ -375,7 +375,6 @@ void CMainFrame::InitializeSampleDataEchoView(int nWindowInitial)
 		}
 		viewNumber++;
 	}
-
 }
 
 ////通道參數
@@ -405,12 +404,10 @@ void CMainFrame::OnViewSystemPara()
 {
 	if (m_systemPara.IsVisible())
 	{
-		AfxMessageBox("1");
 		m_systemPara.ShowPane(FALSE, FALSE, FALSE);
 	}
 	else
 	{
-		AfxMessageBox("2");
 		m_systemPara.ShowPane(TRUE, TRUE, TRUE);
 	}
 
@@ -441,7 +438,6 @@ void CMainFrame::OnButtonNewProject()
 
 		////2.3 刷新通道参数的显示
 		m_channelPara.RefreshView();
-
 	}
 }
 
@@ -647,7 +643,6 @@ void CMainFrame::OnBtnStartSmaple()
 	for (int i = 0; i < m_vsignalCaptureView.size(); i++){
 		m_vsignalCaptureView[i]->m_recordSignal.SetStartTime(strCurrentTime);
 	}
-	
 }
 
 // 停止采样
@@ -659,7 +654,6 @@ void CMainFrame::OnBtnStopSample()
 		m_vsignalCaptureView[i]->m_recordSignal.SetEndTime(strCurrentTime);
 		m_vsignalCaptureView[i]->OpenThread2SaveSampleData();
 	}
-
 }
 
 //工程单位

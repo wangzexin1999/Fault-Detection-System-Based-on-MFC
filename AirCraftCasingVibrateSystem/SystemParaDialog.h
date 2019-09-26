@@ -1,6 +1,6 @@
 #pragma once
 #include "afxcmn.h"
-#include "SersorParaView.h"
+#include "CollectionParaView.h"
 #include "DeviceParaView.h"
 // CSystemParaDialog 对话框
 
@@ -16,7 +16,7 @@ public:
 	enum { IDD = IDD_DIALOG_SYSTEM_PARA };
 public:
 	int m_CurSelTab;
-	CSersorParaView   m_sersorPara;
+	CollectionParaView   m_sersorPara;
 	CDeviceParaView    m_devicePara;
 	CDialog* pDialog[2];  //用来保存对话框对象指针
 protected:
