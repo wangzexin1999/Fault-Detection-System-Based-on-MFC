@@ -474,8 +474,6 @@ void CMainFrame::OnButtonOpenDataFile()
 			// 初始化view
 			InitializeSampleDataEchoView(16);
 			// 根据传感器信息查找文件路径
-
-
 			for (int i = 0; i < m_vsignalCaptureView.size(); i++)
 			{
 				// 根据路径查找文件，放到各自的view采样队列里面
@@ -493,11 +491,6 @@ void CMainFrame::OnButtonOpenDataFile()
 		}
 
 	}
-	
-	
-
-	
-		
 	
 }
 
@@ -643,17 +636,27 @@ void CMainFrame::OnBtnStartSmaple()
 		AfxMessageBox("请先打开或者新建项目");
 		return;
 	}
+	if (theApp.m_icollectionStatus ==0)
+	{
+		AfxMessageBox("当前没有采集状态");
+		return;
+	}
 	/*开始采样，记录开始采集时间*/
 	CString strCurrentTime = DateUtil::GetCurrentCStringTime();
+
+	for (int i = 0; i < m_vsignalCaptureView.size(); i++){
+		m_vsignalCaptureView[i]->m_recordSignal.SetStartTime(strCurrentTime);
+	}
 	
 }
 
 // 停止采样
 void CMainFrame::OnBtnStopSample()
 {
-	
+	CString strCurrentTime = DateUtil::GetCurrentCStringTime();
 	//遍历所有采集窗口去保存采样数据
 	for (int i = 0; i < m_vsignalCaptureView.size(); i++){
+		m_vsignalCaptureView[i]->m_recordSignal.SetEndTime(strCurrentTime);
 		m_vsignalCaptureView[i]->OpenThread2SaveSampleData();
 	}
 

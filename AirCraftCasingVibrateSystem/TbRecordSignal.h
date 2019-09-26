@@ -27,13 +27,12 @@ using namespace std;
 class TbRecordSignal
 {
 public:
+
 	TbRecordSignal();
 	~TbRecordSignal();
 
-
 private:
 	int m_signalId;
-
 	TbProject m_project;
 	CString m_startTime;
 	CString m_endTime;

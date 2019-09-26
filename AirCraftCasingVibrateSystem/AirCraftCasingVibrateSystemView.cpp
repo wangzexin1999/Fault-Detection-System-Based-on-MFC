@@ -98,8 +98,8 @@ void CAirCraftCasingVibrateSystemView::OnInitialUpdate()
 	pBottomAxis->SetMinMax(0, 500);//设置下刻度
 	pBottomAxis->SetTickIncrement(false, 100);
 	CChartStandardAxisDu* pLeftAxis = m_chart.CreateStandardAxisDu(CChartCtrl::LeftAxis, 0);
-	pLeftAxis->SetMinMax(0, 0.8);
-	pLeftAxis->SetTickIncrement(false, 0.1);
+	pLeftAxis->SetMinMax(-0.1, 0.1);
+	pLeftAxis->SetTickIncrement(false, 0.05);
 	// 构造曲线
 	CDuChartCtrlStaticFunction::CreateSeries(pDuChartCtrl, nSelectChannelCount, nSerieType);
 	// 构造光标
@@ -161,9 +161,7 @@ void CAirCraftCasingVibrateSystemView::CaptureData(){
 
 		// 实时数据队列
 		//m_realTimeSignal.push(RealTimeSignal(realTimeSignalData, realTimeSignalTime));
-
 		m_realTimeSignalCaptureflag = false;
-		//
 		/////将一次采集的数据进行傅里叶变换
 		//////对传入的数据进行傅里叶变换处理
 		SmartFFTWComplexArray fftwOutput(fftwInput.size());
@@ -267,7 +265,7 @@ void CAirCraftCasingVibrateSystemView::OpenThread2SaveCollectionData(){
 
 void  CAirCraftCasingVibrateSystemView::SaveSampleData(){
 	////调用传感器Controller类保存采样数据
-	Result res = m_sensorController.SaveSampleData(m_signalSelectView.GetSelectedSensor().GetId(),m_sampleDataQueue);
+	Result res = m_sensorController.SaveSampleData(m_signalSelectView.GetSelectedSensor().GetId(),m_recordSignal);
 	if (!res.GetIsSuccess()){
 		AfxMessageBox(res.GetMessages());
 	}
@@ -504,9 +502,23 @@ void CAirCraftCasingVibrateSystemView::SampleDataEcho()
 	SmartArray<double> dXData, dYData;
 	m_pLineSerie->SetNeedCalStatValue(TRUE);
 	
+	int iPointNums = 1000;
 	// 截取一部分
-	SplitVector(dXData, dYData,1000);
-	m_pLineSerie->AddPoints(dXData.GetSmartArray(), dYData.GetSmartArray(), dXData.size() / 2);
+	SplitVector(dXData, dYData, iPointNums);
+	SmartFFTWComplexArray fftwInput; ///傅里叶变换初始的输入
+	for (int i = 0; i < iPointNums; i++)
+	{
+		fftw_complex fftw;
+		fftw[0] = dYData.GetSmartArray()[i];
+		fftwInput.push_back(fftw);
+	}
+	SmartFFTWComplexArray fftwOutput(fftwInput.size());
+	FFTWUtil::FastFourierTransformation(fftwInput.size(), fftwInput.GeFFTWComplexArray(),
+		fftwOutput.GeFFTWComplexArray());
+	/////将处理之后的傅里叶变换转换成XY坐标
+	SmartArray<double> yData(dXData.size()); ///y坐标
+	FFTWUtil::FFTDataToXY(fftwOutput, yData, dXData.size());
+	m_pLineSerie->AddPoints(dXData.GetSmartArray(), yData.GetSmartArray(), dXData.size() / 2);
 }
 
 
@@ -535,10 +547,10 @@ void CAirCraftCasingVibrateSystemView::StopSampleEncho()
 
 void CAirCraftCasingVibrateSystemView::SplitVector(SmartArray<double> &dXData, SmartArray<double> &dYData, int nNums)
 {
-
+	int iSampleQueueSize = m_sampleFromFileDataQueue.size();
 	for (int i = 0; i < nNums; i++)
 	{
-		if (m_icountNumsReadDraw < 90000)
+		if (m_icountNumsReadDraw < iSampleQueueSize-10)
 		{
 			double yTemp = m_sampleFromFileDataQueue[m_icountNumsReadDraw].GetSignalData();
 			double xTemp;

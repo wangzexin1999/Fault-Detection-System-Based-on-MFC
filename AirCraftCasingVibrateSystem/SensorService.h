@@ -10,6 +10,7 @@
 #include "TbSensorDao.h"
 #include "TbSensor.h"
 #include "TbDictionaryDao.h"
+#include "TbRecordSignal.h"
 class CSensorService 
 {
 public:
@@ -78,6 +79,16 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	Result AddSampleData(TbProject project, int sensorId, ThreadSafeQueue<AcquiredSignal> &collectionData);
+	/**********************************************************************
+	 功能描述： 保存采样数据到数据库
+	 输入参数：project--当前项目；sensorId--传感器ID； recordSignal--采样数据实体
+	 输出参数： 
+	 返 回 值： 
+	 其它说明：
+	 修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	Result AddSampleData(TbProject project, int sensorId, TbRecordSignal recordSignal);
 	/**********************************************************************
 	功能描述：查询采集设备对应的所有传感器
 	输入参数：采集设备id

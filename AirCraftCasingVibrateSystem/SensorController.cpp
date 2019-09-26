@@ -24,11 +24,12 @@ Result SensorController::SaveSampleData(int sensorId, ThreadSafeQueue<AcquiredSi
 	Result res = m_sensorService.AddSampleData(theApp.m_currentProject, sensorId, collectionData);
 	return res;
 }
-//Result SensorController::SaveSampleData(int viewId, int sensorId){
-//	/*Result res = m_sensorService.AddSampleData(theApp.m_currentProject, sensorId, collectionData);
-//	return res;*/
-//	
-//}
+
+Result SensorController::SaveSampleData(int nSensorId, TbRecordSignal recordSignal)
+{
+	Result res = m_sensorService.AddSampleData(theApp.m_currentProject, nSensorId, recordSignal);
+	return res;
+}
 
 Result SensorController::FindAllSensorByTestingDeviceId(int testingDeviceId, vector<TbSensor> & sensorVector){
 	sensorVector.clear();

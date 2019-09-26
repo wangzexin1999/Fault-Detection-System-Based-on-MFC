@@ -150,9 +150,24 @@ Result CSensorService::AddSampleData(TbProject project, int sensorId, ThreadSafe
 		m_recordSignalDao.SetTableFieldValues(signal);
 		m_recordSignalDao.Insert(false);
 	}
+
 	return res;
 }
 
+
+
+Result CSensorService::AddSampleData(TbProject project, int sensorId, TbRecordSignal recordSignal)
+{
+	recordSignal.SetProject(project);
+	recordSignal.SetProduct(project.GetProduct());
+	recordSignal.GetSensor().SetId(sensorId);
+	recordSignal.GetTestingDevice().SetId(project.GetTestingDevice().GetId());
+	//m_recordSignalDao.SetTableFieldValues(recordSignal);  这个地方改动
+	bool bInsertRes = m_recordSignalDao.Insert(false);
+	Result res = Result(bInsertRes, "");
+	return res;
+
+}
 ////根据项目id得到所有的传感器参数
 bool CSensorService::GetALLSensorByProjectId(int projectId, std::vector<TbSensor> &vsensorPara){
 	m_sensorDao.m_projectId.SetValue(projectId);

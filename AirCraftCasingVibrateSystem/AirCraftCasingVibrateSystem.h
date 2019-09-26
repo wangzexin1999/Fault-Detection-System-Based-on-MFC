@@ -44,37 +44,24 @@ public:
 
 	CNetConService  m_con;  // 网络通信连接
 	bool m_bcon = false;  // 判断网络通信是否连接成功
-	Redis *m_redisCon = new Redis;
-	// 多个传感器
-	//vector<CSensorService>  m_vSersor;
-
+	Redis *m_redisCon = new Redis();  
 	bool m_bShowInfThreadActive = true;
 	/// 用户
 	TbProject m_currentProject;
 	int m_chartCtrlIndex = 10000;/*画图控件ID*/
-
-	//vector<queue<EchoSignal>> m_sampleData;
-
 	int m_icollectSignalsStoreCount = 10000; ///采集信号的存储数量。 
 	int m_isampleSignalsStoreCount = 100000; ///采集信号的存储数量。 
-
 	int m_icollectionStatus; ////采集状态 0 ：停止采集 1：开始采集 2：暂停采集 
-
 	int m_signalEchoCount = 1000; //信号回显数量
-
 	bool m_bIsAutoSaveSamplingData = true; ///是否自动保存采样数据
 	bool m_bIsAutoSaveCollectionData = true; ///是否自动保存采集数据
-	
 	CString m_collectionRotatingSpeed = "";
-
 	vector<SignalAcquisitionService> m_vSignalAcquisitionService; ////信号采集服务
-
 	/*vector<ThreadSafeQueue<AcquiredSignal> >m_sampleData; ///采样数据
 	vector<ThreadSafeQueue<AcquiredSignal> > m_collectData; ///采集数据*/
 
 	double tempRead[100][1000]; ///模拟数据
-	//httplib::Client m_cli; //http连接
-	httplib::Client m_cli;
+	httplib::Client m_cli; // http连接
 // 重写
 public:
 	virtual BOOL InitInstance();
