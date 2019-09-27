@@ -17,8 +17,10 @@ Modification:
 修改内容：
 ************************************************************************/
 #pragma once
-
-
+#include "GridCtrl_src/GridCtrl.h"
+#include "NewCellTypes/GridCellCheck.h"
+#include "NewCellTypes/GridCellCombo.h"
+#include "DictionaryController.h"
 // CEngineerUnitView 对话框
 
 class CEngineerUnitView : public CDialogEx
@@ -31,9 +33,32 @@ public:
 
 // 对话框数据
 	enum { IDD = IDD_DIALOG_ENGINEER_UINT };
+public:
+	CGridCtrl m_engineerUintManageGridCtrl;
+	DictionaryController m_dictionController;
+	vector<TbDictionary> m_vEngineerUint;
+	TbDictionary m_selectedDictionary;
+public:
+	/**********************************************************************
+	功能描述：初始化表格控件
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void GridCtrlInit();
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 
 	DECLARE_MESSAGE_MAP()
+public:
+	virtual BOOL OnInitDialog();
+	afx_msg void OnBnClickedButtonEuAdd();
+	afx_msg void OnBnClickedButtonEuDelete();
+	afx_msg void OnBnClickedEuSave();
+	afx_msg void OnGridClick(NMHDR *pNotifyStruct, LRESULT* pResult);
+	afx_msg void OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult);
 };

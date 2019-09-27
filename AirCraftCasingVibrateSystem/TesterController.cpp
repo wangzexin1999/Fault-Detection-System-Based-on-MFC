@@ -33,3 +33,17 @@ Result TesterController::LoginCheck(TbTester & tester){
 	}
 
 }
+
+
+Result TesterController::AddTester(TbTester tester)
+{
+
+	if (tester.GetLoginName() == ""){
+		return Result(false, "用户名不能为空");
+	}
+	if (tester.GetPassWord() == ""){
+		return Result(false, "密码不能为空");
+	}
+	bool  isSuccess = m_testerService.AddTester(tester);
+	if (!isSuccess){ return Result(false, "注册失败"); }
+}

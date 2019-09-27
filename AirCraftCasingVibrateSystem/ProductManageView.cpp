@@ -127,7 +127,7 @@ void CProductManageView::OnBnClickedDeleteProductButton()
 	// TODO:  在此添加控件通知处理程序代码
 
 	if (m_selectedProduct.GetProductId() == 0){
-	AfxMessageBox("请选择需要删除的设备");
+	AfxMessageBox("请选择需要删除的产品");
 	return;
 	}
 	if (MessageBox("是否删除 " + m_selectedProduct.GetProductName(), "删除产品", MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL) return;
@@ -148,7 +148,7 @@ void CProductManageView::OnBnClickedDeleteProductButton()
 void CProductManageView::OnBnClickedSaveProduct()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	if (MessageBox("是否保存当前修改", "保存设备", MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL) return;
+	if (MessageBox("是否保存当前修改", "保存产品", MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL) return;
 	int rows = m_productManageGridCtrl.GetRowCount();
 	int cols = m_productManageGridCtrl.GetColumnCount();
 	/////遍历表格的所有数据进行保存
@@ -156,7 +156,7 @@ void CProductManageView::OnBnClickedSaveProduct()
 	for (int row = 1; row < rows; row++){
 		TbProduct product;
 		if (row < m_vTbProduct.size() + 1){
-			////对于需要更新的单元格，对检测设备id进行赋值
+			////对于需要更新的单元格，对检测产品id进行赋值
 			product.SetProductId(m_vTbProduct[row - 1].GetProductId());
 			product.SetProductType(m_vTbProduct[row - 1].GetProductType());
 		}

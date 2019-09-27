@@ -9,6 +9,10 @@ public:
 	TbDictionary(int dictId = 0,	CString dictName = "",	CString dictValue = "");
 	~TbDictionary();
 	
+	bool operator == (TbDictionary dictionary);
+
+	bool operator != (TbDictionary dictionary);
+
 	void SetDictValue(CString dictValue);
 	void SetDictName(CString dictName);
 	void SetDictId(int  dictId);

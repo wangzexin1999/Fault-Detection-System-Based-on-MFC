@@ -52,3 +52,15 @@ void  TbTester::SetTesterTelephone(CString telephone){
 CString TbTester::GetTesterTelephone(){
 	return m_testerTelephone;
 }
+
+
+void TbTester::SetTesterStatus(int status)
+{
+	m_iStatus = status;
+
+}
+int TbTester::GetTesterStatus()
+{
+	return m_iStatus;
+
+}

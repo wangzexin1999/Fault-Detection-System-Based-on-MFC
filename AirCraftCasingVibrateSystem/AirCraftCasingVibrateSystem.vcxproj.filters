@@ -702,6 +702,9 @@
     <ClInclude Include="StateSetDialog.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="RegisterView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AirCraftCasingVibrateSystem.cpp">
@@ -1143,6 +1146,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="StateSetDialog.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RegisterView.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

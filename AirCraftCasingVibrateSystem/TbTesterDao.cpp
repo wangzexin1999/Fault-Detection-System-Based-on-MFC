@@ -10,7 +10,7 @@ TbTesterDao::TbTesterDao()
 	SetVectorAndField("login_name", "CString", m_loginName);
 	SetVectorAndField("login_password", "CString", m_password);
 	SetVectorAndField("tester_name", "CString", m_testerName);
-	SetVectorAndField("tester_post", "int", m_testerPost);
+	SetVectorAndField("tester_post", "CString", m_testerPost);
 	SetVectorAndField("tester_telephone", "CString", m_testerTelephone);
 	SetVectorAndField("tester_status", "int", m_testerStatus);
 }
@@ -27,7 +27,7 @@ TbTesterDao::TbTesterDao(const TbTesterDao & testerDao){
 	SetVectorAndField("login_name", "CString", m_loginName);
 	SetVectorAndField("login_password", "CString", m_password);
 	SetVectorAndField("tester_name", "CString", m_testerName);
-	SetVectorAndField("tester_post", "int", m_testerPost);
+	SetVectorAndField("tester_post", "CString", m_testerPost);
 	SetVectorAndField("tester_telephone", "CString", m_testerTelephone);
 	SetVectorAndField("tester_status", "int", m_testerStatus);
 	operator = (testerDao);

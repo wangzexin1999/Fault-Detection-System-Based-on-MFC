@@ -16,7 +16,8 @@ public:
 	CString GetTesterPost();
 	void SetTesterTelephone(CString telephone);
 	CString GetTesterTelephone();
-
+	void SetTesterStatus(int status);
+	int GetTesterStatus();
 protected:
 
 	int m_testerId;
@@ -25,5 +26,6 @@ protected:
 	CString m_testerName;
 	CString m_testerPost;
 	CString m_testerTelephone;
+	int m_iStatus;
 };
 
