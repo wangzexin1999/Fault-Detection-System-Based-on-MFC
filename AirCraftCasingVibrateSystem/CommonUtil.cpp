@@ -75,3 +75,11 @@ long CommonUtil::CString2Long(CString strValue)
 	return _ttol(strValue);
 
 }
+
+
+int CommonUtil::CString2Int(CString strValue)
+{
+
+	return _ttoi(strValue);
+
+}

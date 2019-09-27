@@ -8,6 +8,24 @@ TbProduct::TbProduct(int productId  , CString productName  , CString productType
 	m_productType = productType;
 }
 
+bool TbProduct::operator == (TbProduct product)
+{
+	bool tag = true;
+	if (m_productId != product.GetProductId()) tag = false;
+	if (m_productName != product.GetProductName()) tag = false;
+	if (m_productType != product.GetProductType())
+	{
+		tag = false;
+	}
+	return tag;
+
+}
+
+bool TbProduct::operator != (TbProduct product){
+	return *this == product ? false : true;
+}
+
+
 
 TbProduct::~TbProduct()
 {
