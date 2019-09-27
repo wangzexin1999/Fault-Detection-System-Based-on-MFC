@@ -32,3 +32,28 @@ bool ProductService::GetAllProductBySearchCondition(TbProduct searchProduct, vec
 	}
 	return isSuccess;
 }
+
+
+bool ProductService::DeletProductByID(TbProduct product)
+{
+
+	m_productDao.SetTableFieldValues(product);
+	bool isSuccess = m_productDao.DeleteByKey();
+	return isSuccess;
+}
+
+bool ProductService::UpdateProduct(TbProduct product)
+{
+	m_productDao.SetTableFieldValues(product);
+	bool isSuccess = m_productDao.UpdateByKey();
+	return isSuccess;
+}
+
+bool ProductService::AddProduct(TbProduct product)
+{
+
+	m_productDao.SetTableFieldValues(product);
+	bool isSuccess = m_productDao.Insert();
+	return isSuccess;
+
+}

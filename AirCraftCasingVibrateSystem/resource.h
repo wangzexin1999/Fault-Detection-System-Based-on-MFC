@@ -111,6 +111,7 @@
 #define IDC_EDIT_PASSWORD               1015
 #define IDC_BUTTON1                     1016
 #define IDC_CHECK1                      1017
+#define IDC_CHECK_CHANNEL_ALARM         1017
 #define IDC_TAB_GRAPH_ATTR              1018
 #define IDC_EDIT_LOGNNAME               1019
 #define IDC_COMBO_TESTINGDEVICE         1020
@@ -119,6 +120,7 @@
 #define IDC_BUTTON2                     1024
 #define IDC_TAB_ENGINEER_UNIT           1025
 #define IDC_CHECK2                      1026
+#define IDC_CHECK_ALARM_LOG             1026
 #define IDC_EDIT1                       1027
 #define IDC_CHECK3                      1028
 #define IDC_DATETIMEPICKER1             1029
@@ -157,6 +159,7 @@
 #define IDC_RADIO6                      1079
 #define IDC_LIST2                       1080
 #define IDC_CHECK4                      1082
+#define IDC_CHECK_SOUND_ALARM           1082
 #define IDC_CHECK5                      1083
 #define IDC_CHECK_MAX_VALUE             1083
 #define IDC_CHECK6                      1084
@@ -224,9 +227,14 @@
 #define IDC_CHECK_PEAK_VALUE            1142
 #define IDC_EDIT_COLLECTIONBATCHS       1143
 #define IDC_CUSTOM1                     1144
-#define IDC_COLLECTIONPLANGRID          1144
-#define IDC_MFCBUTTON2                  1145
-#define IDC_COMBO_COLLECTIONPLAN        1145
+#define IDC_COLLECTIONPLANGRID          1145
+#define IDC_MFCBUTTON2                  1146
+#define IDC_COMBO_COLLECTIONPLAN        1147
+#define IDC_PRODUCT_MANAGE              1148
+#define ID_SAVE_PRODUCT                 1150
+#define IDC_BTN_SEARCH_PRODUCT          1151
+#define IDC_EDIT_ALARM_LIMIT            1152
+#define ID_SAVR_ALARM_SET               1153
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_CHECK2                       32771
 #define ID_COMBO2                       32772
@@ -295,7 +303,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        379
 #define _APS_NEXT_COMMAND_VALUE         32842
-#define _APS_NEXT_CONTROL_VALUE         1146
+#define _APS_NEXT_CONTROL_VALUE         1154
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

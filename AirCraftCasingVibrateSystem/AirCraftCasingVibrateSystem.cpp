@@ -105,12 +105,15 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	CLoginView loginView;
 	// 如果点击取消了，程序停止
 	if (loginView.DoModal() == CancelLogin)	{return FALSE;}
+
 	// 根据当前登录用户，加载用户最后一次使用的项目
 	ProjectController projectController;
 	theApp.m_currentProject.SetProjectStatus(2);
 	vector<TbProject> selectProjectVec;
 	projectController.FindAllProjectBySearchCondition(theApp.m_currentProject, "", "",selectProjectVec);
-	if (selectProjectVec.size()==1)	theApp.m_currentProject = selectProjectVec[0];
+	if (selectProjectVec.size() == 1)	{
+		theApp.m_currentProject = selectProjectVec[0];
+	}
 	if (selectProjectVec.size() != 1) AfxMessageBox("项目加载有误");
 
 

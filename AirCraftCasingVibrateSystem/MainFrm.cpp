@@ -683,7 +683,20 @@ void CMainFrame::OnBtnAlarmSet()
 {
 	// TODO:  在此添加命令处理程序代码
 	CAlarmParaSetView alarmView;
-	alarmView.DoModal();
+	if (alarmView.DoModal() == IDOK)
+	{
+		PTSTR lpPath = new char[MAX_PATH];
+
+		strcpy(lpPath, "..//IniAlarmSet.ini");
+		// 颜色
+		WritePrivateProfileString(alarmView.m_strAlarm, "channelAlarm", CommonUtil::Int2CString(alarmView.m_bChannelAlarm), lpPath);
+		WritePrivateProfileString(alarmView.m_strAlarm, "alarmLog", CommonUtil::Int2CString(alarmView.m_bAlarmLog), lpPath);
+		WritePrivateProfileString(alarmView.m_strAlarm, "soundAlarm", CommonUtil::Int2CString(alarmView.m_bSoundAlarm), lpPath);
+		WritePrivateProfileString(alarmView.m_strAlarm, "alarmLimit", CommonUtil::Int2CString(alarmView.m_iAlarmLimit), lpPath);
+		delete[] lpPath;
+	}
+	
+
 
 }
 

@@ -11,6 +11,9 @@ public:
 
 	~TbProductDao();
 
+	
+
+
 	PDAttribute m_productId;
 	PDAttribute m_productName;
 	PDAttribute m_productType;
@@ -19,5 +22,6 @@ public:
 	void GetTableFieldValues(TbProduct &product);
 	bool SelectObjectsByCondition(vector<TbProductDao> &selectedValueVector, CString strSqlQueryWhere = "");
 	bool SelectObjectsByCondition(vector<TbProductDao> &selectedValueVector, int iStartNumber, int iRecordCount, CString strSqlQueryWhere = "");
+	void SetTableFieldValues(TbProduct product);
 };
 
