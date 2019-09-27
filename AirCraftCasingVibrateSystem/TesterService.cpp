@@ -17,3 +17,11 @@ bool TesterService::getOneByCondition(TbTester &tester){
 	m_testerDao.GetTableFieldValues(tester);
 	return flag;
 }
+
+bool TesterService::AddTester(TbTester tester)
+{
+	m_testerDao.SetTableFieldValues(tester);
+	bool flag = m_testerDao.Insert();
+
+	return flag;
+}

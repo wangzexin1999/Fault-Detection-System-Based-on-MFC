@@ -33,6 +33,7 @@ void CLoginView::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CLoginView, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CLoginView::OnBnClickedOk)
 	ON_WM_CLOSE()
+	ON_BN_CLICKED(IDC_BUTTON_LOGINVIEW_REGISTER, &CLoginView::OnBnClickedButtonLoginviewRegister)
 END_MESSAGE_MAP()
 
 
@@ -68,4 +69,12 @@ void CLoginView::OnClose()
 	// TODO:  在此添加消息处理程序代码和/或调用默认值
 	CDialogEx::OnCancel();
 	exit(0);
+}
+
+
+void CLoginView::OnBnClickedButtonLoginviewRegister()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	CRegisterView registerView;
+	registerView.DoModal();
 }

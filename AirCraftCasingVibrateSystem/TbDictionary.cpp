@@ -9,6 +9,26 @@ TbDictionary::TbDictionary(int dictId  , CString dictName , CString dictValue  )
 	m_dictValue = dictValue;
 }
 
+bool TbDictionary::operator == (TbDictionary dictionary)
+{
+
+	bool tag = true;
+	if (m_dictId != dictionary.GetDictId()) tag = false;
+	if (m_dictValue != dictionary.GetDictValue())
+	{
+		tag = false;
+	}
+	return tag;
+}
+
+bool TbDictionary::operator != (TbDictionary dictionary)
+{
+
+	return *this == dictionary ? false : true;
+
+}
+
+
 
 TbDictionary::~TbDictionary()
 {

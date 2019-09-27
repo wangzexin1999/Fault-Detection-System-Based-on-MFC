@@ -28,3 +28,28 @@ bool DictionaryService::GetAllBySearchCondition(vector<TbDictionary> & dictionar
 	}
 	return isSuccess;
 }
+
+bool DictionaryService::DeleteEUByEUId(TbDictionary dictionary)
+{
+	m_dictionaryDao.SetTableFieldValues(dictionary);
+	bool isSuccess = m_dictionaryDao.DeleteByKey();
+	return isSuccess;
+}
+
+bool DictionaryService::UpdateDictionary(TbDictionary dictionary)
+{
+
+	m_dictionaryDao.SetTableFieldValues(dictionary);
+	bool isSuccess = m_dictionaryDao.UpdateByKey();
+	return isSuccess;
+}
+
+
+bool DictionaryService::AddDictionary(TbDictionary dictionary)
+{
+
+	m_dictionaryDao.SetTableFieldValues(dictionary);
+	bool isSuccess = m_dictionaryDao.Insert();
+	return isSuccess;
+
+}

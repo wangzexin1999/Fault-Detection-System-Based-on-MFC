@@ -4,6 +4,7 @@
 //
 #define ID_BMPSIGNALRED                 3
 #define IDOK2                           3
+#define ID_EU_SAVE                      3
 #define IDCANCEL2                       4
 #define IDOK3                           5
 #define ID_SAVE_BUTTON                  5
@@ -90,6 +91,7 @@
 #define IDD_DIALOG_CHANNELPARAPRESET    373
 #define IDD_DIALOG_STABLESTATUSPRESET   374
 #define IDD_DIALOG_STATE_SET            377
+#define IDD_DIALOG_REGISTER             379
 #define IDC_TAB1                        1000
 #define IDC_LIST_GENERAL_PARA           1001
 #define IDC_COMBO1                      1002
@@ -110,6 +112,7 @@
 #define IDC_EDIT2                       1015
 #define IDC_EDIT_PASSWORD               1015
 #define IDC_BUTTON1                     1016
+#define IDC_BUTTON_EU_ADD               1016
 #define IDC_CHECK1                      1017
 #define IDC_CHECK_CHANNEL_ALARM         1017
 #define IDC_TAB_GRAPH_ATTR              1018
@@ -227,6 +230,7 @@
 #define IDC_CHECK_PEAK_VALUE            1142
 #define IDC_EDIT_COLLECTIONBATCHS       1143
 #define IDC_CUSTOM1                     1144
+#define IDC_CUSTOM_EU                   1144
 #define IDC_COLLECTIONPLANGRID          1145
 #define IDC_MFCBUTTON2                  1146
 #define IDC_COMBO_COLLECTIONPLAN        1147
@@ -235,6 +239,15 @@
 #define IDC_BTN_SEARCH_PRODUCT          1151
 #define IDC_EDIT_ALARM_LIMIT            1152
 #define ID_SAVR_ALARM_SET               1153
+#define ID_REGISTER                     1154
+#define IDC_EDIT_REGISTER_USER_NAME     1155
+#define IDC_EDIT_REGISTER_PSW           1156
+#define IDC_EDIT_REGISTER_POST          1157
+#define IDC_EDIT_REGISTER_TELL          1158
+#define IDC_EDIT_REGISTER_NAME          1159
+#define IDC_EDIT_REGISTER_QPSW          1160
+#define IDC_BUTTON_LOGINVIEW_REGISTER   1161
+#define IDC_BUTTON_EU_DELETE            1162
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_CHECK2                       32771
 #define ID_COMBO2                       32772
@@ -301,9 +314,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        379
+#define _APS_NEXT_RESOURCE_VALUE        380
 #define _APS_NEXT_COMMAND_VALUE         32842
-#define _APS_NEXT_CONTROL_VALUE         1154
+#define _APS_NEXT_CONTROL_VALUE         1163
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

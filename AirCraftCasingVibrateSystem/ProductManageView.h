@@ -22,7 +22,7 @@ public:
 	TbProduct m_selectedProduct;
 public:
 	CGridCtrl m_productManageGridCtrl;
-
+public:
 	/**********************************************************************
 	功能描述：初始化表格控件
 	输入参数：

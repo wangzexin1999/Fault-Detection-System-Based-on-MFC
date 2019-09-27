@@ -17,6 +17,7 @@ Modification:
 ÐÞ¸ÄÄÚÈÝ£º
 ************************************************************************/
 #pragma once
+#include "RegisterView.h"
 #include "TesterController.h"
 #include "afxwin.h"
 
@@ -43,4 +44,5 @@ public:
 	CEdit m_passWordEdit;
 
 	afx_msg void OnClose();
+	afx_msg void OnBnClickedButtonLoginviewRegister();
 };

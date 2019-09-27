@@ -304,6 +304,7 @@
     <ClInclude Include="ProductController.h" />
     <ClInclude Include="RealTimeSignal.h" />
     <ClInclude Include="redisUtil.h" />
+    <ClInclude Include="RegisterView.h" />
     <ClInclude Include="SensorController.h" />
     <ClInclude Include="CherryTree.h" />
     <ClInclude Include="ChildFrm.h" />
@@ -458,6 +459,7 @@
     <ClCompile Include="NewCellTypes\GridURLCell.cpp" />
     <ClCompile Include="ProductController.cpp" />
     <ClCompile Include="RealTimeSignal.cpp" />
+    <ClCompile Include="RegisterView.cpp" />
     <ClCompile Include="SensorController.cpp" />
     <ClCompile Include="CherryTree.cpp" />
     <ClCompile Include="ChildFrm.cpp" />
