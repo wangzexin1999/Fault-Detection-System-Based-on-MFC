@@ -31,9 +31,8 @@ public:
 	virtual ~CSystemParaView();
 public:
 
-
 	CSystemParaDialog   m_systemParaDialog;
-
+	void RefreshView();
 
 protected:
 	DECLARE_MESSAGE_MAP()

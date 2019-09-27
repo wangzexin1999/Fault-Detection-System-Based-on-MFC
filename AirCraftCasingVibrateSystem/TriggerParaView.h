@@ -36,8 +36,8 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
 	CGridCtrl m_triggerParaGridCtrl;
 	SensorParaController m_sensorParaController;
-	void GridCtrlInit();
 	DECLARE_MESSAGE_MAP()
-public:
 	virtual BOOL OnInitDialog();
+public:
+	void GridCtrlInit();
 };

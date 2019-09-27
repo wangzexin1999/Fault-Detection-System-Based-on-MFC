@@ -28,4 +28,5 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnTcnSelchangeTabSystemPara(NMHDR *pNMHDR, LRESULT *pResult);
+	void RefreshView();
 };

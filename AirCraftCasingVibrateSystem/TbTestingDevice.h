@@ -21,7 +21,7 @@ Modification:
 class TbTestingDevice
 {
 public:
-	TbTestingDevice(int testingdeviceId = 0);
+	TbTestingDevice();
 	~TbTestingDevice();
 	
 	bool operator == (TbTestingDevice testingDevice);

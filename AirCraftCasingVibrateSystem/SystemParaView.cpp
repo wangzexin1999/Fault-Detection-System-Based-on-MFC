@@ -61,3 +61,6 @@ void CSystemParaView::OnSize(UINT nType, int cx, int cy)
 	//}
 	// TODO:  在此处添加消息处理程序代码
 }
+void CSystemParaView::RefreshView(){
+	m_systemParaDialog.RefreshView();
+}

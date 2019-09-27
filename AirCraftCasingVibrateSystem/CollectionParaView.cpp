@@ -6,7 +6,7 @@
 #include "CollectionParaView.h"
 #include "afxdialogex.h"
 #include "TbTestingDevice.h"
-
+#include "CommonUtil.h"
 // CollectionParaView 对话框
 
 IMPLEMENT_DYNAMIC(CollectionParaView, CDialogEx)
@@ -64,6 +64,7 @@ void CollectionParaView::CollectionParaInit(){
 	////拿到全局的项目对象的采集设备
 	TbTestingDevice testingDevice = theApp.m_currentProject.GetTestingDevice();
 	Result res;
+	int curSel = 0;
 	res = m_dictionaryController.FindAllBySearchCondition(m_vcollectionFrequency, 0, "collectionfrequency");
 	if (!res.GetIsSuccess()){
 		AfxMessageBox("加载采集频率失败");
@@ -72,8 +73,11 @@ void CollectionParaView::CollectionParaInit(){
 		for (int i = 0; i < m_vcollectionFrequency.size(); i++){
 			TbDictionary collecionFrequency = m_vcollectionFrequency[i];
 			m_collectionFrequencyCombo.InsertString(i, collecionFrequency.GetDictValue());
+			if (testingDevice.GetCollectionFrequency().GetDictId() == collecionFrequency.GetDictId()){
+				curSel = i;
+			}
 		}
-		m_collectionFrequencyCombo.SetCurSel(0);
+		m_collectionFrequencyCombo.SetCurSel(curSel);
 	}
 
 	res = m_dictionaryController.FindAllBySearchCondition(m_vanalysisFrequency, 0, "analysisfrequency");
@@ -81,11 +85,15 @@ void CollectionParaView::CollectionParaInit(){
 		AfxMessageBox("加载分析频率失败");
 	}
 	else{
+		curSel = 0;
 		for (int i = 0; i < m_vanalysisFrequency.size(); i++){
 			TbDictionary analysisFrequency = m_vanalysisFrequency[i];
 			m_analysisFrequencyCombo.InsertString(i, analysisFrequency.GetDictValue());
+			if (testingDevice.GetAnalysisFrequency().GetDictId()==analysisFrequency.GetDictId()){
+				curSel = i;
+			}
 		}
-		m_analysisFrequencyCombo.SetCurSel(0);
+		m_analysisFrequencyCombo.SetCurSel(curSel);
 	}
 
 	res = m_dictionaryController.FindAllBySearchCondition(m_vcollectionMethod, 0, "collectionmethod");
@@ -94,11 +102,15 @@ void CollectionParaView::CollectionParaInit(){
 		AfxMessageBox("加载采集方式失败");
 	}
 	else{
+		curSel = 0;
 		for (int i = 0; i < m_vcollectionMethod.size(); i++){
 			TbDictionary collectionMethod = m_vcollectionMethod[i];
 			m_collectionMethodCombo.InsertString(i, collectionMethod.GetDictValue());
+			if (collectionMethod.GetDictId()==testingDevice.GetCollectionMethod().GetDictId()){
+				curSel = i;
+			}
 		}
-		m_collectionMethodCombo.SetCurSel(0);
+		m_collectionMethodCombo.SetCurSel(curSel);
 	}
 
 
@@ -108,11 +120,15 @@ void CollectionParaView::CollectionParaInit(){
 		AfxMessageBox("查询数据块数失败");
 	}
 	else{
+		curSel = 0;
 		for (int i = 0; i < m_vdataBlockCount.size(); i++){
 			TbDictionary dataBlockCount = m_vdataBlockCount[i];
 			m_dataBlockCountCombo.InsertString(i, dataBlockCount.GetDictValue());
+			if (dataBlockCount.GetDictId() == testingDevice.GetDatablockCount().GetDictId()){
+				curSel = i;
+			}
 		}
-		m_dataBlockCountCombo.SetCurSel(0);
+		m_dataBlockCountCombo.SetCurSel(curSel);
 	}
 
 	res = m_dictionaryController.FindAllBySearchCondition(m_vtriggerMethod, 0, "triggermethod");
@@ -121,10 +137,17 @@ void CollectionParaView::CollectionParaInit(){
 		AfxMessageBox("查询触发方式失败");
 	}
 	else{
+		curSel = 0;
 		for (int i = 0; i < m_vtriggerMethod.size(); i++){
 			TbDictionary triggerMethod = m_vtriggerMethod[i];
 			m_triggerMethodCombo.InsertString(i, triggerMethod.GetDictValue());
+			if (triggerMethod.GetDictId() == testingDevice.GetTriggerMethod().GetDictId()){
+				curSel = i;
+			}
 		}
-		m_triggerMethodCombo.SetCurSel(0);
+		m_triggerMethodCombo.SetCurSel(curSel);
 	}
+	m_delayBlockCountEdit.SetWindowTextA(CommonUtil::Int2CString(testingDevice.GetDelayblockCount()));
+	m_collectionBatchEdit.SetWindowTextA(CommonUtil::Int2CString(testingDevice.GetCollectionBatchs()));
+	m_triggerCountEdit.SetWindowTextA(CommonUtil::Int2CString(testingDevice.GetTriggerCount()));
 }

@@ -2,8 +2,11 @@
 #include "TbTestingDevice.h"
 
 
-TbTestingDevice::TbTestingDevice(int testingdeviceID){
-	m_id = testingdeviceID;
+TbTestingDevice::TbTestingDevice(){
+	m_id = 0;
+	m_delayblockCount = 0;
+	m_triggerCount = 0;
+	m_collectionBatchs = 0;
 }
 
 bool TbTestingDevice::operator == (TbTestingDevice testingDevice){

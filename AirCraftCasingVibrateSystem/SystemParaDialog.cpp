@@ -92,3 +92,6 @@ void CSystemParaDialog::OnTcnSelchangeTabSystemPara(NMHDR *pNMHDR, LRESULT *pRes
 	
 	*pResult = 0;
 }
+void CSystemParaDialog::RefreshView(){
+	m_sersorPara.CollectionParaInit(); 
+}

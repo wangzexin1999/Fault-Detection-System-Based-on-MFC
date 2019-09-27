@@ -7,9 +7,10 @@ class CStateSetDockPanelView : public CDockablePane
 	DECLARE_DYNAMIC(CStateSetDockPanelView)
 
 public:
-	CStateSetDockPanelView();
-	virtual ~CStateSetDockPanelView();
 
+	CStateSetDockPanelView();
+	
+	virtual ~CStateSetDockPanelView();
 
 public:
 //	CStateSetView m_stateSetView;
@@ -19,6 +20,7 @@ protected:
 public:
 	afx_msg void OnPaint();
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	void RefreshView();
 };
 
 

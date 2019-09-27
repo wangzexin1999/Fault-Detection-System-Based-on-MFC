@@ -135,19 +135,21 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	{
 		return FALSE;
 	}
+
+	if (!m_stateSet.Create(_T("状态设置"), this, CRect(0, 0, 200, 100), TRUE, 10034,
+		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS |
+		WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI)) //CBRS_RIGHT
+	{
+		return FALSE;
+	}
+
+
 	if (!m_channelPara.Create(_T("通道参数"), this, CRect(0, 0, 200, 100), TRUE, 10033,
 		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS |
 		WS_CLIPCHILDREN | CBRS_BOTTOM | CBRS_FLOAT_MULTI))
 	{
 		return FALSE;
 	}
-	if (!m_stateSet.Create(_T("状态设置"), this, CRect(0, 0, 200, 100), TRUE, 10034,
-		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS |
-		WS_CLIPCHILDREN | CBRS_RIGHT| CBRS_FLOAT_MULTI))
-	{
-		return FALSE;
-	}
-
 	
 	m_systemPara.EnableDocking(CBRS_ALIGN_ANY);
 	m_channelPara.EnableDocking(CBRS_ALIGN_ANY);
@@ -394,12 +396,10 @@ void CMainFrame::OnViewChannelPara()
 {
 	if (m_channelPara.IsVisible())
 	{
-		AfxMessageBox("1");
 		m_channelPara.ShowPane(FALSE, FALSE, FALSE);
 	}
 	else
 	{
-		AfxMessageBox("2");
 		m_channelPara.ShowPane(TRUE, TRUE, TRUE);
 	}
 
@@ -447,9 +447,11 @@ void CMainFrame::OnButtonNewProject()
 		////2.1 刷新项目标题的显示
 		SendMessage(WM_SETTEXT);
 		////2.2 刷新采集参数的显示
-
+		m_systemPara.RefreshView();
 		////2.3 刷新通道参数的显示
 		m_channelPara.RefreshView();
+		////2.4 刷新采集状态窗口的显示
+		m_stateSet.RefreshView();
 	}
 }
 
@@ -900,8 +902,6 @@ void CMainFrame::OnBtnGraphAttribute()
 			m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_bDrawStatRms = m_graphAttributeView.m_selectView.m_bEffectiveValue;
 			//刷新
 			m_vsignalCaptureView[i]->GetChartCtrl().RefreshCtrl();
-
-
 		}
 	}
 }

@@ -59,3 +59,6 @@ int CStateSetDockPanelView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_stateSetDialog.ShowWindow(SW_SHOW);
 	return 0;
 }
+void CStateSetDockPanelView::RefreshView(){
+	m_stateSetDialog.RefreshView();
+}

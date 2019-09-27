@@ -18,6 +18,8 @@ CChannelParaDialog::~CChannelParaDialog(){}
 
 void CChannelParaDialog::RefreshDlg(){
 	m_generalParaView.GridCtrlInit();
+	m_triggerParaView.GridCtrlInit();
+	m_geometricParaView.GridCtrlInit();
 }
 void CChannelParaDialog::DoDataExchange(CDataExchange* pDX)
 {

@@ -223,7 +223,10 @@
 #define IDC_CHECK_STATISTIC_INF         1141
 #define IDC_CHECK_PEAK_VALUE            1142
 #define IDC_EDIT_COLLECTIONBATCHS       1143
+#define IDC_CUSTOM1                     1144
+#define IDC_COLLECTIONPLANGRID          1144
 #define IDC_MFCBUTTON2                  1145
+#define IDC_COMBO_COLLECTIONPLAN        1145
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_CHECK2                       32771
 #define ID_COMBO2                       32772
@@ -290,14 +293,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-<<<<<<< HEAD
-#define _APS_NEXT_RESOURCE_VALUE        375
-#define _APS_NEXT_COMMAND_VALUE         32841
-=======
 #define _APS_NEXT_RESOURCE_VALUE        379
 #define _APS_NEXT_COMMAND_VALUE         32842
->>>>>>> 8faf41cd56ed38133de3f624041c0016b4874915
-#define _APS_NEXT_CONTROL_VALUE         1144
+#define _APS_NEXT_CONTROL_VALUE         1146
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif
