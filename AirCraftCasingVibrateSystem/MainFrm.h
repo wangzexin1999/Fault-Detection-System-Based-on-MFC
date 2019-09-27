@@ -61,7 +61,6 @@ public:
 	CStateSetDockPanelView m_stateSet;
 	CDockablePane m_Panes[5];  
 // 生成的消息映射函数
-protected:
 
 
 	/**********************************************************************

@@ -32,39 +32,10 @@ bool ProjectService::GetAllProjectBySearchCondition(TbProject project, CString s
 	if (project.GetProjectStatus() != 0) strSqlWhere += " and project_status =" + CommonUtil::Int2CString(project.GetProjectStatus());
 	//////2.2 根据sql语句查询符合条件的所有项目
 	bool isSuccess = m_projectDao.SelectObjectsByCondition(selectedValueVector, strSqlWhere);
-	if (isSuccess){
-		for (auto tbProjectDao : selectedValueVector){
-			TbProject tbProject;
-			tbProjectDao.GetTableFieldValues(tbProject);
-			m_testingDeviceDao.m_id.SetValue(tbProjectDao.m_testingDeviceid.GetInt());
-			isSuccess = m_testingDeviceDao.SelectByKey();
-			if (isSuccess){
-				////封装查询到的设备参数信息
-				m_testingDeviceDao.GetTableFieldValues(tbProject.GetTestingDevice());
-				////查询设备参数信息中的检测设备
-				m_testingDeviceDao.m_id.SetValue(tbProject.GetTestingDevice().GetId());
-				isSuccess = m_testingDeviceDao.SelectByKey();
-				if (isSuccess){
-					///封装检测设备对象
-					m_testingDeviceDao.GetTableFieldValues(tbProject.GetTestingDevice());
-				}
-			}
-			tbProject.SetProjectCreateTime(tbProjectDao.m_projectCreatetime.m_strValue);
-			////查询产品的信息
-			tbProject.GetProduct().SetProductId(tbProjectDao.m_productId.GetInt());
-			m_productDao.m_productId.SetValue(tbProjectDao.m_productId.GetInt());
-			isSuccess = m_productDao.SelectByKey();
-			if (isSuccess){
-				m_productDao.GetTableFieldValues(tbProject.GetProduct());
-			}
-			////查询用户信息
-			m_testerDao.m_key->SetValue(tbProject.GetTester().GetTesterId());
-			isSuccess = m_testerDao.SelectByKey();
-			if (isSuccess) m_testerDao.GetTableFieldValues(tbProject.GetTester());
-			////查询所有传感器参数信息
-
-			projectVector.push_back(tbProject);
-		}
+	for (auto projectDao : selectedValueVector){
+		TbProject tbProject;
+		projectDao.GetTableFieldValues(tbProject);
+		projectVector.push_back(tbProject);
 	}
 	return isSuccess;
 }

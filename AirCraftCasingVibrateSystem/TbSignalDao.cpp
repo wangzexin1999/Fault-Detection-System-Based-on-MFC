@@ -11,12 +11,14 @@ TbSignalDao::TbSignalDao()
 	SetVectorAndField("start_time", "CString", m_startTime);
 	SetVectorAndField("end_time", "CString", m_endTime);
 	SetVectorAndField("signal_type", "CString", m_signalType);
-	SetVectorAndField("sensor_id", "int", m_sensorId);
+	SetVectorAndField("sensor_id", "CString", m_sensorId);
 	SetVectorAndField("product_id", "int", m_productId);
 	SetVectorAndField("signal_status", "char", m_signalStatus);
 	SetVectorAndField("data_url", "CString", m_dataUrl);
 	SetVectorAndField("project_id", "int", m_projectId);
 	SetVectorAndField("testingdevice_id", "int", m_testingDeviceId);
+	SetVectorAndField("collectionstatus_para", "CString", m_collectionStatusPara);
+
 }
 
 TbSignalDao::TbSignalDao(const TbSignalDao & signal){
@@ -27,12 +29,13 @@ TbSignalDao::TbSignalDao(const TbSignalDao & signal){
 	SetVectorAndField("start_time", "CString", m_startTime);
 	SetVectorAndField("end_time", "CString", m_endTime);
 	SetVectorAndField("signal_type", "CString", m_signalType);
-	SetVectorAndField("sensor_id", "int", m_sensorId);
+	SetVectorAndField("sensor_id", "CString", m_sensorId);
 	SetVectorAndField("product_id", "int", m_productId);
 	SetVectorAndField("signal_status", "char", m_signalStatus);
 	SetVectorAndField("data_url", "CString", m_dataUrl);
 	SetVectorAndField("project_id", "int", m_projectId);
 	SetVectorAndField("testingdevice_id", "int", m_testingDeviceId);
+	SetVectorAndField("collectionstatus_para", "CString", m_collectionStatusPara);
 	operator = (signal);
 }
 
@@ -74,27 +77,26 @@ void TbSignalDao::GetTableFieldValues(TbSignal &signal){
 	signal.SetSignalId(m_signalId.GetInt());
 	signal.SetSignalStatus(m_signalStatus.GetInt());
 	signal.SetDataUrl(m_dataUrl.m_strValue);
-	signal.GetProduct().SetProductId(m_productId.GetInt());
+	signal.SetProductId(m_productId.GetInt());
 	signal.SetStartTime(m_startTime.m_strValue);
 	signal.SetEndTime(m_endTime.m_strValue);
-	////清空传感器参数集合
-	signal.GetSensor().SetId(m_sensorId.GetInt());
 	signal.SetSignalType(m_signalType.m_strValue);
-	signal.GetProject().SetProjectId(m_projectId.GetInt());
-	signal.GetTestingDevice().SetId(m_testingDeviceId.GetInt());
+	signal.SetProjectId(m_projectId.GetInt());
+	signal.SetTestingDeviceId(m_testingDeviceId.GetInt());
+	signal.SetSensorId(m_sensorId.m_strValue);
+	signal.SetCollectionStatusPara(m_collectionStatusPara.m_strValue);
 }
 
 void TbSignalDao::SetTableFieldValues(TbSignal signal){
-	m_projectId.SetValue(signal.GetProject().GetProjectId());
-	m_sensorId.SetValue(signal.GetSensor().GetSensorId());
+	m_projectId.SetValue(signal.GetProjectId());
+	m_sensorId.SetValue(signal.GetSensorId());
 	m_signalId.SetValue(signal.GetSignalId());
-	if (signal.GetSignalStatus() >= 0){
-		m_signalStatus.SetValue(signal.GetSignalStatus());
-	}
+	m_signalStatus.SetValue(signal.GetSignalStatus());
 	m_signalType.SetValue(signal.GetSignalType());
 	m_startTime.SetValue(signal.GetStartTime());
 	m_endTime.SetValue(signal.GetEndTime());
 	m_dataUrl.SetValue(signal.GetDataUrl());
-	m_productId.SetValue(signal.GetProduct().GetProductId());
-	m_testingDeviceId.SetValue(signal.GetTestingDevice().GetId());
+	m_productId.SetValue(signal.GetProductId());
+	m_testingDeviceId.SetValue(signal.GetTestingDeviceId());
+	m_collectionStatusPara.SetValue(signal.GetCollectionStatusPara());
 }

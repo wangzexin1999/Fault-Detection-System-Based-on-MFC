@@ -23,6 +23,7 @@ Modification:
 #include "TbProject.h"
 #include "SensorService.h"
 #include "ProjectService.h"
+#include "TesterService.h"
 //#include "Colle"
 #include"Result.h"
 class ProjectController
@@ -33,7 +34,7 @@ private:
 	ProductService m_productService;
 	ProjectService m_projectService;
 	CSensorService m_sensorService;
-
+	TesterService m_testerService;
 public:
 	ProjectController();
 	~ProjectController();

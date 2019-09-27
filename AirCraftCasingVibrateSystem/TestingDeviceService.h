@@ -20,13 +20,14 @@ Modification:
 #include"TbTestingDeviceDao.h"
 class TestingDeviceService
 {
+
+private:
+	TbTestingDeviceDao m_testingDeviceDao;
+
 public:
 	TestingDeviceService();
 
 	~TestingDeviceService();
-
-	TbTestingDeviceDao m_testingDeviceDao;
-
 	/**********************************************************************
 	功能描述： 加载所有的采集设备
 	输入参数： 查询到的检测设备集合
@@ -47,7 +48,17 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	bool GetAllTestingDeviceBySearchCondition(CString testingDeviceName, vector<TbTestingDevice> &testingDeviceVector);
+	bool GetAllTestingDeviceBySearchCondition(TbTestingDevice searchEntity, vector<TbTestingDevice> &testingDeviceVector);
+	/**********************************************************************
+	功能描述： 根据id查询采集设备
+	输入参数：  
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	bool GetOneById(TbTestingDevice &searchEntity);
 
 	/**********************************************************************
 	功能描述： 根据检测设备id删除检测设备

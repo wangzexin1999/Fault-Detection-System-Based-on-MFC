@@ -137,3 +137,7 @@ void CSignalSelectView::OnBnClickedOk()
 	m_selectedSensor = m_tempSelectedSensor;
 	CDialogEx::OnOK();
 }
+
+void CSignalSelectView::SetSensor(TbSensor sensor){
+	m_selectedSensor = sensor;
+}

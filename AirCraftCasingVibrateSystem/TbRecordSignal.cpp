@@ -69,10 +69,3 @@ TbTestingDevice & TbRecordSignal::GetTestingDevice(){
 void TbRecordSignal::SetTesingDevice(TbTestingDevice  testingDevice){
 	m_testingDevice = testingDevice;
 }
-
-void TbRecordSignal::SetSensorCount(int sensorCount){
-	m_sensorCount = sensorCount;
-}
-int TbRecordSignal::GetSensorCount(){
-	return m_sensorCount;
-}

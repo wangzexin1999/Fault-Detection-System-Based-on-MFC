@@ -82,7 +82,7 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	///设置mysql数据库信息
 	const char user[] = "root";         //username
 	const char pswd[] = "oxygen";         //password
-	const char host[] = "39.107.96.162";    //or"127.0.0.1" 39.107.96.162
+	const char host[] = "39.107.96.16";    //or"127.0.0.1" 39.107.96.162
 	const char table[] = "aircraftfaultdetectdb";        //database
 	unsigned int port = 3306;           //server port
 	/*连接远程数据库*/
@@ -110,7 +110,7 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	ProjectController projectController;
 	theApp.m_currentProject.SetProjectStatus(2);
 	vector<TbProject> selectProjectVec;
-	projectController.FindAllProjectBySearchCondition(theApp.m_currentProject, "", "",selectProjectVec);
+	projectController.FindAllProjectBySearchCondition(theApp.m_currentProject, "", "", selectProjectVec);
 	if (selectProjectVec.size() == 1)	{
 		theApp.m_currentProject = selectProjectVec[0];
 	}
@@ -178,7 +178,7 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	AddDocTemplate(pDocTemplate);
 
 	// 创建主 MDI 框架窗口
-	CMainFrame* pMainFrame = new CMainFrame;
+	CMainFrame* pMainFrame = new CMainFrame();
 	if (!pMainFrame || !pMainFrame->LoadFrame(IDR_MAINFRAME))
 	{
 		delete pMainFrame;
@@ -191,7 +191,13 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	CCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
 
-
+	///设置程序一开始不创建窗口
+	cmdInfo.m_nShellCommand = CCommandLineInfo::FileNothing;
+	
+	///根据最近一次打开的项目的传感器数量，创建指定数量的采集窗口
+	CMainFrame*pFrame = (CMainFrame*)m_pMainWnd;
+	pFrame->CreateSensorWindow(theApp.m_currentProject.GetSensorVector());
+	pFrame->MDITile(MDITILE_VERTICAL);//纵向平铺
 
 	// 调度在命令行中指定的命令。  如果
 	// 用 /RegServer、/Register、/Unregserver 或 /Unregister 启动应用程序，则返回 FALSE。

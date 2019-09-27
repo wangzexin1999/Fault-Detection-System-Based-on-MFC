@@ -33,4 +33,14 @@ public:
 	afx_msg void OnNMDblclkTreeSelectChannel(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnNMDblclkTreeSelectedChannel(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedOk();
+	/**********************************************************************
+	功能描述：设置采集窗口的传感器
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：设置采集窗口的传感器
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void SetSensor(TbSensor sensor);
 };

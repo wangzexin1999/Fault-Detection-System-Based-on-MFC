@@ -19,7 +19,9 @@ public:
 	PDAttribute m_sensorId;
 	PDAttribute m_projectId;
 	PDAttribute m_testingDeviceId;
+	PDAttribute m_collectionStatusPara;
 
+	
 	bool SelectObjectsByCondition(vector<TbSignalDao> &selectedValueVector, CString strSqlQueryWhere = "");
 	bool SelectObjectsByCondition(vector<TbSignalDao> &selectedValueVector, int iStartNumber, int iRecordCount, CString strSqlQueryWhere = "");
 

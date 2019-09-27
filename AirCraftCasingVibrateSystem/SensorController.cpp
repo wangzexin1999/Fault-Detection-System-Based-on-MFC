@@ -16,8 +16,13 @@ HANDLE  SensorController::m_popCollectDataQueueMutex = CreateMutex(NULL, FALSE, 
 
 HANDLE  SensorController::m_popSampleDataQueueMutex = CreateMutex(NULL, FALSE, NULL);
 
-Result SensorController::SaveCollectionData(int sensorId, ThreadSafeQueue<AcquiredSignal> &collectionData) {
-	Result res = m_sensorService.AddCollectData(theApp.m_currentProject, sensorId, collectionData);
+Result SensorController::SaveCollectionData(CString sensorId, ThreadSafeQueue<AcquiredSignal> &collectionData) {
+	TbSignal signal;
+	signal.SetProjectId(theApp.m_currentProject.GetProjectId());
+	signal.SetProductId(theApp.m_currentProject.GetProduct().GetProductId());
+	signal.SetTestingDeviceId(theApp.m_currentProject.GetTestingDevice().GetId());
+	signal.SetSensorId(sensorId);
+	Result res = m_sensorService.AddCollectData(signal,collectionData);
 	return res;
 }
 Result SensorController::SaveSampleData(int sensorId, ThreadSafeQueue<AcquiredSignal> &collectionData){

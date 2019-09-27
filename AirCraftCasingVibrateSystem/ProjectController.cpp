@@ -23,6 +23,7 @@ Result ProjectController::FindAllTestingDevice(vector<TbTestingDeviceDao> & tbTe
 }
 
 Result ProjectController::AddProject(TbProject &project){
+	project.SetProjectStatus(2);
 	/*1.先添加采集设备参数表*/
 	bool flag = m_testingDeviceService.AddTestingDevice(project.GetTestingDevice());
 	if (!flag) return Result(false, "采集参数创建失败");
@@ -39,11 +40,24 @@ Result ProjectController::AddProject(TbProject &project){
 }
 
 Result ProjectController::FindAllProjectBySearchCondition(TbProject project, CString startTime, CString endTime, vector<TbProject> &projectVector){
+	////查询项目的基本信息
 	bool flag = m_projectService.GetAllProjectBySearchCondition(project, startTime, endTime, projectVector);
-	if (flag){
-		return Result(true, "项目查询");
+	if (!flag)return Result(false, "项目加载失败");
+
+	for (int i = 0; i < projectVector.size();i++){
+		////查询项目的采集设备
+		flag = m_testingDeviceService.GetOneById(projectVector[i].GetTestingDevice());
+		if (!flag)return Result(false, "采集设备加载失败");
+		////查询项目的所有传感器
+		flag = m_sensorService.GetALLSensorByProjectId(projectVector[i].GetProjectId(), projectVector[i].GetSensorVector());
+		if (!flag)return Result(false, "传感器加载失败");
+		////查询项目对应的产品信息
+		flag = m_productService.GetProductByID(projectVector[i].GetProduct());
+		if (!flag)return Result(false, "产品加载失败");
+		////查询用户信息
+		flag = m_testerService.getOneById(projectVector[i].GetTester());
+		if (!flag)return Result(false, "用户加载失败");
+
 	}
-	else{
-		return Result(false, "项目查询失败");
-	}
+	return Result(true, "项目加载成功");
 }
