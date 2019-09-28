@@ -5,8 +5,8 @@
 #include "AirCraftCasingVibrateSystem.h"
 #include "StateSetDialog.h"
 #include "afxdialogex.h"
-
-
+#include "MainFrm.h"
+#include "Constant.h"
 // CStateSetDialog 对话框
 
 IMPLEMENT_DYNAMIC(CStateSetDialog, CDialogEx)
@@ -61,7 +61,8 @@ BOOL CStateSetDialog::OnInitDialog()
 	const Value & colectionPlans = doc["collectionPlans"].GetArray();
 	///拿到采集计划的标题信息 
 	const Value & planTitle = colectionPlans[selectedIndex]["planParaTitle"];
-	m_staticCurrentPlanPara.SetWindowTextA(strPlanName+"--参数：");
+	m_staticCurrentPlanPara.SetWindowTextA(strPlanName + "--参数：" + planTitle[0].GetString());
+
 	return TRUE; 
 }
 void CStateSetDialog::GridCtrlInit()
@@ -166,7 +167,8 @@ void CStateSetDialog::OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult){
 	NM_GRIDVIEW* pItem = (NM_GRIDVIEW*)pNotifyStruct;
 
 
-
+	CString strPlanName;
+	m_collectionPlanCombo.GetWindowTextA(strPlanName);
 	///得到当前选中的采集计划序号
 	int selectedIndex = m_collectionPlanCombo.GetCurSel();
 	if (selectedIndex < 0) return;
@@ -179,7 +181,12 @@ void CStateSetDialog::OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult){
 	const Value & planTitle = colectionPlans[selectedIndex]["planParaTitle"];
 	///拿到采集计划的参数信息
 	const Value & planParaContent = colectionPlans[selectedIndex]["planParaContent"];
+	CString currentPlanPara = planParaContent[pItem->iRow - 1][0].GetString();
 
-	const Value & currentPlanPara =  planParaContent[pItem->iRow - 1];
 
+	m_staticCurrentPlanPara.SetWindowTextA(strPlanName + "--参数：" + planTitle[0].GetString() + ":" + currentPlanPara);
+	theApp.m_collectionRotatingSpeed = currentPlanPara;
+	CMainFrame *mainFram = (CMainFrame *)AfxGetMainWnd();
+	mainFram->SendMessage(WM_SETTEXT);
+	mainFram->SendMessage(StatusInfMessage);
 }

@@ -4,3 +4,5 @@
 #define  INIFilePath "..\\IniFileGraphAttri.ini"
 
 #define  StatusBarTimer 66
+
+#define  StatusInfMessage 500

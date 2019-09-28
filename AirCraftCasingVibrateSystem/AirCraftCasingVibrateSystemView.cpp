@@ -142,8 +142,8 @@ void CAirCraftCasingVibrateSystemView::CaptureData(){
 			xData.push_back(j); ///X坐标
 			
 			///采集数据存入到队列中。
-			//AcquiredSignal acquiredSignal(m_readFromCSVFile[countN][j], DateUtil::GetCurrentCStringTime());
-			//m_collectionDataQueue.push(acquiredSignal);
+			AcquiredSignal acquiredSignal(m_readFromCSVFile[countN][j], DateUtil::GetCurrentCStringTime());
+			m_collectionDataQueue.push(acquiredSignal);
 			///采集数据存入到回显信号的输入数组
 			fftw_complex fftw;
 			fftw[0] = m_readFromCSVFile[countN][j];
