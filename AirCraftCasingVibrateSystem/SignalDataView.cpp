@@ -26,11 +26,12 @@ void CSignalDataView::DoDataExchange(CDataExchange* pDX)
 
 	CDialogEx::DoDataExchange(pDX);
 	DDX_GridControl(pDX, IDC_SIGNALDATA_GRIDCTRL, m_signalDataGridCtrl);
+	DDX_GridControl(pDX, IDC_PLAN_PARA, m_planParaGridCtrl);
 
 	DDX_Control(pDX, IDC_DATE_COMBO, m_dateSelectComboBox);
-	DDX_Control(pDX, IDC_PROJECTNAME_EDIT, m_projectNameEdit);
-	DDX_Control(pDX, IDC_PRODUCTNAME_EDIT, m_productNameEdit);
-	DDX_Control(pDX, IDC_ROTATINGSPEED_EDIT, m_rotatingSpeedEdit);
+	DDX_Control(pDX, IDC_COMBO_PRODUCT_NAME, m_comboxProductName);
+	DDX_Control(pDX, IDC_COMBO_PROJECT_NAME, m_combocProjectName);
+	DDX_Control(pDX, IDC_COMBO_PLAN_NAME, m_comboxPlanName);
 }
 
 
@@ -55,10 +56,11 @@ BOOL CSignalDataView::OnInitDialog()
 	m_dateSelectComboBox.InsertString(4,"最近半年");
 	m_dateSelectComboBox.InsertString(5,"最近一年");
 	m_dateSelectComboBox.SetCurSel(0);
-	m_projectNameEdit.SetWindowTextA(theApp.m_currentProject.GetProjectName());
+
 
 	////////查询数据文件表格数据
 	GridCtrlInit();
+	GridCtrlPlanParaInit();
 	/*Result res = m_signalController.FindAllRecordedSignalBySearchCondition(theApp.m_currentProject.GetProjectName(), "", "", "", m_signalVector);
 	if (res.GetIsSuccess()){
 		GridCtrlInit();
@@ -128,6 +130,54 @@ void CSignalDataView::GridCtrlInit(){
 	}
 }
 
+/**/
+void CSignalDataView::GridCtrlPlanParaInit()
+{
+	m_planParaGridCtrl.SetEditable(false);
+	m_planParaGridCtrl.SetTextBkColor(RGB(0xFF, 0xFF, 0xE0));//黄色背景
+	m_planParaGridCtrl.SetRowCount(0); //初始为n行
+	m_planParaGridCtrl.SetColumnCount(2); //初始化为5列
+	m_planParaGridCtrl.SetFixedRowCount(1); //表头为一行
+	m_planParaGridCtrl.SetRowResize(TRUE); ///自动设置行和列的大小
+	m_planParaGridCtrl.SetListMode(true); ////在选定一个单元格时，选择整行
+	m_planParaGridCtrl.ExpandColumnsToFit(true);
+	m_planParaGridCtrl.SetSingleRowSelection(true);
+
+
+	for (int row = 0; row < m_planParaGridCtrl.GetRowCount(); row++)
+	for (int col = 0; col < m_planParaGridCtrl.GetColumnCount(); col++)
+	{
+		//设置表格显示属性
+		GV_ITEM Item;
+		Item.mask = GVIF_TEXT | GVIF_FORMAT;
+		Item.row = row;
+		Item.col = col;
+
+		///设置表头内容
+		if (row == 0){
+			Item.nFormat = DT_CENTER | DT_WORDBREAK;
+			if (col == 0){
+				Item.strText.Format(_T("参数名"), 0);
+			}
+			if (col == 1){
+				Item.strText.Format(_T("值"), 0);
+			}
+			m_planParaGridCtrl.SetItem(&Item);
+			continue;
+		}
+
+		Item.nFormat = DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS;
+		CString strText;
+		if (col == 0) strText = theApp.m_currentProject.GetProjectName();
+		if (col == 1) strText = CommonUtil::GetFileNameFromFilePath(m_signalVector[row - 1].GetDataUrl());
+		if (col == 2) strText = m_signalVector[row - 1].GetStartTime();
+		if (col == 3) strText = m_signalVector[row - 1].GetEndTime();
+		if (col == 4) strText = m_signalVector[row - 1].GetSignalType();
+		Item.strText = strText;
+		m_planParaGridCtrl.SetItem(&Item);
+	}
+
+}
 ///项目的双击事件--》打开新项目
 void CSignalDataView::OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* /*pResult*/)
 {
@@ -161,12 +211,6 @@ void CSignalDataView::OnBnClickedSearchButton()
 	CString strSearchProjectName; 
 	CString strSearchProductName;
 	CString strSearchRoatatingSpeed;
-
-	
-
-	m_projectNameEdit.GetWindowTextA(strSearchProjectName);
-	m_productNameEdit.GetWindowTextA(strSearchProductName);
-	m_rotatingSpeedEdit.GetWindowTextA(strSearchRoatatingSpeed);
 
 	int testingIndex = m_dateSelectComboBox.GetCurSel();
 	CString strStartTime  ;

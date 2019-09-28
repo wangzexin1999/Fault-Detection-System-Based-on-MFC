@@ -24,18 +24,24 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 	CGridCtrl m_signalDataGridCtrl;
+	CGridCtrl m_planParaGridCtrl;
 	void GridCtrlInit();
 	DECLARE_MESSAGE_MAP()
-	CEdit m_projectNameEdit;
 	CComboBox m_dateSelectComboBox;
-	CEdit m_productNameEdit;
-	CEdit m_rotatingSpeedEdit;
-	
-
 	vector<TbSignal> m_signalVector;
 	SignalController m_signalController;
 	TbSignal m_selectedSignal;
-
+public:
+	/**********************************************************************
+	 功能描述：初始化计划参数界面 
+	 输入参数：
+	 输出参数： 
+	 返 回 值： 
+	 其它说明：
+	 修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void GridCtrlPlanParaInit();
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult);
@@ -43,4 +49,7 @@ public:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedSearchButton();
 	
+	CComboBox m_comboxProductName;
+	CComboBox m_combocProjectName;
+	CComboBox m_comboxPlanName;
 };

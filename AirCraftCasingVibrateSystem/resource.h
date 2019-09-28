@@ -111,7 +111,6 @@
 #define IDC_EDIT_PROJECTNAME            1014
 #define IDC_EDIT2                       1015
 #define IDC_EDIT_PASSWORD               1015
-#define IDC_BUTTON1                     1016
 #define IDC_BUTTON_EU_ADD               1016
 #define IDC_CHECK1                      1017
 #define IDC_CHECK_CHANNEL_ALARM         1017
@@ -229,8 +228,8 @@
 #define IDC_CHECK_STATISTIC_INF         1141
 #define IDC_CHECK_PEAK_VALUE            1142
 #define IDC_EDIT_COLLECTIONBATCHS       1143
-#define IDC_CUSTOM1                     1144
 #define IDC_CUSTOM_EU                   1144
+#define IDC_PLAN_PARA                   1144
 #define IDC_COLLECTIONPLANGRID          1145
 #define IDC_MFCBUTTON2                  1146
 #define IDC_COMBO_COLLECTIONPLAN        1147
@@ -248,6 +247,9 @@
 #define IDC_EDIT_REGISTER_QPSW          1160
 #define IDC_BUTTON_LOGINVIEW_REGISTER   1161
 #define IDC_BUTTON_EU_DELETE            1162
+#define IDC_COMBO_PRODUCT_NAME          1167
+#define IDC_COMBO_PROJECT_NAME          1168
+#define IDC_COMBO_PLAN_NAME             1169
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_CHECK2                       32771
 #define ID_COMBO2                       32772
@@ -314,9 +316,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        380
+#define _APS_NEXT_RESOURCE_VALUE        382
 #define _APS_NEXT_COMMAND_VALUE         32842
-#define _APS_NEXT_CONTROL_VALUE         1163
+#define _APS_NEXT_CONTROL_VALUE         1170
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif
