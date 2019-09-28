@@ -144,6 +144,8 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	void CloseAllWindows();
+	
+
 
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnWindowManager();
@@ -171,7 +173,6 @@ public:
 	afx_msg void OnBtnStopSample();///停止采样
 	afx_msg void OnBtnEngineeringUnit();///工程单位
 	afx_msg void OnBtnAlarmSet();///报警设置
-	afx_msg void OnButtonDetectDevice();///检测设备
 	afx_msg void OnButtonProduct();///产品
 
 	afx_msg void OnBtnTransverseAmplification();
@@ -199,6 +200,7 @@ public:
 	afx_msg void OnButton9();
 	afx_msg void OnCheckStaSet();
 	afx_msg void OnUpdateCheckStaSet(CCmdUI *pCmdUI);
+	afx_msg void OnClose();
 };
 
 
