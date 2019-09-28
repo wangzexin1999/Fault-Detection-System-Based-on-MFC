@@ -4,14 +4,13 @@
 
 TbRecordSignal::TbRecordSignal()
 {
+	m_signalId = 0;
 }
 
 
 TbRecordSignal::~TbRecordSignal()
 {
 }
-
-
 
 int TbRecordSignal::GetSignalId() {
 	return m_signalId;
@@ -39,11 +38,11 @@ void TbRecordSignal::SetSignalType(CString signalType) {
 }
 
 
-int TbRecordSignal::GetProductId() {
-	return m_productId;
+TbProduct & TbRecordSignal::GetProduct() {
+	return m_product;
 }
-void TbRecordSignal::SetProductId(int productId) {
-	this->m_productId = productId;
+void TbRecordSignal::SetProduct(TbProduct product) {
+	this->m_product = product;
 }
 char TbRecordSignal::GetSignalStatus() {
 	return m_signalStatus;
@@ -51,20 +50,20 @@ char TbRecordSignal::GetSignalStatus() {
 void TbRecordSignal::SetSignalStatus(char signal_status) {
 	this->m_signalStatus = signal_status;
 }
-void TbRecordSignal::SetProjectId(int projectId){
-	this->m_projectId = projectId;
+void TbRecordSignal::SetProject(TbProject project){
+	this->m_project = project;
 }
-int TbRecordSignal::GetProjectId(){
-	return this->m_projectId;
-}
-
-int TbRecordSignal::GetTestingDeviceId(){
-	return m_testingDeviceId;
+TbProject & TbRecordSignal::GetProject(){
+	return this->m_project;
 }
 
-void TbRecordSignal::SetTesingDeviceId(int  testingDeviceId){
-	m_testingDeviceId = testingDeviceId;
+TbTestingDevice & TbRecordSignal::GetTestingDevice(){
+	return m_testingDevice;
 }
+void TbRecordSignal::SetTesingDevice(TbTestingDevice  testingDevice){
+	m_testingDevice = testingDevice;
+}
+
 void TbRecordSignal::SetCollectionStatus(CString collectionStatus){
 	this->m_collectionStatus = collectionStatus;
 }

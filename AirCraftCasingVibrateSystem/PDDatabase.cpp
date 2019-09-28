@@ -199,6 +199,7 @@ bool PDDatabase::GetKeyIdList(vector<CString> &keyList, CString strSqlQueryWhere
 		m_strSqlQuery += " LIMIT " + strStartNumber + "," + strRecordCount;
 	}
 	
+	TRACE("\n.........................%s\n", m_strSqlQuery);
 	int res = theApp.PDsql.SelectMysqlOneFiled(keyList, m_strSqlQuery);
 	if (res > 0)
 	{

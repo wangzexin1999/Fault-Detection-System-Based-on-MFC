@@ -14,8 +14,8 @@ SignalService::~SignalService()
 bool SignalService::GetAllRecordedSignalBySearchCondition(TbRecordSignal signal, CString startTime, CString endTime, vector<TbRecordSignal> &signalVector){
 	/////1.封装查询条件
 	CString strSqlWhere = "1=1";
-	if (signal.GetProjectId() != 0) strSqlWhere += " and project_id='" + CommonUtil::Int2CString(signal.GetProjectId()) + "'";
-	if (signal.GetProductId() != 0) strSqlWhere += " and product_id =" + CommonUtil::Int2CString(signal.GetProductId());
+	if (signal.GetProject().GetProjectId() != 0) strSqlWhere += " and project_id='" + CommonUtil::Int2CString(signal.GetProject().GetProjectId()) + "'";
+	if (signal.GetProduct().GetProductId() != 0) strSqlWhere += " and product_id =" + CommonUtil::Int2CString(signal.GetProduct().GetProductId());
 	if (startTime != "" ) strSqlWhere += " and end_time >='" + startTime + "'";
 	if (endTime != "" ) strSqlWhere += " and start_time <='" + endTime + "'";
 

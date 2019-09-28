@@ -18,6 +18,9 @@ Modification:
 ************************************************************************/
 #pragma once
 #include "TbTestingDevice.h"
+#include "TbProduct.h"
+#include "TbTestingDevice.h"
+#include "TbProject.h"
 #include <vector>
 using namespace std;
 
@@ -34,10 +37,10 @@ private:
 	CString m_startTime;
 	CString m_endTime;
 	CString m_signalType;
-	int m_productId;
+	TbProduct m_product;
 	char m_signalStatus;
-	int m_projectId;
-	int m_testingDeviceId;
+	TbProject m_project;
+	TbTestingDevice m_testingDevice;
 	CString m_collectionStatus;
 	CString m_sensorInfo;
 
@@ -50,14 +53,18 @@ public:
 	void SetEndTime(CString endTime);
 	CString GetSignalType();
 	void SetSignalType(CString signalType);
-	int GetProductId();
-	void SetProductId(int product);
+	TbProduct & GetProduct();
+	void SetProduct(TbProduct product);
 	char GetSignalStatus();
 	void SetSignalStatus(char signal_status);
-	void SetProjectId(int projectId);
-	int  GetProjectId();
-	int  GetTestingDeviceId();
-	void SetTesingDeviceId(int  testingDeviceId);
+
+	void SetProject(TbProject project);
+	TbProject & GetProject();
+
+
+
+	TbTestingDevice & GetTestingDevice();
+	void SetTesingDevice(TbTestingDevice  testingDevice);
 	void SetCollectionStatus(CString collectionStatus);
 	CString GetCollectionStatus();
 	void SetSensorInfo(CString sensorInfo);

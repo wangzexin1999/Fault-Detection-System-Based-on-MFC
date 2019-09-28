@@ -47,7 +47,7 @@ public:
 	2019-07-30   1.0		马善涛		初始化	
 	----------------------------------------------------------------------
 	***********************************************************************/
-	Result FindAllRecordedSignalBySearchCondition(CString projectName, CString productType, CString rotatingSpeed, CString startTime, CString endTime, vector<TbRecordSignal> &signalVector);
+	Result FindAllRecordSignalBySearchCondition(TbRecordSignal searchEntity, vector<TbRecordSignal> &signalVector);
 	
 	/**********************************************************************
 	功能描述：保存采集的数据

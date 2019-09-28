@@ -69,28 +69,27 @@ bool TbRecordSignalDao::SelectObjectsByCondition(vector<TbRecordSignalDao> &sele
 	}
 }
 void TbRecordSignalDao::GetTableFieldValues(TbRecordSignal &signal){
-	//signal.SetSignalId(m_signalId.GetInt());
-	//signal.SetSignalStatus(m_signalStatus.GetInt());
-	//signal.SetDataUrl(m_dataUrl.m_strValue);
-	//signal.GetProduct().SetProductId(m_productId.GetInt());
-	//signal.SetStartTime(m_startTime.m_strValue);
-	//signal.SetEndTime(m_endTime.m_strValue);
-	//////清空传感器参数集合
-	//signal.GetSensor().SetId(m_sensorId.GetInt());
-	//signal.SetSignalType(m_signalType.m_strValue);
-	//signal.GetProject().SetProjectId(m_projectId.GetInt());
-	//signal.GetTestingDevice().SetId(m_testingDeviceId.GetInt());
+	signal.SetSignalId(m_signalId.GetInt());
+	signal.SetSignalStatus(m_signalStatus.GetInt());
+	signal.GetProduct().SetProductId(m_productId.GetInt());
+	signal.SetStartTime(m_startTime.m_strValue);
+	signal.SetEndTime(m_endTime.m_strValue);
+	signal.SetSignalType(m_signalType.m_strValue);
+	signal.GetProject().SetProjectId(m_projectId.GetInt());
+	signal.GetTestingDevice().SetId(m_testingDeviceId.GetInt());
+	signal.SetSensorInfo(m_sensorInfo.m_strValue);
+	signal.SetCollectionStatus(m_collectionStatus.m_strValue);
 }
 
 void TbRecordSignalDao::SetTableFieldValues(TbRecordSignal signal){
-	m_projectId.SetValue(signal.GetProjectId());
+	m_projectId.SetValue(signal.GetProject().GetProjectId());
 	m_signalId.SetValue(signal.GetSignalId());
 	m_signalStatus.SetValue(signal.GetSignalStatus());
 	m_signalType.SetValue(signal.GetSignalType());
 	m_startTime.SetValue(signal.GetStartTime());
 	m_endTime.SetValue(signal.GetEndTime());
-	m_productId.SetValue(signal.GetProductId());
-	m_testingDeviceId.SetValue(signal.GetTestingDeviceId());
+	m_productId.SetValue(signal.GetProduct().GetProductId());
+	m_testingDeviceId.SetValue(signal.GetTestingDevice().GetId());
 	m_collectionStatus.SetValue(signal.GetCollectionStatus());
-	m_sensorInfo.SetValue(signal.GetSensorInfo());\
+	m_sensorInfo.SetValue(signal.GetSensorInfo());
 }

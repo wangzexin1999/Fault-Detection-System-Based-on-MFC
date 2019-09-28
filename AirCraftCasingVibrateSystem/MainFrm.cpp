@@ -655,9 +655,11 @@ void CMainFrame::OnBtnStartSmaple()
 	}
 	/*开始采样，记录开始采集时间*/
 	theApp.m_recordSignal.SetStartTime(DateUtil::GetCurrentCStringTime());
-	theApp.m_recordSignal.SetProjectId(theApp.m_currentProject.GetProjectId()); 
-	theApp.m_recordSignal.SetProjectId(theApp.m_currentProject.GetProduct().GetProductId());
-	theApp.m_recordSignal.SetTesingDeviceId(theApp.m_currentProject.GetTestingDevice().GetId());
+	theApp.m_recordSignal.SetProject(theApp.m_currentProject);
+	theApp.m_recordSignal.SetProduct(theApp.m_currentProject.GetProduct());
+	theApp.m_recordSignal.SetTesingDevice(theApp.m_currentProject.GetTestingDevice());
+	theApp.m_recordSignal.SetCollectionStatus(theApp.m_jsonCollectionStatusPara);
+
 }
 
 // 停止采样
