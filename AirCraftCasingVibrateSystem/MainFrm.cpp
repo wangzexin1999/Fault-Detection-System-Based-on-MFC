@@ -90,6 +90,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_CHECK_STA_SET, &CMainFrame::OnCheckStaSet)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_STA_SET, &CMainFrame::OnUpdateCheckStaSet)
 	ON_WM_CLOSE()
+	ON_MESSAGE(StatusInfMessage, OnStatusInf)
 END_MESSAGE_MAP()
 
 // CMainFrame 构造/析构
@@ -187,6 +188,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	EnableWindowsDialog(ID_WINDOW_MANAGER, ID_WINDOW_MANAGER, TRUE);
 	SendMessage(WM_SETTEXT);
 	
+	HBITMAP hBmpAnimationList = NULL;
+	COLORREF clrTrnsp = RGB(255, 0, 0);
 	CString title;
 	CString product = "未知产品";
 	CString project = "未知项目";
@@ -200,17 +203,17 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (theApp.m_collectionRotatingSpeed != "") rotatingSpeed = theApp.m_collectionRotatingSpeed;
 	title = product + "-" + project + "-" + rotatingSpeed + "-" + tester;
 
-	HBITMAP hBmpAnimationList =NULL;
 
 	//设置状态栏的字体
 	CFont* fontstatus = new CFont;
 	fontstatus->CreateFont(15, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0, GB2312_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_MODERN, _T("黑体"));
 	m_wndStatusBar.SetFont(fontstatus);
-	COLORREF clrTrnsp = RGB(255, 0, 0);
+
 	m_wndStatusBar.AddElement(new CMFCRibbonStatusBarPane(10000, _T(title), hBmpAnimationList, clrTrnsp), _T("参数状态"));
 	m_wndStatusBar.AddElement(new CMFCRibbonStatusBarPane(10001, _T("版权所有 哈尔滨理工大学人工智能实验室"), hBmpAnimationList, clrTrnsp), _T("版权"));
 	/*状态栏显示时间*/
 	SetTimer(66, 1000, NULL);//安装定时器，并将其时间间隔设为1000毫秒
+	SendMessage(StatusInfMessage);
 	return 0;
 }
 
@@ -1121,4 +1124,26 @@ void CMainFrame::OnClose()
 	// TODO:  在此添加消息处理程序代码和/或调用默认值
 	KillTimer(StatusBarTimer);
 	CMDIFrameWndEx::OnClose();
+}
+
+
+LRESULT CMainFrame::OnStatusInf(WPARAM wParam, LPARAM lParam)
+{
+	//TODO: Add your message handle code
+	CString title;
+	CString product = "未知产品";
+	CString project = "未知项目";
+	CString rotatingSpeed = "未知转速";
+	CString tester = "未知人";
+	CString sensor = "未知传感器";
+
+	if (theApp.m_currentProject.GetProduct().GetProductType() != "") product = theApp.m_currentProject.GetProduct().GetProductType();
+	if (theApp.m_currentProject.GetProjectName() != "") project = theApp.m_currentProject.GetProjectName();
+	if (theApp.m_currentProject.GetTester().GetTesterName() != "") tester = theApp.m_currentProject.GetTester().GetTesterName();
+	if (theApp.m_collectionRotatingSpeed != "") rotatingSpeed = theApp.m_collectionRotatingSpeed;
+	title = product + "-" + project + "-" + rotatingSpeed + "-" + tester;
+	CMFCRibbonBaseElement *pElement = m_wndStatusBar.FindElement(10000);
+	pElement->SetText(title);
+	pElement->Redraw();
+	return 0;
 }

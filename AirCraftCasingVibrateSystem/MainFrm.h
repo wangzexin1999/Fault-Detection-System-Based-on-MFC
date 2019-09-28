@@ -148,7 +148,7 @@ public:
 	void CloseAllWindows();
 	
 
-
+	afx_msg LRESULT OnStatusInf(WPARAM wParam, LPARAM lParam); // 自定义状态信息改变消息
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnWindowManager();
 	afx_msg void OnApplicationLook(UINT id);

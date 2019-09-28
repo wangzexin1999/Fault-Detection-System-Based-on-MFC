@@ -61,6 +61,7 @@ Result CSensorService::AddCollectData(TbSignal &signal, ThreadSafeQueue<Acquired
 	{
 		//调用FileUtil保存文件，保存成功返回采集的结束时间
 		res = CFileUtil::SaveCollectionData(path, fileName, collectionData);
+
 		if (res.GetIsSuccess()){
 		///文件保存成功，将记录保存到数据库
 		signal.SetDataUrl(path + fileName);
