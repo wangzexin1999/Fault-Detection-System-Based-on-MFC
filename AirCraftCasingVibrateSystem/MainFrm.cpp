@@ -469,8 +469,9 @@ void CMainFrame::OnButtonProjectManage()
 void CMainFrame::OnButtonOpenDataFile()
 {
 	// TODO:  在此添加命令处理程序代码
-	CSignalDataView signalDataView;
-	if (signalDataView.DoModal() == IDOK)
+	CSignalDataView sampleDataView;
+
+	if (sampleDataView.DoModal() == IDOK)
 	{
 		// 如果可以连接服务器，根据条件查询服务器数据
 		// 否则查询本体数据
