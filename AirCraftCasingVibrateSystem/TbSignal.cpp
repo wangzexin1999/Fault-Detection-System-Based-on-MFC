@@ -2,10 +2,14 @@
 #include "TbSignal.h"
 
 
-TbSignal::TbSignal(int signalId, int sensorCount)
+TbSignal::TbSignal(int signalId)
 {
-	m_signalId = signalId;
-	m_sensorCount = sensorCount;
+
+	m_signalId = 0;
+	m_productId = 0;
+	m_signalStatus = 0;
+	m_projectId = 0;
+	m_testingDeviceId = 0;
 }
 
 
@@ -39,11 +43,11 @@ void TbSignal::SetSignalType(CString signalType) {
 }
 
 
-TbProduct & TbSignal::GetProduct() {
-	return m_product;
+int TbSignal::GetProductId() {
+	return m_productId;
 }
-void TbSignal::SetProduct(TbProduct product) {
-	this->m_product = product;
+void TbSignal::SetProductId(int productId) {
+	this->m_productId = productId;
 }
 char TbSignal::GetSignalStatus() {
 	return m_signalStatus;
@@ -57,28 +61,27 @@ CString TbSignal::GetDataUrl() {
 void TbSignal::SetDataUrl(CString dataUrl) {
 	this->m_dataUrl = dataUrl;
 }
-void TbSignal::SetProject(TbProject project){
-	this->m_project = project;
+void TbSignal::SetProjectId(int projectId){
+	this->m_projectId = projectId;
 }
-TbProject & TbSignal::GetProject(){
-	return this->m_project;
+int   TbSignal::GetProjectId(){
+	return this->m_projectId;
 }
-TbSensor & TbSignal::GetSensor(){
-	return m_sensor;
+CString   TbSignal::GetSensorId(){
+	return m_sensorId;
 }
-void TbSignal::SetSensor(TbSensor  sensor){
-	m_sensor = sensor;
+void TbSignal::SetSensorId(CString  sensorId){
+	m_sensorId = sensorId;
 }
-TbTestingDevice & TbSignal::GetTestingDevice(){
-	return m_testingDevice;
+int   TbSignal::GetTestingDeviceId(){
+	return m_testingDeviceId;
 }
-void TbSignal::SetTesingDevice(TbTestingDevice  testingDevice){
-	m_testingDevice = testingDevice;
+void TbSignal::SetTestingDeviceId(int  testingDeviceId){
+	m_testingDeviceId = testingDeviceId;
 }
-
-void TbSignal::SetSensorCount(int sensorCount){
-	m_sensorCount = sensorCount;
+void TbSignal::SetCollectionStatusPara(CString para){
+	m_collectionStatusPara = para;
 }
-int TbSignal::GetSensorCount(){
-	return m_sensorCount;
+CString TbSignal::GetCollectionStatusPara(){
+	return m_collectionStatusPara;
 }

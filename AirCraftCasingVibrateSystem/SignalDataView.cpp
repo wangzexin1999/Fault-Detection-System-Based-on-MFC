@@ -122,7 +122,7 @@ void CSignalDataView::GridCtrlInit(){
 		if (col == 2) strText = m_signalVector[row - 1].GetStartTime();
 		if (col == 3) strText = m_signalVector[row - 1].GetEndTime();
 		if (col == 4) strText = m_signalVector[row - 1].GetSignalType();
-		if (col == 5) strText = m_signalVector[row - 1].GetProduct().GetProductName();
+		//if (col == 5) strText = m_signalVector[row - 1].GetProduct().GetProductName();
 		Item.strText=strText;
 		m_signalDataGridCtrl.SetItem(&Item);
 	}

@@ -12,10 +12,12 @@ TestingDeviceController::~TestingDeviceController()
 }
 Result TestingDeviceController::FindAllTestingDeviceBySearchCondition(CString testingDeviceName, vector<TbTestingDevice> &testingDeviceVector){
 	testingDeviceVector.clear();
-	bool isSuccess = m_testingDeviceService.GetAllTestingDeviceBySearchCondition(testingDeviceName, testingDeviceVector);
+	TbTestingDevice searchEntity;
+	
+	/*bool isSuccess = m_testingDeviceService.GetAllTestingDeviceBySearchCondition(testingDeviceName, testingDeviceVector);
 	if (isSuccess){
-		return Result(true,"查询成功");
-	}
+	return Result(true,"查询成功");
+	*/
 	return Result(false, "查询失败");
 }
 

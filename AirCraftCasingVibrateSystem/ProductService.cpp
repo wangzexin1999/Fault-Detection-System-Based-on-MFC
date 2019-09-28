@@ -41,7 +41,14 @@ bool ProductService::DeletProductByID(TbProduct product)
 	bool isSuccess = m_productDao.DeleteByKey();
 	return isSuccess;
 }
-
+bool ProductService::GetProductByID(TbProduct &product){
+	m_productDao.m_productId.SetValue(product.GetProductId());
+	bool isSuccess = m_productDao.SelectByKey();
+	if (isSuccess){
+		m_productDao.GetTableFieldValues(product);
+	}
+	return isSuccess;
+}
 bool ProductService::UpdateProduct(TbProduct product)
 {
 	m_productDao.SetTableFieldValues(product);

@@ -51,14 +51,14 @@ public:
 	EchoSignal FrontEchoSignalQueue();
 	/**********************************************************************
 	功能描述：保存采集数据
-	输入参数：当前项目,需要保存的队列集合，需要保存的数量 
+	输入参数：封装好的signal对象，需要保存的信号队列
 	输出参数：
 	返 回 值：
 	其它说明：
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	Result AddCollectData(TbProject project, int sensorId, ThreadSafeQueue<AcquiredSignal> &collectionData);
+	Result AddCollectData(TbSignal &signal, ThreadSafeQueue<AcquiredSignal> &collectionData);
 	/**********************************************************************
 	功能描述：保存数据
 	输入参数：当前项目,需要保存的队列集合，需要保存的数量

@@ -43,7 +43,9 @@ private:
 	CDuChartCtrl m_chart; // 画图控件
 	CChartLineSerieDu *m_pLineSerie; // 线
 	int m_flag = false;  // 调整控件大小标志
+	
 	CSignalSelectView  m_signalSelectView;   //信号选择界面
+
 	SensorController m_sensorController; ///传感器控制类
 	ThreadSafeQueue<EchoSignal>  m_echoSignalQueue; // 回显信号队列
 	int m_icurrentWindowNumber;  // 窗口
@@ -252,7 +254,16 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	void SplitVector(SmartArray<double> &dXData, SmartArray<double> &dYData,int nNums);
-
+	/**********************************************************************
+	功能描述：设置采集窗口的传感器
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：设置采集窗口的传感器
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void SetSensor(TbSensor sensor);
 // 重写
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);

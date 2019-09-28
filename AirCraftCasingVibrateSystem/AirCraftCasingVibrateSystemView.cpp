@@ -175,7 +175,7 @@ void CAirCraftCasingVibrateSystemView::CaptureData(){
 		fftwInput.clear();
 		xData.clear();
 		yData.clear();
-		Sleep(15);
+		//Sleep(15);
 		//清空实时信号
 		//m_realTimeSignal.GetRealTimeSignalData().clear();
 		//m_realTimeSignal.GetRealTimeSignalTime().clear();
@@ -223,12 +223,14 @@ void  CAirCraftCasingVibrateSystemView::RefershChartCtrlData(){
 
 ////保存采集数据的线程函数
 void  CAirCraftCasingVibrateSystemView::AutoSaveCollectionData(){
+	
+
 	////调用传感器Controller类保存采集数据
 	while (theApp.m_bIsAutoSaveCollectionData){
 		ThreadSafeQueue<AcquiredSignal> acquireSignalThreadQueue;
 		///如果当前结束采集了，并且缓冲区队列中的元素不够储存数目,开线程保存最后采集的数据
-		if (theApp.m_icollectionStatus == 0 && 
-				m_collectionDataQueue.size()<theApp.m_icollectSignalsStoreCount){
+		if (theApp.m_icollectionStatus == 0 &&
+			m_collectionDataQueue.size() < theApp.m_icollectSignalsStoreCount){
 			theApp.m_bIsAutoSaveCollectionData = false;
 			thread t(&CAirCraftCasingVibrateSystemView::SaveCollectionData, this, m_collectionDataQueue);
 			t.detach();
@@ -242,17 +244,15 @@ void  CAirCraftCasingVibrateSystemView::AutoSaveCollectionData(){
 		}
 
 		acquireSignalThreadQueue.size();
-		// 如果可连接服务器，发数据到服务器，否则保存本地
-	
+
 		thread t(&CAirCraftCasingVibrateSystemView::SaveCollectionData, this, acquireSignalThreadQueue);
 		t.detach();
-
 	}
 }
 
 ////保存采集数据
 void CAirCraftCasingVibrateSystemView::SaveCollectionData(ThreadSafeQueue<AcquiredSignal> acquireSignalQueue){
-	m_sensorController.SaveCollectionData(m_signalSelectView.GetSelectedSensor().GetId(), acquireSignalQueue);
+	m_sensorController.SaveCollectionData(m_signalSelectView.GetSelectedSensor().GetSensorId(), acquireSignalQueue);
 }
  
 ////开启线程自动保存线程函数
@@ -564,7 +564,9 @@ void CAirCraftCasingVibrateSystemView::SplitVector(SmartArray<double> &dXData, S
 			m_icountNumsReadDraw = 0;
 			KillTimer(m_iSampleDataEchoTimerNum);
 		}
-		
 	}
+}
 
+void  CAirCraftCasingVibrateSystemView::SetSensor(TbSensor sensor){
+	m_signalSelectView.SetSensor(sensor);
 }

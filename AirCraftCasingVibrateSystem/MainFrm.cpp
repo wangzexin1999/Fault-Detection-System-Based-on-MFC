@@ -173,7 +173,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	// 启用增强的窗口管理对话框
 	EnableWindowsDialog(ID_WINDOW_MANAGER, ID_WINDOW_MANAGER, TRUE);
-
+	SendMessage(WM_SETTEXT);
+	
 	return 0;
 }
 
@@ -833,15 +834,20 @@ LRESULT CMainFrame::OnSetText(WPARAM wParam, LPARAM lParam)
 	if (theApp.m_currentProject.GetTester().GetTesterName() != "") tester = theApp.m_currentProject.GetTester().GetTesterName();
 	if (theApp.m_collectionRotatingSpeed != "") rotatingSpeed = theApp.m_collectionRotatingSpeed;
 	
-	CAirCraftCasingVibrateSystemView *selectedView;
-	selectedView = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
+	CAirCraftCasingVibrateSystemView *selectedView = NULL;
+	///获取当前的激活窗口
+	CWnd* activeWind = (AfxGetApp()->m_pMainWnd);
+	if (activeWind != NULL){
+		///如果窗口不为空的话
+		selectedView = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
+	}
 	if (selectedView != NULL) sensor = selectedView->GetDocument()->GetTitle();
 	title = product + "-" + project + "-" + rotatingSpeed + "-" + tester + "-" + "(" + sensor + ")";
-
 	lParam = (LPARAM)title.GetBuffer();
 	DefWindowProc(WM_SETTEXT, wParam, lParam);
 	Invalidate();
 	return 0;
+
 }
 
 
@@ -930,7 +936,14 @@ void CMainFrame::CreateSensorWindow(vector<TbSensor> vsensor){
 		{
 			CDocTemplate* curTemplate = pApp->GetNextDocTemplate(curTemplatePos);
 			CDocument * pdoc = curTemplate->OpenDocumentFile(NULL);
+			////获得新建的文档的view类
+			POSITION pos = pdoc->GetFirstViewPosition();
 			pdoc->SetTitle(vsensor[i].GetSensorDesc());
+			while (pos != NULL){
+				CAirCraftCasingVibrateSystemView* pView = (CAirCraftCasingVibrateSystemView*)pdoc->GetNextView(pos);
+				/////设置传感器
+				pView->SetSensor(vsensor[i]);
+			}
 		}
 	}
 }

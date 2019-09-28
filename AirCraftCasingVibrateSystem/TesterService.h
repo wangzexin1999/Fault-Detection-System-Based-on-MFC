@@ -10,6 +10,7 @@ public:
 	~TesterService();
 
 	bool getOneByCondition(TbTester &tester);
+	bool getOneById(TbTester &tester);
 	/**********************************************************************
 	 功能描述： 
 	 输入参数：

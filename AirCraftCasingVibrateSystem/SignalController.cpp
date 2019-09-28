@@ -33,7 +33,7 @@ Result SignalController::FindAllRecordedSignalBySearchCondition(CString projectN
 		///遍历项目集合，查询指定项目id的采样数据文件
 		int projectId = project.GetProjectId();
 		TbSignal searchSignal;
-		searchSignal.GetProject().SetProjectId(projectId);
+		searchSignal.SetProjectId(projectId);
 		isSuccess = m_signalService.GetAllRecordedSignalBySearchCondition(searchSignal, startTime, endTime, signalVector);
 		if (!isSuccess){ return Result(false, "数据查询失败"); }
 	}
@@ -44,9 +44,9 @@ Result SignalController::FindAllRecordedSignalBySearchCondition(CString projectN
 		for (vector<TbSignal>::iterator it = res.begin()+1; it != res.end(); it++) {
 			if (it->GetStartTime() == signalVector[i].GetStartTime() &&
 				it->GetEndTime() == signalVector[i].GetEndTime() &&
-				it->GetProduct().GetProductId() == signalVector[i].GetProduct().GetProductId() &&
-				it->GetProject().GetProjectId() == signalVector[i].GetProject().GetProjectId() &&
-				it->GetSensor().GetSensorId() != signalVector[i].GetSensor().GetSensorId()){
+				it->GetProductId() == signalVector[i].GetProductId() &&
+				it->GetProjectId() == signalVector[i].GetProjectId() &&
+				it->GetSensorId() != signalVector[i].GetSensorId()){
 			    
 				it = res.erase(it);
 				it--;

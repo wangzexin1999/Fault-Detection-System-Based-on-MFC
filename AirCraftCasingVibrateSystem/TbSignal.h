@@ -9,23 +9,22 @@ using namespace std;
 class TbSignal
 {
 public:
-	TbSignal(int signalId = 0, int sensorCount = 0);
+	TbSignal(int signalId = 0);
 	~TbSignal();
 
 private:
-	int m_signalId;
-	
-	TbProject m_project;
 
+	int m_signalId;
 	CString m_startTime;
 	CString m_endTime;
 	CString m_signalType;
-	TbSensor m_sensor;
-	TbProduct m_product;
+	int m_productId;
 	char m_signalStatus;
 	CString m_dataUrl;
-	TbTestingDevice m_testingDevice;
-	int m_sensorCount; ////传感器数量
+	CString m_sensorId;
+	int  m_projectId;
+	int m_testingDeviceId;
+	CString m_collectionStatusPara;
 
 public:
 	int GetSignalId();
@@ -36,25 +35,22 @@ public:
 	void SetEndTime(CString endTime);
 	CString GetSignalType();
 	void SetSignalType(CString signalType);
-	TbProduct & GetProduct();
-	void SetProduct(TbProduct product);
+	int   GetProductId();
+	void SetProductId(int productId);
 	char GetSignalStatus();
 	void SetSignalStatus(char signal_status);
 	CString GetDataUrl();
 	void SetDataUrl(CString data_url);
+	void SetProjectId(int projectId);
+	int   GetProjectId();
+	CString   GetSensorId();
+	void SetSensorId(CString  sensorId);
+	int  GetTestingDeviceId();
+	void SetTestingDeviceId(int  testingDeviceId);
+	
+	void SetCollectionStatusPara(CString para);
+	CString GetCollectionStatusPara();
 
-	void SetProject(TbProject project);
-	TbProject & GetProject();
-
-	TbSensor & GetSensor();
-	void SetSensor(TbSensor  sensor);
-
-
-	TbTestingDevice & GetTestingDevice();
-	void SetTesingDevice(TbTestingDevice  testingDevice);
-
-	void SetSensorCount(int sensorCount);
-	int GetSensorCount();
 
 };
 

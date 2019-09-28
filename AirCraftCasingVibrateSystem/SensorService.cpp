@@ -41,13 +41,13 @@ double CSensorService::randf(double min, double max)
 	return resultInteger / 10000.0;
 }
 
-Result CSensorService::AddCollectData(TbProject project, int sensorId, ThreadSafeQueue<AcquiredSignal> &collectionData){
+Result CSensorService::AddCollectData(TbSignal &signal, ThreadSafeQueue<AcquiredSignal> &collectionData){
 	///1.拼装保存路径
 	CString path = "C:\\collectionData\\";
 	//2.拼装文件名 项目id_测试设备id_传感器id_产品id_时间戳
-	CString fileName = CommonUtil::Int2CString(project.GetProjectId()) + "-"
-		+ CommonUtil::Int2CString(project.GetTestingDevice().GetId())
-		+ "-" + CommonUtil::Int2CString(sensorId) + "-" + CommonUtil::Int2CString(project.GetProduct().GetProductId())
+	CString fileName = CommonUtil::Int2CString(signal.GetProjectId()) + "-"
+		+ CommonUtil::Int2CString(signal.GetTestingDeviceId())
+		+ "-" + signal.GetSensorId() + "-" + CommonUtil::Int2CString(signal.GetProductId())
 		+ "-" + DateUtil::GetTimeStampCString()
 		+ ".csv";
 
@@ -61,13 +61,9 @@ Result CSensorService::AddCollectData(TbProject project, int sensorId, ThreadSaf
 		res = CFileUtil::SaveCollectionData(path, fileName, collectionData);
 		if (res.GetIsSuccess()){
 		///文件保存成功，将记录保存到数据库
-		TbSignal signal;
 		signal.SetDataUrl(path + fileName);
-		signal.SetProject (project);
-		signal.SetProduct(project.GetProduct());
 		signal.SetStartTime(startCollectTime);
 		signal.SetEndTime(res.GetMessages());
-		signal.GetSensor().SetId(sensorId);
 		//signal.GetTestingDevice().SetTestingdeviceId(project.GetTestingDevicePara().GetTestingdevice().GetId());
 		m_signalDao.SetTableFieldValues(signal);
 		m_signalDao.Insert(false);
@@ -92,12 +88,12 @@ Result CSensorService::AddCollectData(TbProject project, int sensorId, ThreadSaf
 		// 如果可以连接上服务器，传数据
 		httplib::MultipartFormDataItems items = {
 			{ "data", allData.GetBuffer(), "1.txt", "text/plain" },//数据
-			{ "projectID", CommonUtil::Int2CString(project.GetProduct().GetProductId()).GetBuffer(), "", "" },
+			{ "projectID", CommonUtil::Int2CString(signal.GetProductId()).GetBuffer(), "", "" },
 			//{ "checkDeviceID", CommonUtil::Int2CString(project.GetTestingDevicePara().GetTestingdevice().GetId()).GetBuffer(), "", "" },
-			{ "sensorID", CommonUtil::Int2CString(sensorId).GetBuffer(), "", "" },
+			{ "sensorID", signal.GetSensorId().GetBuffer(), "", "" },
 			{ "startTime", startCollectTime.GetBuffer(), "", "" },
 			{ "endTime", endTime.GetBuffer(), "", "" },
-			{ "productID", CommonUtil::Int2CString(project.GetProduct().GetProductId()).GetBuffer(), "", "" },
+			{ "productID", CommonUtil::Int2CString(signal.GetProductId()).GetBuffer(), "", "" },
 		};
 		auto result = theApp.m_cli.Post("/collection", items);
 		if (!result)//如果没有发送成功，则重新发送
@@ -141,12 +137,12 @@ Result CSensorService::AddSampleData(TbProject project, int sensorId, ThreadSafe
 		///4.文件保存成功，将记录保存到数据库
 		TbSignal signal;
 		signal.SetDataUrl(path + fileName);
-		signal.SetProject(project );
-		signal.SetProduct(project.GetProduct());
+		signal.SetProjectId(project.GetProjectId());
+		signal.SetProductId(project.GetProduct().GetProductId());
 		signal.SetStartTime(startCollectTime);
 		signal.SetEndTime(res.GetMessages());
-		signal.GetSensor().SetId(sensorId);
-		signal.GetTestingDevice().SetId(project.GetTestingDevice().GetId());
+		/*signal.GetSensor().SetId(sensorId);
+		signal.GetTestingDevice().SetId(project.GetTestingDevice().GetId());*/
 		m_recordSignalDao.SetTableFieldValues(signal);
 		m_recordSignalDao.Insert(false);
 	}
