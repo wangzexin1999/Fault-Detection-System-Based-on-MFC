@@ -18,7 +18,6 @@ bool TesterService::getOneByCondition(TbTester &tester){
 	m_testerDao.GetTableFieldValues(tester);
 	return flag;
 }
-<<<<<<< HEAD
 bool  TesterService::getOneById(TbTester &tester){
 	m_testerDao.m_testerId.SetValue(tester.GetTesterId());
 	bool isSuccess = m_testerDao.SelectByKey();
@@ -27,7 +26,6 @@ bool  TesterService::getOneById(TbTester &tester){
 	}
 	return isSuccess;
 }
-=======
 
 bool TesterService::AddTester(TbTester tester)
 {
@@ -36,4 +34,3 @@ bool TesterService::AddTester(TbTester tester)
 
 	return flag;
 }
->>>>>>> d2ee4f8bb3ab259e3eb270f0d4a87a0a6c04302c
