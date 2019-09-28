@@ -125,12 +125,16 @@ void CSignalDataView::GridCtrlInit(){
 		////1.解析采集状态
 		Document doc;
 		doc.Parse(m_signalVector[row - 1].GetCollectionStatus());
+
+		if (doc.HasParseError()){ continue; }
+
 		CString collectionPlan = ((string)doc["collectionPlan"].GetString()).c_str();
 		const Value& collectionPlanPara = doc["collectionPlanPara"];
 		////2.解析通道信息
+		int	channelCount = 0;
 		doc.Parse(m_signalVector[row - 1].GetSensorInfo());
-		CString	channelCount = doc["channelCount"].GetString();
-
+		if (doc.HasParseError()){ continue; }
+		channelCount = doc["channelCount"].GetInt();
 		for (int col = 0; col < m_signalDataGridCtrl.GetColumnCount(); col++)
 		{
 			//设置表格显示属性
@@ -143,7 +147,7 @@ void CSignalDataView::GridCtrlInit(){
 			if (col == 0) strText = m_signalVector[row - 1].GetProduct().GetProductName();
 			if (col == 1) strText = m_signalVector[row - 1].GetProject().GetProjectName();
 			if (col == 2) strText = m_signalVector[row - 1].GetStartTime() + "-" + m_signalVector[row - 1].GetEndTime();
-			if (col == 3) strText = channelCount;
+			if (col == 3) strText = CommonUtil::Int2CString(channelCount);
 			if (col == 4) strText = collectionPlan;
 			if (col >= m_recordSignalGridTitle.size())
 				strText = collectionPlanPara[col - m_recordSignalGridTitle.size()].GetString();
@@ -221,6 +225,8 @@ void CSignalDataView::OnGridClick(NMHDR *pNotifyStruct, LRESULT * /*pResult*/)
 ////点击确定按钮
 void CSignalDataView::OnBnClickedOk()
 {
+	
+
 	if (MessageBox("是否打开数据 " + m_selectedSignal.GetSignalId(), "打开数据", MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL) return;
 	CDialogEx::OnOK();
 }
@@ -310,4 +316,8 @@ CString CSignalDataView::GetCollectionParaKeyWords(){
 		}
 	}
 	return keyWords;
+}
+
+TbRecordSignal CSignalDataView::GetSelectedRecordSignal(){
+	return m_selectedSignal;
 }

@@ -10,6 +10,7 @@ TbProjectDao::TbProjectDao()
 	SetVectorAndField("tester_id", "int", m_testerId);
 	SetVectorAndField("project_name", "CString", m_projectName);
 	SetVectorAndField("project_createtime", "CString", m_projectCreatetime);
+	SetVectorAndField("project_updatetime", "CString", m_projectUpdatetime);
 	SetVectorAndField("testingdevice_id", "int", m_testingDeviceid);
 	SetVectorAndField("product_id", "int", m_productId);
 	SetVectorAndField("project_status", "int", m_projectStatus);
@@ -28,6 +29,7 @@ TbProjectDao::TbProjectDao(const TbProjectDao &project){
 	SetVectorAndField("tester_id", "int", m_testerId);
 	SetVectorAndField("project_name", "CString", m_projectName);
 	SetVectorAndField("project_createtime", "CString", m_projectCreatetime);
+	SetVectorAndField("project_updatetime", "CString", m_projectUpdatetime);
 	SetVectorAndField("testingdevice_id", "int", m_testingDeviceid);
 	SetVectorAndField("product_id", "int", m_productId);
 	SetVectorAndField("project_status", "int", m_projectStatus);
@@ -70,6 +72,7 @@ void TbProjectDao::SetTableFieldValues(TbProject project){
 	this->m_projectId.SetValue(project.GetProjectId());
 	this->m_productId.SetValue(project.GetProduct().GetProductId());
 	this->m_projectCreatetime.SetValue(project.GetProjectCreateTime());
+	this->m_projectUpdatetime.SetValue(project.GetProjectUpdateTime());
 	this->m_projectName.SetValue(project.GetProjectName());
 	this->m_testerId.SetValue(project.GetTester().GetTesterId());
 	this->m_testingDeviceid.SetValue(project.GetTestingDevice().GetId());
@@ -80,6 +83,7 @@ void TbProjectDao::SetTableFieldValues(TbProject project){
 void TbProjectDao::GetTableFieldValues(TbProject &project){
 	project.SetProjectId(m_projectId.GetInt());
 	project.SetProjectCreateTime(m_projectCreatetime.m_strValue);
+	project.SetProjectUpdateTime(m_projectUpdatetime.m_strValue);
 	project.SetProjectName(m_projectName.m_strValue);
 	project.SetProjectStatus(m_projectStatus.GetInt());
 	project.GetTester().SetTesterId(m_testerId.GetInt());

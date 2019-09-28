@@ -61,3 +61,15 @@ Result ProjectController::FindAllProjectBySearchCondition(TbProject project, CSt
 	}
 	return Result(true, "项目加载成功");
 }
+
+Result ProjectController::FindLastOpenProjectByUser(TbProject &project){
+	bool flag = m_projectService.GetLastOpenProjectByUser(project); 
+	if (flag) return Result(true,"项目加载成功");
+	return Result(false, "项目加载失败");
+}
+
+Result ProjectController::UpdateProject(TbProject project){
+	bool flag = m_projectService.UpdateProject(project);
+	if (flag) return Result(true, "项目更新成功");
+	return Result(false, "项目更新失败");
+}

@@ -10,25 +10,25 @@ SignalService::~SignalService()
 {
 
 }
-////查询所有的记录的信号数据。
-bool SignalService::GetAllRecordedSignalBySearchCondition(TbRecordSignal signal, CString startTime, CString endTime, vector<TbRecordSignal> &signalVector){
-	/////1.封装查询条件
-	CString strSqlWhere = "1=1";
-	if (signal.GetProject().GetProjectId() != 0) strSqlWhere += " and project_id='" + CommonUtil::Int2CString(signal.GetProject().GetProjectId()) + "'";
-	if (signal.GetProduct().GetProductId() != 0) strSqlWhere += " and product_id =" + CommonUtil::Int2CString(signal.GetProduct().GetProductId());
-	if (startTime != "" ) strSqlWhere += " and end_time >='" + startTime + "'";
-	if (endTime != "" ) strSqlWhere += " and start_time <='" + endTime + "'";
 
-	/////2.查询信号记录
-	vector<TbRecordSignalDao> recordSignalDaoVector;
-	bool isSuccess = m_recordSignalDao.SelectObjectsByCondition(recordSignalDaoVector, strSqlWhere);
+bool  SignalService::GetAllSignalBySearchCondition(TbSignal searchEntity, vector<TbSignal> &signalVector){
+	CString strSqlWhere = "1 = 1 ";
+	if (searchEntity.GetProductId() != 0)	strSqlWhere += " and product_id ='" + CommonUtil::Int2CString(searchEntity.GetProductId()) + "'";
+	if (searchEntity.GetProjectId() != 0)   strSqlWhere += " and project_id ='" + CommonUtil::Int2CString(searchEntity.GetProjectId()) + "'";
+	if (searchEntity.GetTestingDeviceId() != 0)  strSqlWhere += " and testingdevice_id ='" + CommonUtil::Int2CString(searchEntity.GetTestingDeviceId()) + "'";
+	if (searchEntity.GetStartTime() != "" && searchEntity.GetEndTime() == "") strSqlWhere += " and end_time >='" + searchEntity.GetStartTime() + "'";
+	if (searchEntity.GetEndTime() != "" && searchEntity.GetStartTime() == "") strSqlWhere += " and start_time <='" + searchEntity.GetEndTime() + "'";
+	if (searchEntity.GetSensorId() != "") strSqlWhere += " and sensor_id ='" + searchEntity.GetSensorId()+"'";
+	if (searchEntity.GetCollectionStatus() != "") strSqlWhere += " and collectionstatus ='" + searchEntity.GetCollectionStatus()+"'";
+	
+	vector<TbSignalDao> signalDaoVec;
+	bool isSuccess = m_signalDao.SelectObjectsByCondition(signalDaoVec,strSqlWhere);
 	if (isSuccess){
-	/////记录信号查询成功，遍历记录信号的集合
-		for (auto signalDao : recordSignalDaoVector){
-			TbRecordSignal recordSignal;
-			signalDao.GetTableFieldValues(recordSignal);
-			signalVector.push_back(recordSignal);
+		for (auto signalDao:signalDaoVec){
+			TbSignal signal;
+			signalDao.GetTableFieldValues(signal); 
+			signalVector.push_back(signal); 
 		}
-    }
+	}
 	return isSuccess;
 }

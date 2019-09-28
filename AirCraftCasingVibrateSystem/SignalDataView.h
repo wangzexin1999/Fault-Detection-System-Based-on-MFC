@@ -27,7 +27,6 @@ public:
 	
 // 对话框数据
 	enum { IDD = IDD_DIALOG_OPEN_DATA };
-
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 	CGridCtrl m_signalDataGridCtrl;
@@ -50,7 +49,6 @@ protected:
 	CComboBox m_planNameCombo;
 	vector<CString> m_recordSignalGridTitle;
 	vector<CString> m_planParaTitle;
-	
 	CString GetCollectionParaKeyWords();
 
 public:
@@ -64,6 +62,17 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	void GridCtrlPlanParaInit(const Value& planParaTitle);
+	/**********************************************************************
+	功能描述：得到选中的采样数据
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	TbRecordSignal GetSelectedRecordSignal();
+
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult);

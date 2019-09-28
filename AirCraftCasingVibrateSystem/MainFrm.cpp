@@ -24,6 +24,14 @@
 #include "ChartCtrl/DuChartCtrlStaticFunction.h"
 #include "FileUtil.h"
 #include "Constant.h"
+
+#include "include/rapidjson/document.h"
+#include "include/rapidjson/writer.h"
+#include "include/rapidjson/stringbuffer.h"
+#include "ProjectController.h"
+using namespace std;
+using namespace rapidjson;
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -498,9 +506,34 @@ void CMainFrame::OnButtonOpenDataFile()
 {
 	// TODO:  在此添加命令处理程序代码
 	CSignalDataView sampleDataView;
-
 	if (sampleDataView.DoModal() == IDOK)
 	{
+		//去查询采集数据
+		///得到选中的采样信号
+		TbRecordSignal selectedSignal = sampleDataView.GetSelectedRecordSignal();
+		Document doc;
+		doc.Parse(selectedSignal.GetSensorInfo());
+		if (doc.HasParseError()){ return; }
+		///拿到通道个数
+		int channelCount = doc["channelCount"].GetInt();
+		///拿到通道的序列号
+		const Value& channelsId = doc["channelsId"];
+		///每个通道也许会对应多条采集数据
+		vector<vector<TbSignal>> collectionData;
+		for (int i = 0; i < channelCount;i++){
+			////查询信号的对象
+			TbSignal searchSignalEntity;
+			searchSignalEntity.SetStartTime(selectedSignal.GetStartTime());
+			searchSignalEntity.SetEndTime(selectedSignal.GetEndTime());
+			searchSignalEntity.SetProductId(selectedSignal.GetProduct().GetProductId());
+			searchSignalEntity.SetProjectId(selectedSignal.GetProject().GetProjectId());
+			searchSignalEntity.SetTestingDeviceId(selectedSignal.GetTestingDevice().GetId());
+			searchSignalEntity.SetCollectionStatus(selectedSignal.GetCollectionStatus());
+			searchSignalEntity.SetSensorId(channelsId[i].GetString());
+			vector<TbSignal> signalVec;
+			m_signalController.FindAllSignalBySearchCondition(searchSignalEntity, signalVec);
+			collectionData.push_back(signalVec);
+		}
 		// 如果可以连接服务器，根据条件查询服务器数据
 		// 否则查询本体数据
 		if (strcmp(theApp.PDsql.m_mysql.host, "127.0.0.1") == 0)/*连接本地*/
@@ -691,6 +724,17 @@ void CMainFrame::OnBtnStopSample()
 		AfxMessageBox("当前未在采集");
 		return;
 	}
+	//////封装json格式的传感器数据。
+	//Document doc;
+	//Document::AllocatorType& allocator = doc.GetAllocator();
+	//Value root(kObjectType);
+	//Value channelCount(kNumberType);
+
+	//////计算通道的个数
+	//channelCount.SetInt(theApp.m_currentProject.GetSensorVector().size());
+
+	CString sensorInfo = "{\"channelCount\":4,\"channelsId\" : [\"#012s-0\", \"#012s-1\",\"#012s-2\",\"#012s-3\"]}";
+	theApp.m_recordSignal.SetSensorInfo(sensorInfo);
 	theApp.m_recordSignal.SetEndTime(DateUtil::GetCurrentCStringTime());
 	Result res = m_signalController.SaveSampleSignal(theApp.m_recordSignal);
 	if (!res.GetIsSuccess()){

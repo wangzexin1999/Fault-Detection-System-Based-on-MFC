@@ -19,6 +19,7 @@ protected:
 	TbTester m_tester;
 	CString  m_projectName;
 	CString m_projectCreatetime;
+	CString m_projectUpdatetime;
 	TbTestingDevice  m_testingDevice;
 	TbProduct m_product;
 	vector<TbSensor> m_sensorVector;
@@ -34,8 +35,12 @@ public:
 	TbProduct & GetProduct();
 	void SetProduct(TbProduct  product);
 	void SetProjectCreateTime(CString m_projectCreatetime);
+	void SetProjectUpdateTime(CString projectUpdatetime);
+
 	TbTester & GetTester();
 	CString GetProjectCreateTime();
+	CString GetProjectUpdateTime();
+
 	CString GetProjectName();
 	vector<TbSensor> & GetSensorVector();
 	void SetSensorVector(vector<TbSensor> sensorParaVector);

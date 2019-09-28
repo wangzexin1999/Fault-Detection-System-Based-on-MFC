@@ -50,7 +50,7 @@ void ChannelParaPresetView::GridCtrlInit()
 {
 	m_channelParaGridCtrl.SetEditable(false);
 	m_channelParaGridCtrl.SetTextBkColor(RGB(0xFF, 0xFF, 0xE0));//黄色背景
-	m_channelParaGridCtrl.SetRowCount(3); //初始为n行
+	m_channelParaGridCtrl.SetRowCount(5); //初始为n行
 	m_channelParaGridCtrl.SetColumnCount(7); //初始化为8列
 	m_channelParaGridCtrl.SetFixedRowCount(1); //表头为一行
 	m_channelParaGridCtrl.SetRowResize(TRUE); ///自动设置行和列的大小
@@ -190,6 +190,7 @@ void ChannelParaPresetView::GetSelectedChannels(vector<TbSensor> & vsensors){
 				if (col == 6) currentSensor.SetMileageRange(atoi(m_channelParaGridCtrl.GetItemText(row, col)));
 			}
 		}
+		currentSensor.SetSensorId("#012s-"+CommonUtil::Int2CString(row));
 		vsensors.push_back(currentSensor);
 	}
 }

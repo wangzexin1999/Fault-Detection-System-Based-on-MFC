@@ -13,6 +13,7 @@ public:
 	PDAttribute m_testerId;
 	PDAttribute m_projectName;
 	PDAttribute m_projectCreatetime;
+	PDAttribute m_projectUpdatetime;
 	PDAttribute m_testingDeviceid;
 	PDAttribute m_productId;
 	PDAttribute m_projectStatus;

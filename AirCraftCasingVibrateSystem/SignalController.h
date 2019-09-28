@@ -24,7 +24,6 @@ Modification:
 #include "ProductService.h"
 #include "TbRecordSignal.h"
 #include "RecordSignalService.h"
-
 class SignalController
 {
 
@@ -33,6 +32,8 @@ private:
 	ProjectService m_projectService;
 	RecordSignalService m_recordSignalService;
 	ProductService m_productService;
+
+
 public:
 	SignalController();
 	~SignalController();
@@ -59,6 +60,16 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	Result SaveSampleSignal(TbRecordSignal m_recordSignal);
-
+	/**********************************************************************
+	功能描述：根据查询条件查询所有的采集数据
+	输入参数：  
+	输出参数：
+	返 回 值：Result对象
+	其它说明：查询采集数据
+	修改日期	 版本号		修改人		修改内容
+	2019-07-30   1.0		马善涛		初始化
+	----------------------------------------------------------------------
+	***********************************************************************/
+	Result FindAllSignalBySearchCondition(TbSignal searchEntity, vector<TbSignal> &signalVector);
 };
 

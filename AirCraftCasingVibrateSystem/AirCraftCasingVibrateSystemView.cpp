@@ -142,8 +142,8 @@ void CAirCraftCasingVibrateSystemView::CaptureData(){
 			xData.push_back(j); ///X坐标
 			
 			///采集数据存入到队列中。
-			//AcquiredSignal acquiredSignal(m_readFromCSVFile[countN][j], DateUtil::GetCurrentCStringTime());
-			//m_collectionDataQueue.push(acquiredSignal);
+			AcquiredSignal acquiredSignal(m_readFromCSVFile[countN][j], DateUtil::GetCurrentCStringTime());
+			m_collectionDataQueue.push(acquiredSignal);
 			///采集数据存入到回显信号的输入数组
 			fftw_complex fftw;
 			fftw[0] = m_readFromCSVFile[countN][j];
@@ -223,8 +223,6 @@ void  CAirCraftCasingVibrateSystemView::RefershChartCtrlData(){
 
 ////保存采集数据的线程函数
 void  CAirCraftCasingVibrateSystemView::AutoSaveCollectionData(){
-	
-
 	////调用传感器Controller类保存采集数据
 	while (theApp.m_bIsAutoSaveCollectionData){
 		ThreadSafeQueue<AcquiredSignal> acquireSignalThreadQueue;

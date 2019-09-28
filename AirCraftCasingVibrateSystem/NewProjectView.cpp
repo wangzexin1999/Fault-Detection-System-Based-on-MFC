@@ -82,6 +82,7 @@ void CNewProjectView::OnBnClickedOk()
 	TbTester tester = theApp.m_currentProject.GetTester();
 	m_project.SetTester(tester);
 	m_project.SetProjectCreateTime(DateUtil::GetCurrentCStringTime());
+	m_project.SetProjectUpdateTime(DateUtil::GetCurrentCStringTime());
 	m_project.SetTestingDevice(m_testingDevice);
 	m_project.SetSensorVector(m_vsensors);
 	///保存项目数据
@@ -91,7 +92,10 @@ void CNewProjectView::OnBnClickedOk()
 		CDialogEx::OnCancel();
 	}
 	else{
+		///加载当前项目
 		theApp.m_currentProject = m_project;
+
+
 		AfxMessageBox(res.GetMessages());
 		CDialogEx::OnOK();
 	}

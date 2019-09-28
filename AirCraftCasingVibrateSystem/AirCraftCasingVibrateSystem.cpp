@@ -23,7 +23,7 @@
 #include "Constant.h"
 #include "ProjectController.h"
 #include "TbProject.h"
-
+#include "DateUtil.h"
 #ifdef _DEBUGE	
 #define new DEBUG_NEW
 #endif
@@ -82,7 +82,7 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	///设置mysql数据库信息
 	const char user[] = "root";         //username
 	const char pswd[] = "oxygen";         //password
-	const char host[] = "39.107.96.162";    //or"127.0.0.1" 39.107.96.162
+	const char host[] = "39.107.96.16";    //or"127.0.0.1" 39.107.96.162
 	const char table[] = "aircraftfaultdetectdb";        //database
 	unsigned int port = 3306;           //server port
 	/*连接远程数据库*/
@@ -108,14 +108,12 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 
 	// 根据当前登录用户，加载用户最后一次使用的项目
 	ProjectController projectController;
-	theApp.m_currentProject.SetProjectStatus(2);
-	vector<TbProject> selectProjectVec;
-	projectController.FindAllProjectBySearchCondition(theApp.m_currentProject, "", "", selectProjectVec);
-	if (selectProjectVec.size() == 1)	{
-		theApp.m_currentProject = selectProjectVec[0];
-	}
-	if (selectProjectVec.size() != 1) AfxMessageBox("项目加载有误");
 
+	projectController.FindLastOpenProjectByUser(theApp.m_currentProject);
+	if (theApp.m_currentProject.GetProjectId() != 0){
+		theApp.m_currentProject.SetProjectUpdateTime(DateUtil::GetCurrentCStringTime());
+		projectController.UpdateProject(theApp.m_currentProject);
+	}
 
 	// 从文件中读取数据->内存（模拟数据）
 	CFileUtil fileUtil;

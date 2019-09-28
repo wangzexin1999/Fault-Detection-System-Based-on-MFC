@@ -50,7 +50,9 @@ TbTester & TbProject::GetTester(){
 void TbProject::SetProjectCreateTime(CString m_projectCreatetime){
 	this->m_projectCreatetime = m_projectCreatetime;
 }
-
+void TbProject::SetProjectUpdateTime(CString projectUpdatetime){
+	this->m_projectUpdatetime = projectUpdatetime; 
+}
 TbTestingDevice & TbProject::GetTestingDevice(){
 	return this->m_testingDevice;
 }
@@ -90,4 +92,7 @@ void TbProject::SetCollectionPlans(CString collectionPlans){
 }
 CString TbProject::GetCollectionPlans(){
 	return m_collectionPlans;
+}
+CString TbProject::GetProjectUpdateTime(){
+	return m_projectUpdatetime;
 }

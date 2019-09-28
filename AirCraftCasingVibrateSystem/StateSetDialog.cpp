@@ -56,12 +56,14 @@ BOOL CStateSetDialog::OnInitDialog()
 	m_collectionPlanCombo.GetWindowTextA(strPlanName);
 	int selectedIndex = m_collectionPlanCombo.GetCurSel();
 	///根据选择的采集计划序号解析相应的采集计划对象
-	Value  doc;
-	doc.CopyFrom(m_collectionPlanDoc, m_collectionPlanDoc.GetAllocator());
-	const Value & colectionPlans = doc["collectionPlans"].GetArray();
-	///拿到采集计划的标题信息 
-	const Value & planTitle = colectionPlans[selectedIndex]["planParaTitle"];
-	m_staticCurrentPlanPara.SetWindowTextA(strPlanName+"--参数：");
+	if (!m_collectionPlanDoc.IsNull()){
+		Value  doc;
+		doc.CopyFrom(m_collectionPlanDoc, m_collectionPlanDoc.GetAllocator());
+		const Value & colectionPlans = doc["collectionPlans"].GetArray();
+		///拿到采集计划的标题信息 
+		const Value & planTitle = colectionPlans[selectedIndex]["planParaTitle"];
+		m_staticCurrentPlanPara.SetWindowTextA(strPlanName+"--参数：");
+	}
 	return TRUE; 
 }
 void CStateSetDialog::GridCtrlInit()
@@ -91,8 +93,8 @@ void CStateSetDialog::GridCtrlInit()
 	m_collectionPlanGrid.SetColumnResize(TRUE);
 	m_collectionPlanGrid.SetListMode(true); ////在选定一个单元格时，选择整行
 	m_collectionPlanGrid.ExpandColumnsToFit(true);
-
 	m_collectionPlanGrid.SetSingleRowSelection(true);
+
 	//m_collectionPlanGrid.OnGridClick();
 	for (int row = 0; row < m_collectionPlanGrid.GetRowCount(); row++){
 		for (int col = 0; col < m_collectionPlanGrid.GetColumnCount(); col++)
@@ -119,6 +121,7 @@ void CStateSetDialog::GridCtrlInit()
 	}
 }
 void  CStateSetDialog::ComboBoxInit(){
+	if (m_collectionPlanDoc.IsNull())return;
 	///解析项目对象的
 	Value  doc;
 	doc.CopyFrom(m_collectionPlanDoc, m_collectionPlanDoc.GetAllocator());
@@ -132,11 +135,9 @@ void  CStateSetDialog::ComboBoxInit(){
 }
 
 void CStateSetDialog::RefreshView(){
-	if (theApp.m_currentProject.GetCollectionPlans() != ""){
-		m_collectionPlanDoc.Parse(theApp.m_currentProject.GetCollectionPlans());
-		ComboBoxInit();
-		GridCtrlInit();
-	}
+	m_collectionPlanDoc.Parse(theApp.m_currentProject.GetCollectionPlans());
+	ComboBoxInit();
+	GridCtrlInit();
 }
 
 HBRUSH CStateSetDialog::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)

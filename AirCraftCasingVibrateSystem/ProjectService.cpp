@@ -40,3 +40,17 @@ bool ProjectService::GetAllProjectBySearchCondition(TbProject project, CString s
 	return isSuccess;
 }
 
+
+bool  ProjectService::GetLastOpenProjectByUser(TbProject &project){
+	CString strSqlWhere = "1 = 1 ";
+	if (project.GetTester().GetTesterId() != 0) strSqlWhere += " and tester_id ='" + CommonUtil::Int2CString(project.GetTester().GetTesterId()) + "'";
+	strSqlWhere += "ORDER BY project_updatetime desc limit 0,1";
+	bool isSuccess = m_projectDao.SelectOneObjectByCondition(strSqlWhere);
+	if (m_projectDao.m_projectId.GetInt()!=0)	m_projectDao.GetTableFieldValues(project);
+	return isSuccess;
+}
+
+bool ProjectService::UpdateProject(TbProject project){
+	m_projectDao.SetTableFieldValues(project);
+	return m_projectDao.UpdateByKey();
+}
