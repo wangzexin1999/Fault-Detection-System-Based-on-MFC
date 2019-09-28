@@ -17,24 +17,25 @@ Modification:
 修 改 人：
 修改内容：
 ************************************************************************/
-#include"TbRecordSignalDao.h"
+
 #include"TbSignal.h"
 #include "TbSensor.h"
 #include "TbSensorDao.h"
 #include "CommonUtil.h"
 #include "TbProductDao.h"
+#include "TbRecordSignal.h"
+#include "TbRecordSignalDao.h"
 class SignalService
 {
 public:
 	SignalService();
 	~SignalService();
-
+	  
 protected:
 	TbSensorDao m_sensorParaDao;
-	TbRecordSignalDao m_recordSignalDao;
 	TbProductDao m_productDao;
+	TbRecordSignalDao m_recordSignalDao;
 public:
-	
 
 	/**********************************************************************
 	功能描述：根据查询条件查询所有的记录数据
@@ -46,7 +47,7 @@ public:
 	2019-07-30   1.0		马善涛		初始化
 	----------------------------------------------------------------------
 	***********************************************************************/
-	bool GetAllRecordedSignalBySearchCondition(TbSignal signal,CString startTime, CString endTime, vector<TbSignal> &signalVector);
+	bool GetAllRecordedSignalBySearchCondition(TbRecordSignal signal, CString startTime, CString endTime, vector<TbRecordSignal> &signalVector);
 	
 };
 

@@ -62,7 +62,7 @@ public:
 	vector<SignalAcquisitionService> m_vSignalAcquisitionService; ////信号采集服务
 	/*vector<ThreadSafeQueue<AcquiredSignal> >m_sampleData; ///采样数据
 	vector<ThreadSafeQueue<AcquiredSignal> > m_collectData; ///采集数据*/
-
+	TbRecordSignal m_recordSignal; // 采样数据
 	double tempRead[100][1000]; ///模拟数据
 	httplib::Client m_cli; // http连接
 // 重写

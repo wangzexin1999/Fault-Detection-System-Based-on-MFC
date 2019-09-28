@@ -20,6 +20,7 @@
 #include "CollectionDataInfoDlg.h"
 #include "GraphAttributeView.h"
 #include "StateSetDockPanelView.h"
+#include "SignalController.h"
 class CMainFrame : public CMDIFrameWndEx
 {
 	DECLARE_DYNAMIC(CMainFrame)
@@ -54,6 +55,7 @@ protected:  // 控件条嵌入成员
 	
 	std::vector<CAirCraftCasingVibrateSystemView *> m_vsignalCaptureView;
 	CGraphAttributeView m_graphAttributeView; // 图形属性界面
+	SignalController m_signalController;
 
 public:
 	CSystemParaView    m_systemPara; ///暂时无用

@@ -47,6 +47,7 @@ private:
 	CSignalSelectView  m_signalSelectView;   //信号选择界面
 
 	SensorController m_sensorController; ///传感器控制类
+
 	ThreadSafeQueue<EchoSignal>  m_echoSignalQueue; // 回显信号队列
 	int m_icurrentWindowNumber;  // 窗口
 	ThreadSafeQueue<AcquiredSignal> m_collectionDataQueue;  //采集队列
@@ -58,7 +59,6 @@ private:
 public:
 	ThreadSafeQueue<RealTimeSignal> m_realTimeSignal;  // 实时数据队列
 	vector<AcquiredSignal> m_sampleFromFileDataQueue;  // 采样队列从文件中获得
-	TbRecordSignal m_recordSignal; // 采样信号
 public:
 	enum{ IDD = IDD_AIRCRAFTCASINGVIBRATESYSTEM_FORM };
 

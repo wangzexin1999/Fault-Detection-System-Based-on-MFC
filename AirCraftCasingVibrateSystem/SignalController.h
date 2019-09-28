@@ -22,12 +22,16 @@ Modification:
 #include "SignalService.h"
 #include "ProjectService.h"
 #include "ProductService.h"
+#include "TbRecordSignal.h"
+#include "RecordSignalService.h"
+
 class SignalController
 {
 
 private:
 	SignalService m_signalService;
 	ProjectService m_projectService;
+	RecordSignalService m_recordSignalService;
 	ProductService m_productService;
 public:
 	SignalController();
@@ -43,6 +47,18 @@ public:
 	2019-07-30   1.0		马善涛		初始化	
 	----------------------------------------------------------------------
 	***********************************************************************/
-	Result FindAllRecordedSignalBySearchCondition(CString projectName, CString productName, CString rotatingSpeed, CString startTime, CString endTime, vector<TbSignal> &signalVector);
+	Result FindAllRecordedSignalBySearchCondition(CString projectName, CString productType, CString rotatingSpeed, CString startTime, CString endTime, vector<TbRecordSignal> &signalVector);
+	
+	/**********************************************************************
+	功能描述：保存采集的数据
+	输入参数：当前窗口的id，传感器的id
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	Result SaveSampleSignal(TbRecordSignal m_recordSignal);
+
 };
 

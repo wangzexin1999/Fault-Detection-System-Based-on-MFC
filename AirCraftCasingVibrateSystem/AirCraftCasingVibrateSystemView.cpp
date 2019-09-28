@@ -264,10 +264,10 @@ void CAirCraftCasingVibrateSystemView::OpenThread2SaveCollectionData(){
 
 void  CAirCraftCasingVibrateSystemView::SaveSampleData(){
 	////调用传感器Controller类保存采样数据
-	Result res = m_sensorController.SaveSampleData(m_signalSelectView.GetSelectedSensor().GetId(),m_recordSignal);
+	/*Result res = m_sensorController.SaveSampleData(m_signalSelectView.GetSelectedSensor().GetId(),m_recordSignal);
 	if (!res.GetIsSuccess()){
 		AfxMessageBox(res.GetMessages());
-	}
+	}*/
 }
 
 void  CAirCraftCasingVibrateSystemView::OpenThread2SaveSampleData(){

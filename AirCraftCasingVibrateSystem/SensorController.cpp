@@ -22,17 +22,8 @@ Result SensorController::SaveCollectionData(CString sensorId, ThreadSafeQueue<Ac
 	signal.SetProductId(theApp.m_currentProject.GetProduct().GetProductId());
 	signal.SetTestingDeviceId(theApp.m_currentProject.GetTestingDevice().GetId());
 	signal.SetSensorId(sensorId);
+	signal.SetCollectionStatus(theApp.m_jsonCollectionStatusPara);
 	Result res = m_sensorService.AddCollectData(signal,collectionData);
-	return res;
-}
-Result SensorController::SaveSampleData(int sensorId, ThreadSafeQueue<AcquiredSignal> &collectionData){
-	Result res = m_sensorService.AddSampleData(theApp.m_currentProject, sensorId, collectionData);
-	return res;
-}
-
-Result SensorController::SaveSampleData(int nSensorId, TbRecordSignal recordSignal)
-{
-	Result res = m_sensorService.AddSampleData(theApp.m_currentProject, nSensorId, recordSignal);
 	return res;
 }
 

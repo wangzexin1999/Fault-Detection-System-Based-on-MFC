@@ -303,6 +303,7 @@
     <ClInclude Include="NewCellTypes\GridURLCell.h" />
     <ClInclude Include="ProductController.h" />
     <ClInclude Include="RealTimeSignal.h" />
+    <ClInclude Include="RecordSignalService.h" />
     <ClInclude Include="redisUtil.h" />
     <ClInclude Include="RegisterView.h" />
     <ClInclude Include="SensorController.h" />
@@ -374,7 +375,6 @@
     <ClInclude Include="SystemParaView.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TbCollectionPlan.h" />
-    <ClInclude Include="TbCollectionPlanDao.h" />
     <ClInclude Include="TbProduct.h" />
     <ClInclude Include="TbProductDao.h" />
     <ClInclude Include="TbDictionary.h" />
@@ -459,6 +459,7 @@
     <ClCompile Include="NewCellTypes\GridURLCell.cpp" />
     <ClCompile Include="ProductController.cpp" />
     <ClCompile Include="RealTimeSignal.cpp" />
+    <ClCompile Include="RecordSignalService.cpp" />
     <ClCompile Include="RegisterView.cpp" />
     <ClCompile Include="SensorController.cpp" />
     <ClCompile Include="CherryTree.cpp" />
@@ -528,7 +529,6 @@
     <ClCompile Include="SystemParaDialog.cpp" />
     <ClCompile Include="SystemParaView.cpp" />
     <ClCompile Include="TbCollectionPlan.cpp" />
-    <ClCompile Include="TbCollectionPlanDao.cpp" />
     <ClCompile Include="TbProduct.cpp" />
     <ClCompile Include="TbProductDao.cpp" />
     <ClCompile Include="TbDictionary.cpp" />

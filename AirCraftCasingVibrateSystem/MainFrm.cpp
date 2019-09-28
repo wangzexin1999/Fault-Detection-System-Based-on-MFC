@@ -653,21 +653,23 @@ void CMainFrame::OnBtnStartSmaple()
 		return;
 	}
 	/*开始采样，记录开始采集时间*/
-	CString strCurrentTime = DateUtil::GetCurrentCStringTime();
-
-	for (int i = 0; i < m_vsignalCaptureView.size(); i++){
-		m_vsignalCaptureView[i]->m_recordSignal.SetStartTime(strCurrentTime);
-	}
+	theApp.m_recordSignal.SetStartTime(DateUtil::GetCurrentCStringTime());
+	theApp.m_recordSignal.SetProjectId(theApp.m_currentProject.GetProjectId()); 
+	theApp.m_recordSignal.SetProjectId(theApp.m_currentProject.GetProduct().GetProductId());
+	theApp.m_recordSignal.SetTesingDeviceId(theApp.m_currentProject.GetTestingDevice().GetId());
 }
 
 // 停止采样
 void CMainFrame::OnBtnStopSample()
 {
-	CString strCurrentTime = DateUtil::GetCurrentCStringTime();
-	//遍历所有采集窗口去保存采样数据
-	for (int i = 0; i < m_vsignalCaptureView.size(); i++){
-		m_vsignalCaptureView[i]->m_recordSignal.SetEndTime(strCurrentTime);
-		m_vsignalCaptureView[i]->OpenThread2SaveSampleData();
+	if (theApp.m_recordSignal.GetStartTime() == ""){
+		AfxMessageBox("当前未在采集");
+		return;
+	}
+	theApp.m_recordSignal.SetEndTime(DateUtil::GetCurrentCStringTime());
+	Result res = m_signalController.SaveSampleSignal(theApp.m_recordSignal);
+	if (!res.GetIsSuccess()){
+		AfxMessageBox("采样数据保存失败");
 	}
 }
 

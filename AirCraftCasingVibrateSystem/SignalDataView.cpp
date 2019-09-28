@@ -181,15 +181,14 @@ void CSignalDataView::OnBnClickedSearchButton()
 	////清空数据集合
 	m_signalVector.clear();
 	int projectId = theApp.m_currentProject.GetProjectId();
-	Result res = m_signalController.FindAllRecordedSignalBySearchCondition(strSearchProjectName, strSearchProductName,strSearchRoatatingSpeed,
+	/*Result res = m_signalController.FindAllRecordedSignalBySearchCondition(strSearchProjectName, strSearchProductName,strSearchRoatatingSpeed,
 						strStartTime, strEndTime, m_signalVector);
-	if (res.GetIsSuccess()){
-		GridCtrlInit();
-	}
-	else{
-		AfxMessageBox(res.GetMessages());
-	}
-
+						if (res.GetIsSuccess()){
+						GridCtrlInit();
+						}
+						else{
+						AfxMessageBox(res.GetMessages());
+						}*/
 
 
 }

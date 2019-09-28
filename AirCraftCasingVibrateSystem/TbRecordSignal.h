@@ -17,11 +17,8 @@ Modification:
 修改内容：
 ************************************************************************/
 #pragma once
-#include "TbProduct.h"
-#include "TbSensor.h"
 #include "TbTestingDevice.h"
 #include <vector>
-#include "TbProject.h"
 using namespace std;
 
 class TbRecordSignal
@@ -32,16 +29,17 @@ public:
 	~TbRecordSignal();
 
 private:
+
 	int m_signalId;
-	TbProject m_project;
 	CString m_startTime;
 	CString m_endTime;
 	CString m_signalType;
-	TbSensor m_sensor;
-	TbProduct m_product;
+	int m_productId;
 	char m_signalStatus;
-	TbTestingDevice m_testingDevice;
-	int m_sensorCount; ////传感器数量
+	int m_projectId;
+	int m_testingDeviceId;
+	CString m_collectionStatus;
+	CString m_sensorInfo;
 
 public:
 	int GetSignalId();
@@ -52,23 +50,17 @@ public:
 	void SetEndTime(CString endTime);
 	CString GetSignalType();
 	void SetSignalType(CString signalType);
-	TbProduct & GetProduct();
-	void SetProduct(TbProduct product);
+	int GetProductId();
+	void SetProductId(int product);
 	char GetSignalStatus();
 	void SetSignalStatus(char signal_status);
-
-	void SetProject(TbProject project);
-	TbProject & GetProject();
-
-	TbSensor & GetSensor();
-	void SetSensor(TbSensor  sensor);
-
-
-	TbTestingDevice & GetTestingDevice();
-	void SetTesingDevice(TbTestingDevice  testingDevice);
-
-	void SetSensorCount(int sensorCount);
-	int GetSensorCount();
-
+	void SetProjectId(int projectId);
+	int  GetProjectId();
+	int  GetTestingDeviceId();
+	void SetTesingDeviceId(int  testingDeviceId);
+	void SetCollectionStatus(CString collectionStatus);
+	CString GetCollectionStatus();
+	void SetSensorInfo(CString sensorInfo);
+	CString GetSensorInfo();
 };
 

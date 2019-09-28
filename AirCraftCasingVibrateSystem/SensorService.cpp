@@ -43,7 +43,9 @@ double CSensorService::randf(double min, double max)
 
 Result CSensorService::AddCollectData(TbSignal &signal, ThreadSafeQueue<AcquiredSignal> &collectionData){
 	///1.拼装保存路径
-	CString path = "C:\\collectionData\\";
+	CString path = "C:/collectionData/";
+	//CString escapePath = "C:\\\\collectionData\\\\";
+
 	//2.拼装文件名 项目id_测试设备id_传感器id_产品id_时间戳
 	CString fileName = CommonUtil::Int2CString(signal.GetProjectId()) + "-"
 		+ CommonUtil::Int2CString(signal.GetTestingDeviceId())
@@ -120,50 +122,8 @@ bool  CSensorService::GetAllSensorByTestingDeviceId(int testingDeviceId, vector<
 	return isSuccess;
 }
 
-Result CSensorService::AddSampleData(TbProject project, int sensorId, ThreadSafeQueue<AcquiredSignal> &collectionData){
-	///1.拼装保存路径
-	CString path = "I:\\SampleData\\";
-	//2.拼装文件名 项目id_测试设备id_传感器id_产品id_时间戳
-	CString fileName = CommonUtil::Int2CString(project.GetProjectId()) + "-"
-		+ CommonUtil::Int2CString(project.GetTestingDevice().GetId())
-		+ "-" + CommonUtil::Int2CString(sensorId) + "-" + CommonUtil::Int2CString(project.GetProduct().GetProductId())
-		+ "-" + DateUtil::GetTimeStampCString()
-		+ ".csv";
-
-	CString startCollectTime = collectionData.front().GetAcquireTime();
-	//3.调用FileUtil保存文件，保存成功返回采集的结束时间
-	Result res = CFileUtil::SaveCollectionData(path, fileName, collectionData);
-	if (res.GetIsSuccess()){
-		///4.文件保存成功，将记录保存到数据库
-		TbSignal signal;
-		signal.SetDataUrl(path + fileName);
-		signal.SetProjectId(project.GetProjectId());
-		signal.SetProductId(project.GetProduct().GetProductId());
-		signal.SetStartTime(startCollectTime);
-		signal.SetEndTime(res.GetMessages());
-		/*signal.GetSensor().SetId(sensorId);
-		signal.GetTestingDevice().SetId(project.GetTestingDevice().GetId());*/
-		m_recordSignalDao.SetTableFieldValues(signal);
-		m_recordSignalDao.Insert(false);
-	}
-
-	return res;
-}
 
 
-
-Result CSensorService::AddSampleData(TbProject project, int sensorId, TbRecordSignal recordSignal)
-{
-	recordSignal.SetProject(project);
-	recordSignal.SetProduct(project.GetProduct());
-	recordSignal.GetSensor().SetId(sensorId);
-	recordSignal.GetTestingDevice().SetId(project.GetTestingDevice().GetId());
-	//m_recordSignalDao.SetTableFieldValues(recordSignal);  这个地方改动
-	bool bInsertRes = m_recordSignalDao.Insert(false);
-	Result res = Result(bInsertRes, "");
-	return res;
-
-}
 ////根据项目id得到所有的传感器参数
 bool CSensorService::GetALLSensorByProjectId(int projectId, std::vector<TbSensor> &vsensorPara){
 	m_sensorDao.m_projectId.SetValue(projectId);

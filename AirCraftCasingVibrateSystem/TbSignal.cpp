@@ -79,9 +79,9 @@ int   TbSignal::GetTestingDeviceId(){
 void TbSignal::SetTestingDeviceId(int  testingDeviceId){
 	m_testingDeviceId = testingDeviceId;
 }
-void TbSignal::SetCollectionStatusPara(CString para){
-	m_collectionStatusPara = para;
+void TbSignal::SetCollectionStatus(CString para){
+	m_collectionStatus = para;
 }
-CString TbSignal::GetCollectionStatusPara(){
-	return m_collectionStatusPara;
+CString TbSignal::GetCollectionStatus(){
+	return m_collectionStatus;
 }

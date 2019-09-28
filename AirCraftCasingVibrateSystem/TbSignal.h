@@ -24,7 +24,7 @@ private:
 	CString m_sensorId;
 	int  m_projectId;
 	int m_testingDeviceId;
-	CString m_collectionStatusPara;
+	CString m_collectionStatus;
 
 public:
 	int GetSignalId();
@@ -48,8 +48,8 @@ public:
 	int  GetTestingDeviceId();
 	void SetTestingDeviceId(int  testingDeviceId);
 	
-	void SetCollectionStatusPara(CString para);
-	CString GetCollectionStatusPara();
+	void SetCollectionStatus(CString para);
+	CString GetCollectionStatus();
 
 
 };

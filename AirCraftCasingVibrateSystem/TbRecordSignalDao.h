@@ -1,8 +1,8 @@
 #pragma once
 #include "PDDatabase.h"
-#include "TbSignal.h"
+#include "TbRecordSignal.h"
 
-class TbRecordSignalDao :
+class TbRecordSignalDao:
 	public PDDatabase
 {
 public:
@@ -16,16 +16,15 @@ public:
 	PDAttribute m_signalType;
 	PDAttribute m_productId;
 	PDAttribute m_signalStatus;
-	PDAttribute m_dataUrl;
-	PDAttribute m_sensorId;
 	PDAttribute m_projectId;
 	PDAttribute m_testingDeviceId;
-
+	PDAttribute m_collectionStatus;
+	PDAttribute m_sensorInfo;
 
 	bool SelectObjectsByCondition(vector<TbRecordSignalDao> &selectedValueVector, CString strSqlQueryWhere = "");
 	bool SelectObjectsByCondition(vector<TbRecordSignalDao> &selectedValueVector, int iStartNumber, int iRecordCount, CString strSqlQueryWhere = "");
 
-	void SetTableFieldValues(TbSignal signal);
-	void GetTableFieldValues(TbSignal &signal);
+	void SetTableFieldValues(TbRecordSignal signal);
+	void GetTableFieldValues(TbRecordSignal &signal);
 };
 
