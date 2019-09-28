@@ -23,7 +23,7 @@
 #include "AlarmParaSetView.h"
 #include "ChartCtrl/DuChartCtrlStaticFunction.h"
 #include "FileUtil.h"
-
+#include "Constant.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -64,7 +64,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_BTN_STOP_SAMPLE, &CMainFrame::OnBtnStopSample)
 	ON_COMMAND(ID_BTN_PROJECT_UNIT, &CMainFrame::OnBtnEngineeringUnit)
 	ON_COMMAND(ID_BTN_ALARM_SET, &CMainFrame::OnBtnAlarmSet)
-	ON_COMMAND(ID_BUTTON_DETECT_DEVICE, &CMainFrame::OnButtonDetectDevice)
+	
 	ON_COMMAND(ID_BUTTON_DETECTED_DEVICE, &CMainFrame::OnButtonProduct)
 
 	ON_COMMAND(ID_BTN_TRANSVERSE_AMPLIFICATION, &CMainFrame::OnBtnTransverseAmplification)
@@ -81,6 +81,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_BUTTON9, &CMainFrame::OnButton9)
 	ON_COMMAND(ID_CHECK_STA_SET, &CMainFrame::OnCheckStaSet)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_STA_SET, &CMainFrame::OnUpdateCheckStaSet)
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 // CMainFrame 构造/析构
@@ -118,15 +119,18 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	ASSERT(bNameValid);
 	bNameValid = strTitlePane2.LoadString(IDS_STATUS_PANE2);
 	ASSERT(bNameValid);
-	m_wndStatusBar.AddElement(new CMFCRibbonStatusBarPane(ID_STATUSBAR_PANE1, strTitlePane1, TRUE), strTitlePane1);
-	m_wndStatusBar.AddExtendedElement(new CMFCRibbonStatusBarPane(ID_STATUSBAR_PANE2, strTitlePane2, TRUE), strTitlePane2);
+	m_wndStatusBar.AddElement(new CMFCRibbonStatusBarPane(ID_STATUSBAR_PANE1, "目前状态", TRUE), "目前状态");
+	m_wndStatusBar.AddExtendedElement(new CMFCRibbonStatusBarPane(ID_STATUSBAR_PANE2, "当前时间:00:00:00", TRUE), strTitlePane2);
 
 	//测试加入按钮
 	CMFCRibbonCategory *pCategory = m_wndRibbonBar.GetCategory(3);
 	CMFCRibbonPanel *pPanel = pCategory->GetPanel(6);
-	pPanel->Add(new CMFCRibbonButton(12, _T("1"), 3, -1));
-	pPanel->Add(new CMFCRibbonButton(32, _T("2"), 3, -1));
-	pPanel->Add(new CMFCRibbonButton(33, _T("3"), 7, -1));
+	/*显示当前用的传感器*/
+	vector<TbSensor> vSensor = theApp.m_currentProject.GetSensorVector();
+	for (int i = 0; i < vSensor.size(); i++)
+	{
+		pPanel->Add(new CMFCRibbonButton(i+10000, _T(vSensor[i].GetSensorDesc()), 3, -1));
+	}
 
 
 	if (!m_systemPara.Create(_T("系统参数"), this, CRect(0, 0, 200, 100), TRUE, 10000,
@@ -175,6 +179,30 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	EnableWindowsDialog(ID_WINDOW_MANAGER, ID_WINDOW_MANAGER, TRUE);
 	SendMessage(WM_SETTEXT);
 	
+	CString title;
+	CString product = "未知产品";
+	CString project = "未知项目";
+	CString rotatingSpeed = "未知转速";
+	CString tester = "未知人";
+	CString sensor = "未知传感器";
+
+	if (theApp.m_currentProject.GetProduct().GetProductType() != "") product = theApp.m_currentProject.GetProduct().GetProductType();
+	if (theApp.m_currentProject.GetProjectName() != "") project = theApp.m_currentProject.GetProjectName();
+	if (theApp.m_currentProject.GetTester().GetTesterName() != "") tester = theApp.m_currentProject.GetTester().GetTesterName();
+	if (theApp.m_collectionRotatingSpeed != "") rotatingSpeed = theApp.m_collectionRotatingSpeed;
+	title = product + "-" + project + "-" + rotatingSpeed + "-" + tester;
+
+	HBITMAP hBmpAnimationList =NULL;
+
+	//设置状态栏的字体
+	CFont* fontstatus = new CFont;
+	fontstatus->CreateFont(15, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0, GB2312_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_MODERN, _T("黑体"));
+	m_wndStatusBar.SetFont(fontstatus);
+	COLORREF clrTrnsp = RGB(255, 0, 0);
+	m_wndStatusBar.AddElement(new CMFCRibbonStatusBarPane(10000, _T(title), hBmpAnimationList, clrTrnsp), _T("参数状态"));
+	m_wndStatusBar.AddElement(new CMFCRibbonStatusBarPane(10001, _T("版权所有 哈尔滨理工大学人工智能实验室"), hBmpAnimationList, clrTrnsp), _T("版权"));
+	/*状态栏显示时间*/
+	SetTimer(66, 1000, NULL);//安装定时器，并将其时间间隔设为1000毫秒
 	return 0;
 }
 
@@ -624,13 +652,7 @@ void CMainFrame::OnBtnCloseAllWindow()
 	CloseAllWindows();
 }
 
-/*检测设备管理*/
-void CMainFrame::OnButtonDetectDevice()
-{
-	// TODO:  在此添加命令处理程序代码
-	CDetectDeviceManageView detectDeviceManageView;
-	detectDeviceManageView.DoModal();
-}
+
 
 /*产品管理*/
 void CMainFrame::OnButtonProduct()
@@ -796,6 +818,15 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
 	if (nIDEvent == 99)
 	{
 		//RealTimeSignal2Server();
+	}
+	if (nIDEvent == StatusBarTimer)/**/
+	{
+		CTime time;
+		time = CTime::GetCurrentTime();//得到当前时间
+		CString strTime = time.Format("%H:%M:%S");//转换时间格式
+		CMFCRibbonBaseElement *pElement = m_wndStatusBar.FindElement(ID_STATUSBAR_PANE2);
+		pElement->SetText("当前时间："+strTime);
+		pElement->Redraw();
 	}
 	CMDIFrameWndEx::OnTimer(nIDEvent);
 }
@@ -1038,4 +1069,12 @@ void CMainFrame::OnUpdateCheckStaSet(CCmdUI *pCmdUI)
 	// TODO:  在此添加命令更新用户界面处理程序代码
 	pCmdUI->SetCheck(m_stateSet.IsVisible());
 
+}
+
+
+void CMainFrame::OnClose()
+{
+	// TODO:  在此添加消息处理程序代码和/或调用默认值
+	KillTimer(StatusBarTimer);
+	CMDIFrameWndEx::OnClose();
 }

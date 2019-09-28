@@ -26,11 +26,15 @@ void CStateSetDialog::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_GridControl(pDX, IDC_COLLECTIONPLANGRID, m_collectionPlanGrid);
 	DDX_Control(pDX, IDC_COMBO_COLLECTIONPLAN, m_collectionPlanCombo);
+	DDX_Control(pDX, IDC_STATIC_CUR_PLAN_PARA, m_staticCurrentPlanPara);
+
 }
 
 
 BEGIN_MESSAGE_MAP(CStateSetDialog, CDialogEx)
 	ON_CBN_SELCHANGE(IDC_COMBO_COLLECTIONPLAN, &CStateSetDialog::OnCbnSelchangeComboCollectionplan)
+	ON_WM_CTLCOLOR()
+	ON_NOTIFY(NM_DBLCLK, IDC_COLLECTIONPLANGRID, OnGridDblClick)
 END_MESSAGE_MAP()
 
 
@@ -46,6 +50,18 @@ BOOL CStateSetDialog::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 	RefreshView();
+
+	/*设置文本内容*/
+	CString strPlanName;
+	m_collectionPlanCombo.GetWindowTextA(strPlanName);
+	int selectedIndex = m_collectionPlanCombo.GetCurSel();
+	///根据选择的采集计划序号解析相应的采集计划对象
+	Value  doc;
+	doc.CopyFrom(m_collectionPlanDoc, m_collectionPlanDoc.GetAllocator());
+	const Value & colectionPlans = doc["collectionPlans"].GetArray();
+	///拿到采集计划的标题信息 
+	const Value & planTitle = colectionPlans[selectedIndex]["planParaTitle"];
+	m_staticCurrentPlanPara.SetWindowTextA(strPlanName+"--参数：");
 	return TRUE; 
 }
 void CStateSetDialog::GridCtrlInit()
@@ -121,4 +137,49 @@ void CStateSetDialog::RefreshView(){
 		ComboBoxInit();
 		GridCtrlInit();
 	}
+}
+
+HBRUSH CStateSetDialog::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	HBRUSH hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
+
+	// TODO:  在此更改 DC 的任何特性
+	if (pWnd->GetDlgCtrlID() == IDC_STATIC_CUR_PLAN_PARA)
+	{
+		//设置显示字体
+
+		CFont * cFont = new CFont;
+
+		cFont->CreateFont(16, 0, 0, 0, FW_SEMIBOLD, FALSE, FALSE, 0,ANSI_CHARSET, 
+			OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
+			DEFAULT_PITCH&FF_SWISS, "黑体");
+		pDC->SetTextColor(RGB(255, 0, 0));
+		pWnd->SetFont(cFont); //设置字体
+		delete cFont;
+	}
+	// TODO:  如果默认的不是所需画笔，则返回另一个画笔
+	return hbr;
+}
+
+
+void CStateSetDialog::OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult){
+	NM_GRIDVIEW* pItem = (NM_GRIDVIEW*)pNotifyStruct;
+
+
+
+	///得到当前选中的采集计划序号
+	int selectedIndex = m_collectionPlanCombo.GetCurSel();
+	if (selectedIndex < 0) return;
+	///根据选择的采集计划序号解析相应的采集计划对象
+	Value  doc;
+	doc.CopyFrom(m_collectionPlanDoc, m_collectionPlanDoc.GetAllocator());
+	const Value & colectionPlans = doc["collectionPlans"].GetArray();
+
+	///拿到采集计划的标题信息 
+	const Value & planTitle = colectionPlans[selectedIndex]["planParaTitle"];
+	///拿到采集计划的参数信息
+	const Value & planParaContent = colectionPlans[selectedIndex]["planParaContent"];
+
+	const Value & currentPlanPara =  planParaContent[pItem->iRow - 1];
+
 }

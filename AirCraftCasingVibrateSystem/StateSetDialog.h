@@ -33,4 +33,7 @@ public:
 	afx_msg void OnCbnSelchangeComboCollectionplan();
 	virtual BOOL OnInitDialog();
 	void RefreshView();
+	CStatic m_staticCurrentPlanPara;
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg void OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult);
 };

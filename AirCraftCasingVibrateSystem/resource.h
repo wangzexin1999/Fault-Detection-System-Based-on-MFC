@@ -250,6 +250,7 @@
 #define IDC_COMBO_PRODUCT_NAME          1167
 #define IDC_COMBO_PROJECT_NAME          1168
 #define IDC_COMBO_PLAN_NAME             1169
+#define IDC_STATIC_CUR_PLAN_PARA        1170
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_CHECK2                       32771
 #define ID_COMBO2                       32772
@@ -318,7 +319,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        382
 #define _APS_NEXT_COMMAND_VALUE         32842
-#define _APS_NEXT_CONTROL_VALUE         1170
+#define _APS_NEXT_CONTROL_VALUE         1171
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif
