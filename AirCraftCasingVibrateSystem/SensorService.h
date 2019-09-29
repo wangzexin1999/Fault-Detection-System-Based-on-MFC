@@ -99,6 +99,9 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	bool AddSensor(TbSensor &sensor);
+protected:
+
+	static HANDLE m_hMsqlMutex;
 private:
 	//queue<EchoSignal> m_echoSignalQueue; ///回显数据的队列
 	EchoSignal m_signal; ///需要回显的数据

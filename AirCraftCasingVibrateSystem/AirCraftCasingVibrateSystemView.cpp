@@ -545,6 +545,11 @@ void CAirCraftCasingVibrateSystemView::StopSampleEncho()
 
 void CAirCraftCasingVibrateSystemView::SplitVector(SmartArray<double> &dXData, SmartArray<double> &dYData, int nNums)
 {
+	if (m_sampleFromFileDataQueue.size() == 0)
+	{
+		//AfxMessageBox("回显队列没有元素");
+		return;
+	}
 	int iSampleQueueSize = m_sampleFromFileDataQueue.size();
 	for (int i = 0; i < nNums; i++)
 	{

@@ -549,13 +549,29 @@ void CMainFrame::OnButtonOpenDataFile()
 			NewDoc(nSersor);
 			// 初始化view
 			InitializeSampleDataEchoView(16);
+			bool bOpenDataFile;
+			/*文件路径vector*/
+			vector<CString> vFilePaths;
 			// 根据传感器信息查找文件路径
 			for (int i = 0; i < m_vsignalCaptureView.size(); i++)
 			{
+				/*汇总路径*/
+				for (int j = 0; j < collectionData[i].size(); j++)
+				{
+					vFilePaths.push_back(collectionData[i][j].GetDataUrl());
+
+				}
+				//vFilePaths.push_back(collectionData[1][0].GetDataUrl());
 				// 根据路径查找文件，放到各自的view采样队列里面
-				CFileUtil::ReadSampleDataByPath("C:\\collectionData\\3-1-1-1-1566998168677.csv",
+				bOpenDataFile = CFileUtil::ReadSampleDataByPaths(vFilePaths,
 					m_vsignalCaptureView[i]->m_sampleFromFileDataQueue);
+				vFilePaths.clear();
 			}
+			if (!bOpenDataFile)
+			{
+				AfxMessageBox("打开数据文件失败");
+			}
+
 			// 窗口水平平铺
 			WindowsHorizontal();
 
@@ -736,7 +752,7 @@ void CMainFrame::OnBtnStopSample()
 	//////计算通道的个数
 	//channelCount.SetInt(theApp.m_currentProject.GetSensorVector().size());
 
-	CString sensorInfo = "{\"channelCount\":4,\"channelsId\" : [\"#012s-0\", \"#012s-1\",\"#012s-2\",\"#012s-3\"]}";
+	CString sensorInfo = "{\"channelCount\":4,\"channelsId\" : [\"#012s-1\", \"#012s-2\",\"#012s-3\",\"#012s-4\"]}";
 	theApp.m_recordSignal.SetSensorInfo(sensorInfo);
 	theApp.m_recordSignal.SetEndTime(DateUtil::GetCurrentCStringTime());
 	Result res = m_signalController.SaveSampleSignal(theApp.m_recordSignal);

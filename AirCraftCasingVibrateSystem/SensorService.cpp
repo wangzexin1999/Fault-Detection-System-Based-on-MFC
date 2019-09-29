@@ -21,6 +21,7 @@ CSensorService::~CSensorService()
 
 }
 
+HANDLE CSensorService::m_hMsqlMutex = CreateMutex(NULL, FALSE, NULL);
 
 /*随机数组*/
 void CSensorService::RandArray(double* ptr, size_t length)
@@ -69,7 +70,11 @@ Result CSensorService::AddCollectData(TbSignal &signal, ThreadSafeQueue<Acquired
 		signal.SetEndTime(res.GetMessages());
 		//signal.GetTestingDevice().SetTestingdeviceId(project.GetTestingDevicePara().GetTestingdevice().GetId());
 		m_signalDao.SetTableFieldValues(signal);
+
+		/*加上数据库锁，防止多线程*/
+		WaitForSingleObject(m_hMsqlMutex, INFINITE);
 		m_signalDao.Insert(false);
+		ReleaseMutex(m_hMsqlMutex);
 		}
 	}
 	else
