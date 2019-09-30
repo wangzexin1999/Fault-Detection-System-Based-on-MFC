@@ -37,10 +37,7 @@ BEGIN_MESSAGE_MAP(CStateSetDialog, CDialogEx)
 	ON_NOTIFY(NM_DBLCLK, IDC_COLLECTIONPLANGRID, OnGridDblClick)
 END_MESSAGE_MAP()
 
-
 // CStateSetDialog 消息处理程序
-
-
 void CStateSetDialog::OnCbnSelchangeComboCollectionplan()
 {
 
@@ -50,7 +47,6 @@ BOOL CStateSetDialog::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 	RefreshView();
-
 	/*设置文本内容*/
 	CString strPlanName;
 	m_collectionPlanCombo.GetWindowTextA(strPlanName);
