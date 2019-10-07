@@ -252,6 +252,7 @@
     <ClInclude Include="ChartCtrl\PointsOrdering.h" />
     <ClInclude Include="CollectionDataInfoDlg.h" />
     <ClInclude Include="CollectionParaPresetView.h" />
+    <ClInclude Include="CollectionPlanManageView.h" />
     <ClInclude Include="Constant.h" />
     <ClInclude Include="DataStructure.h" />
     <ClInclude Include="DictionaryController.h" />
@@ -347,7 +348,7 @@
     <ClInclude Include="PDDatabase.h" />
     <ClInclude Include="PDSQL.h" />
     <ClInclude Include="ProjectController.h" />
-    <ClInclude Include="ProjectManageView.h" />
+    <ClInclude Include="OpenProjectView.h" />
     <ClInclude Include="ProjectService.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Result.h" />
@@ -448,6 +449,7 @@
     <ClCompile Include="ChartCtrl\DuChartCtrlStaticFunction.cpp" />
     <ClCompile Include="CollectionDataInfoDlg.cpp" />
     <ClCompile Include="CollectionParaPresetView.cpp" />
+    <ClCompile Include="CollectionPlanManageView.cpp" />
     <ClCompile Include="DictionaryController.cpp" />
     <ClCompile Include="DictionaryService.cpp" />
     <ClCompile Include="EchoSignal.cpp" />
@@ -499,7 +501,7 @@
     <ClCompile Include="PDDatabase.cpp" />
     <ClCompile Include="PDSQL.cpp" />
     <ClCompile Include="ProjectController.cpp" />
-    <ClCompile Include="ProjectManageView.cpp" />
+    <ClCompile Include="OpenProjectView.cpp" />
     <ClCompile Include="ProjectService.cpp" />
     <ClCompile Include="Result.cpp" />
     <ClCompile Include="SelectView.cpp" />

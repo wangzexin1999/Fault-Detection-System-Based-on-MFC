@@ -22,6 +22,15 @@ protected:
 	vector<TbSensor>  m_sensorVector;
 	TbSensor m_selectedSensor;
 	TbSensor m_tempSelectedSensor;
+	/**********************************************************************
+	功能描述： 初始化传感器选择的树控件
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
 	void InitSensorSelectTree();
 	void InitSensorSelectedTree();
 	DECLARE_MESSAGE_MAP()

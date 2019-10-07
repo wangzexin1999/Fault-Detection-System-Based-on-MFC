@@ -237,9 +237,6 @@
     <ClInclude Include="SelfCheckController.h">
       <Filter>头文件\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="ProjectManageView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
     <ClInclude Include="SignalDataView.h">
       <Filter>头文件\View</Filter>
     </ClInclude>
@@ -705,6 +702,12 @@
     <ClInclude Include="RecordSignalService.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CollectionPlanManageView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenProjectView.h">
+      <Filter>头文件\View</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AirCraftCasingVibrateSystem.cpp">
@@ -849,9 +852,6 @@
       <Filter>源文件\Controller</Filter>
     </ClCompile>
     <ClCompile Include="AlarmParaSetView.cpp">
-      <Filter>源文件\View</Filter>
-    </ClCompile>
-    <ClCompile Include="ProjectManageView.cpp">
       <Filter>源文件\View</Filter>
     </ClCompile>
     <ClCompile Include="SignalDataView.cpp">
@@ -1150,6 +1150,12 @@
     </ClCompile>
     <ClCompile Include="RecordSignalService.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CollectionPlanManageView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenProjectView.cpp">
+      <Filter>源文件\View</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

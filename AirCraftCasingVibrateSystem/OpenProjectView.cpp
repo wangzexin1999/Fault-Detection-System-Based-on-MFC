@@ -1,25 +1,25 @@
 ﻿#include "stdafx.h"
 #include "AirCraftCasingVibrateSystem.h"
-#include "ProjectManageView.h"
+#include "OpenProjectView.h"
 #include "afxdialogex.h"
 
 
-// CProjectManageView 对话框
+// COpenProjectView 对话框
 
-IMPLEMENT_DYNAMIC(CProjectManageView, CDialogEx)
+IMPLEMENT_DYNAMIC(COpenProjectView, CDialogEx)
 
-CProjectManageView::CProjectManageView(CWnd* pParent /*=NULL*/)
-	: CDialogEx(CProjectManageView::IDD, pParent)
+COpenProjectView::COpenProjectView(CWnd* pParent /*=NULL*/)
+	: CDialogEx(COpenProjectView::IDD, pParent)
 {
 
 }
 
-CProjectManageView::~CProjectManageView()
+COpenProjectView::~COpenProjectView()
 {
 
 }
 
-void CProjectManageView::DoDataExchange(CDataExchange* pDX)
+void COpenProjectView::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_GridControl(pDX, IDC_GRIDCTRL_PROJECT, m_projectGrid);
@@ -28,16 +28,16 @@ void CProjectManageView::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CProjectManageView, CDialogEx)
-	ON_BN_CLICKED(IDOK, &CProjectManageView::OnBnClickedOk)
-	ON_BN_CLICKED(IDC_SEARCHBUTTON, &CProjectManageView::OnBnClickedSearchbutton)
+BEGIN_MESSAGE_MAP(COpenProjectView, CDialogEx)
+	ON_BN_CLICKED(IDOK, &COpenProjectView::OnBnClickedOk)
+	ON_BN_CLICKED(IDC_SEARCHBUTTON, &COpenProjectView::OnBnClickedSearchbutton)
 	ON_NOTIFY(NM_DBLCLK, IDC_GRIDCTRL_PROJECT, OnGridDblClick)
 	ON_NOTIFY(NM_CLICK, IDC_GRIDCTRL_PROJECT, OnGridClick)
 END_MESSAGE_MAP()
 
 
-// CProjectManageView 消息处理程序
-void CProjectManageView::GridCtrlInit(){
+// COpenProjectView 消息处理程序
+void COpenProjectView::GridCtrlInit(){
 
 	m_projectGrid.SetEditable(false);
 	m_projectGrid.SetTextBkColor(RGB(0xFF, 0xFF, 0xE0));//黄色背景
@@ -95,7 +95,7 @@ void CProjectManageView::GridCtrlInit(){
 }
 
 
-BOOL CProjectManageView::OnInitDialog()
+BOOL COpenProjectView::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
@@ -126,7 +126,7 @@ BOOL CProjectManageView::OnInitDialog()
 }
 
 ///打开项目按钮
-void CProjectManageView::OnBnClickedOk()
+void COpenProjectView::OnBnClickedOk()
 {
 	if (MessageBox("是否打开项目 " + m_selectedProject.GetProjectName(), "打开项目", MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL) return;
 	////将选择的项目赋给全局project对象。
@@ -137,7 +137,7 @@ void CProjectManageView::OnBnClickedOk()
 }
 
 ///搜索按钮
-void CProjectManageView::OnBnClickedSearchbutton()
+void COpenProjectView::OnBnClickedSearchbutton()
 {
 	///1.获取查询的项目名
 	CString proSearchName;
@@ -172,7 +172,7 @@ void CProjectManageView::OnBnClickedSearchbutton()
 }
 
 ///项目的双击事件--》打开新项目
-void CProjectManageView::OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* /*pResult*/)
+void COpenProjectView::OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* /*pResult*/)
 {
 
 	NM_GRIDVIEW* pItem = (NM_GRIDVIEW*)pNotifyStruct;
@@ -185,7 +185,7 @@ void CProjectManageView::OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* /*pResult
 	///关闭窗口
 	CDialogEx::OnOK();
 }
-void CProjectManageView::OnGridClick(NMHDR *pNotifyStruct, LRESULT * /*pResult*/ )
+void COpenProjectView::OnGridClick(NMHDR *pNotifyStruct, LRESULT * /*pResult*/ )
 {
 	NM_GRIDVIEW* pItem = (NM_GRIDVIEW*)pNotifyStruct;
 	if (pItem->iRow == 0 || pItem->iRow > m_projectVector.size()) return;

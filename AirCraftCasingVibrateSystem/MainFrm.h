@@ -21,6 +21,8 @@
 #include "GraphAttributeView.h"
 #include "StateSetDockPanelView.h"
 #include "SignalController.h"
+#include "CollectionPlanManageView.h"
+
 class CMainFrame : public CMDIFrameWndEx
 {
 	DECLARE_DYNAMIC(CMainFrame)
@@ -203,6 +205,19 @@ public:
 	afx_msg void OnCheckStaSet();
 	afx_msg void OnUpdateCheckStaSet(CCmdUI *pCmdUI);
 	afx_msg void OnClose();
+
+	/**********************************************************************
+	功能描述： 打开采集计划管理窗口的按钮
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期    版本号 修改人 修改内容
+	2019-10-07  1.0   马善涛  新创建
+	----------------------------------------------------------------------
+	***********************************************************************/
+	afx_msg void OnButtonOpenCollectionPlanManage();
+	afx_msg void OnButtonOpenProjectView();
 };
 
 

@@ -63,9 +63,23 @@ Result ProjectController::FindAllProjectBySearchCondition(TbProject project, CSt
 }
 
 Result ProjectController::FindLastOpenProjectByUser(TbProject &project){
-	bool flag = m_projectService.GetLastOpenProjectByUser(project); 
-	if (flag) return Result(true,"项目加载成功");
-	return Result(false, "项目加载失败");
+	///加载项目基本信息
+	bool flag = m_projectService.GetLastOpenProjectByUser(project);
+	if (!flag) return Result(false, "项目加载失败");
+	///加载项目其他信息
+	////查询项目的采集设备
+	flag = m_testingDeviceService.GetOneById(project.GetTestingDevice());
+	if (!flag)return Result(false, "采集设备加载失败");
+	////查询项目的所有传感器
+	flag = m_sensorService.GetALLSensorByProjectId(project.GetProjectId(), project.GetSensorVector());
+	if (!flag)return Result(false, "传感器加载失败");
+	////查询项目对应的产品信息
+	flag = m_productService.GetProductByID(project.GetProduct());
+	if (!flag)return Result(false, "产品加载失败");
+	////查询用户信息
+	flag = m_testerService.getOneById(project.GetTester());
+
+	return Result(true, "项目加载成功");
 }
 
 Result ProjectController::UpdateProject(TbProject project){

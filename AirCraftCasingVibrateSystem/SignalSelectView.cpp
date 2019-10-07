@@ -54,33 +54,36 @@ BOOL CSignalSelectView::OnInitDialog()
 
 void CSignalSelectView::InitSensorSelectTree(){
 	m_treeSignalSelect.DeleteAllItems();
-	int testingDeviceId = theApp.m_currentProject.GetTestingDevice().GetId();
-	Result res = m_sensorController.FindAllSensorByTestingDeviceId(testingDeviceId, m_sensorVector);
-	if (!res.GetIsSuccess()){
-		AfxMessageBox(res.GetMessages());
-	}
-	// 树的根节点的句柄   
-	HBITMAP hDirBmp;
-	hDirBmp = ::LoadBitmap(_AtlBaseModule.m_hInstResource, MAKEINTRESOURCE(ID_BMPSIGNALRED));
-	m_treeSignalSelect.ModifyStyle(0, TVS_TRACKGROUPSELECT | TVS_SINGLECLICKEXPAND | TVS_HASBUTTONS | TVS_HASLINES);
-	CFont font;
-	font.CreatePointFont(100, _T("Book Antiqua"));
+	///从硬件读取所有的传感器
 
-	m_treeSignalSelect.SetFont(&font);
-	m_treeSignalSelect.SetFocus();
-	m_treeSignalSelect.SetBkColor(RGB(255, 255, 255));
 
-	HTREEITEM hCurrent;
-	hCurrent = m_treeSignalSelect.InsertItem(_T("FFT"), TVI_ROOT, TVI_LAST);
-	m_treeSignalSelect.AddItemBitmap(hCurrent, hDirBmp, ppLastLeft);
+	//int testingDeviceId = theApp.m_currentProject.GetTestingDevice().GetId();
+	//Result res = m_sensorController.FindAllSensorByTestingDeviceId(testingDeviceId, m_sensorVector);
+	//if (!res.GetIsSuccess()){
+	//	AfxMessageBox(res.GetMessages());
+	//}
+	//// 树的根节点的句柄   
+	//HBITMAP hDirBmp;
+	//hDirBmp = ::LoadBitmap(_AtlBaseModule.m_hInstResource, MAKEINTRESOURCE(ID_BMPSIGNALRED));
+	//m_treeSignalSelect.ModifyStyle(0, TVS_TRACKGROUPSELECT | TVS_SINGLECLICKEXPAND | TVS_HASBUTTONS | TVS_HASLINES);
+	//CFont font;
+	//font.CreatePointFont(100, _T("Book Antiqua"));
 
-	HTREEITEM hCurrent1;
-	HBITMAP itemBmp = ::LoadBitmap(_AtlBaseModule.m_hInstResource, MAKEINTRESOURCE(IDB_BMPSIGNALGREEN));
-	int num = 1;
-	for (auto sensor : m_sensorVector){
-		hCurrent1 = m_treeSignalSelect.InsertItem(_T(CommonUtil::Int2CString(num++) + "-" + sensor.GetSensorDesc()), hCurrent, TVI_LAST);
-		m_treeSignalSelect.AddItemBitmap(hCurrent1, itemBmp, ppLastLeft);
-	}
+	//m_treeSignalSelect.SetFont(&font);
+	//m_treeSignalSelect.SetFocus();
+	//m_treeSignalSelect.SetBkColor(RGB(255, 255, 255));
+
+	//HTREEITEM hCurrent;
+	//hCurrent = m_treeSignalSelect.InsertItem(_T("FFT"), TVI_ROOT, TVI_LAST);
+	//m_treeSignalSelect.AddItemBitmap(hCurrent, hDirBmp, ppLastLeft);
+
+	//HTREEITEM hCurrent1;
+	//HBITMAP itemBmp = ::LoadBitmap(_AtlBaseModule.m_hInstResource, MAKEINTRESOURCE(IDB_BMPSIGNALGREEN));
+	//int num = 1;
+	//for (auto sensor : m_sensorVector){
+	//	hCurrent1 = m_treeSignalSelect.InsertItem(_T(CommonUtil::Int2CString(num++) + "-" + sensor.GetSensorDesc()), hCurrent, TVI_LAST);
+	//	m_treeSignalSelect.AddItemBitmap(hCurrent1, itemBmp, ppLastLeft);
+	//}
 }
 void CSignalSelectView::InitSensorSelectedTree(){
 	// 树的根节点的句柄   

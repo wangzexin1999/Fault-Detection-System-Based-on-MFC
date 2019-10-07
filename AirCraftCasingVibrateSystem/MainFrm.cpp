@@ -15,7 +15,7 @@
 #include "AirCraftCasingVibrateSystem.h"
 #include "NewProjectView.h"
 #include "MainFrm.h"
-#include "ProjectManageView.h"
+#include "OpenProjectView.h"
 #include "SignalDataView.h"
 #include "EngineerUnitView.h"
 #include "DetectDeviceManageView.h"
@@ -49,14 +49,13 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_VIEW_CAPTION_BAR, &CMainFrame::OnViewCaptionBar)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_CAPTION_BAR, &CMainFrame::OnUpdateViewCaptionBar)
 	ON_COMMAND(ID_TOOLS_OPTIONS, &CMainFrame::OnOptions)
-	ON_COMMAND(ID_CHECK2, &CMainFrame::OnViewChannelPara)
-	ON_UPDATE_COMMAND_UI(ID_CHECK2, &CMainFrame::OnUpdateViewChannelPara)
-	ON_COMMAND(ID_CHECK3, &CMainFrame::OnViewSystemPara)
-	ON_UPDATE_COMMAND_UI(ID_CHECK3, &CMainFrame::OnUpdateViewSystemPara)
+	ON_COMMAND(ID_VIEW_CHANNELPARA_BAR, &CMainFrame::OnViewChannelPara)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_CHANNELPARA_BAR, &CMainFrame::OnUpdateViewChannelPara)
+	ON_COMMAND(ID_VIEW_SYSTEMPARA_BAR, &CMainFrame::OnViewSystemPara)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_SYSTEMPARA_BAR, &CMainFrame::OnUpdateViewSystemPara)
 	ON_COMMAND(ID_BUTTON_NEW_PROJECT, &CMainFrame::OnButtonNewProject)
 	ON_COMMAND(ID_BUTTON_PROJECT_MANAGE, &CMainFrame::OnButtonProjectManage)
 	ON_COMMAND(ID_BUTTON_OPEN_DATA_FILE, &CMainFrame::OnButtonOpenDataFile)
-
 	ON_COMMAND(ID_BUTTON_EXPORT_CHANNEL_PARA, &CMainFrame::OnButtonExportChannelPara)
 	ON_COMMAND(ID_BUTTON_IMPORT_CHANNEL_PARA, &CMainFrame::OnButtonImportChannelPara)
 	ON_COMMAND(ID_BUTTON_EXPORT_SYS_PARA, &CMainFrame::OnButtonExportSysPara)
@@ -91,6 +90,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_STA_SET, &CMainFrame::OnUpdateCheckStaSet)
 	ON_WM_CLOSE()
 	ON_MESSAGE(StatusInfMessage, OnStatusInf)
+	ON_COMMAND(ID_BUTTON_OPENCOLLECTIONPLANMANAGE, &CMainFrame::OnButtonOpenCollectionPlanManage)
+	ON_COMMAND(ID_BUTTON_OPENPROJECTVIEW, &CMainFrame::OnButtonOpenProjectView)
 END_MESSAGE_MAP()
 
 // CMainFrame 构造/析构
@@ -190,27 +191,15 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	
 	HBITMAP hBmpAnimationList = NULL;
 	COLORREF clrTrnsp = RGB(255, 0, 0);
-	CString title;
-	CString product = "未知产品";
-	CString project = "未知项目";
-	CString rotatingSpeed = "未知转速";
-	CString tester = "未知人";
-	CString sensor = "未知传感器";
-
-	if (theApp.m_currentProject.GetProduct().GetProductType() != "") product = theApp.m_currentProject.GetProduct().GetProductType();
-	if (theApp.m_currentProject.GetProjectName() != "") project = theApp.m_currentProject.GetProjectName();
-	if (theApp.m_currentProject.GetTester().GetTesterName() != "") tester = theApp.m_currentProject.GetTester().GetTesterName();
-	if (theApp.m_collectionRotatingSpeed != "") rotatingSpeed = theApp.m_collectionRotatingSpeed;
-	title = product + "-" + project + "-" + rotatingSpeed + "-" + tester;
-
 
 	//设置状态栏的字体
 	CFont* fontstatus = new CFont;
 	fontstatus->CreateFont(15, 0, 0, 0, FW_BOLD, FALSE, FALSE, 0, GB2312_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_MODERN, _T("黑体"));
 	m_wndStatusBar.SetFont(fontstatus);
 
-	m_wndStatusBar.AddElement(new CMFCRibbonStatusBarPane(10000, _T(title), hBmpAnimationList, clrTrnsp), _T("参数状态"));
+	m_wndStatusBar.AddElement(new CMFCRibbonStatusBarPane(10000, _T(""), hBmpAnimationList, clrTrnsp), _T("参数状态"));
 	m_wndStatusBar.AddElement(new CMFCRibbonStatusBarPane(10001, _T("版权所有 哈尔滨理工大学人工智能实验室"), hBmpAnimationList, clrTrnsp), _T("版权"));
+	SendMessage(StatusInfMessage);
 	/*状态栏显示时间*/
 	SetTimer(66, 1000, NULL);//安装定时器，并将其时间间隔设为1000毫秒
 	SendMessage(StatusInfMessage);
@@ -498,10 +487,7 @@ void CMainFrame::OnButtonNewProject()
 // 项目管理
 void CMainFrame::OnButtonProjectManage()
 {
-	CProjectManageView projectView;
-	int  i = projectView.DoModal();
-	///发送刷新主窗口标题的消息
-	SendMessage(WM_SETTEXT);
+	
 }
 
 // 打开数据文件
@@ -1162,4 +1148,19 @@ LRESULT CMainFrame::OnStatusInf(WPARAM wParam, LPARAM lParam)
 	pElement->SetText(title);
 	pElement->Redraw();
 	return 0;
+}
+
+void CMainFrame::OnButtonOpenCollectionPlanManage()
+{
+	CollectionPlanManageView collectionPlanManagerView;
+	collectionPlanManagerView.DoModal();
+}
+
+
+void CMainFrame::OnButtonOpenProjectView()
+{
+	COpenProjectView projectView;
+	int  i = projectView.DoModal();
+	///发送刷新主窗口标题的消息
+	SendMessage(WM_SETTEXT);
 }

@@ -92,6 +92,7 @@
 #define IDD_DIALOG_STABLESTATUSPRESET   374
 #define IDD_DIALOG_STATE_SET            377
 #define IDD_DIALOG_REGISTER             379
+#define IDD_DIALOG_COLLECTIONPLANMANAGE 382
 #define IDC_TAB1                        1000
 #define IDC_LIST_GENERAL_PARA           1001
 #define IDC_COMBO1                      1002
@@ -255,6 +256,7 @@
 #define ID_CHECK2                       32771
 #define ID_COMBO2                       32772
 #define ID_CHECK3                       32773
+#define ID_VIEW_CHANNELPARA_BAR         32773
 #define ID_BUTTON_START_CAPTURE         32774
 #define ID_BUTTON_SUSPEND_CAPTURE       32775
 #define ID_BTN_STOP_CAPTURE             32776
@@ -312,13 +314,19 @@
 #define ID_BUTTON7                      32839
 #define ID_BUTTON9                      32840
 #define ID_CHECK_STA_SET                32841
+#define ID_CHECK4                       32842
+#define ID_VIEW_SYSTEMPARA_BAR          32842
+#define ID_CHECK5                       32843
+#define ID_BUTTON_OPENCOLLECTIONPLANMANAGE 32844
+#define ID_BUTTON_OPENPROJECT           32845
+#define ID_BUTTON_OPENPROJECTVIEW       32845
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        382
-#define _APS_NEXT_COMMAND_VALUE         32842
+#define _APS_NEXT_RESOURCE_VALUE        383
+#define _APS_NEXT_COMMAND_VALUE         32846
 #define _APS_NEXT_CONTROL_VALUE         1171
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

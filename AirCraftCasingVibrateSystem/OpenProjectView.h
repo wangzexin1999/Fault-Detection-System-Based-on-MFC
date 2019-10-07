@@ -7,15 +7,15 @@
 #include "afxwin.h"
 #include "afxdtctl.h"
 #include "DateUtil.h"
-// CProjectManageView 对话框
+// COpenProjectView 对话框
 
-class CProjectManageView : public CDialogEx
+class COpenProjectView : public CDialogEx
 {
-	DECLARE_DYNAMIC(CProjectManageView)
+	DECLARE_DYNAMIC(COpenProjectView)
 
 public:
-	CProjectManageView(CWnd* pParent = NULL);   // 标准构造函数
-	virtual ~CProjectManageView();
+	COpenProjectView(CWnd* pParent = NULL);   // 标准构造函数
+	virtual ~COpenProjectView();
 
 // 对话框数据
 	enum { IDD = IDD_DIALOG_PROJECT_MANAGE };
