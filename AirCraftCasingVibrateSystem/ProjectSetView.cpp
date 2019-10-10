@@ -66,7 +66,7 @@ BOOL ProjectSetView::OnInitDialog()
 	tabRect.bottom -= 1;
 
 	m_projectNavigationTab.InsertItem(1, _T("Õ®µ¿…Ë÷√"));
-	m_channelParaPresetView.Create(IDD_DIALOG_CHANNELPARAPRESET, &m_projectNavigationTab);
+	m_channelParaPresetView.Create(IDD_DIALOG_CHANNEL_PARA_SELECT_AND_SET, &m_projectNavigationTab);
 	m_channelParaPresetView.MoveWindow(&tabRect);
 	m_pDialogVec.push_back(&m_channelParaPresetView);
 	m_channelParaPresetView.ShowWindow(SW_SHOW);
