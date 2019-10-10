@@ -46,14 +46,11 @@ BOOL CProductManageView::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
-	// TODO:  在此添加额外的初始化
 	// 查询所有产品
 	Result res = m_productController.FindAllProduct(m_vTbProduct);
 	if (!res.GetIsSuccess()){ AfxMessageBox(res.GetMessages()); }
 	GridCtrlInit();  // 初始化表控件
-
-	return TRUE;  // return TRUE unless you set the focus to a control
-	// 异常:  OCX 属性页应返回 FALSE
+	return TRUE; 
 }
 
 

@@ -92,6 +92,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_MESSAGE(StatusInfMessage, OnStatusInf)
 	ON_COMMAND(ID_BUTTON_OPENCOLLECTIONPLANMANAGE, &CMainFrame::OnButtonOpenCollectionPlanManage)
 	ON_COMMAND(ID_BUTTON_OPENPROJECTVIEW, &CMainFrame::OnButtonOpenProjectView)
+	ON_COMMAND(ID_BUTTON_OPEN_PROJECTSET_VIEW, &CMainFrame::OnButtonOpenProjectSetView)
 END_MESSAGE_MAP()
 
 // CMainFrame 构造/析构
@@ -475,6 +476,7 @@ void CMainFrame::OnButtonNewProject()
 		//2.刷新关于项目的显示
 		////2.1 刷新项目标题的显示
 		SendMessage(WM_SETTEXT);
+		SendMessage(StatusInfMessage);
 		////2.2 刷新采集参数的显示
 		m_systemPara.RefreshView();
 		////2.3 刷新通道参数的显示
@@ -1159,8 +1161,27 @@ void CMainFrame::OnButtonOpenCollectionPlanManage()
 
 void CMainFrame::OnButtonOpenProjectView()
 {
+	///1.弹出打开项目的窗口
 	COpenProjectView projectView;
-	int  i = projectView.DoModal();
-	///发送刷新主窗口标题的消息
-	SendMessage(WM_SETTEXT);
+	int  res = projectView.DoModal();
+	if (res==IDOK){
+		///2.关闭当前显示的所有窗口，根据项目创建项目用到的窗口
+		CloseAllWindows();
+		CreateSensorWindow(theApp.m_currentProject.GetSensorVector());
+		WindowsVertical();
+		///3 确定打开项目之后，将此时打开的项目的更新时间设置为此时，保存到数据库
+		theApp.m_currentProject.SetProjectUpdateTime(DateUtil::GetCurrentCStringTime());
+		Result res = m_projectController.Update(theApp.m_currentProject);
+		if (!res.GetIsSuccess()){ AfxMessageBox(res.GetMessages()); }
+		///发送刷新主窗口标题和状态栏显示的消息
+		SendMessage(WM_SETTEXT);
+		SendMessage(StatusInfMessage);
+	}
+}
+
+
+void CMainFrame::OnButtonOpenProjectSetView()
+{
+	ProjectSetView projectSetView;
+	int  i = projectSetView.DoModal();
 }

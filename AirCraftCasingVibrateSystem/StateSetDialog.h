@@ -30,6 +30,15 @@ protected:
 	DECLARE_MESSAGE_MAP()
 	CComboBox m_collectionPlanCombo;
 public:
+	/**********************************************************************
+	功能描述： 下拉框的选项改变事件
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
 	afx_msg void OnCbnSelchangeComboCollectionplan();
 	virtual BOOL OnInitDialog();
 	void RefreshView();

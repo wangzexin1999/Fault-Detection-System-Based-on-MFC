@@ -3889,6 +3889,12 @@ int CGridCtrl::InsertColumn(LPCTSTR strHeading,
 
     m_nCols++;
     
+	m_arColOrder.resize(m_nCols);
+	for (int i = 0; i < m_nCols; i++)
+	{
+		m_arColOrder[i] = i;
+	}
+
     // Initialise column data
     SetItemText(0, nColumn, strHeading);
     for (int row = 0; row < m_nRows; row++) 

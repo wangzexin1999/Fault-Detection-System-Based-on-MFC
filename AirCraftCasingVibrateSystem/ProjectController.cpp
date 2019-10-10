@@ -82,8 +82,8 @@ Result ProjectController::FindLastOpenProjectByUser(TbProject &project){
 	return Result(true, "项目加载成功");
 }
 
-Result ProjectController::UpdateProject(TbProject project){
-	bool flag = m_projectService.UpdateProject(project);
+Result ProjectController::Update(TbProject project){
+	bool flag = m_projectService.Update(project);
 	if (flag) return Result(true, "项目更新成功");
 	return Result(false, "项目更新失败");
 }

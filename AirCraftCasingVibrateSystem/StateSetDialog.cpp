@@ -40,7 +40,7 @@ END_MESSAGE_MAP()
 // CStateSetDialog 消息处理程序
 void CStateSetDialog::OnCbnSelchangeComboCollectionplan()
 {
-
+	GridCtrlInit();
 }
 
 BOOL CStateSetDialog::OnInitDialog()
@@ -65,6 +65,9 @@ BOOL CStateSetDialog::OnInitDialog()
 }
 void CStateSetDialog::GridCtrlInit()
 {
+	///删除所有的列表项
+	m_collectionPlanGrid.DeleteAllItems();
+	m_collectionPlanGrid.Refresh();
 	///得到当前选中的采集计划序号
 	int selectedIndex = m_collectionPlanCombo.GetCurSel();
 	if (selectedIndex < 0) return;

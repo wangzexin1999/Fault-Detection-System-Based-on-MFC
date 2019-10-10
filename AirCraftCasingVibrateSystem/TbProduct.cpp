@@ -13,10 +13,7 @@ bool TbProduct::operator == (TbProduct product)
 	bool tag = true;
 	if (m_productId != product.GetProductId()) tag = false;
 	if (m_productName != product.GetProductName()) tag = false;
-	if (m_productType != product.GetProductType())
-	{
-		tag = false;
-	}
+	if (m_productType != product.GetProductType())tag = false;
 	return tag;
 
 }

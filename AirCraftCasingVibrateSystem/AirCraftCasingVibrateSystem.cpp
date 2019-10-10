@@ -112,7 +112,7 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	projectController.FindLastOpenProjectByUser(theApp.m_currentProject);
 	if (theApp.m_currentProject.GetProjectId() != 0){
 		theApp.m_currentProject.SetProjectUpdateTime(DateUtil::GetCurrentCStringTime());
-		projectController.UpdateProject(theApp.m_currentProject);
+		projectController.Update(theApp.m_currentProject);
 	}
 
 	// 从文件中读取数据->内存（模拟数据）

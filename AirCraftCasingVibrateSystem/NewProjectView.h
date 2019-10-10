@@ -39,13 +39,9 @@ protected:
 	BaseProjectInfoView m_baseProjectInfoView;
 	CollectionParaPresetView m_collectionParaPresetView;
 	ChannelParaPresetView m_channelParaPresetView;
-
 	//CollectionPlanParaPresetView m_collectionPlanParaPresetView;
 	int m_newDialogIndex;
-
 	TbTestingDevice m_testingDevice;
-	
-
 	vector<TbSensor> m_vsensors;
 	DECLARE_MESSAGE_MAP()
 	vector<CDialog*> m_pDialogVec;  //用来保存对话框对象指针

@@ -29,7 +29,7 @@ bool DictionaryService::GetAllBySearchCondition(vector<TbDictionary> & dictionar
 	return isSuccess;
 }
 
-bool DictionaryService::DeleteEUByEUId(TbDictionary dictionary)
+bool DictionaryService::DeleteById(TbDictionary dictionary)
 {
 	m_dictionaryDao.SetTableFieldValues(dictionary);
 	bool isSuccess = m_dictionaryDao.DeleteByKey();

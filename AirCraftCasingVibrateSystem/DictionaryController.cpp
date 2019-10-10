@@ -19,9 +19,9 @@ Result DictionaryController::FindAllBySearchCondition(vector<TbDictionary> & dic
 }
 
 
-Result DictionaryController::DeleteEUByEUId(TbDictionary dictionary)
+Result DictionaryController::DeleteById(TbDictionary dictionary)
 {
-	bool isSuccess = m_dictionaryService.DeleteEUByEUId(dictionary);
+	bool isSuccess = m_dictionaryService.DeleteById(dictionary);
 	if (isSuccess){
 		return Result(true, "字典表查询成功");
 	}

@@ -29,7 +29,7 @@ CollectionPlanParaPresetView::~CollectionPlanParaPresetView()
 void CollectionPlanParaPresetView::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_GridControl(pDX, IDC_GRIDCTRL_STABLESTATUSPARA, m_stableStatusGridCtrl);
+	DDX_GridControl(pDX, IDC_GRIDCTRL_STABLESTATUSPARA, m_collectionStatusGridCtrl);
 }
 
 
@@ -51,32 +51,31 @@ BOOL CollectionPlanParaPresetView::OnInitDialog()
 }
 void CollectionPlanParaPresetView::GridCtrlInit()
 {
-	////获取采集计划的参数信息
-	CString csPara  = m_collectionPlan.GetDictValue();
 	// 1.解析doc
 	Document doc;
 	doc.Parse(m_collectionPlan.GetDictValue());
-
+	if (!doc.HasMember("planParaTitle") || !doc.HasMember("planParaContent")) return;
 	const Value& planParaTitle = doc["planParaTitle"];
 	const Value& planParaContent = doc["planParaContent"];
-
+	///如果json数据没有参数信息，则不显示
+	if (planParaTitle.IsNull() || planParaContent.IsNull()){ return; }
 	// 2. 获得信息
-	m_stableStatusGridCtrl.SetEditable(true);
-	m_stableStatusGridCtrl.SetEditable(true);
-	m_stableStatusGridCtrl.SetEditable(false);
-	m_stableStatusGridCtrl.SetTextBkColor(RGB(0xFF, 0xFF, 0xE0));//黄色背景
-	m_stableStatusGridCtrl.SetRowCount(planParaContent.Size()+1); //初始为n行
-	m_stableStatusGridCtrl.SetColumnCount(planParaTitle.Size()+1); //初始化为3列
-	m_stableStatusGridCtrl.SetFixedRowCount(1); //表头为一行
-	m_stableStatusGridCtrl.SetRowResize(TRUE); ///自动设置行和列的大小
-	m_stableStatusGridCtrl.SetColumnResize(TRUE);
-	m_stableStatusGridCtrl.SetListMode(true); ////在选定一个单元格时，选择整行
-	m_stableStatusGridCtrl.ExpandColumnsToFit(true);
+	m_collectionStatusGridCtrl.SetEditable(true);
+	m_collectionStatusGridCtrl.SetEditable(true);
+	m_collectionStatusGridCtrl.SetEditable(false);
+	m_collectionStatusGridCtrl.SetTextBkColor(RGB(0xFF, 0xFF, 0xE0));//黄色背景
+	m_collectionStatusGridCtrl.SetRowCount(planParaContent.Size()+1); //初始为n行
+	m_collectionStatusGridCtrl.SetColumnCount(planParaTitle.Size()+1); //初始化为3列
+	m_collectionStatusGridCtrl.SetFixedRowCount(1); //表头为一行
+	m_collectionStatusGridCtrl.SetRowResize(TRUE); ///自动设置行和列的大小
+	m_collectionStatusGridCtrl.SetColumnResize(TRUE);
+	m_collectionStatusGridCtrl.SetListMode(true); ////在选定一个单元格时，选择整行
+	m_collectionStatusGridCtrl.ExpandColumnsToFit(true);
 
-	m_stableStatusGridCtrl.SetSingleRowSelection(true);
-	//m_stableStatusGridCtrl.OnGridClick();
-	for (int row = 0; row < m_stableStatusGridCtrl.GetRowCount(); row++)
-	for (int col = 0; col < m_stableStatusGridCtrl.GetColumnCount(); col++)
+	m_collectionStatusGridCtrl.SetSingleRowSelection(true);
+	//m_collectionStatusGridCtrl.OnGridClick();
+	for (int row = 0; row < m_collectionStatusGridCtrl.GetRowCount(); row++)
+	for (int col = 0; col < m_collectionStatusGridCtrl.GetColumnCount(); col++)
 	{
 		//设置表格显示属性
 		GV_ITEM Item;
@@ -87,26 +86,23 @@ void CollectionPlanParaPresetView::GridCtrlInit()
 		if (row == 0){
 			Item.nFormat = DT_CENTER | DT_WORDBREAK;
 			if (col == 0){
-				m_stableStatusGridCtrl.SetCellType(0, 0, RUNTIME_CLASS(CGridCellCheck));
+				m_collectionStatusGridCtrl.SetCellType(0, 0, RUNTIME_CLASS(CGridCellCheck));
 			}
-			if (col == 1){
-				Item.strText.Format(_T(planParaTitle[0].GetString()), 2);
+			else{
+				Item.strText = planParaTitle[col - 1].GetString();
 			}
-			if (col == 2){
-				Item.strText.Format(_T(planParaTitle[1].GetString()), 3);
-			}
-			m_stableStatusGridCtrl.SetItem(&Item);
+			m_collectionStatusGridCtrl.SetItem(&Item);
 			continue;
 		}
 
 		Item.nFormat = DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS;
 
-		if (col == 0){ m_stableStatusGridCtrl.SetCellType(row, 0, RUNTIME_CLASS(CGridCellCheck)); }
+		if (col == 0){ m_collectionStatusGridCtrl.SetCellType(row, 0, RUNTIME_CLASS(CGridCellCheck)); }
 		CString strText;
 		if (col != 0) 
 				strText = planParaContent[row - 1][col -1 ].GetString();
 		Item.strText=strText;
-		m_stableStatusGridCtrl.SetItem(&Item);
+		m_collectionStatusGridCtrl.SetItem(&Item);
 
 	}
 }
@@ -115,14 +111,14 @@ void CollectionPlanParaPresetView::OnGridClick(NMHDR *pNotifyStruct, LRESULT* pR
 	NM_GRIDVIEW* pItem = (NM_GRIDVIEW*)pNotifyStruct;
 	if (pItem->iRow < 0) return;
 	///获得选中的单选框的状态
-	if (!m_stableStatusGridCtrl.GetCell(pItem->iRow, 0)->IsKindOf(RUNTIME_CLASS(CGridCellCheck)))
-		m_stableStatusGridCtrl.SetCellType(pItem->iRow, 0, RUNTIME_CLASS(CGridCellCheck));
-	CGridCellCheck* pCell = (CGridCellCheck*)m_stableStatusGridCtrl.GetCell(pItem->iRow, 0);
+	if (!m_collectionStatusGridCtrl.GetCell(pItem->iRow, 0)->IsKindOf(RUNTIME_CLASS(CGridCellCheck)))
+		m_collectionStatusGridCtrl.SetCellType(pItem->iRow, 0, RUNTIME_CLASS(CGridCellCheck));
+	CGridCellCheck* pCell = (CGridCellCheck*)m_collectionStatusGridCtrl.GetCell(pItem->iRow, 0);
 	bool isChecked = pCell->GetCheck();
 	pCell->SetCheck(!isChecked);
 	if (pItem->iRow == 0){
 		///全选按钮
-		for (int row = 1; row < m_stableStatusGridCtrl.GetRowCount(); row++){
+		for (int row = 1; row < m_collectionStatusGridCtrl.GetRowCount(); row++){
 			SetGridCellCheck(row, 0, !isChecked);
 		}
 	}
@@ -132,38 +128,30 @@ void CollectionPlanParaPresetView::OnGridClick(NMHDR *pNotifyStruct, LRESULT* pR
 }
 
 void CollectionPlanParaPresetView::OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult){
-	m_stableStatusGridCtrl.SetEditable(TRUE);
+	m_collectionStatusGridCtrl.SetEditable(TRUE);
 }
 
 void CollectionPlanParaPresetView::SetGridCellCheck(int row, int col, bool isChecked){
-	if (!m_stableStatusGridCtrl.GetCell(row, col)->IsKindOf(RUNTIME_CLASS(CGridCellCheck)))
-		m_stableStatusGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCheck));
-	CGridCellCheck* pCell = (CGridCellCheck*)m_stableStatusGridCtrl.GetCell(row, col);
+	if (!m_collectionStatusGridCtrl.GetCell(row, col)->IsKindOf(RUNTIME_CLASS(CGridCellCheck)))
+		m_collectionStatusGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCheck));
+	CGridCellCheck* pCell = (CGridCellCheck*)m_collectionStatusGridCtrl.GetCell(row, col);
 	pCell->SetCheck(isChecked);
 }
 
 void CollectionPlanParaPresetView::OnBnClickedButtonAdd()
 {
-	m_stableStatusGridCtrl.InsertRow("");
-	m_stableStatusGridCtrl.Refresh();
+	///1.插入一行
+	m_collectionStatusGridCtrl.InsertRow("");
+	///2.设置新插入行的第一列为多选框
+	m_collectionStatusGridCtrl.SetCellType(m_collectionStatusGridCtrl.GetRowCount()-1, 0, RUNTIME_CLASS(CGridCellCheck));
+	m_collectionStatusGridCtrl.Refresh();
 }
-/*
-{
-"planName": "平稳状态",
-"planIntro": "平稳状态下的采集",
-"planParaTitle": ["转速", "备注"],
-"planParaContent": [
-["126hz", "正在使用"],
-["126hz", "正在使用"]
-]
-}
-*/
 
 void  CollectionPlanParaPresetView::GetCollectionPlan(Value &planEntity, Document::AllocatorType & allocator){
 	///解析原计划模板
 	Document planDoc;
 	planDoc.Parse(m_collectionPlan.GetDictValue());
-
+	if (!planDoc.HasMember("planParaContent")){ return; }
 	Value& planParaContent = planDoc["planParaContent"];
 
 	Value planId(kNumberType);
@@ -171,22 +159,23 @@ void  CollectionPlanParaPresetView::GetCollectionPlan(Value &planEntity, Documen
 
 	/// 清空
 	planParaContent.GetArray().Clear();
-	for (int row = 1; row < m_stableStatusGridCtrl.GetRowCount(); row++){
-		if (!m_stableStatusGridCtrl.GetCell(row, 0)->IsKindOf(RUNTIME_CLASS(CGridCellCheck)))
-			m_stableStatusGridCtrl.SetCellType(row, 0, RUNTIME_CLASS(CGridCellCheck));
-		CGridCellCheck* pCell = (CGridCellCheck*)m_stableStatusGridCtrl.GetCell(row, 0);
+	for (int row = 1; row < m_collectionStatusGridCtrl.GetRowCount(); row++){
+		if (!m_collectionStatusGridCtrl.GetCell(row, 0)->IsKindOf(RUNTIME_CLASS(CGridCellCheck)))
+			m_collectionStatusGridCtrl.SetCellType(row, 0, RUNTIME_CLASS(CGridCellCheck));
+		CGridCellCheck* pCell = (CGridCellCheck*)m_collectionStatusGridCtrl.GetCell(row, 0);
 		if (pCell->GetCheck()){
 			Value lineData(kArrayType);
-			for (int col = 1; col < m_stableStatusGridCtrl.GetColumnCount();col++){
+			for (int col = 1; col < m_collectionStatusGridCtrl.GetColumnCount();col++){
 				///获得每一行每一列的参数
 				Value  para(kStringType);
 				string  temp;
-				temp = m_stableStatusGridCtrl.GetItemText(row, col).GetString();
+				temp = m_collectionStatusGridCtrl.GetItemText(row, col).GetString();
 				para.SetString(temp.c_str(), temp.size(), planDoc.GetAllocator());
 				lineData.PushBack(para,planDoc.GetAllocator());
 			}
 			planParaContent.GetArray().PushBack(lineData, planDoc.GetAllocator());
 		}
 	}
+	planDoc.AddMember("planId", planId, planDoc.GetAllocator());
 	planEntity.CopyFrom(planDoc,allocator);
 }

@@ -22,7 +22,8 @@
 #include "StateSetDockPanelView.h"
 #include "SignalController.h"
 #include "CollectionPlanManageView.h"
-
+#include "ProjectSetView.h"
+#include "ProjectController.h"
 class CMainFrame : public CMDIFrameWndEx
 {
 	DECLARE_DYNAMIC(CMainFrame)
@@ -58,7 +59,7 @@ protected:  // 控件条嵌入成员
 	std::vector<CAirCraftCasingVibrateSystemView *> m_vsignalCaptureView;
 	CGraphAttributeView m_graphAttributeView; // 图形属性界面
 	SignalController m_signalController;
-
+	ProjectController m_projectController;
 public:
 	CSystemParaView    m_systemPara; ///暂时无用
 	CChannelParaView    m_channelPara;
@@ -218,6 +219,7 @@ public:
 	***********************************************************************/
 	afx_msg void OnButtonOpenCollectionPlanManage();
 	afx_msg void OnButtonOpenProjectView();
+	afx_msg void OnButtonOpenProjectSetView();
 };
 
 

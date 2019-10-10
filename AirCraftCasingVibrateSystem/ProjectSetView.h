@@ -1,76 +1,35 @@
 #pragma once
-#include "GridCtrl_src/GridCtrl.h"
-#include "NewCellTypes/GridCellCheck.h"
-#include "NewCellTypes/GridCellCombo.h"
-#include "DictionaryController.h"
-#include <vector>
-using namespace  std;
-// ChannelParaPresetView 对话框
+#include "BaseProjectInfoView.h"
+#include "ChannelParaPresetView.h"
+#include "TbProject.h"
+#include "CollectionPlanParaPresetView.h"
+#include "afxcmn.h"
 
-class ChannelParaPresetView : public CDialogEx
+class ProjectSetView : public CDialogEx
 {
-	DECLARE_DYNAMIC(ChannelParaPresetView)
+	DECLARE_DYNAMIC(ProjectSetView)
 
 public:
-	ChannelParaPresetView(CWnd* pParent = NULL);   // 标准构造函数
-	virtual ~ChannelParaPresetView();
+	ProjectSetView(CWnd* pParent = NULL);   // 标准构造函数
+	virtual ~ProjectSetView();
 
 // 对话框数据
-	enum { IDD =IDD_DIALOG_CHANNEL_PARA_SELECT_AND_SET };
+	enum { IDD = IDD_DIALOG_PROJECTSET };
 
 protected:
+	BaseProjectInfoView m_baseProjectInfoView;
+	ChannelParaPresetView m_channelParaPresetView;
+	int m_icurSelTabIndex;
+	int m_newDialogIndex;
+	TbProject m_project;
+	vector<CDialog*> m_pDialogVec;  //用来保存对话框对象指针
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
-	CGridCtrl m_channelParaGridCtrl;
-
-	DictionaryController m_dictionController; 
-	vector<TbDictionary> m_vwindowTypes;
-	vector<TbDictionary> m_vinputMethods;
-
 	DECLARE_MESSAGE_MAP()
-	/**********************************************************************
-	功能描述：初始化表格控件
-	输入参数：
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
-	***********************************************************************/
-	void GridCtrlInit();
-	/**********************************************************************
-	功能描述：通道参数表格的单击事件
-	输入参数：
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
-	***********************************************************************/
-	afx_msg void OnGridClick(NMHDR *pNotifyStruct, LRESULT* pResult);
-	/**********************************************************************
-	功能描述：通道参数表格的双击事件，双击设置可修改信息
-	输入参数：
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
-	***********************************************************************/
-	afx_msg void OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult);
-	/**********************************************************************
-	功能描述：设置表格中多选框的选中状态
-	输入参数：
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
-	***********************************************************************/
-	void SetGridCellCheck(int row, int col, bool isChecked);
 public:
 	virtual BOOL OnInitDialog();
+	CTabCtrl m_projectNavigationTab;
 	/**********************************************************************
-	功能描述：得到选择的所有所有通道
+	功能描述： 点击上一步的按钮
 	输入参数：
 	输出参数：
 	返 回 值：
@@ -78,5 +37,45 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	void GetSelectedChannels(vector<TbSensor> & vsensors);
+	afx_msg void OnBnClickedButtonLaststep();
+	/**********************************************************************
+	功能描述： 点击下一步的按钮
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	afx_msg void OnBnClickedButtonNextstep();
+	/**********************************************************************
+	功能描述： 点击确定的按钮
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	afx_msg void OnBnClickedOk();
+	/**********************************************************************
+	功能描述： 点击取消的按钮
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	afx_msg void OnBnClickedCancel();
+	/**********************************************************************
+	功能描述： tab键被触发的事件，切换当前显示的窗口
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	afx_msg void OnTcnSelchangeTabProjectNavigation(NMHDR *pNMHDR, LRESULT *pResult);
 };

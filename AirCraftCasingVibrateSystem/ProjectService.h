@@ -39,7 +39,7 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	bool UpdateProject(TbProject project);
+	bool Update(TbProject project);
 	//bool GetAllProjectIdBySearchCondition(int testerId, CString projectName, CString startTime, CString endTime, vector<int> &projectIdVector);
 };
 

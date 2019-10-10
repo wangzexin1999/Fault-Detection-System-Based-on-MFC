@@ -708,6 +708,12 @@
     <ClInclude Include="OpenProjectView.h">
       <Filter>头文件\View</Filter>
     </ClInclude>
+    <ClInclude Include="CollectionPlanController.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectSetView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AirCraftCasingVibrateSystem.cpp">
@@ -1156,6 +1162,12 @@
     </ClCompile>
     <ClCompile Include="OpenProjectView.cpp">
       <Filter>源文件\View</Filter>
+    </ClCompile>
+    <ClCompile Include="CollectionPlanController.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectSetView.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -252,6 +252,7 @@
     <ClInclude Include="ChartCtrl\PointsOrdering.h" />
     <ClInclude Include="CollectionDataInfoDlg.h" />
     <ClInclude Include="CollectionParaPresetView.h" />
+    <ClInclude Include="CollectionPlanController.h" />
     <ClInclude Include="CollectionPlanManageView.h" />
     <ClInclude Include="Constant.h" />
     <ClInclude Include="DataStructure.h" />
@@ -303,6 +304,7 @@
     <ClInclude Include="NewCellTypes\GridCellNumeric.h" />
     <ClInclude Include="NewCellTypes\GridURLCell.h" />
     <ClInclude Include="ProductController.h" />
+    <ClInclude Include="ProjectSetView.h" />
     <ClInclude Include="RealTimeSignal.h" />
     <ClInclude Include="RecordSignalService.h" />
     <ClInclude Include="redisUtil.h" />
@@ -449,6 +451,7 @@
     <ClCompile Include="ChartCtrl\DuChartCtrlStaticFunction.cpp" />
     <ClCompile Include="CollectionDataInfoDlg.cpp" />
     <ClCompile Include="CollectionParaPresetView.cpp" />
+    <ClCompile Include="CollectionPlanController.cpp" />
     <ClCompile Include="CollectionPlanManageView.cpp" />
     <ClCompile Include="DictionaryController.cpp" />
     <ClCompile Include="DictionaryService.cpp" />
@@ -460,6 +463,7 @@
     <ClCompile Include="NewCellTypes\GridCellNumeric.cpp" />
     <ClCompile Include="NewCellTypes\GridURLCell.cpp" />
     <ClCompile Include="ProductController.cpp" />
+    <ClCompile Include="ProjectSetView.cpp" />
     <ClCompile Include="RealTimeSignal.cpp" />
     <ClCompile Include="RecordSignalService.cpp" />
     <ClCompile Include="RegisterView.cpp" />

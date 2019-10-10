@@ -68,11 +68,11 @@ BOOL CSignalDataView::OnInitDialog()
 	m_dateSelectComboBox.InsertString(5,"最近一年");
 	m_dateSelectComboBox.SetCurSel(0);
 	////查询所有的采集计划
-	Result res = m_dictionaryController.FindAllBySearchCondition(m_collectionPlanVec, 0, "collectionplan");
+	Result res = m_dictionaryController.FindAllBySearchCondition(m_vcollectionPlan, 0, "collectionplan");
 	if (!res.GetIsSuccess()){ AfxMessageBox("采集计划初始化失败"); CDialogEx::OnCancel(); }
-	for (int i = 0; i < m_collectionPlanVec.size(); i++){
+	for (int i = 0; i < m_vcollectionPlan.size(); i++){
 		Document doc;
-		doc.Parse(m_collectionPlanVec[i].GetDictValue());
+		doc.Parse(m_vcollectionPlan[i].GetDictValue());
 		// 2. 获得信息
 		CString planName = ((string)doc["planName"].GetString()).c_str();
 		m_planNameCombo.InsertString(i,planName);
@@ -282,7 +282,7 @@ void CSignalDataView::OnCbnSelchangeComboPlanName()
 {
 	int collectionPlanIndex = m_planNameCombo.GetCurSel();
 	Document doc;
-	doc.Parse(m_collectionPlanVec[collectionPlanIndex].GetDictValue());
+	doc.Parse(m_vcollectionPlan[collectionPlanIndex].GetDictValue());
 	const Value& planParaTitle = doc["planParaTitle"];
 	for (int i = 0; i < planParaTitle.Size();i++){
 		m_planParaTitle.push_back(planParaTitle[i].GetString());

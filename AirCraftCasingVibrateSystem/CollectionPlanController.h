@@ -1,14 +1,14 @@
 /************************************************************************
 Copyright (C), 2018-2020. 哈尔滨理工大学人工智能实验室
 文件名称： DictionaryController.h
-内容摘要： 字典表的相关逻辑操作，服务层，用于调dao 层
+内容摘要： 字典表的相关逻辑操作，控制层，用于调service 层
 其它说明：飞机机匣振动检测系统
 当前版本： 1.0
 作 者： 马善涛
-创建日期： 2019-09-09
+创建日期： 2019-10-08
 完成日期:
 History:
-1. Date:    2018-09-09         Author:马善涛
+1. Date:    2019-10-08         Author:马善涛
 Modification:
 修改记录 1： // 修改历史记录，包括修改日期、修改者及修改内容
 修改日期：
@@ -16,23 +16,24 @@ Modification:
 修 改 人：
 修改内容：
 ************************************************************************/
-#pragma once
+#include "Result.h"
 #include "TbDictionary.h"
-#include "TbDictionaryDao.h"
-
+#include "DictionaryService.h"
 #include <vector>
 using namespace  std;
-class DictionaryService
+#pragma once
+class CollectionPlanController
 {
 
 private:
-	TbDictionaryDao m_dictionaryDao;
+	DictionaryService m_collectionPlanService;
 
 public:
-	DictionaryService();
-	~DictionaryService();
+	CollectionPlanController();
+	~CollectionPlanController();
+
 	/**********************************************************************
-	功能描述：得到指定字典名的所有字典对象
+	功能描述：查询所有的采集计划
 	输入参数：
 	输出参数：
 	返 回 值：
@@ -40,37 +41,37 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	bool GetAllBySearchCondition(vector<TbDictionary> & dictionaryVec, TbDictionary searchEntity);
+	Result FindAllBySearchCondition(vector<TbDictionary> & dictionaryVec, int dictId = 0, CString dictName = "", CString dictValue = "");
 	/**********************************************************************
-	 功能描述： 删除工程单位
-	 输入参数：
-	 输出参数： 
-	 返 回 值： 
-	 其它说明：
-	 修改日期 版本号 修改人 修改内容
+	功能描述： 删除采集计划
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	bool DeleteById(TbDictionary dictionary);
+	Result DeleteById(TbDictionary dictionary);
 	/**********************************************************************
-	 功能描述： 更新字典
-	 输入参数：
-	 输出参数： 
-	 返 回 值： 
-	 其它说明：
-	 修改日期 版本号 修改人 修改内容
+	功能描述：更新采集计划
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	bool UpdateDictionary(TbDictionary dictionary);
+	Result Update(TbDictionary dictionary);
 	/**********************************************************************
-	 功能描述： 添加字典
-	 输入参数：
-	 输出参数： 
-	 返 回 值： 
-	 其它说明：
-	 修改日期 版本号 修改人 修改内容
+	功能描述： 添加采集计划
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	bool AddDictionary(TbDictionary dictionary);
+	Result Add(TbDictionary dictionary);
 
 };
 

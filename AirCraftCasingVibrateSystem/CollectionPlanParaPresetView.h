@@ -38,7 +38,7 @@ protected:
 	TbDictionary m_collectionPlan; ///采集计划对象
 
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
-	CGridCtrl m_stableStatusGridCtrl;
+	CGridCtrl m_collectionStatusGridCtrl;
 	void GridCtrlInit();
 	DECLARE_MESSAGE_MAP()
 

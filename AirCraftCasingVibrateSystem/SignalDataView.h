@@ -38,7 +38,7 @@ protected:
 	SignalController m_signalController;
 	TbRecordSignal m_selectedSignal;
 	DictionaryController m_dictionaryController;
-	vector<TbDictionary> m_collectionPlanVec;
+	vector<TbDictionary> m_vcollectionPlan;
 	ProductController m_productController;
 	vector<TbProduct> m_productVector;
 	vector<TbProject> m_projectVector;

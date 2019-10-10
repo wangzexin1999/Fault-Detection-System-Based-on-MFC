@@ -115,7 +115,7 @@ void CEngineerUnitView::OnBnClickedButtonEuDelete()
 		return;
 	}
 	if (MessageBox("是否删除 " + m_selectedDictionary.GetDictValue(), "删除单位", MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL) return;
-	Result res = m_dictionController.DeleteEUByEUId(m_selectedDictionary);
+	Result res = m_dictionController.DeleteById(m_selectedDictionary);
 	if (res.GetIsSuccess()){
 		m_selectedDictionary.SetDictId(0);
 		// 清除

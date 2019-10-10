@@ -14,10 +14,8 @@ bool TbDictionary::operator == (TbDictionary dictionary)
 
 	bool tag = true;
 	if (m_dictId != dictionary.GetDictId()) tag = false;
-	if (m_dictValue != dictionary.GetDictValue())
-	{
-		tag = false;
-	}
+	if (m_dictValue != dictionary.GetDictValue()){tag = false;}
+	if (m_dictName != dictionary.GetDictName()){ tag = false; }
 	return tag;
 }
 

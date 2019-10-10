@@ -27,13 +27,13 @@ void CNewProjectView::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	//DDX_Control(pDX, IDC_PROJECTOPERATORLIST_TREE, m_projectOperatorTreeCtrl);
-	DDX_Control(pDX, IDC_TAB_PROJECTNAVIGATION, m_projectNavigationTab);
+	DDX_Control(pDX, IDC_TAB_PROJECT_NAVIGATION, m_projectNavigationTab);
 }
 
 
 BEGIN_MESSAGE_MAP(CNewProjectView, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CNewProjectView::OnBnClickedOk)
-	ON_NOTIFY(TCN_SELCHANGE, IDC_TAB_PROJECTNAVIGATION, &CNewProjectView::OnTcnSelchangeTabProjectnavigation)
+	ON_NOTIFY(TCN_SELCHANGE, IDC_TAB_PROJECT_NAVIGATION, &CNewProjectView::OnTcnSelchangeTabProjectnavigation)
 	ON_BN_CLICKED(IDC_BUTTON_LASTSTEP, &CNewProjectView::OnBnClickedButtonLaststep)
 	ON_BN_CLICKED(IDC_BUTTON_NEXTSTEP, &CNewProjectView::OnBnClickedButtonNextstep)
 END_MESSAGE_MAP()
@@ -55,9 +55,6 @@ void CNewProjectView::OnBnClickedOk()
 	Document::AllocatorType & allocator = plansDoc.GetAllocator();
 	//root为kObjectType
 	Value root(kObjectType);
-	//采集计划类型的数量
-	Value collectionPlanTypeCount(kNumberType);
-	collectionPlanTypeCount.SetInt(m_pDialogVec.size()-m_newDialogIndex);
 	//采集计划的内容
 	Value collectionPlans(kArrayType);
 	for (int i = m_newDialogIndex; i < m_pDialogVec.size(); i++){
@@ -69,7 +66,6 @@ void CNewProjectView::OnBnClickedOk()
 		}
 	}
 
-	root.AddMember("collectionPlanTypeCount", collectionPlanTypeCount, allocator);
 	root.AddMember("collectionPlans", collectionPlans, allocator);
 
 	StringBuffer buffer;

@@ -50,7 +50,7 @@ bool  ProjectService::GetLastOpenProjectByUser(TbProject &project){
 	return isSuccess;
 }
 
-bool ProjectService::UpdateProject(TbProject project){
+bool ProjectService::Update(TbProject project){
 	m_projectDao.SetTableFieldValues(project);
 	return m_projectDao.UpdateByKey();
 }
