@@ -3,6 +3,7 @@
 #include "ChannelParaPresetView.h"
 #include "TbProject.h"
 #include "CollectionPlanParaPresetView.h"
+#include "ProjectController.h"
 #include "afxcmn.h"
 
 class ProjectSetView : public CDialogEx
@@ -21,7 +22,9 @@ protected:
 	ChannelParaPresetView m_channelParaPresetView;
 	int m_icurSelTabIndex;
 	int m_newDialogIndex;
+	vector<TbSensor> m_vsensors;
 	TbProject m_project;
+	ProjectController m_projectController;
 	vector<CDialog*> m_pDialogVec;  //用来保存对话框对象指针
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 	DECLARE_MESSAGE_MAP()

@@ -5,7 +5,7 @@
 #include "AirCraftCasingVibrateSystem.h"
 #include "ProjectSetView.h"
 #include "afxdialogex.h"
-
+#include "DateUtil.h"
 
 // ProjectSetView 对话框
 
@@ -131,7 +131,52 @@ void ProjectSetView::OnBnClickedButtonNextstep()
 
 void ProjectSetView::OnBnClickedOk()
 {
-	CDialogEx::OnOK();
+	m_project = theApp.m_currentProject;
+
+	// 得到所有的通道
+	m_vsensors.clear();
+	m_channelParaPresetView.GetSelectedChannels(m_vsensors);
+
+	////封装采集计划参数
+	Document plansDoc;
+	//获得分配器
+	Document::AllocatorType & allocator = plansDoc.GetAllocator();
+	//root为kObjectType
+	Value root(kObjectType);
+	//采集计划的内容
+	Value collectionPlans(kArrayType);
+	for (int i = m_newDialogIndex; i < m_pDialogVec.size(); i++){
+		CollectionPlanParaPresetView* collectionPlanPresetView = dynamic_cast<CollectionPlanParaPresetView*>(m_pDialogVec[i]);
+		if (collectionPlanPresetView != NULL){
+			Value planEntity(kObjectType);
+			collectionPlanPresetView->GetCollectionPlan(planEntity, allocator);
+			collectionPlans.PushBack(planEntity, allocator);
+		}
+	}
+
+	root.AddMember("collectionPlans", collectionPlans, allocator);
+
+	StringBuffer buffer;
+	Writer<StringBuffer> writer(buffer);
+	root.Accept(writer);
+	std::string result = buffer.GetString();
+	///给项目对象设置采集
+	m_project.SetCollectionPlans(result.c_str());
+	///封装project对象
+	m_project.SetProjectUpdateTime(DateUtil::GetCurrentCStringTime());
+	m_project.SetSensorVector(m_vsensors);
+	///更新项目数据
+	Result res = m_projectController.Update(m_project);
+	if (!res.GetIsSuccess()){
+		AfxMessageBox(res.GetMessages());
+		CDialogEx::OnCancel();
+	}
+	else{
+		///加载当前项目
+		theApp.m_currentProject = m_project;
+		AfxMessageBox(res.GetMessages());
+		CDialogEx::OnOK();
+	}
 }
 
 

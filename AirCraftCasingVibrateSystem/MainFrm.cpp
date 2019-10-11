@@ -1184,4 +1184,15 @@ void CMainFrame::OnButtonOpenProjectSetView()
 {
 	ProjectSetView projectSetView;
 	int  i = projectSetView.DoModal();
+	if (i == IDOK){
+		///1. 项目修改成功
+		///1.1 根据修改之后的项目创建相应的采集窗口
+		CloseAllWindows();
+		CreateSensorWindow(theApp.m_currentProject.GetSensorVector());
+		WindowsVertical();
+
+		///发送刷新主窗口标题和状态栏显示的消息
+		SendMessage(WM_SETTEXT);
+		SendMessage(StatusInfMessage);
+	}
 }

@@ -34,7 +34,7 @@ bool  TestingDeviceService::GetAllTestingDeviceBySearchCondition(TbTestingDevice
 	return isSuccess;
 }
 
-bool TestingDeviceService::UpdateByTestingDevice(TbTestingDevice testingDevice){
+bool TestingDeviceService::Update(TbTestingDevice testingDevice){
 	m_testingDeviceDao.SetTableFieldValues(testingDevice);
 	bool isSuccess = m_testingDeviceDao.UpdateByKey();
 	return isSuccess;
@@ -54,4 +54,11 @@ bool TestingDeviceService::GetOneById(TbTestingDevice &searchEntity){
 		m_testingDeviceDao.GetTableFieldValues(searchEntity);
 	}
 	return isSuccess;
+}
+
+bool TestingDeviceService::Delete(TbTestingDevice testingDevice){
+	CString strWhere = "1=1 ";
+	if (testingDevice.GetId() != 0) strWhere += "and id =" + CommonUtil::Int2CString(testingDevice.GetId()) + "'";
+	if (testingDevice.GetTestingDeviceIp() != "")  strWhere += "and testingdevice_ip like'%" + testingDevice.GetTestingDeviceIp() + "%'";
+	return  m_testingDeviceDao.DeleteByCondition(strWhere);
 }

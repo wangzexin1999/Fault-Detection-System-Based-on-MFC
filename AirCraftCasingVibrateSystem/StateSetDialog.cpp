@@ -27,9 +27,7 @@ void CStateSetDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_GridControl(pDX, IDC_COLLECTIONPLANGRID, m_collectionPlanGrid);
 	DDX_Control(pDX, IDC_COMBO_COLLECTIONPLAN, m_collectionPlanCombo);
 	DDX_Control(pDX, IDC_STATIC_CUR_PLAN_PARA, m_staticCurrentPlanPara);
-
 }
-
 
 BEGIN_MESSAGE_MAP(CStateSetDialog, CDialogEx)
 	ON_CBN_SELCHANGE(IDC_COMBO_COLLECTIONPLAN, &CStateSetDialog::OnCbnSelchangeComboCollectionplan)

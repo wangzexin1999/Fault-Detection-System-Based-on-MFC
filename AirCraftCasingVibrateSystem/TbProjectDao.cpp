@@ -20,11 +20,12 @@ TbProjectDao::TbProjectDao()
 
 TbProjectDao::~TbProjectDao()
 {
+
 }
 
 TbProjectDao::TbProjectDao(const TbProjectDao &project){
 	this->m_strTableName = "tb_project";
-	m_key = &m_projectId;;
+	m_key = &m_projectId;
 	SetVectorAndField("project_id", "int", m_projectId);
 	SetVectorAndField("tester_id", "int", m_testerId);
 	SetVectorAndField("project_name", "CString", m_projectName);

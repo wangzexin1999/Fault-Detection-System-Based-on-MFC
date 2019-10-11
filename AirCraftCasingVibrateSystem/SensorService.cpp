@@ -170,3 +170,13 @@ bool CSensorService::AddSensor(TbSensor &sensor){
 	m_sensorDao.GetTableFieldValues(sensor);
 	return isSuccess;
 }
+bool CSensorService::Delete(TbSensor sensor){
+	CString strSqlWhere = "1 = 1 ";
+	if (sensor.GetId() != 0)
+		strSqlWhere += " and id ='" + CommonUtil::Int2CString(sensor.GetId()) + "'";
+	if (sensor.GetSensorId() != "")
+		strSqlWhere += " and sensor_id ='" + sensor.GetSensorId() + "'";
+	if (sensor.GetProjectId() != 0)
+		strSqlWhere += " and project_id ='" + CommonUtil::Int2CString(sensor.GetProjectId()) + "'";
+	return m_sensorDao.DeleteByCondition(strSqlWhere);
+}

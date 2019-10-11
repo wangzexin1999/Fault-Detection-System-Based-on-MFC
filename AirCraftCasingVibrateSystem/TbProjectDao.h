@@ -9,6 +9,7 @@ public:
 	TbProjectDao(const TbProjectDao &project);
 	~TbProjectDao();
 public:
+
 	PDAttribute m_projectId;
 	PDAttribute m_testerId;
 	PDAttribute m_projectName;

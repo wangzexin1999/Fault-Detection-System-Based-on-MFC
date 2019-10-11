@@ -27,7 +27,9 @@ public:
 	TbDictionaryDao(const TbDictionaryDao  & dictionary);
 	~TbDictionaryDao();
 public:
+	
 	PDAttribute m_dictId;
+
 	PDAttribute m_dictName;
 	PDAttribute m_dictValue;
 

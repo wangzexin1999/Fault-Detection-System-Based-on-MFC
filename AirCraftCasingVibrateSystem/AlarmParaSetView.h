@@ -1,7 +1,6 @@
 #pragma once
 #include "afxwin.h"
 
-
 // CAlarmParaSetView ¶Ô»°¿ò
 
 class CAlarmParaSetView : public CDialogEx

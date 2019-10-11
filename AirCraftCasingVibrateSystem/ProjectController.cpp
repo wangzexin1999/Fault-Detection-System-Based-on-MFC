@@ -83,7 +83,22 @@ Result ProjectController::FindLastOpenProjectByUser(TbProject &project){
 }
 
 Result ProjectController::Update(TbProject project){
+	//1. 首先更新项目的基本信息表
 	bool flag = m_projectService.Update(project);
+	if (!flag) return Result(false, "项目更新失败");
+	//2. 删除项目对应的所有传感器
+	TbSensor condition;
+	condition.SetProjectId(project.GetProjectId());
+	flag = m_sensorService.Delete(condition);
+	if (!flag) return Result(false, "项目传感器更新失败");
+	//3. 保存所有的传感器对象
+	for (int i = 0; i < project.GetSensorVector().size();i++){
+		project.GetSensorVector()[i].SetProjectId(project.GetProjectId());
+		flag = m_sensorService.AddSensor(project.GetSensorVector()[i]);
+		if (!flag) return Result(false, "项目传感器更新失败");
+	}
+	//4. 更新采集设备的信息及其参数
+	flag = m_testingDeviceService.Update(project.GetTestingDevice());
 	if (flag) return Result(true, "项目更新成功");
 	return Result(false, "项目更新失败");
 }
