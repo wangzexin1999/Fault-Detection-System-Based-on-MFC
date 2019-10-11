@@ -42,7 +42,6 @@ IMPLEMENT_DYNAMIC(CMainFrame, CMDIFrameWndEx)
 
 BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_WM_CREATE()
-	ON_MESSAGE(WM_SETTEXT, &CMainFrame::OnSetText)
 	ON_COMMAND(ID_WINDOW_MANAGER, &CMainFrame::OnWindowManager)
 	ON_COMMAND_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnApplicationLook)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_WINDOWS_7, &CMainFrame::OnUpdateApplicationLook)
@@ -89,10 +88,14 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_CHECK_STA_SET, &CMainFrame::OnCheckStaSet)
 	ON_UPDATE_COMMAND_UI(ID_CHECK_STA_SET, &CMainFrame::OnUpdateCheckStaSet)
 	ON_WM_CLOSE()
-	ON_MESSAGE(StatusInfMessage, OnStatusInf)
 	ON_COMMAND(ID_BUTTON_OPENCOLLECTIONPLANMANAGE, &CMainFrame::OnButtonOpenCollectionPlanManage)
 	ON_COMMAND(ID_BUTTON_OPENPROJECTVIEW, &CMainFrame::OnButtonOpenProjectView)
 	ON_COMMAND(ID_BUTTON_OPEN_PROJECTSET_VIEW, &CMainFrame::OnButtonOpenProjectSetView)
+	///消息
+	
+	ON_MESSAGE(StatusInfMessage, OnStatusInf)
+	ON_MESSAGE(WM_REFRESHVIEW_BY_PROJECT, &CMainFrame::OnRefreshViewByProject)
+	ON_MESSAGE(WM_SETTEXT, &CMainFrame::OnSetText)
 END_MESSAGE_MAP()
 
 // CMainFrame 构造/析构
@@ -144,14 +147,14 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 
 
-	if (!m_systemPara.Create(_T("系统参数"), this, CRect(0, 0, 200, 100), TRUE, 10000,
+	if (!m_systemParaView.Create(_T("系统参数"), this, CRect(0, 0, 200, 100), TRUE, 10000,
 		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS |
 		WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI))
 	{
 		return FALSE;
 	}
 
-	if (!m_stateSet.Create(_T("状态设置"), this, CRect(0, 0, 200, 100), TRUE, 10034,
+	if (!m_stateSetDockPanelView.Create(_T("状态设置"), this, CRect(0, 0, 200, 100), TRUE, 10034,
 		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS |
 		WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI)) //CBRS_RIGHT
 	{
@@ -159,19 +162,19 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 
 
-	if (!m_channelPara.Create(_T("通道参数"), this, CRect(0, 0, 200, 100), TRUE, 10033,
+	if (!m_channelParaView.Create(_T("通道参数"), this, CRect(0, 0, 200, 100), TRUE, 10033,
 		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS |
 		WS_CLIPCHILDREN | CBRS_BOTTOM | CBRS_FLOAT_MULTI))
 	{
 		return FALSE;
 	}
 	
-	m_systemPara.EnableDocking(CBRS_ALIGN_ANY);
-	m_channelPara.EnableDocking(CBRS_ALIGN_ANY);
-	m_stateSet.EnableDocking(CBRS_ALIGN_ANY);
-	DockPane(&m_channelPara);// BOTTOM
-	DockPane(&m_systemPara);// LEFT
-	DockPane(&m_stateSet);// RIGHT
+	m_systemParaView.EnableDocking(CBRS_ALIGN_ANY);
+	m_channelParaView.EnableDocking(CBRS_ALIGN_ANY);
+	m_stateSetDockPanelView.EnableDocking(CBRS_ALIGN_ANY);
+	DockPane(&m_channelParaView);// BOTTOM
+	DockPane(&m_systemParaView);// LEFT
+	DockPane(&m_stateSetDockPanelView);// RIGHT
 	// 启用 Visual Studio 2005 样式停靠窗口行为
 	CDockingManager::SetDockingMode(DT_SMART);
 	// 启用 Visual Studio 2005 样式停靠窗口自动隐藏行为
@@ -424,13 +427,13 @@ void CMainFrame::InitializeSampleDataEchoView(int nWindowInitial)
 ////通道參數
 void CMainFrame::OnViewChannelPara()
 {
-	if (m_channelPara.IsVisible())
+	if (m_channelParaView.IsVisible())
 	{
-		m_channelPara.ShowPane(FALSE, FALSE, FALSE);
+		m_channelParaView.ShowPane(FALSE, FALSE, FALSE);
 	}
 	else
 	{
-		m_channelPara.ShowPane(TRUE, TRUE, TRUE);
+		m_channelParaView.ShowPane(TRUE, TRUE, TRUE);
 	}
 
 	RecalcLayout(FALSE);
@@ -438,19 +441,19 @@ void CMainFrame::OnViewChannelPara()
 
 void CMainFrame::OnUpdateViewChannelPara(CCmdUI* pCmdUI)
 {
-	pCmdUI->SetCheck(m_channelPara.IsVisible());
+	pCmdUI->SetCheck(m_channelParaView.IsVisible());
 }
 
 
 void CMainFrame::OnViewSystemPara()
 {
-	if (m_systemPara.IsVisible())
+	if (m_systemParaView.IsVisible())
 	{
-		m_systemPara.ShowPane(FALSE, FALSE, FALSE);
+		m_systemParaView.ShowPane(FALSE, FALSE, FALSE);
 	}
 	else
 	{
-		m_systemPara.ShowPane(TRUE, TRUE, TRUE);
+		m_systemParaView.ShowPane(TRUE, TRUE, TRUE);
 	}
 
 	RecalcLayout(FALSE);
@@ -458,7 +461,7 @@ void CMainFrame::OnViewSystemPara()
 
 void CMainFrame::OnUpdateViewSystemPara(CCmdUI* pCmdUI)
 {
-	pCmdUI->SetCheck(m_systemPara.IsVisible());
+	pCmdUI->SetCheck(m_systemParaView.IsVisible());
 }
 
 // 新建项目
@@ -468,21 +471,7 @@ void CMainFrame::OnButtonNewProject()
 	CNewProjectView newProjectView;
 	int res =  newProjectView.DoModal();
 	if (res == IDOK){
-		//根据选择的项目刷新窗口
-		//1.生成指定数量的传感器采集窗口，并给每个传感器采集窗口设置传感器
-		CloseAllWindows();
-		CreateSensorWindow(theApp.m_currentProject.GetSensorVector());
-		WindowsVertical();
-		//2.刷新关于项目的显示
-		////2.1 刷新项目标题的显示
-		SendMessage(WM_SETTEXT);
-		SendMessage(StatusInfMessage);
-		////2.2 刷新采集参数的显示
-		m_systemPara.RefreshView();
-		////2.3 刷新通道参数的显示
-		m_channelPara.RefreshView();
-		////2.4 刷新采集状态窗口的显示
-		m_stateSet.RefreshView();
+		SendMessage(WM_REFRESHVIEW_BY_PROJECT); 
 	}
 }
 
@@ -1102,13 +1091,13 @@ void CMainFrame::OnButton9()
 void CMainFrame::OnCheckStaSet()
 {
 	// TODO:  在此添加命令处理程序代码
-	if (m_stateSet.IsVisible())
+	if (m_stateSetDockPanelView.IsVisible())
 	{
-		m_stateSet.ShowPane(FALSE, FALSE, FALSE);
+		m_stateSetDockPanelView.ShowPane(FALSE, FALSE, FALSE);
 	}
 	else
 	{
-		m_stateSet.ShowPane(TRUE, TRUE, TRUE);
+		m_stateSetDockPanelView.ShowPane(TRUE, TRUE, TRUE);
 	}
 
 	RecalcLayout(FALSE);
@@ -1118,8 +1107,7 @@ void CMainFrame::OnCheckStaSet()
 void CMainFrame::OnUpdateCheckStaSet(CCmdUI *pCmdUI)
 {
 	// TODO:  在此添加命令更新用户界面处理程序代码
-	pCmdUI->SetCheck(m_stateSet.IsVisible());
-
+	pCmdUI->SetCheck(m_stateSetDockPanelView.IsVisible());
 }
 
 
@@ -1130,6 +1118,24 @@ void CMainFrame::OnClose()
 	CMDIFrameWndEx::OnClose();
 }
 
+LRESULT CMainFrame::OnRefreshViewByProject(WPARAM wParam, LPARAM lParam){
+	///1.关闭所有已经打开采集的窗口
+	CloseAllWindows();
+	///2.根据项目的传感器重新创建相对应的窗口
+	CreateSensorWindow(theApp.m_currentProject.GetSensorVector());
+	WindowsVertical();
+	///3.刷新状态栏
+	SendMessage(StatusInfMessage);
+	///4.刷新标题栏（目前改功能失效了）
+	SendMessage(WM_SETTEXT);
+	///5.刷新系统参数左边窗口
+	m_systemParaView.RefreshView();
+	///6.刷新采集状态窗口
+	m_stateSetDockPanelView.RefreshView();
+	///7.刷新通道参数窗口
+	m_channelParaView.RefreshView();
+	return 0;
+}
 
 LRESULT CMainFrame::OnStatusInf(WPARAM wParam, LPARAM lParam)
 {
@@ -1165,34 +1171,19 @@ void CMainFrame::OnButtonOpenProjectView()
 	COpenProjectView projectView;
 	int  res = projectView.DoModal();
 	if (res==IDOK){
-		///2.关闭当前显示的所有窗口，根据项目创建项目用到的窗口
-		CloseAllWindows();
-		CreateSensorWindow(theApp.m_currentProject.GetSensorVector());
-		WindowsVertical();
 		///3 确定打开项目之后，将此时打开的项目的更新时间设置为此时，保存到数据库
 		theApp.m_currentProject.SetProjectUpdateTime(DateUtil::GetCurrentCStringTime());
 		Result res = m_projectController.Update(theApp.m_currentProject);
 		if (!res.GetIsSuccess()){ AfxMessageBox(res.GetMessages()); }
-		///发送刷新主窗口标题和状态栏显示的消息
-		SendMessage(WM_SETTEXT);
-		SendMessage(StatusInfMessage);
+		SendMessage(WM_REFRESHVIEW_BY_PROJECT);
 	}
 }
-
 
 void CMainFrame::OnButtonOpenProjectSetView()
 {
 	ProjectSetView projectSetView;
 	int  i = projectSetView.DoModal();
 	if (i == IDOK){
-		///1. 项目修改成功
-		///1.1 根据修改之后的项目创建相应的采集窗口
-		CloseAllWindows();
-		CreateSensorWindow(theApp.m_currentProject.GetSensorVector());
-		WindowsVertical();
-
-		///发送刷新主窗口标题和状态栏显示的消息
-		SendMessage(WM_SETTEXT);
-		SendMessage(StatusInfMessage);
+		SendMessage(WM_REFRESHVIEW_BY_PROJECT);
 	}
 }

@@ -24,6 +24,9 @@
 #include "CollectionPlanManageView.h"
 #include "ProjectSetView.h"
 #include "ProjectController.h"
+
+#define  WM_REFRESHVIEW_BY_PROJECT (WM_USER+100)
+
 class CMainFrame : public CMDIFrameWndEx
 {
 	DECLARE_DYNAMIC(CMainFrame)
@@ -61,13 +64,10 @@ protected:  // 控件条嵌入成员
 	SignalController m_signalController;
 	ProjectController m_projectController;
 public:
-	CSystemParaView    m_systemPara; ///暂时无用
-	CChannelParaView    m_channelPara;
-	CStateSetDockPanelView m_stateSet;
+	CSystemParaView    m_systemParaView;
+	CChannelParaView    m_channelParaView;
+	CStateSetDockPanelView m_stateSetDockPanelView;
 	CDockablePane m_Panes[5];  
-// 生成的消息映射函数
-
-
 	/**********************************************************************
 	功能描述： 初始化采集窗口，将所有窗口存到vector中
 	输入参数：nWindowInitial--窗口初始数
@@ -149,7 +149,16 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	void CloseAllWindows();
-	
+	/**********************************************************************
+	功能描述： 自定义的 根据项目刷新视图的事件
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	afx_msg LRESULT OnRefreshViewByProject(WPARAM wParam, LPARAM lParam);
 
 	afx_msg LRESULT OnStatusInf(WPARAM wParam, LPARAM lParam); // 自定义状态信息改变消息
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

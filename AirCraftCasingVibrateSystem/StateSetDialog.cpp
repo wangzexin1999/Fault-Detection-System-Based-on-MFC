@@ -14,7 +14,6 @@ IMPLEMENT_DYNAMIC(CStateSetDialog, CDialogEx)
 CStateSetDialog::CStateSetDialog(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CStateSetDialog::IDD, pParent)
 {
-
 }
 
 CStateSetDialog::~CStateSetDialog()
@@ -133,8 +132,17 @@ void  CStateSetDialog::ComboBoxInit(){
 }
 
 void CStateSetDialog::RefreshView(){
+	///1.解析项目表记录的json数据
 	m_collectionPlanDoc.Parse(theApp.m_currentProject.GetCollectionPlans());
+	if (m_collectionPlanDoc.HasParseError()){
+		AfxMessageBox("采集计划加载失败");
+		return;
+	}
+	///2.清空下拉列表的显示
+	m_collectionPlanCombo.ResetContent();
+	///3.重新初始化下拉框
 	ComboBoxInit();
+	///4.重新初始化显示列表
 	GridCtrlInit();
 }
 

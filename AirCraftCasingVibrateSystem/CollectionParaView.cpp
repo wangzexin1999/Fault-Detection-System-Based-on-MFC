@@ -50,18 +50,15 @@ END_MESSAGE_MAP()
 
 // CollectionParaView 消息处理程序
 
-
 BOOL CollectionParaView::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
-
-	// TODO:  在此添加额外的初始化
-	CollectionParaInit();
+	CollectionParaInfoInit();
 	return TRUE; 
 }
 
-void CollectionParaView::CollectionParaInit(){
-	////拿到全局的项目对象的采集设备
+void CollectionParaView::CollectionParaInfoInit(){
+	////解析下拉框的选项
 	TbTestingDevice testingDevice = theApp.m_currentProject.GetTestingDevice();
 	Result res;
 	int curSel = 0;
@@ -150,4 +147,20 @@ void CollectionParaView::CollectionParaInit(){
 	m_delayBlockCountEdit.SetWindowTextA(CommonUtil::Int2CString(testingDevice.GetDelayblockCount()));
 	m_collectionBatchEdit.SetWindowTextA(CommonUtil::Int2CString(testingDevice.GetCollectionBatchs()));
 	m_triggerCountEdit.SetWindowTextA(CommonUtil::Int2CString(testingDevice.GetTriggerCount()));
+}
+
+void CollectionParaView::RefreshView(){
+	///1.删除所有下拉框的选项，并清空
+	m_collectionFrequencyCombo.ResetContent();
+	m_vcollectionFrequency.clear();
+	m_collectionMethodCombo.ResetContent();
+	m_vcollectionMethod.clear();
+	m_analysisFrequencyCombo.ResetContent();
+	m_vanalysisFrequency.clear();
+	m_dataBlockCountCombo.ResetContent();
+	m_vdataBlockCount.clear();
+	m_triggerMethodCombo.ResetContent();
+	m_vtriggerMethod.clear();
+	///2.采集参数重新初始化
+	CollectionParaInfoInit();
 }

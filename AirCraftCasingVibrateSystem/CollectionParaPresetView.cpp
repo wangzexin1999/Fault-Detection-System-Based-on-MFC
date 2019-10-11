@@ -46,7 +46,7 @@ BOOL CollectionParaPresetView::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 	////查询所有可以选择的参数
-	CollectionParaInit();
+	CollectionParaInfoInit();
 	return TRUE; 
 }
 void CollectionParaPresetView::GetSelectedTestingDevice(TbTestingDevice &testingDevicePara){
@@ -75,7 +75,7 @@ void CollectionParaPresetView::GetSelectedTestingDevice(TbTestingDevice &testing
 	testingDevicePara.SetTriggerCount(atoi(triggerCount));
 }
 
-void CollectionParaPresetView::CollectionParaInit(){
+void CollectionParaPresetView::CollectionParaInfoInit(){
 	Result res;
 	res = m_dictionaryController.FindAllBySearchCondition(m_vcollectionFrequency, 0, "collectionfrequency");
 	if (!res.GetIsSuccess()){

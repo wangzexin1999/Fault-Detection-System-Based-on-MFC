@@ -16,7 +16,7 @@ public:
 	enum { IDD = IDD_DIALOG_SYSTEM_PARA };
 public:
 	int m_CurSelTab;
-	CollectionParaView   m_sersorPara;
+	CollectionParaView   m_sensorPara;
 	CDeviceParaView    m_devicePara;
 	CDialog* pDialog[2];  //用来保存对话框对象指针
 protected:

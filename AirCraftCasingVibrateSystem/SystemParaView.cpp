@@ -56,7 +56,7 @@ void CSystemParaView::OnSize(UINT nType, int cx, int cy)
 	//	GetClientRect(rect);
 	//	//m_systemParaDialog.m_tabSystemPara.MoveWindow(rect);
 	//	m_systemParaDialog.MoveWindow(rect);
-	//	/*m_systemParaDialog.m_sersorPara.MoveWindow(&rect);
+	//	/*m_systemParaDialog.m_sensorPara.MoveWindow(&rect);
 	//	m_systemParaDialog.m_devicePara.MoveWindow(&rect);*/
 	//}
 	// TODO:  在此处添加消息处理程序代码

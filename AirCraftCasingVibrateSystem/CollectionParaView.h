@@ -32,7 +32,6 @@ public:
 	enum { IDD = IDD_DIALOG_SERSOR_PARA };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 
 	vector<TbDictionary> m_vcollectionFrequency;
 	vector<TbDictionary> m_vcollectionMethod;
@@ -40,19 +39,20 @@ protected:
 	vector<TbDictionary> m_vtriggerMethod;
 	vector<TbDictionary> m_vdataBlockCount;
 	DictionaryController m_dictionaryController;
-
-
-	DECLARE_MESSAGE_MAP()
-public:
-	void CollectionParaInit();
-	virtual BOOL OnInitDialog();
 	CComboBox m_collectionFrequencyCombo;
 	CComboBox m_collectionMethodCombo;
 	CComboBox m_analysisFrequencyCombo;
 	CComboBox m_triggerMethodCombo;
 	CComboBox m_dataBlockCountCombo;
-
 	CEdit m_triggerCountEdit;
 	CEdit m_delayBlockCountEdit;
 	CEdit m_collectionBatchEdit;
+	
+	virtual BOOL OnInitDialog();
+	void CollectionParaInfoInit();
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
+	DECLARE_MESSAGE_MAP()
+public:
+	
+	void RefreshView();
 };
