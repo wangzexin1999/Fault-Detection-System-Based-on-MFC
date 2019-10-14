@@ -1037,9 +1037,7 @@ void CMainFrame::NewDoc(int nWinNums)
 			curTemplate->OpenDocumentFile(NULL);
 		}
 	}
-	
 }
-
 
 void CMainFrame::WindowsVertical()
 {
