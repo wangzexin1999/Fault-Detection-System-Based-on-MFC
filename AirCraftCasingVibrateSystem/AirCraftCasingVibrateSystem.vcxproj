@@ -250,7 +250,6 @@
     <ClInclude Include="ChartCtrl\DuExport.h" />
     <ClInclude Include="ChartCtrl\MemDC.h" />
     <ClInclude Include="ChartCtrl\PointsOrdering.h" />
-    <ClInclude Include="CollectionDataInfoDlg.h" />
     <ClInclude Include="CollectionParaPresetView.h" />
     <ClInclude Include="CollectionPlanController.h" />
     <ClInclude Include="CollectionPlanManageView.h" />
@@ -449,7 +448,6 @@
     <ClCompile Include="ChartCtrl\DuChartCtrl.cpp" />
     <ClCompile Include="ChartCtrl\DuChartCtrlShuxing.cpp" />
     <ClCompile Include="ChartCtrl\DuChartCtrlStaticFunction.cpp" />
-    <ClCompile Include="CollectionDataInfoDlg.cpp" />
     <ClCompile Include="CollectionParaPresetView.cpp" />
     <ClCompile Include="CollectionPlanController.cpp" />
     <ClCompile Include="CollectionPlanManageView.cpp" />

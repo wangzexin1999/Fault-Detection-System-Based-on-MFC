@@ -221,6 +221,16 @@ void  CAirCraftCasingVibrateSystemView::RefershChartCtrlData(){
 
 	m_pLineSerie->AddPoints(xData.GetSmartArray(),yData.GetSmartArray(),xData.size() / 2);
 }
+///刷新数据
+void  CAirCraftCasingVibrateSystemView::RefershView(){
+	///开启定时器去刷新页面
+	SetTimer(m_icurrentWindowNumber, 100, NULL);
+}
+///停止刷新数据
+void  CAirCraftCasingVibrateSystemView::StopRefershView(){
+	KillTimer(m_icurrentWindowNumber);
+}
+
 
 ////保存采集数据的线程函数
 void  CAirCraftCasingVibrateSystemView::AutoSaveCollectionData(){

@@ -624,9 +624,6 @@
     <ClInclude Include="BaseProjectInfoView.h">
       <Filter>头文件\View</Filter>
     </ClInclude>
-    <ClInclude Include="CollectionDataInfoDlg.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
     <ClInclude Include="CollectionParaPresetView.h">
       <Filter>头文件\View</Filter>
     </ClInclude>
@@ -1045,9 +1042,6 @@
     </ClCompile>
     <ClCompile Include="win32fixes.c">
       <Filter>Redis</Filter>
-    </ClCompile>
-    <ClCompile Include="CollectionDataInfoDlg.cpp">
-      <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="win32fixes.c">
       <Filter>Redis</Filter>

@@ -593,11 +593,22 @@ void CMainFrame::OnButtonImportSysPara()
 	// TODO:  在此添加命令处理程序代码
 }
 
-
 //暂停采集
 void CMainFrame::OnButtonSuspendCapture()
 {
 	theApp.m_icollectionStatus = 2;
+	ErrorCode err = Success;
+	err = m_wfAiCtrl->Stop();
+	if (err != Success)
+	{
+		CheckError(err);
+		return;
+	}
+
+	for (int i = 0; i < m_vsignalCaptureView.size(); i++){
+		m_vsignalCaptureView[i]->StopRefershView();
+	}
+
 }
 
 
@@ -612,42 +623,16 @@ void CMainFrame::OnButtonStartCapture()
 	}
 	ConfigurateDevice();
 	m_wfAiCtrl->Start();
-	////m_icollectionStatus == 0 是未采集
-	if (!theApp.m_icollectionStatus){
-		//// 初始化采集窗口View
-		InitializeCaptureView(0);
-		//// 设置信号采集状态为1
-		theApp.m_icollectionStatus = 1;
+	//// 初始化采集窗口View
+	InitializeCaptureView(0);
+	//// 设置显示信息线程标志
+	//theApp.m_bShowInfThreadActive = true;
 
-		//// 设置显示信息线程标志
-		//theApp.m_bShowInfThreadActive = true;
-
-		//// 计算通道个数
-		//CalculateChannelNum(m_nChannelNums);
-
-		///// 初始化信号采集View
-
-		for (int i = 0; i < m_vsignalCaptureView.size(); i++){
-			///添加数据队列到采集数据队列集合
-			////给传感器数据赋值
-				for (int m = 0; m < 100; m++)
-				{
-					for (int n = 0; n < 1000; n++)
-					{
-						m_vsignalCaptureView[i]->m_readFromCSVFile[m][n] = theApp.tempRead[m][n];
-					}
-				}
-		}
-		/////输入采集数据信息
-		/*CollectionDataInfoDlg m_collectionDataInfoDlg;
-		m_collectionDataInfoDlg.DoModal();*/
-		
-		//if (theApp.m_collectionRotatingSpeed == ""){ theApp.m_icollectionStatus = 0; return; }
-
-		////开启所有窗口的采集线程
-		for (int i = 0; i < m_vsignalCaptureView.size(); i++){
-			m_vsignalCaptureView[i]->OpenThread2CaptureData();
-		}
+	//// 计算通道个数
+	//CalculateChannelNum(m_nChannelNums);
+	////开启所有窗口的采集线程
+	for (int i = 0; i < m_vsignalCaptureView.size(); i++){
+		m_vsignalCaptureView[i]->RefershView();
 	}
 	//实时数据传输
 	SetTimer(99, 1000, NULL);
@@ -658,6 +643,17 @@ void CMainFrame::OnBtnStopCapture()
 {
 	theApp.m_icollectionStatus = 0;
 	KillTimer(99);
+
+	ErrorCode err = Success;
+	err = m_wfAiCtrl->Stop();
+	if (err != Success)
+	{
+		CheckError(err);
+		return;
+	}
+	for (int i = 0; i < m_vsignalCaptureView.size(); i++){
+		m_vsignalCaptureView[i]->StopRefershView();
+	}
 }
 
 // 停止回放
