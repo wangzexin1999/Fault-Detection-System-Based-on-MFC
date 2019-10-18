@@ -20,6 +20,7 @@ bool FFTWUtil::FastFourierTransformation(int nCounts, fftw_complex *din, fftw_co
 	}
 	fftw_plan plan = fftw_plan_dft_1d(nCounts,din,out, FFTW_FORWARD, FFTW_ESTIMATE);
 	fftw_execute(plan);
+	fftw_destroy_plan(plan);
 	ReleaseMutex(m_hMutex);
 	return FALSE;
 }

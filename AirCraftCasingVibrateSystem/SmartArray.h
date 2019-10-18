@@ -62,7 +62,7 @@ public:
 		if (m_smartArray.index >= m_smartArray.size){
 			/////数组长度不够时，动态扩充数组长度
 			m_smartArray.size = 2 * m_smartArray.size;
-			m_smartArray.data =(T *)realloc(m_smartArray.data, m_smartArray.size);
+			m_smartArray.data = (T *)realloc(m_smartArray.data, sizeof(T)* this->m_smartArray.size);
 		}
 		m_smartArray.data[m_smartArray.index++] = t;
 	}

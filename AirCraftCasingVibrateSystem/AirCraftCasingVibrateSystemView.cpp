@@ -97,8 +97,8 @@ void CAirCraftCasingVibrateSystemView::OnInitialUpdate()
 	pBottomAxis->SetMinMax(0, 500);//设置下刻度
 	pBottomAxis->SetTickIncrement(false, 100);
 	CChartStandardAxisDu* pLeftAxis = m_chart.CreateStandardAxisDu(CChartCtrl::LeftAxis, 0);
-	pLeftAxis->SetMinMax(-0.1, 0.1);
-	pLeftAxis->SetTickIncrement(false, 0.05);
+	pLeftAxis->SetMinMax(-15, 15);
+	pLeftAxis->SetTickIncrement(false,3);
 	// 构造曲线
 	CDuChartCtrlStaticFunction::CreateSeries(pDuChartCtrl, nSelectChannelCount, nSerieType);
 	// 构造光标
@@ -191,13 +191,13 @@ void CAirCraftCasingVibrateSystemView::OpenThread2CaptureData(){
 		theApp.m_icollectionStatus = 0; ///一旦出现没有选择传感器的情况，将当前采集状态置为0 
 		return;
 	}*/
-     thread t(&CAirCraftCasingVibrateSystemView::CaptureData,this);
-	 t.detach();
+   /*  thread t(&CAirCraftCasingVibrateSystemView::CaptureData,this);
+	 t.detach();*/
 	 ///开启定时器去刷新页面
 	 SetTimer(m_icurrentWindowNumber, 100, NULL);
 	 ///开启线程自动保存采集数据
 	 // 如果可连接服务器，发http到服务器，否则保存到本地数据库。
-	OpenThread2SaveCollectionData();
+	//OpenThread2SaveCollectionData();
 }
 void CAirCraftCasingVibrateSystemView::OnTimer(UINT_PTR nIDEvent){
 	if (m_icurrentWindowNumber == nIDEvent){
@@ -218,6 +218,7 @@ void  CAirCraftCasingVibrateSystemView::RefershChartCtrlData(){
 	shared_ptr<EchoSignal> echoSignal = m_echoSignalQueue.wait_and_pop();
 	SmartArray<double> xData = echoSignal->GetXData();
 	SmartArray<double> yData = echoSignal->GetYData();
+
 	m_pLineSerie->AddPoints(xData.GetSmartArray(),yData.GetSmartArray(),xData.size() / 2);
 }
 
@@ -572,4 +573,8 @@ void CAirCraftCasingVibrateSystemView::SplitVector(SmartArray<double> &dXData, S
 
 void  CAirCraftCasingVibrateSystemView::SetSensor(TbSensor sensor){
 	m_signalSelectView.SetSensor(sensor);
+}
+
+void  CAirCraftCasingVibrateSystemView::AddData2EchoSignalQueue(EchoSignal echoSignal){
+	m_echoSignalQueue.push(echoSignal);
 }

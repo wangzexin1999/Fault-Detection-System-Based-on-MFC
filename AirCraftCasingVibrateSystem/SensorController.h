@@ -22,7 +22,6 @@ Modification:
 #include "Result.h"
 class SensorController
 {
-
 private:
 	CSensorService m_sensorService;
 	static HANDLE m_popCollectDataQueueMutex;  ///弹出采集队列元素的线程锁
@@ -30,7 +29,6 @@ private:
 public:
 	SensorController();
 	~SensorController();
-
 
 public:
 	/**********************************************************************

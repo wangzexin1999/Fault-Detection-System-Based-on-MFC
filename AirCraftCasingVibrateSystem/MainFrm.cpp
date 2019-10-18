@@ -24,12 +24,12 @@
 #include "ChartCtrl/DuChartCtrlStaticFunction.h"
 #include "FileUtil.h"
 #include "Constant.h"
-
+#include "EchoSignal.h"
 #include "include/rapidjson/document.h"
 #include "include/rapidjson/writer.h"
 #include "include/rapidjson/stringbuffer.h"
 #include "ProjectController.h"
-using namespace std;
+#include "FFTWUtil.h"
 using namespace rapidjson;
 
 #ifdef _DEBUG
@@ -99,11 +99,16 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 END_MESSAGE_MAP()
 
 // CMainFrame 构造/析构
-
+extern TCHAR const * WCHAR_TO_TCHAR(WCHAR const * in, TCHAR * out);
+std::vector<CAirCraftCasingVibrateSystemView *> CMainFrame::m_vsignalCaptureView;
 CMainFrame::CMainFrame()
 {
-	// TODO:  在此添加成员初始化代码
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_WINDOWS_7);
+	///初始化采集数据的对象
+	m_wfAiCtrl = WaveformAiCtrl::Create();
+	///	给采集设备绑定准备事件
+	m_wfAiCtrl->addDataReadyHandler(OnDataReadyEvent, this);
+	m_collectionData = nullptr;
 }
 
 CMainFrame::~CMainFrame(){
@@ -605,6 +610,8 @@ void CMainFrame::OnButtonStartCapture()
 		AfxMessageBox("请先打开或者新建项目");
 		return;
 	}
+	ConfigurateDevice();
+	m_wfAiCtrl->Start();
 	////m_icollectionStatus == 0 是未采集
 	if (!theApp.m_icollectionStatus){
 		//// 初始化采集窗口View
@@ -642,8 +649,8 @@ void CMainFrame::OnButtonStartCapture()
 			m_vsignalCaptureView[i]->OpenThread2CaptureData();
 		}
 	}
-	///实时数据传输
-	//SetTimer(99, 1000, NULL);
+	//实时数据传输
+	SetTimer(99, 1000, NULL);
 }
 
 // 停止采集
@@ -1184,4 +1191,128 @@ void CMainFrame::OnButtonOpenProjectSetView()
 	if (i == IDOK){
 		SendMessage(WM_REFRESHVIEW_BY_PROJECT);
 	}
+}
+
+
+///准备好采集数据的响应事件
+void CMainFrame::OnDataReadyEvent(void * sender, BfdAiEventArgs * args, void *userParam){
+	WaveformAiCtrl * wfAiCtrl = (WaveformAiCtrl *)sender;
+	CMainFrame * uParam = (CMainFrame *)userParam;
+	///设置获取数据的数量
+	int32 getDataCount = 1024 * 4;
+	ErrorCode ret = wfAiCtrl->GetData(getDataCount, uParam->m_collectionData, 0, NULL, NULL, NULL, NULL);
+	if ((ret >= ErrorHandleNotValid) && (ret != Success))
+	{
+		CString str;
+		str.Format(_T("有错误出现，错误码为: 0x%X !\n"), ret);
+		AfxMessageBox(str);
+	}
+
+	//分割数据
+	SmartArray<double> xData; ///x坐标
+	fftw_complex fftw;///单次傅立叶变换的输入
+	vector<SmartFFTWComplexArray> fftwInputArray(4);
+	for (int i = 0; i < getDataCount; i++){
+		int channel = i % 4;
+		fftw[0] = uParam->m_collectionData[i];
+		fftwInputArray[channel].push_back(fftw);
+	}
+	//设置x坐标
+	for (int i = 0; i < getDataCount / 4;i++){
+		xData.push_back(i);
+	}
+
+	for (int channel = 0; channel < 4; channel++){
+		SmartArray<double> yData; ///y坐标
+		//对传入的数据进行傅里叶变换处理
+		SmartFFTWComplexArray fftwOutput(fftwInputArray[channel].size());
+		FFTWUtil::FastFourierTransformation(fftwInputArray[channel].size(), fftwInputArray[channel].GeFFTWComplexArray(),
+		fftwOutput.GeFFTWComplexArray());
+		//将处理之后的傅里叶变换转换成XY坐标
+		FFTWUtil::FFTDataToXY(fftwOutput, yData, fftwInputArray[channel].size());
+		/////添加到回显数据队列中
+		m_vsignalCaptureView[channel]->AddData2EchoSignalQueue(EchoSignal(xData, yData));
+	}
+	TRACE("刷新页面了。。。。。。。。。。。\n");
+}
+
+void CMainFrame::CheckError(ErrorCode error){
+	if (BioFailed(error))
+	{
+		KillTimer(0);
+		CString str;
+		str.Format(_T("Some errors happened, the error code is: 0x%X !\n"), error);
+		AfxMessageBox(str);
+	}
+}
+
+void CMainFrame::ConfigurateDevice()
+{
+	ErrorCode	errorCode;
+	// 根据设备号设置一些设备信息
+	int deviceNumber = 0;
+	DeviceInformation devInfo(deviceNumber);
+	errorCode = m_wfAiCtrl->setSelectedDevice(devInfo);
+	CheckError(errorCode);
+	
+	///根据设备信息获得选择的设备
+	m_wfAiCtrl->getSelectedDevice(devInfo);
+	/*TCHAR des[MAX_DEVICE_DESC_LEN];
+	CString str;
+	str.Format(_T("Streaming AI - Run( %s )"), WCHAR_TO_TCHAR((LPCWSTR)devInfo.Description, des));
+	SetWindowText(str);*/
+
+	//如果数据缓冲区指针不为空，则将其内存删除并置为空
+	if (m_collectionData != NULL){
+		delete[] m_collectionData;
+		m_collectionData = NULL;
+	}
+	//设置缓冲区的大小
+	int32 bufferDataLength = 1024 * 4;
+	m_collectionData = new DOUBLE[bufferDataLength];
+	if (m_collectionData == NULL){
+		AfxMessageBox(_T("分配内存出错"));
+		this->CloseWindow();
+		return;
+	}
+
+	// 为AI的缓冲区设置一些必要的参数 
+	Conversion * conversion = m_wfAiCtrl->getConversion();
+	errorCode = conversion->setChannelStart(0);
+	CheckError(errorCode);
+	errorCode = conversion->setChannelCount(4);
+	CheckError(errorCode);
+	errorCode = conversion->setClockRate(1000);
+	CheckError(errorCode);
+
+	Record * record = m_wfAiCtrl->getRecord();
+	errorCode = record->setSectionCount(0);// 0 means 'streaming mode'.
+	CheckError(errorCode);
+	errorCode = record->setSectionLength(1024);
+	CheckError(errorCode);
+
+	int count = m_wfAiCtrl->getFeatures()->getChannelCountMax();
+	Array<AiChannel> *channels = m_wfAiCtrl->getChannels();
+	int channel = 0;
+	for (int i = 0; i < 4; ++i)
+	{
+		if (channel >= count){
+			channel = 0;
+		}
+		if (channels->getItem(channel).getSignalType() == Differential)
+		{
+			if (channel % 2 == 1){
+				channel -= 1;
+			}
+			errorCode = channels->getItem(channel%count).setValueRange((ValueRange)(1));
+			CheckError(errorCode);
+			channel += 1;
+		}
+		errorCode = channels->getItem(channel%count).setValueRange((ValueRange)(1));
+		CheckError(errorCode);
+		channel += 1;
+	}
+	// 准备好缓冲区
+	errorCode = m_wfAiCtrl->Prepare();
+	CheckError(errorCode);
 }

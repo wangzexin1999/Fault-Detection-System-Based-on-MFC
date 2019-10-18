@@ -24,7 +24,14 @@
 #include "CollectionPlanManageView.h"
 #include "ProjectSetView.h"
 #include "ProjectController.h"
+#include "SmartArray.h"
+/////////////////////////////////////
+#include "include/Inc/bdaqctrl.h"
+using namespace Automation::BDaq;
+using namespace std;
+/////////////////////////////////////
 
+///刷新页面的自定义消息映射
 #define  WM_REFRESHVIEW_BY_PROJECT (WM_USER+100)
 
 class CMainFrame : public CMDIFrameWndEx
@@ -58,12 +65,17 @@ protected:  // 控件条嵌入成员
 	CMFCRibbonStatusBar  m_wndStatusBar;
 	CMFCCaptionBar    m_wndCaptionBar;
 	CMFCToolBar       m_wndContrlBar;
-	
-	std::vector<CAirCraftCasingVibrateSystemView *> m_vsignalCaptureView;
+	WaveformAiCtrl *    m_wfAiCtrl;
+	static std::vector<CAirCraftCasingVibrateSystemView *> m_vsignalCaptureView;
 	CGraphAttributeView m_graphAttributeView; // 图形属性界面
 	SignalController m_signalController;
 	ProjectController m_projectController;
+	
 public:
+
+	DOUBLE * m_collectionData;
+
+
 	CSystemParaView    m_systemParaView;
 	CChannelParaView    m_channelParaView;
 	CStateSetDockPanelView m_stateSetDockPanelView;
@@ -91,8 +103,8 @@ public:
 	/**********************************************************************
 	 功能描述： 实时信号传输
 	 输入参数：
-	 输出参数： 
-	 返 回 值： 
+	 输出参数：
+	 返 回 值：
 	 其它说明：
 	 修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
@@ -160,6 +172,38 @@ public:
 	***********************************************************************/
 	afx_msg LRESULT OnRefreshViewByProject(WPARAM wParam, LPARAM lParam);
 
+	/**********************************************************************
+	功能描述： 自定义的 数据准备好的响应事件
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	static void BDAQCALL OnDataReadyEvent(void * sender, BfdAiEventArgs * args, void *userParam);
+
+
+	/**********************************************************************
+	功能描述： 检查采集卡的错误信息
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void CheckError(ErrorCode error);
+	/**********************************************************************
+	功能描述： 配置采集设备
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void ConfigurateDevice();
 	afx_msg LRESULT OnStatusInf(WPARAM wParam, LPARAM lParam); // 自定义状态信息改变消息
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnWindowManager();
