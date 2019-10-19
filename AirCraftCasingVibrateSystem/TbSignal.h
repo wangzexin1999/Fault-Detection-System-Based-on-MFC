@@ -21,7 +21,7 @@ private:
 	int m_productId;
 	char m_signalStatus;
 	CString m_dataUrl;
-	CString m_sensorId;
+	CString m_channels;
 	int  m_projectId;
 	int m_testingDeviceId;
 	CString m_collectionStatus;
@@ -43,8 +43,8 @@ public:
 	void SetDataUrl(CString data_url);
 	void SetProjectId(int projectId);
 	int   GetProjectId();
-	CString   GetSensorId();
-	void SetSensorId(CString  sensorId);
+	CString   GetChannels();
+	void SetChannels(CString  channels);
 	int  GetTestingDeviceId();
 	void SetTestingDeviceId(int  testingDeviceId);
 	

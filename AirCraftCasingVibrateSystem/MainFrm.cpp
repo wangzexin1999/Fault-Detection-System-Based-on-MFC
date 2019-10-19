@@ -100,7 +100,6 @@ END_MESSAGE_MAP()
 
 // CMainFrame 构造/析构
 extern TCHAR const * WCHAR_TO_TCHAR(WCHAR const * in, TCHAR * out);
-std::vector<CAirCraftCasingVibrateSystemView *> CMainFrame::m_vsignalCaptureView;
 CMainFrame::CMainFrame()
 {
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_WINDOWS_7);
@@ -380,15 +379,17 @@ void CMainFrame::OnOptions()
 	delete pOptionsDlg;
 }
 
-
+ 
 ////初始化采集窗口vector
-void CMainFrame::InitializeCaptureView(int nWindowInitial){
-	// 显示
+void CMainFrame::InitCaptureViewVector(){
+	///1.清空采集窗口的集合
+	theApp.m_vsignalCaptureView.clear(); 
+	///2.重新初始化采集窗口集合
 	POSITION curTemplatePos = theApp.GetFirstDocTemplatePosition();
 	CDocTemplate *m_doc = theApp.GetNextDocTemplate(curTemplatePos);
 	//获得文档:
 	curTemplatePos = m_doc->GetFirstDocPosition();
-	int viewNumber = nWindowInitial;
+	int viewNumber = 0;
 	while(curTemplatePos != NULL){
 		CAirCraftCasingVibrateSystemDoc * pdoc = (CAirCraftCasingVibrateSystemDoc*)m_doc->GetNextDoc(curTemplatePos);
 		//获得视图:
@@ -399,7 +400,7 @@ void CMainFrame::InitializeCaptureView(int nWindowInitial){
 			CAirCraftCasingVibrateSystemView* currentView = (CAirCraftCasingVibrateSystemView*)pdoc->GetNextView(curViewPos);
 			currentView->SetViewNumber(viewNumber);
 			currentView->ResetView();
-			m_vsignalCaptureView.push_back(currentView);
+			theApp.m_vsignalCaptureView.push_back(currentView);
 		}
 		viewNumber++;
 	}
@@ -423,7 +424,7 @@ void CMainFrame::InitializeSampleDataEchoView(int nWindowInitial)
 			CAirCraftCasingVibrateSystemView* currentView = (CAirCraftCasingVibrateSystemView*)pdoc->GetNextView(curViewPos);
 			currentView->SetSampleDataEchoTimerNum(viewNumber);
 			currentView->ResetView();
-			m_vsignalCaptureView.push_back(currentView);
+			theApp.m_vsignalCaptureView.push_back(currentView);
 		}
 		viewNumber++;
 	}
@@ -514,7 +515,7 @@ void CMainFrame::OnButtonOpenDataFile()
 			searchSignalEntity.SetProjectId(selectedSignal.GetProject().GetProjectId());
 			searchSignalEntity.SetTestingDeviceId(selectedSignal.GetTestingDevice().GetId());
 			searchSignalEntity.SetCollectionStatus(selectedSignal.GetCollectionStatus());
-			searchSignalEntity.SetSensorId(channelsId[i].GetString());
+			searchSignalEntity.SetChannels(channelsId[i].GetString());
 			vector<TbSignal> signalVec;
 			m_signalController.FindAllSignalBySearchCondition(searchSignalEntity, signalVec);
 			collectionData.push_back(signalVec);
@@ -535,7 +536,7 @@ void CMainFrame::OnButtonOpenDataFile()
 			/*文件路径vector*/
 			vector<CString> vFilePaths;
 			// 根据传感器信息查找文件路径
-			for (int i = 0; i < m_vsignalCaptureView.size(); i++)
+			for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++)
 			{
 				/*汇总路径*/
 				for (int j = 0; j < collectionData[i].size(); j++)
@@ -546,7 +547,7 @@ void CMainFrame::OnButtonOpenDataFile()
 				//vFilePaths.push_back(collectionData[1][0].GetDataUrl());
 				// 根据路径查找文件，放到各自的view采样队列里面
 				bOpenDataFile = CFileUtil::ReadSampleDataByPaths(vFilePaths,
-					m_vsignalCaptureView[i]->m_sampleFromFileDataQueue);
+					theApp.m_vsignalCaptureView[i]->m_sampleFromFileDataQueue);
 				vFilePaths.clear();
 			}
 			if (!bOpenDataFile)
@@ -605,8 +606,8 @@ void CMainFrame::OnButtonSuspendCapture()
 		return;
 	}
 
-	for (int i = 0; i < m_vsignalCaptureView.size(); i++){
-		m_vsignalCaptureView[i]->StopRefershView();
+	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
+		theApp.m_vsignalCaptureView[i]->StopRefershView();
 	}
 
 }
@@ -616,26 +617,51 @@ void CMainFrame::OnButtonSuspendCapture()
 void CMainFrame::OnButtonStartCapture()
 {
 	// 设置底部坐标轴为自动
-	int projectId = theApp.m_currentProject.GetProjectId();
-	if (projectId <= 0){
+	///如果当前状态为正在采集
+	if (theApp.m_icollectionStatus == 1) return;
+
+	///判断当前是否打开了项目
+	if (theApp.m_currentProject.GetProjectId() <= 0){
 		AfxMessageBox("请先打开或者新建项目");
 		return;
 	}
+	///判断当前是否正在保存数据
+	bool isSavingData = false;
+	for (int i = 0; i < m_vcollectionData.size();i++){
+		if (!m_vcollectionData[i].empty()){
+			isSavingData = true;
+			break;
+		}
+	}
+	if (isSavingData == true){
+		AfxMessageBox("正在保存数据，请稍候进行采集");
+		return;
+	}
+	///设置当前状态为正在采集状态
+	theApp.m_icollectionStatus = 1;
+	theApp.m_bIsAutoSaveCollectionData = true;
+	///配置设备
 	ConfigurateDevice();
-	m_wfAiCtrl->Start();
-	//// 初始化采集窗口View
-	InitializeCaptureView(0);
+	///初始化缓冲区
+	m_vcollectionData.clear();
+	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
+		m_vcollectionData.push_back(ThreadSafeQueue<AcquiredSignal>());
+	}
+	//// 初始化采集窗口集合
+	InitCaptureViewVector();
 	//// 设置显示信息线程标志
 	//theApp.m_bShowInfThreadActive = true;
-
-	//// 计算通道个数
-	//CalculateChannelNum(m_nChannelNums);
-	////开启所有窗口的采集线程
-	for (int i = 0; i < m_vsignalCaptureView.size(); i++){
-		m_vsignalCaptureView[i]->RefershView();
+	m_wfAiCtrl->Start();
+	////开启所有窗口刷新数据的
+	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
+		theApp.m_vsignalCaptureView[i]->RefershView();
 	}
+	///开启线程保存数据
+	OpenThread2SaveCollectionData();
 	//实时数据传输
 	SetTimer(99, 1000, NULL);
+	///将采集按钮置灰
+
 }
 
 // 停止采集
@@ -651,8 +677,8 @@ void CMainFrame::OnBtnStopCapture()
 		CheckError(err);
 		return;
 	}
-	for (int i = 0; i < m_vsignalCaptureView.size(); i++){
-		m_vsignalCaptureView[i]->StopRefershView();
+	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
+		theApp.m_vsignalCaptureView[i]->StopRefershView();
 	}
 }
 
@@ -660,8 +686,8 @@ void CMainFrame::OnBtnStopCapture()
 void CMainFrame::OnBtnStopPlayback()
 {
 	// TODO:  在此添加命令处理程序代码
-	for (int i = 0; i < m_vsignalCaptureView.size(); i++){
-		m_vsignalCaptureView[i]->StopSampleEncho();
+	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
+		theApp.m_vsignalCaptureView[i]->StopSampleEncho();
 	}
 }
 
@@ -670,9 +696,9 @@ void CMainFrame::OnBtnStartPlayback()
 {
 	// TODO:  在此添加命令处理程序代码
 	////开启所有窗口的采样回放
-	for (int i = 0; i < m_vsignalCaptureView.size(); i++){
+	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
 
-		m_vsignalCaptureView[i]->StartSampleEncho();
+		theApp.m_vsignalCaptureView[i]->StartSampleEncho();
 	}
 }
 
@@ -880,10 +906,10 @@ void CMainFrame::RealTimeSignal2Server()
 	CString str2JSON = "";
 	CString separator = "";////逗号分隔符
 	// 转成字符串
-	for (int i = 0; i < m_vsignalCaptureView.size(); i++)
+	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++)
 	{
 		CString tempStr;
-		shared_ptr<RealTimeSignal >realTimeSignal = m_vsignalCaptureView[i]->m_realTimeSignal.wait_and_pop();
+		shared_ptr<RealTimeSignal >realTimeSignal = theApp.m_vsignalCaptureView[i]->m_realTimeSignal.wait_and_pop();
 		vector<double> realSignalData = realTimeSignal->GetRealTimeSignalData();
 		vector<CString> realSignalTime = realTimeSignal->GetRealTimeSignalTime();
 
@@ -938,46 +964,46 @@ void CMainFrame::OnBtnGraphAttribute()
 	// TODO:  在此添加命令处理程序代码
 	if (m_graphAttributeView.DoModal() == IDOK)
 	{
-		InitializeCaptureView(0);
-		for (int i = 0; i < m_vsignalCaptureView.size(); i++)
+		InitCaptureViewVector();
+		for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++)
 		{	
 			m_graphAttributeView.Write2INIFile();
 			/*颜色*/
 			// 窗口背景
-			m_vsignalCaptureView[i]->GetChartCtrl().SetBackColor(m_graphAttributeView.m_colorView.m_colBKColor);
+			theApp.m_vsignalCaptureView[i]->GetChartCtrl().SetBackColor(m_graphAttributeView.m_colorView.m_colBKColor);
 			//图形区域背景
-			m_vsignalCaptureView[i]->GetChartCtrl().m_GraphBKColor = m_graphAttributeView.m_colorView.m_colGBKColor;
+			theApp.m_vsignalCaptureView[i]->GetChartCtrl().m_GraphBKColor = m_graphAttributeView.m_colorView.m_colGBKColor;
 			// 信息区域背景
-			m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_colTBKColor = m_graphAttributeView.m_colorView.m_colTBKColor;
+			theApp.m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_colTBKColor = m_graphAttributeView.m_colorView.m_colTBKColor;
 			//光标颜色
-			m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_colCursorColor1 = m_graphAttributeView.m_colorView.m_colCursor1;
+			theApp.m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_colCursorColor1 = m_graphAttributeView.m_colorView.m_colCursor1;
 			// 曲线颜色
-			m_vsignalCaptureView[i]->GetChartCtrl().GetSerieFromIndexDu(0)->SetColor(m_graphAttributeView.m_colorView.m_colSerie[0]);
+			theApp.m_vsignalCaptureView[i]->GetChartCtrl().GetSerieFromIndexDu(0)->SetColor(m_graphAttributeView.m_colorView.m_colSerie[0]);
 			//网格颜色
-			m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0)->GetGrid()->SetColor(m_graphAttributeView.m_colorView.m_colGridLineColor);
-			m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0)->GetGrid()->SetColor(m_graphAttributeView.m_colorView.m_colGridLineColor);
+			theApp.m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0)->GetGrid()->SetColor(m_graphAttributeView.m_colorView.m_colGridLineColor);
+			theApp.m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0)->GetGrid()->SetColor(m_graphAttributeView.m_colorView.m_colGridLineColor);
 			// 坐标轴颜色
-			m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0)->SetAxisColor(m_graphAttributeView.m_colorView.m_colXCoor);
-			m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0)->SetAxisColor(m_graphAttributeView.m_colorView.m_colYCoor);
+			theApp.m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0)->SetAxisColor(m_graphAttributeView.m_colorView.m_colXCoor);
+			theApp.m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0)->SetAxisColor(m_graphAttributeView.m_colorView.m_colYCoor);
 			// 刻度颜色
-			m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0)->SetTextColor(m_graphAttributeView.m_colorView.m_colScale);
-			m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0)->SetTextColor(m_graphAttributeView.m_colorView.m_colScale);
+			theApp.m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0)->SetTextColor(m_graphAttributeView.m_colorView.m_colScale);
+			theApp.m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0)->SetTextColor(m_graphAttributeView.m_colorView.m_colScale);
 			// 标注颜色
-			m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0)->GetLabel()->SetColor(m_graphAttributeView.m_colorView.m_colScale);
-			m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0)->GetLabel()->SetColor(m_graphAttributeView.m_colorView.m_colScale);
+			theApp.m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0)->GetLabel()->SetColor(m_graphAttributeView.m_colorView.m_colScale);
+			theApp.m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0)->GetLabel()->SetColor(m_graphAttributeView.m_colorView.m_colScale);
 
 			/*字体*/
 			// 坐标轴
-			m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0)->SetFont(
+			theApp.m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0)->SetFont(
 				m_graphAttributeView.m_fontView.m_lFontXCoor.m_lFontSize, m_graphAttributeView.m_fontView.m_lFontXCoor.m_lFont.lfFaceName);
-			m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0)->SetFont(
+			theApp.m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0)->SetFont(
 				m_graphAttributeView.m_fontView.m_lFontYCoor.m_lFontSize, m_graphAttributeView.m_fontView.m_lFontYCoor.m_lFont.lfFaceName);
 
 			// 坐标单位
-			m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0)->GetLabel()->SetFont(
+			theApp.m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0)->GetLabel()->SetFont(
 				m_graphAttributeView.m_fontView.m_lFontXUnit.m_lFontSize, m_graphAttributeView.m_fontView.m_lFontXUnit.m_lFont.lfFaceName);
 
-			m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0)->GetLabel()->SetFont(
+			theApp.m_vsignalCaptureView[i]->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0)->GetLabel()->SetFont(
 				m_graphAttributeView.m_fontView.m_lFontYUnit.m_lFontSize, m_graphAttributeView.m_fontView.m_lFontYUnit.m_lFont.lfFaceName);
 			//光标读数
 
@@ -987,24 +1013,24 @@ void CMainFrame::OnBtnGraphAttribute()
 			//工程信息
 			/*选项*/
 			//统计信息
-			m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_bDrawStatValue = m_graphAttributeView.m_selectView.m_bStaValue;
+			theApp.m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_bDrawStatValue = m_graphAttributeView.m_selectView.m_bStaValue;
 			// 最大值
-			m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_bDrawStatMax = m_graphAttributeView.m_selectView.m_bMax;
+			theApp.m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_bDrawStatMax = m_graphAttributeView.m_selectView.m_bMax;
 			// 最小值
-			m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_bDrawStatMin = m_graphAttributeView.m_selectView.m_bMin;
+			theApp.m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_bDrawStatMin = m_graphAttributeView.m_selectView.m_bMin;
 			//平均值
-			m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_bDrawStatAve = m_graphAttributeView.m_selectView.m_bAve;
+			theApp.m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_bDrawStatAve = m_graphAttributeView.m_selectView.m_bAve;
 			// 峰值
-			m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_bDrawStatPeak = m_graphAttributeView.m_selectView.m_bPeak;
+			theApp.m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_bDrawStatPeak = m_graphAttributeView.m_selectView.m_bPeak;
 			// 有效值
-			m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_bDrawStatRms = m_graphAttributeView.m_selectView.m_bEffectiveValue;
+			theApp.m_vsignalCaptureView[i]->GetChartCtrl().m_shuxing.m_bDrawStatRms = m_graphAttributeView.m_selectView.m_bEffectiveValue;
 			//刷新
-			m_vsignalCaptureView[i]->GetChartCtrl().RefreshCtrl();
+			theApp.m_vsignalCaptureView[i]->GetChartCtrl().RefreshCtrl();
 		}
 	}
 }
 
-void CMainFrame::CreateSensorWindow(vector<TbSensor> vsensor){
+void CMainFrame::CreateCaptureWindow(vector<TbSensor> vsensor){
 
 	for (int i = 0; i < vsensor.size(); i++)
 	{
@@ -1123,9 +1149,11 @@ LRESULT CMainFrame::OnRefreshViewByProject(WPARAM wParam, LPARAM lParam){
 	///1.关闭所有已经打开采集的窗口
 	CloseAllWindows();
 	///2.根据项目的传感器重新创建相对应的窗口
-	CreateSensorWindow(theApp.m_currentProject.GetSensorVector());
+	CreateCaptureWindow(theApp.m_currentProject.GetSensorVector());
 	WindowsVertical();
-	///3.刷新状态栏
+	////2.1初始化采集窗口队列
+	InitCaptureViewVector();
+	///3刷新状态栏
 	SendMessage(StatusInfMessage);
 	///4.刷新标题栏（目前改功能失效了）
 	SendMessage(WM_SETTEXT);
@@ -1164,7 +1192,6 @@ void CMainFrame::OnButtonOpenCollectionPlanManage()
 	CollectionPlanManageView collectionPlanManagerView;
 	collectionPlanManagerView.DoModal();
 }
-
 
 void CMainFrame::OnButtonOpenProjectView()
 {
@@ -1227,7 +1254,7 @@ void CMainFrame::OnDataReadyEvent(void * sender, BfdAiEventArgs * args, void *us
 		//将处理之后的傅里叶变换转换成XY坐标
 		FFTWUtil::FFTDataToXY(fftwOutput, yData, fftwInputArray[channel].size());
 		/////添加到回显数据队列中
-		m_vsignalCaptureView[channel]->AddData2EchoSignalQueue(EchoSignal(xData, yData));
+		theApp.m_vsignalCaptureView[channel]->AddData2EchoSignalQueue(EchoSignal(xData, yData));
 	}
 	TRACE("刷新页面了。。。。。。。。。。。\n");
 }
@@ -1311,4 +1338,43 @@ void CMainFrame::ConfigurateDevice()
 	// 准备好缓冲区
 	errorCode = m_wfAiCtrl->Prepare();
 	CheckError(errorCode);
+}
+
+////开启线程自动保存线程函数
+void CMainFrame::OpenThread2SaveCollectionData(){
+	thread t(&CMainFrame::AutoSaveCollectionData, this);
+	t.detach();
+}
+void CMainFrame::SaveCollectionData(vector<ThreadSafeQueue<AcquiredSignal>> acquireSignal){
+
+}
+
+////保存采集数据的线程函数
+void  CMainFrame::AutoSaveCollectionData(){
+	vector<ThreadSafeQueue<AcquiredSignal>>  vcollectionData;
+	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
+		vcollectionData.push_back(ThreadSafeQueue<AcquiredSignal>());
+	}
+	while (theApp.m_bIsAutoSaveCollectionData){
+		bool isSaveStatus = true;
+		///从每个通道获取数据
+		for (int i = 0; i < vcollectionData.size();i++){
+			shared_ptr<AcquiredSignal> acquiredSignal = m_vcollectionData[i].wait_and_pop();
+			vcollectionData[i].push(*acquiredSignal);
+		}
+
+		///遍历采集数据的集合，如果有通道的数据量不够，则跳过
+		for (int i = vcollectionData.size(); i > 0; i--){
+			if (vcollectionData[i].size() < theApp.m_icollectSignalsStoreCount){
+				isSaveStatus = false;
+				break;
+			}
+		}
+		///如果当前是正在采集，且符合保存的条件
+		if (isSaveStatus&&theApp.m_icollectionStatus==1){
+			///需要保存的数据
+			thread t(&CMainFrame::SaveCollectionData, this, move(vcollectionData));
+			t.detach();
+		}
+	}
 }

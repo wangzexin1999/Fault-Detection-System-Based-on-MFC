@@ -51,7 +51,7 @@ int CAirCraftCasingVibrateSystemView::m_iwindowCount = 0;
 CAirCraftCasingVibrateSystemView::CAirCraftCasingVibrateSystemView()
 	: CFormView(CAirCraftCasingVibrateSystemView::IDD)
 {
-     // m_icurrentWindowNumber = m_iwindowCount++; ///当前窗口号
+      m_icurrentWindowNumber = m_iwindowCount++; ///当前窗口号
 }
 
 CAirCraftCasingVibrateSystemView::~CAirCraftCasingVibrateSystemView()
@@ -127,81 +127,9 @@ void CAirCraftCasingVibrateSystemView::OnInitialUpdate()
 	RefreshGraphAttri(); //加载图形属性
 }
 
-////采集数据
-void CAirCraftCasingVibrateSystemView::CaptureData(){
-	SmartArray<double> xData; ///x坐标
-	SmartFFTWComplexArray fftwInput; ///傅里叶变换初始的输入
-	while (theApp.m_icollectionStatus){
-		int countN = rand() % 100;
-		// 每次读取的数量按照用户在窗口的操作来选择
-		if (theApp.m_icollectionStatus == 2){ KillTimer(m_icurrentWindowNumber); };
-		vector<double> realTimeSignalData;
-		vector<CString> realTimeSignalTime;
-		for (int j = 0; j < theApp.m_signalEchoCount && theApp.m_icollectionStatus == 1; j++)
-		{
-			xData.push_back(j); ///X坐标
-			
-			///采集数据存入到队列中。
-			AcquiredSignal acquiredSignal(m_readFromCSVFile[countN][j], DateUtil::GetCurrentCStringTime());
-			m_collectionDataQueue.push(acquiredSignal);
-			///采集数据存入到回显信号的输入数组
-			fftw_complex fftw;
-			fftw[0] = m_readFromCSVFile[countN][j];
-			fftwInput.push_back(fftw);
-			// 传到服务器实时信号
-			//if (true/*判断是否需要实时传输*/)
-			//{
-			//	
-			//	realTimeSignalData.push_back(m_readFromCSVFile[countN][j]);
-			//	realTimeSignalTime.push_back(DateUtil::GetCurrentCStringTime().GetBuffer());
-			//}
-			
-		}
-
-		// 实时数据队列
-		//m_realTimeSignal.push(RealTimeSignal(realTimeSignalData, realTimeSignalTime));
-		m_realTimeSignalCaptureflag = false;
-		/////将一次采集的数据进行傅里叶变换
-		//////对传入的数据进行傅里叶变换处理
-		SmartFFTWComplexArray fftwOutput(fftwInput.size());
-		FFTWUtil::FastFourierTransformation(fftwInput.size(), fftwInput.GeFFTWComplexArray(),
-				fftwOutput.GeFFTWComplexArray());
-		/////将处理之后的傅里叶变换转换成XY坐标
-		SmartArray<double> yData(xData.size()); ///y坐标
-		FFTWUtil::FFTDataToXY(fftwOutput, yData, xData.size());
-		/////添加到回显数据队列中
-		m_echoSignalQueue.push(EchoSignal(xData, yData));
-		/////清空用来做显示的缓冲区。
-		fftwInput.clear();
-		xData.clear();
-		yData.clear();
-		//Sleep(15);
-		//清空实时信号
-		//m_realTimeSignal.GetRealTimeSignalData().clear();
-		//m_realTimeSignal.GetRealTimeSignalTime().clear();
-	}
-	KillTimer(m_icurrentWindowNumber);
-}
-
-///开启线程采集数据&设置定时器刷新数据
-void CAirCraftCasingVibrateSystemView::OpenThread2CaptureData(){
-	////如果当前未选择相应的传感器，则不能开线程采集数据
-	/*if (!m_signalSelectView.GetSelectedSensor().GetId()){
-		AfxMessageBox("窗口"+CommonUtil::Int2CString(m_icurrentWindowNumber)+"还没有选择传感器");
-		theApp.m_icollectionStatus = 0; ///一旦出现没有选择传感器的情况，将当前采集状态置为0 
-		return;
-	}*/
-   /*  thread t(&CAirCraftCasingVibrateSystemView::CaptureData,this);
-	 t.detach();*/
-	 ///开启定时器去刷新页面
-	 SetTimer(m_icurrentWindowNumber, 100, NULL);
-	 ///开启线程自动保存采集数据
-	 // 如果可连接服务器，发http到服务器，否则保存到本地数据库。
-	//OpenThread2SaveCollectionData();
-}
 void CAirCraftCasingVibrateSystemView::OnTimer(UINT_PTR nIDEvent){
 	if (m_icurrentWindowNumber == nIDEvent){
-		RefershChartCtrlData();  // 实时采集
+		RefershChartCtrlData();  // 采集数据回显
 	}
 	if (m_iSampleDataEchoTimerNum == nIDEvent)
 	{
@@ -232,56 +160,11 @@ void  CAirCraftCasingVibrateSystemView::StopRefershView(){
 }
 
 
-////保存采集数据的线程函数
-void  CAirCraftCasingVibrateSystemView::AutoSaveCollectionData(){
-	////调用传感器Controller类保存采集数据
-	while (theApp.m_bIsAutoSaveCollectionData){
-		ThreadSafeQueue<AcquiredSignal> acquireSignalThreadQueue;
-		///如果当前结束采集了，并且缓冲区队列中的元素不够储存数目,开线程保存最后采集的数据
-		if (theApp.m_icollectionStatus == 0 &&
-			m_collectionDataQueue.size() < theApp.m_icollectSignalsStoreCount){
-			theApp.m_bIsAutoSaveCollectionData = false;
-			thread t(&CAirCraftCasingVibrateSystemView::SaveCollectionData, this, m_collectionDataQueue);
-			t.detach();
-			break;
-		}
 
-		while (acquireSignalThreadQueue.size() <= theApp.m_icollectSignalsStoreCount){
-			m_collectionDataQueue;
-			shared_ptr<AcquiredSignal> acquiredSignal = m_collectionDataQueue.wait_and_pop();
-			acquireSignalThreadQueue.push(*acquiredSignal);
-		}
-
-		acquireSignalThreadQueue.size();
-
-		thread t(&CAirCraftCasingVibrateSystemView::SaveCollectionData, this, acquireSignalThreadQueue);
-		t.detach();
-	}
-}
 
 ////保存采集数据
 void CAirCraftCasingVibrateSystemView::SaveCollectionData(ThreadSafeQueue<AcquiredSignal> acquireSignalQueue){
-	m_sensorController.SaveCollectionData(m_signalSelectView.GetSelectedSensor().GetSensorId(), acquireSignalQueue);
-}
- 
-////开启线程自动保存线程函数
-void CAirCraftCasingVibrateSystemView::OpenThread2SaveCollectionData(){
-	thread t(&CAirCraftCasingVibrateSystemView::AutoSaveCollectionData, this);
-	t.detach();
-}
-
-
-void  CAirCraftCasingVibrateSystemView::SaveSampleData(){
-	////调用传感器Controller类保存采样数据
-	/*Result res = m_sensorController.SaveSampleData(m_signalSelectView.GetSelectedSensor().GetId(),m_recordSignal);
-	if (!res.GetIsSuccess()){
-		AfxMessageBox(res.GetMessages());
-	}*/
-}
-
-void  CAirCraftCasingVibrateSystemView::OpenThread2SaveSampleData(){
-	thread t(&CAirCraftCasingVibrateSystemView::SaveSampleData, this);
-	t.detach();
+	m_sensorController.SaveCollectionData(m_signalSelectView.GetSelectedSensor().GetChannels(), acquireSignalQueue);
 }
 
 CDuChartCtrl & CAirCraftCasingVibrateSystemView::GetChartCtrl(){

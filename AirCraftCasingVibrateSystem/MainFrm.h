@@ -17,7 +17,6 @@
 #include "ChannelParaView.h"
 #include "AirCraftCasingVibrateSystemView.h"
 #include <vector>
-#include "CollectionDataInfoDlg.h"
 #include "GraphAttributeView.h"
 #include "StateSetDockPanelView.h"
 #include "SignalController.h"
@@ -66,20 +65,18 @@ protected:  // 控件条嵌入成员
 	CMFCCaptionBar    m_wndCaptionBar;
 	CMFCToolBar       m_wndContrlBar;
 	WaveformAiCtrl *    m_wfAiCtrl;
-	static std::vector<CAirCraftCasingVibrateSystemView *> m_vsignalCaptureView;
+
 	CGraphAttributeView m_graphAttributeView; // 图形属性界面
 	SignalController m_signalController;
 	ProjectController m_projectController;
-	
-public:
-
+	vector<ThreadSafeQueue<AcquiredSignal>>  m_vcollectionData;  //采集的数据
 	DOUBLE * m_collectionData;
-
-
 	CSystemParaView    m_systemParaView;
 	CChannelParaView    m_channelParaView;
 	CStateSetDockPanelView m_stateSetDockPanelView;
 	CDockablePane m_Panes[5];  
+
+public:
 	/**********************************************************************
 	功能描述： 初始化采集窗口，将所有窗口存到vector中
 	输入参数：nWindowInitial--窗口初始数
@@ -89,7 +86,7 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	void InitializeCaptureView(int nWindowInitial);
+	void InitCaptureViewVector();
 	/**********************************************************************
 	 功能描述： 初始化采样数据回显View
 	 输入参数：nWindowInitial--窗口初始数
@@ -130,7 +127,7 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	void CreateSensorWindow(vector<TbSensor> vsensor);
+	void CreateCaptureWindow(vector<TbSensor> vsensor);
 	/**********************************************************************
 	 功能描述： 窗口纵向平铺
 	 输入参数：
@@ -204,6 +201,40 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	void ConfigurateDevice();
+
+
+	/**********************************************************************
+	功能描述： 开启线程自动保存采集数据的线程函数
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void OpenThread2SaveCollectionData();
+
+	/**********************************************************************
+	功能描述： 自动保存采集数据的线程函数
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void AutoSaveCollectionData();
+	/**********************************************************************
+	功能描述： 保存采集数据
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void SaveCollectionData(vector<ThreadSafeQueue<AcquiredSignal>> acquireSignal);
+
 	afx_msg LRESULT OnStatusInf(WPARAM wParam, LPARAM lParam); // 自定义状态信息改变消息
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnWindowManager();

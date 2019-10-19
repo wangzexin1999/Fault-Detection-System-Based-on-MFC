@@ -30,10 +30,10 @@ int TbSensor::GetProjectId() {
 void TbSensor::SetProjectId(int projectId) {
 	this->m_projectId = projectId;
 }
-CString TbSensor::GetSensorId() {
+CString TbSensor::GetChannels() {
 	return m_sensorId;
 }
-void TbSensor::SetSensorId(CString sensorId) {
+void TbSensor::SetChannels(CString sensorId) {
 	this->m_sensorId = sensorId;
 }
 

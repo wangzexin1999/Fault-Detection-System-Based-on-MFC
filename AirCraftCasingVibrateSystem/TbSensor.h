@@ -51,8 +51,8 @@ public:
 
 	void SetId(int id);
 	int GetId();
-	void SetSensorId(CString sensor);
-	CString GetSensorId();
+	void SetChannels(CString sensor);
+	CString GetChannels();
 	int GetProjectId();
 	void SetProjectId(int projectId);
 	TbDictionary & GetSensorStatus();

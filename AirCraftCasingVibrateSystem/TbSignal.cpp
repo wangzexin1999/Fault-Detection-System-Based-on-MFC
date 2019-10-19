@@ -42,7 +42,6 @@ void TbSignal::SetSignalType(CString signalType) {
 	this->m_signalType = signalType;
 }
 
-
 int TbSignal::GetProductId() {
 	return m_productId;
 }
@@ -67,11 +66,11 @@ void TbSignal::SetProjectId(int projectId){
 int   TbSignal::GetProjectId(){
 	return this->m_projectId;
 }
-CString   TbSignal::GetSensorId(){
-	return m_sensorId;
+CString   TbSignal::GetChannels(){
+	return m_channels;
 }
-void TbSignal::SetSensorId(CString  sensorId){
-	m_sensorId = sensorId;
+void TbSignal::SetChannels(CString  channel){
+	m_channels = channel;
 }
 int   TbSignal::GetTestingDeviceId(){
 	return m_testingDeviceId;

@@ -189,7 +189,7 @@ void ChannelParaPresetView::GetSelectedChannels(vector<TbSensor> & vsensors){
 				}
 				if (col == 6) currentSensor.SetMileageRange(atoi(m_channelParaGridCtrl.GetItemText(row, col)));
 			}
-			currentSensor.SetSensorId("#012s-"+CommonUtil::Int2CString(row));
+			currentSensor.SetChannels("#012s-"+CommonUtil::Int2CString(row));
 			vsensors.push_back(currentSensor);
 		}
 	}

@@ -94,7 +94,7 @@ bool TbSensorDao::SelectObjectsByCondition(vector<TbSensorDao> &selectedValueVec
 }
 void  TbSensorDao::GetTableFieldValues(TbSensor & sensor){
 	sensor.SetId(m_id.GetInt());
-	sensor.SetSensorId(m_sensorId.m_strValue);
+	sensor.SetChannels(m_sensorId.m_strValue);
 	sensor.SetAntiAliasingFiltering(m_antiAliasingFiltering.GetInt());
 	sensor.GetCoordinateSystem().SetDictId(m_coordinateSystem.GetInt());
 	sensor.GetCoordinateSystemDirection().SetDictId(m_coordinateSystemDirection.GetInt());
@@ -132,7 +132,7 @@ void TbSensorDao::SetTableFieldValues(TbSensor sensor){
 	m_projectId.SetValue(sensor.GetProjectId());
 	m_sensitivity.SetValue(sensor.GetSensitivity());
 	m_sensorDesc.SetValue(sensor.GetSensorDesc());
-	m_sensorId.SetValue(sensor.GetSensorId());
+	m_sensorId.SetValue(sensor.GetChannels());
 	m_sersorStatus.SetValue(sensor.GetSensorStatus().GetDictId());
 	m_triggerMagnitude.SetValue(sensor.GetTriggerMagnitude());
 	m_triggerPolarity.SetValue(sensor.GetTriggerPolarity().GetDictId());

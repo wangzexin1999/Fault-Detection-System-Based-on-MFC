@@ -194,7 +194,7 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	
 	///根据最近一次打开的项目的传感器数量，创建指定数量的采集窗口
 	CMainFrame*pFrame = (CMainFrame*)m_pMainWnd;
-	pFrame->CreateSensorWindow(theApp.m_currentProject.GetSensorVector());
+	pFrame->CreateCaptureWindow(theApp.m_currentProject.GetSensorVector());
 	pFrame->MDITile(MDITILE_VERTICAL);//纵向平铺
 
 	// 调度在命令行中指定的命令。  如果
