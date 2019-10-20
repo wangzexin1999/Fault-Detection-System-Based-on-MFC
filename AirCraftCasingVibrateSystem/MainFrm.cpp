@@ -1345,7 +1345,7 @@ void CMainFrame::OpenThread2SaveCollectionData(){
 	thread t(&CMainFrame::AutoSaveCollectionData, this);
 	t.detach();
 }
-void CMainFrame::SaveCollectionData(vector<ThreadSafeQueue<AcquiredSignal>> acquireSignal){
+void CMainFrame::SaveCollectionData(vector<ThreadSafeQueue<AcquiredSignal>> & acquireSignal){
 
 }
 
@@ -1375,6 +1375,23 @@ void  CMainFrame::AutoSaveCollectionData(){
 			///需要保存的数据
 			thread t(&CMainFrame::SaveCollectionData, this, move(vcollectionData));
 			t.detach();
+			vcollectionData.clear();
+			for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
+				vcollectionData.push_back(ThreadSafeQueue<AcquiredSignal>());
+			}
+		}
+		///如果当前结束采集或者暂停采集，且缓冲区数据量不足以达到保存条件了。
+		if (theApp.m_icollectionStatus != 1){
+			for (int i = m_vcollectionData.size(); i > 0; i--){
+				if (m_vcollectionData[i].size() < theApp.m_icollectSignalsStoreCount){
+					theApp.m_bIsAutoSaveCollectionData = false;
+					break;
+				}
+			}
+			
 		}
 	}
+	///停止或者暂停采集之后保存剩余的所有数据
+	thread t(&CMainFrame::SaveCollectionData, this, move(m_vcollectionData));
+	t.detach();
 }

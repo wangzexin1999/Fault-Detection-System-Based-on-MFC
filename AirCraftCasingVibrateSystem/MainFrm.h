@@ -64,6 +64,7 @@ protected:  // 控件条嵌入成员
 	CMFCRibbonStatusBar  m_wndStatusBar;
 	CMFCCaptionBar    m_wndCaptionBar;
 	CMFCToolBar       m_wndContrlBar;
+
 	WaveformAiCtrl *    m_wfAiCtrl;
 
 	CGraphAttributeView m_graphAttributeView; // 图形属性界面
@@ -233,7 +234,7 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	void SaveCollectionData(vector<ThreadSafeQueue<AcquiredSignal>> acquireSignal);
+	void SaveCollectionData(vector<ThreadSafeQueue<AcquiredSignal>> & acquireSignal);
 
 	afx_msg LRESULT OnStatusInf(WPARAM wParam, LPARAM lParam); // 自定义状态信息改变消息
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
