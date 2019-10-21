@@ -7,6 +7,7 @@
 #include "afxdialogex.h"
 #include "TbTestingDevice.h"
 #include "CommonUtil.h"
+#include "TestingDeviceController.h"
 // CollectionParaView 对话框
 
 IMPLEMENT_DYNAMIC(CollectionParaView, CDialogEx)
@@ -45,6 +46,14 @@ void CollectionParaView::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CollectionParaView, CDialogEx)
+	ON_CBN_SELCHANGE(IDC_COMBO1, &CollectionParaView::OnCbnSelchangeCombo1)
+	ON_CBN_SELCHANGE(IDC_COMBO2, &CollectionParaView::OnCbnSelchangeCombo2)
+	ON_CBN_SELCHANGE(IDC_COMBO3, &CollectionParaView::OnCbnSelchangeCombo3)
+	ON_CBN_SELCHANGE(IDC_COMBO4, &CollectionParaView::OnCbnSelchangeCombo4)
+	ON_CBN_SELCHANGE(IDC_COMBO5, &CollectionParaView::OnCbnSelchangeCombo5)
+	ON_EN_CHANGE(IDC_EDIT_DELAYBLOCKCOUNT, &CollectionParaView::OnEnChangeEditDelayblockcount)
+	ON_EN_CHANGE(IDC_EDIT_TRIGGERCOUNT, &CollectionParaView::OnEnChangeEditTriggercount)
+	ON_EN_CHANGE(IDC_EDIT_COLLECTIONBATCHS, &CollectionParaView::OnEnChangeEditCollectionbatchs)
 END_MESSAGE_MAP()
 
 
@@ -55,6 +64,38 @@ BOOL CollectionParaView::OnInitDialog()
 	CDialogEx::OnInitDialog();
 	CollectionParaInfoInit();
 	return TRUE; 
+}
+void CollectionParaView::GetSelectedTestingDevice(TbTestingDevice &testingDevice){
+	int index = m_collectionFrequencyCombo.GetCurSel();
+	//m_collectionFrequencyCombo.GetLBText(index, strInfo1);//通过索引获取对应的值
+	testingDevice.SetCollectionFrequency(m_vcollectionFrequency[index]);
+
+	index = m_analysisFrequencyCombo.GetCurSel();
+	testingDevice.SetAnalysisFrequency(m_vanalysisFrequency[index]);
+
+	index = m_triggerMethodCombo.GetCurSel();
+	testingDevice.SetTriggerMethod(m_vtriggerMethod[index]);
+
+	index = m_collectionMethodCombo.GetCurSel();
+	testingDevice.SetCollectionMethod(m_vcollectionMethod[index]);
+
+	index = m_dataBlockCountCombo.GetCurSel();
+	testingDevice.SetDatablockCount(m_vdataBlockCount[index]);
+
+	CString delayBlockCount, triggerCount, collectionBaths;
+
+	m_collectionBatchEdit.GetWindowTextA(collectionBaths);
+	m_delayBlockCountEdit.GetWindowTextA(delayBlockCount);
+	m_triggerCountEdit.GetWindowTextA(triggerCount);
+	testingDevice.SetCollectionBatchs(atoi(collectionBaths));
+	testingDevice.SetDelayblockCount(atoi(delayBlockCount));
+	testingDevice.SetTriggerCount(atoi(triggerCount));
+	TestingDeviceController m_testingDeviceServiceController;
+	Result res = m_testingDeviceServiceController.UpdateTestingDevice(testingDevice);
+	if (!res.GetIsSuccess()){
+		AfxMessageBox(res.GetMessages());
+	}
+
 }
 
 void CollectionParaView::CollectionParaInfoInit(){
@@ -163,4 +204,85 @@ void CollectionParaView::RefreshView(){
 	m_vtriggerMethod.clear();
 	///2.采集参数重新初始化
 	CollectionParaInfoInit();
+}
+
+void CollectionParaView::OnCbnSelchangeCombo1()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	TbTestingDevice testingDevice = theApp.m_currentProject.GetTestingDevice();
+	GetSelectedTestingDevice(testingDevice);
+}
+
+
+void CollectionParaView::OnCbnSelchangeCombo2()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	TbTestingDevice testingDevice = theApp.m_currentProject.GetTestingDevice();
+	GetSelectedTestingDevice(testingDevice);
+}
+
+
+void CollectionParaView::OnCbnSelchangeCombo3()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	TbTestingDevice testingDevice = theApp.m_currentProject.GetTestingDevice();
+	GetSelectedTestingDevice(testingDevice);
+}
+
+
+
+void CollectionParaView::OnCbnSelchangeCombo4()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	TbTestingDevice testingDevice = theApp.m_currentProject.GetTestingDevice();
+	GetSelectedTestingDevice(testingDevice);
+}
+
+
+void CollectionParaView::OnCbnSelchangeCombo5()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	TbTestingDevice testingDevice = theApp.m_currentProject.GetTestingDevice();
+	GetSelectedTestingDevice(testingDevice);
+}
+
+
+void CollectionParaView::OnEnChangeEditDelayblockcount()
+{
+	// TODO:  如果该控件是 RICHEDIT 控件，它将不
+	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
+	// 函数并调用 CRichEditCtrl().SetEventMask()，
+	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
+
+	// TODO:  在此添加控件通知处理程序代码
+	TbTestingDevice testingDevice = theApp.m_currentProject.GetTestingDevice();
+	GetSelectedTestingDevice(testingDevice);
+}
+
+
+
+void CollectionParaView::OnEnChangeEditTriggercount()
+{
+	// TODO:  如果该控件是 RICHEDIT 控件，它将不
+	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
+	// 函数并调用 CRichEditCtrl().SetEventMask()，
+	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
+
+	// TODO:  在此添加控件通知处理程序代码
+	TbTestingDevice testingDevice = theApp.m_currentProject.GetTestingDevice();
+	GetSelectedTestingDevice(testingDevice);
+}
+
+
+
+void CollectionParaView::OnEnChangeEditCollectionbatchs()
+{
+	// TODO:  如果该控件是 RICHEDIT 控件，它将不
+	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
+	// 函数并调用 CRichEditCtrl().SetEventMask()，
+	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
+
+	// TODO:  在此添加控件通知处理程序代码
+	TbTestingDevice testingDevice = theApp.m_currentProject.GetTestingDevice();
+	GetSelectedTestingDevice(testingDevice);
 }
