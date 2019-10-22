@@ -131,10 +131,10 @@ bool  CSensorService::GetAllSensorByTestingDeviceId(int testingDeviceId, vector<
 
 
 ////根据项目id得到所有的传感器参数
-bool CSensorService::GetALLSensorByProjectId(int projectId, std::vector<TbSensor> &vsensorPara){
-	m_sensorDao.m_projectId.SetValue(projectId);
+bool CSensorService::GetALLSensorByTestingdeviceId(int testingdeviceId, std::vector<TbSensor> &vsensorPara){
+	m_sensorDao.m_testingdeviceId.SetValue(testingdeviceId);
 	vector<TbSensorDao> selectedValueVector;
-	m_sensorDao.SelectObjectsByCondition(selectedValueVector, "project_id='" + CommonUtil::Int2CString(projectId) + "'");
+	m_sensorDao.SelectObjectsByCondition(selectedValueVector, "testingdevice_id='" + CommonUtil::Int2CString(testingdeviceId) + "'");
 	if (!selectedValueVector.empty()){
 		////传感器参数不为空时
 		for (auto tbsenorParaDao : selectedValueVector){
@@ -176,7 +176,7 @@ bool CSensorService::Delete(TbSensor sensor){
 		strSqlWhere += " and id ='" + CommonUtil::Int2CString(sensor.GetId()) + "'";
 	if (sensor.GetChannels() != "")
 		strSqlWhere += " and sensor_id ='" + sensor.GetChannels() + "'";
-	if (sensor.GetProjectId() != 0)
-		strSqlWhere += " and project_id ='" + CommonUtil::Int2CString(sensor.GetProjectId()) + "'";
+	if (sensor.GetTestingdeviceId() != 0)
+		strSqlWhere += " and testingdevice_id ='" + CommonUtil::Int2CString(sensor.GetTestingdeviceId()) + "'";
 	return m_sensorDao.DeleteByCondition(strSqlWhere);
 }

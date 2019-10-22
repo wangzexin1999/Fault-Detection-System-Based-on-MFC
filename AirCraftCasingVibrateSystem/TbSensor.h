@@ -25,7 +25,7 @@ private:
 
 	int m_id;
 	CString m_sensorId;
-	int m_projectId;
+	int m_testingdeviceId;
 	TbDictionary m_sensorStatus;
 	TbDictionary m_messureType;
 	CString m_sensorDesc;
@@ -53,8 +53,8 @@ public:
 	int GetId();
 	void SetChannels(CString sensor);
 	CString GetChannels();
-	int GetProjectId();
-	void SetProjectId(int projectId);
+	int GetTestingdeviceId();
+	void SetTestingdeviceId(int testingdeviceId);
 	TbDictionary & GetSensorStatus();
 	void SetSensorStatus(TbDictionary SensorStatus);
 	TbDictionary & GetMessureType();

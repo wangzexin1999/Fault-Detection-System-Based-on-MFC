@@ -4,7 +4,7 @@
 
 TbSensor::TbSensor(int id){
 	m_id = id; 
-	SetProjectId(0);
+	SetTestingdeviceId(0);
 	SetSensitivity(0);
 	SetTriggerMagnitude(0);
 	SetIsReference(0);
@@ -24,11 +24,11 @@ int TbSensor::GetId(){
 	return m_id;
 }
 
-int TbSensor::GetProjectId() {
-	return m_projectId;
+int TbSensor::GetTestingdeviceId() {
+	return m_testingdeviceId;
 }
-void TbSensor::SetProjectId(int projectId) {
-	this->m_projectId = projectId;
+void TbSensor::SetTestingdeviceId(int testingdeviceId) {
+	this->m_testingdeviceId = testingdeviceId;
 }
 CString TbSensor::GetChannels() {
 	return m_sensorId;

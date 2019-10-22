@@ -10,7 +10,7 @@ TbSensorDao::TbSensorDao()
 	SetVectorAndField("id", "int", m_id);
 	SetVectorAndField("sensor_id", "CString", m_sensorId);
 	SetVectorAndField("sensor_desc", "CString", m_sensorDesc);
-	SetVectorAndField("project_id", "int", m_projectId);
+	SetVectorAndField("testingdevice_id", "int", m_testingdeviceId);
 	SetVectorAndField("sensor_status", "char", m_sersorStatus);
 	SetVectorAndField("measure_type", "int", m_messureType);
 	SetVectorAndField("window_type", "int", m_windowType);
@@ -40,7 +40,7 @@ TbSensorDao::TbSensorDao(const TbSensorDao & sensor){
 	SetVectorAndField("id", "int", m_id);
 	SetVectorAndField("sensor_id", "CString", m_sensorId);
 	SetVectorAndField("sensor_desc", "CString", m_sensorDesc);
-	SetVectorAndField("project_id", "int", m_projectId);
+	SetVectorAndField("testingdevice_id", "int", m_testingdeviceId);
 	SetVectorAndField("sensor_status", "char", m_sersorStatus);
 	SetVectorAndField("measure_type", "int", m_messureType);
 	SetVectorAndField("window_type", "int", m_windowType);
@@ -107,7 +107,7 @@ void  TbSensorDao::GetTableFieldValues(TbSensor & sensor){
 	sensor.GetMessureType().SetDictId(m_messureType.GetInt());
 	sensor.SetMileageRange(m_mileageRange.GetFloatOrDouble());
 	sensor.SetPointNum(m_pointNum.GetInt());
-	sensor.SetProjectId(m_projectId.GetInt());
+	sensor.SetTestingdeviceId(m_testingdeviceId.GetInt());
 	sensor.SetSensitivity(m_sensitivity.GetFloatOrDouble());
 	sensor.SetSensorDesc(m_sensorDesc.m_strValue);
 	sensor.GetSensorStatus().SetDictId(m_sersorStatus.GetInt());
@@ -129,7 +129,7 @@ void TbSensorDao::SetTableFieldValues(TbSensor sensor){
 	m_messureType.SetValue(sensor.GetIntegralType().GetDictId());
 	m_mileageRange.SetValue(sensor.GetMileageRange());
 	m_pointNum.SetValue(sensor.GetPointNum());
-	m_projectId.SetValue(sensor.GetProjectId());
+	m_testingdeviceId.SetValue(sensor.GetTestingdeviceId());
 	m_sensitivity.SetValue(sensor.GetSensitivity());
 	m_sensorDesc.SetValue(sensor.GetSensorDesc());
 	m_sensorId.SetValue(sensor.GetChannels());

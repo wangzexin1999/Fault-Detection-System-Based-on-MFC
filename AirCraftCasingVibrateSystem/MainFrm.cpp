@@ -104,10 +104,10 @@ CMainFrame::CMainFrame()
 {
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_WINDOWS_7);
 	///初始化采集数据的对象
-	m_wfAiCtrl = WaveformAiCtrl::Create();
+	/*m_wfAiCtrl = WaveformAiCtrl::Create();
 	///	给采集设备绑定准备事件
 	m_wfAiCtrl->addDataReadyHandler(OnDataReadyEvent, this);
-	m_collectionData = nullptr;
+	m_collectionData = nullptr;*/
 }
 
 CMainFrame::~CMainFrame(){
