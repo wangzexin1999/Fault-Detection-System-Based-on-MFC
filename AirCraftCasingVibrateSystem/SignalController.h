@@ -24,6 +24,8 @@ Modification:
 #include "ProductService.h"
 #include "TbRecordSignal.h"
 #include "RecordSignalService.h"
+#include "ThreadSafeQueue.h"
+#include "AcquiredSignal.h"
 class SignalController
 {
 
@@ -71,5 +73,18 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	Result FindAllSignalBySearchCondition(TbSignal searchEntity, vector<TbSignal> &signalVector);
+
+	/**********************************************************************
+	功能描述：保存采集的数据
+	输入参数：当前窗口的id，传感器的id
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	Result SaveCollectionData(ThreadSafeQueue<AcquiredSignal> &collectionData);
+
+
 };
 

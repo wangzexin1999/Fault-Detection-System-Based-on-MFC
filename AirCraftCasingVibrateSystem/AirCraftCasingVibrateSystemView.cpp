@@ -152,14 +152,12 @@ void  CAirCraftCasingVibrateSystemView::RefershChartCtrlData(){
 ///刷新数据
 void  CAirCraftCasingVibrateSystemView::RefershView(){
 	///开启定时器去刷新页面
-	SetTimer(m_icurrentWindowNumber, 100, NULL);
+	SetTimer(m_icurrentWindowNumber, 10, NULL);
 }
 ///停止刷新数据
 void  CAirCraftCasingVibrateSystemView::StopRefershView(){
 	KillTimer(m_icurrentWindowNumber);
 }
-
-
 
 
 ////保存采集数据
@@ -466,6 +464,9 @@ void CAirCraftCasingVibrateSystemView::SplitVector(SmartArray<double> &dXData, S
 
 void  CAirCraftCasingVibrateSystemView::SetSensor(TbSensor sensor){
 	m_signalSelectView.SetSensor(sensor);
+}
+void  CAirCraftCasingVibrateSystemView::GetSensor(TbSensor & sensor){
+	 m_signalSelectView.GetSensor(sensor);
 }
 
 void  CAirCraftCasingVibrateSystemView::AddData2EchoSignalQueue(EchoSignal echoSignal){

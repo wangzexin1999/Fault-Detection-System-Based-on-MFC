@@ -636,9 +636,6 @@
     <ClInclude Include="httplib.h">
       <Filter>头文件\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="CollectionDataInfoDlg.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
     <ClInclude Include="DictionaryController.h">
       <Filter>头文件\Controller</Filter>
     </ClInclude>
@@ -709,6 +706,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="ProjectSetView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AdvantechDaqController.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1085,9 +1085,6 @@
     <ClCompile Include="CollectionPlanParaPresetView.cpp">
       <Filter>源文件\View</Filter>
     </ClCompile>
-    <ClCompile Include="CollectionDataInfoDlg.cpp">
-      <Filter>源文件\View</Filter>
-    </ClCompile>
     <ClCompile Include="ProductController.cpp">
       <Filter>源文件\View</Filter>
     </ClCompile>
@@ -1161,6 +1158,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ProjectSetView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AdvantechDaqController.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

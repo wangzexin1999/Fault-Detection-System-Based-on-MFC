@@ -51,7 +51,7 @@ public:
 
 	void SetId(int id);
 	int GetId();
-	void SetChannels(CString sensor);
+	void SetChannelId(CString sensor);
 	CString GetChannels();
 	int GetProjectId();
 	void SetProjectId(int projectId);

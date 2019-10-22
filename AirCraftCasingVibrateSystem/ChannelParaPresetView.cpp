@@ -6,7 +6,7 @@
 #include "ChannelParaPresetView.h"
 #include "afxdialogex.h"
 #include "CommonUtil.h"
-
+#include "Result.h"
 // ChannelParaPresetView 对话框
 
 IMPLEMENT_DYNAMIC(ChannelParaPresetView, CDialogEx)
@@ -25,12 +25,16 @@ void ChannelParaPresetView::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_GridControl(pDX, IDC_GRIDCTRL_CHANNELPARA, m_channelParaGridCtrl);
+	DDX_Control(pDX, IDC_COMBO_START_CHANNEL, m_startChannelCombo);
+	DDX_Control(pDX, IDC_COMBO_END_CHANNEL, m_endChannelCombo);
 }
 
 
 BEGIN_MESSAGE_MAP(ChannelParaPresetView, CDialogEx)
 	ON_NOTIFY(NM_CLICK, IDC_GRIDCTRL_CHANNELPARA, OnGridClick)
 	ON_NOTIFY(NM_DBLCLK, IDC_GRIDCTRL_CHANNELPARA, OnGridDblClick)
+	ON_CBN_SELCHANGE(IDC_COMBO_START_CHANNEL, &ChannelParaPresetView::OnCbnSelchangeComboStartChannel)
+	ON_CBN_SELCHANGE(IDC_COMBO_END_CHANNEL, &ChannelParaPresetView::OnCbnSelchangeComboEndChannel)
 END_MESSAGE_MAP()
 
 
@@ -39,18 +43,31 @@ END_MESSAGE_MAP()
 
 BOOL ChannelParaPresetView::OnInitDialog()
 {
-	CDialogEx::OnInitDialog();
 	///查询所有的窗类型
-	m_dictionController.FindAllBySearchCondition(m_vwindowTypes, 0, "windowtype");
-	m_dictionController.FindAllBySearchCondition(m_vinputMethods, 0, "inputmethod");
+	Result res = m_dictionController.FindAllBySearchCondition(m_vwindowTypes, 0, "windowtype");
+	if (!res.GetIsSuccess()){
+		AfxMessageBox("床类型查询失败");
+	}
+	res = m_dictionController.FindAllBySearchCondition(m_vinputMethods, 0, "inputmethod");
+	if (!res.GetIsSuccess()){
+		AfxMessageBox("输入类型查询失败");
+	}
+	m_advantechDaqController.GetChannels(m_vchannelId);
+
+	CDialogEx::OnInitDialog();
+	ChannelComboInit();
 	GridCtrlInit();
 	return TRUE; 
 }
 void ChannelParaPresetView::GridCtrlInit()
 {
+	int startChannelIndex = m_startChannelCombo.GetCurSel();
+	int endChannelIndex = m_endChannelCombo.GetCurSel();
+	m_channelParaGridCtrl.DeleteAllItems();
+	if (endChannelIndex < startChannelIndex){ return; }
 	m_channelParaGridCtrl.SetEditable(false);
 	m_channelParaGridCtrl.SetTextBkColor(RGB(0xFF, 0xFF, 0xE0));//黄色背景
-	m_channelParaGridCtrl.SetRowCount(5); //初始为n行
+	m_channelParaGridCtrl.SetRowCount(endChannelIndex-startChannelIndex+2); //初始为n行
 	m_channelParaGridCtrl.SetColumnCount(7); //初始化为8列
 	m_channelParaGridCtrl.SetFixedRowCount(1); //表头为一行
 	m_channelParaGridCtrl.SetRowResize(TRUE); ///自动设置行和列的大小
@@ -75,7 +92,7 @@ void ChannelParaPresetView::GridCtrlInit()
 				m_channelParaGridCtrl.SetCellType(0, 0, RUNTIME_CLASS(CGridCellCheck));
 			}
 			if (col == 1){
-				Item.strText = "序号";
+				Item.strText = "通道号";
 			}
 			if (col == 2){
 				Item.strText = "通道描述";
@@ -99,7 +116,7 @@ void ChannelParaPresetView::GridCtrlInit()
 		Item.nFormat = DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS;
 		CString strText;
 		if (col == 0){ m_channelParaGridCtrl.SetCellType(row, 0, RUNTIME_CLASS(CGridCellCheck)); }
-		if (col == 1) Item.strText = CommonUtil::Int2CString(row);
+		if (col == 1) Item.strText = m_vchannelId[startChannelIndex ++];
 		if (col == 2) Item.strText = "通道" + CommonUtil::Int2CString(row);
 		if (col == 3) {
 			m_channelParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCombo));
@@ -172,7 +189,8 @@ void ChannelParaPresetView::GetSelectedChannels(vector<TbSensor> & vsensors){
 		CGridCellCheck* pCell = (CGridCellCheck*)m_channelParaGridCtrl.GetCell(row, 0);
 		TbSensor currentSensor;
 		if (pCell->GetCheck()){
-			for (int col = 1; col < m_channelParaGridCtrl.GetColumnCount();col++){
+			for (int col = 0; col < m_channelParaGridCtrl.GetColumnCount();col++){
+				if (col == 1) currentSensor.SetChannelId(m_channelParaGridCtrl.GetItemText(row, col));
 				if (col == 2) currentSensor.SetSensorDesc(m_channelParaGridCtrl.GetItemText(row,col));
 				if (col == 3){
 					///拿到选择的窗类型
@@ -189,8 +207,28 @@ void ChannelParaPresetView::GetSelectedChannels(vector<TbSensor> & vsensors){
 				}
 				if (col == 6) currentSensor.SetMileageRange(atoi(m_channelParaGridCtrl.GetItemText(row, col)));
 			}
-			currentSensor.SetChannels("#012s-"+CommonUtil::Int2CString(row));
 			vsensors.push_back(currentSensor);
 		}
 	}
+}
+
+void ChannelParaPresetView::OnCbnSelchangeComboStartChannel()
+{
+	GridCtrlInit();
+}
+
+
+void ChannelParaPresetView::OnCbnSelchangeComboEndChannel()
+{
+	GridCtrlInit();
+}
+void ChannelParaPresetView::ChannelComboInit(){
+	m_startChannelCombo.ResetContent();
+	m_endChannelCombo.ResetContent();
+	for (int i = 0; i < m_vchannelId.size();i++){
+		m_startChannelCombo.InsertString(i, m_vchannelId[i]);
+		m_endChannelCombo.InsertString(i, m_vchannelId[i]);
+	}
+	m_startChannelCombo.SetCurSel(0);
+	m_endChannelCombo.SetCurSel(m_vchannelId.size() - 1);
 }

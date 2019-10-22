@@ -33,7 +33,7 @@ void TbSensor::SetProjectId(int projectId) {
 CString TbSensor::GetChannels() {
 	return m_sensorId;
 }
-void TbSensor::SetChannels(CString sensorId) {
+void TbSensor::SetChannelId(CString sensorId) {
 	this->m_sensorId = sensorId;
 }
 
