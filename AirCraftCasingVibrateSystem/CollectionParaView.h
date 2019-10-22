@@ -51,8 +51,17 @@ protected:
 	virtual BOOL OnInitDialog();
 	void CollectionParaInfoInit();
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
+	void GetSelectedTestingDevice(TbTestingDevice &testingDevice);
 	DECLARE_MESSAGE_MAP()
 public:
 	
 	void RefreshView();
+	afx_msg void OnCbnSelchangeCombo1();
+	afx_msg void OnCbnSelchangeCombo2();
+	afx_msg void OnCbnSelchangeCombo3();
+	afx_msg void OnCbnSelchangeCombo4();
+	afx_msg void OnCbnSelchangeCombo5();
+	afx_msg void OnEnChangeEditDelayblockcount();
+	afx_msg void OnEnChangeEditTriggercount();
+	afx_msg void OnEnChangeEditCollectionbatchs();
 };

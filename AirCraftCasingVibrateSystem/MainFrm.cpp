@@ -1288,10 +1288,8 @@ void CMainFrame::ConfigurateDevice()
 	errorCode = m_wfAiCtrl->setSelectedDevice(devInfo);
 	CheckError(errorCode);
 	
-	/*TCHAR des[MAX_DEVICE_DESC_LEN];
-	CString str;
-	str.Format(_T("Streaming AI - Run( %s )"), WCHAR_TO_TCHAR((LPCWSTR)devInfo.Description, des));
-	SetWindowText(str);*/
+	///根据设备信息获得选择的设备
+	m_wfAiCtrl->getSelectedDevice(devInfo);
 
 	//如果数据缓冲区指针不为空，则将其内存删除并置为空
 	if (m_collectionData != NULL){
