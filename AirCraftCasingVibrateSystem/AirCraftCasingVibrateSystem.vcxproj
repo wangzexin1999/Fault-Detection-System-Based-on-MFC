@@ -196,6 +196,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AcquiredSignal.h" />
+    <ClInclude Include="AdvantechDaqController.h" />
     <ClInclude Include="AirCraftCasingVibrateSystem.h" />
     <ClInclude Include="AirCraftCasingVibrateSystemDoc.h" />
     <ClInclude Include="AirCraftCasingVibrateSystemView.h" />
@@ -403,6 +404,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AcquiredSignal.cpp" />
+    <ClCompile Include="AdvantechDaqController.cpp" />
     <ClCompile Include="AirCraftCasingVibrateSystem.cpp" />
     <ClCompile Include="AirCraftCasingVibrateSystemDoc.cpp" />
     <ClCompile Include="AirCraftCasingVibrateSystemView.cpp" />

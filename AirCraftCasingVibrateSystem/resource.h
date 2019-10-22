@@ -262,6 +262,8 @@
 #define IDC_BUTTON_DELPLANBASEINFO      1177
 #define IDC_BUTTON_SAVEPLANBASEINFO     1178
 #define IDC_TAB_PROJECT_NAVIGATION      1181
+#define IDC_COMBO_START_CHANNEL         1182
+#define IDC_COMBO_END_CHANNEL           1183
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_CHECK2                       32771
 #define ID_COMBO2                       32772
@@ -337,7 +339,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        384
 #define _APS_NEXT_COMMAND_VALUE         32847
-#define _APS_NEXT_CONTROL_VALUE         1182
+#define _APS_NEXT_CONTROL_VALUE         1184
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

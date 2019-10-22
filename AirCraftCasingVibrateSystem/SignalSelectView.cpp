@@ -144,3 +144,6 @@ void CSignalSelectView::OnBnClickedOk()
 void CSignalSelectView::SetSensor(TbSensor sensor){
 	m_selectedSensor = sensor;
 }
+void  CSignalSelectView::GetSensor(TbSensor & sensor){
+	sensor = m_selectedSensor;
+}

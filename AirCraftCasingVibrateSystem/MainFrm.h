@@ -24,8 +24,11 @@
 #include "ProjectSetView.h"
 #include "ProjectController.h"
 #include "SmartArray.h"
+
 /////////////////////////////////////
 #include "include/Inc/bdaqctrl.h"
+#include "include/Inc/compatibility.h"
+
 using namespace Automation::BDaq;
 using namespace std;
 /////////////////////////////////////
@@ -66,6 +69,7 @@ protected:  // 控件条嵌入成员
 	CMFCToolBar       m_wndContrlBar;
 
 	WaveformAiCtrl *    m_wfAiCtrl;
+	vector<WaveformAiCtrl *> m_vwfAiCtrl;
 
 	CGraphAttributeView m_graphAttributeView; // 图形属性界面
 	SignalController m_signalController;
@@ -77,6 +81,7 @@ protected:  // 控件条嵌入成员
 	CStateSetDockPanelView m_stateSetDockPanelView;
 	CDockablePane m_Panes[5];  
 
+	ICollection<DeviceTreeNode>* m_devices;
 public:
 	/**********************************************************************
 	功能描述： 初始化采集窗口，将所有窗口存到vector中
@@ -235,6 +240,28 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	void SaveCollectionData(vector<ThreadSafeQueue<AcquiredSignal>> & acquireSignal);
+
+	/**********************************************************************
+	功能描述： 保存采集数据
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void GetInstalledDevices(ICollection<DeviceTreeNode> *& devices);
+	/**********************************************************************
+	功能描述： 得到所有通道
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void GetChannels(vector<CString> & channels);
+
 
 	afx_msg LRESULT OnStatusInf(WPARAM wParam, LPARAM lParam); // 自定义状态信息改变消息
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

@@ -103,11 +103,7 @@ extern TCHAR const * WCHAR_TO_TCHAR(WCHAR const * in, TCHAR * out);
 CMainFrame::CMainFrame()
 {
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_WINDOWS_7);
-	///初始化采集数据的对象
-	m_wfAiCtrl = WaveformAiCtrl::Create();
-	///	给采集设备绑定准备事件
-	m_wfAiCtrl->addDataReadyHandler(OnDataReadyEvent, this);
-	m_collectionData = nullptr;
+
 }
 
 CMainFrame::~CMainFrame(){
@@ -612,14 +608,20 @@ void CMainFrame::OnButtonSuspendCapture()
 
 }
 
-
 //开始采集
 void CMainFrame::OnButtonStartCapture()
 {
+	///根据采集窗口获取所有窗口的通道号
+	vector<CString> channelIds;
+	
+	for (int i = 0; i < theApp.m_vsignalCaptureView.size();i++){
+		TbSensor sensor;
+		theApp.m_vsignalCaptureView[i]->GetSensor(sensor);
+
+	}
 	// 设置底部坐标轴为自动
 	///如果当前状态为正在采集
 	if (theApp.m_icollectionStatus == 1) return;
-
 	///判断当前是否打开了项目
 	if (theApp.m_currentProject.GetProjectId() <= 0){
 		AfxMessageBox("请先打开或者新建项目");
@@ -637,6 +639,13 @@ void CMainFrame::OnButtonStartCapture()
 		AfxMessageBox("正在保存数据，请稍候进行采集");
 		return;
 	}
+
+	///初始化采集数据的对象
+	m_wfAiCtrl = WaveformAiCtrl::Create();
+	///	给采集设备绑定准备事件
+	m_wfAiCtrl->addDataReadyHandler(OnDataReadyEvent, this);
+	m_collectionData = nullptr;
+
 	///设置当前状态为正在采集状态
 	theApp.m_icollectionStatus = 1;
 	theApp.m_bIsAutoSaveCollectionData = true;
@@ -657,7 +666,7 @@ void CMainFrame::OnButtonStartCapture()
 		theApp.m_vsignalCaptureView[i]->RefershView();
 	}
 	///开启线程保存数据
-	OpenThread2SaveCollectionData();
+	//OpenThread2SaveCollectionData();
 	//实时数据传输
 	SetTimer(99, 1000, NULL);
 	///将采集按钮置灰
@@ -1255,6 +1264,7 @@ void CMainFrame::OnDataReadyEvent(void * sender, BfdAiEventArgs * args, void *us
 		FFTWUtil::FFTDataToXY(fftwOutput, yData, fftwInputArray[channel].size());
 		/////添加到回显数据队列中
 		theApp.m_vsignalCaptureView[channel]->AddData2EchoSignalQueue(EchoSignal(xData, yData));
+
 	}
 	TRACE("刷新页面了。。。。。。。。。。。\n");
 }
@@ -1280,10 +1290,6 @@ void CMainFrame::ConfigurateDevice()
 	
 	///根据设备信息获得选择的设备
 	m_wfAiCtrl->getSelectedDevice(devInfo);
-	/*tchar des[max_device_desc_len];
-	cstring str;
-	str.format(_t("streaming ai - run( %s )"), wchar_to_tchar((lpcwstr)devinfo.description, des));
-	setwindowtext(str);*/
 
 	//如果数据缓冲区指针不为空，则将其内存删除并置为空
 	if (m_collectionData != NULL){
@@ -1305,7 +1311,7 @@ void CMainFrame::ConfigurateDevice()
 	CheckError(errorCode);
 	errorCode = conversion->setChannelCount(4);
 	CheckError(errorCode);
-	errorCode = conversion->setClockRate(1000);
+	errorCode = conversion->setClockRate(2000);
 	CheckError(errorCode);
 
 	Record * record = m_wfAiCtrl->getRecord();
@@ -1345,6 +1351,7 @@ void CMainFrame::OpenThread2SaveCollectionData(){
 	thread t(&CMainFrame::AutoSaveCollectionData, this);
 	t.detach();
 }
+
 void CMainFrame::SaveCollectionData(vector<ThreadSafeQueue<AcquiredSignal>> & acquireSignal){
 
 }
@@ -1394,4 +1401,23 @@ void  CMainFrame::AutoSaveCollectionData(){
 	///停止或者暂停采集之后保存剩余的所有数据
 	thread t(&CMainFrame::SaveCollectionData, this, move(m_vcollectionData));
 	t.detach();
+}
+
+void CMainFrame::GetInstalledDevices(ICollection<DeviceTreeNode> *& devices){
+	DeviceCtrl *devicectrl;
+	devices = devicectrl->getInstalledDevices();
+}
+
+void  CMainFrame::GetChannels(vector<CString> & channels){
+	ICollection<DeviceTreeNode> * devices;
+	GetInstalledDevices(devices);
+	for (int i = 0; i < devices->getCount(); i++){
+		int deviceNum = devices->getItem(i).DeviceNumber;
+		WaveformAiCtrl   *wfAiCtrl = WaveformAiCtrl::Create();
+		wfAiCtrl->setSelectedDevice(DeviceInformation(deviceNum));
+		int channelCount = wfAiCtrl->getChannelCount();
+		for (int j = 1; j <= channelCount;j++){
+			channels.push_back(CommonUtil::Int2CString(deviceNum) + "-" + CommonUtil::Int2CString(j));
+		}
+	}
 }
