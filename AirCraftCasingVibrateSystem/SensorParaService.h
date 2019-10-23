@@ -39,6 +39,6 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	bool GetALLSensorParaByProjectId(int projectId, std::vector<TbSensor> &vsensorPara);
+	bool GetALLSensorParaByTestingdeviceId(int testingdeviceId, std::vector<TbSensor> &vsensorPara);
 };
 

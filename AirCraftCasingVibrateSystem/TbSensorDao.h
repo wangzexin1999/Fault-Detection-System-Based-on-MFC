@@ -12,7 +12,7 @@ public:
 	PDAttribute m_id;
 	PDAttribute m_sensorId;
 	PDAttribute m_sensorDesc;
-	PDAttribute m_projectId;
+	PDAttribute m_testingdeviceId;
 	PDAttribute m_sersorStatus;
 	PDAttribute m_messureType;
 	PDAttribute m_windowType;

@@ -32,7 +32,8 @@ Result ProjectController::AddProject(TbProject &project){
 	if (!flag) return Result(false, "项目创建失败");
 	/*3.添加传感器参数表*/
 	for (int i = 0; i < project.GetSensorVector().size();i++){
-		project.GetSensorVector()[i].SetProjectId(project.GetProjectId());
+		//project.GetSensorVector()[i].SetProjectId(project.GetProjectId());
+		project.GetSensorVector()[i].SetTestingdeviceId(project.GetTestingDevice().GetId());
 		flag = m_sensorService.AddSensor(project.GetSensorVector()[i]);
 		if (!flag) return Result(false, "传感器载入失败");
 	}
@@ -49,7 +50,8 @@ Result ProjectController::FindAllProjectBySearchCondition(TbProject project, CSt
 		flag = m_testingDeviceService.GetOneById(projectVector[i].GetTestingDevice());
 		if (!flag)return Result(false, "采集设备加载失败");
 		////查询项目的所有传感器
-		flag = m_sensorService.GetALLSensorByProjectId(projectVector[i].GetProjectId(), projectVector[i].GetSensorVector());
+		//flag = m_sensorService.GetALLSensorByProjectId(projectVector[i].GetProjectId(), projectVector[i].GetSensorVector());
+		flag = m_sensorService.GetAllSensorByTestingDeviceId(projectVector[i].GetTestingDevice().GetId(), projectVector[i].GetSensorVector());
 		if (!flag)return Result(false, "传感器加载失败");
 		////查询项目对应的产品信息
 		flag = m_productService.GetProductByID(projectVector[i].GetProduct());
@@ -71,7 +73,8 @@ Result ProjectController::FindLastOpenProjectByUser(TbProject &project){
 	flag = m_testingDeviceService.GetOneById(project.GetTestingDevice());
 	if (!flag)return Result(false, "采集设备加载失败");
 	////查询项目的所有传感器
-	flag = m_sensorService.GetALLSensorByProjectId(project.GetProjectId(), project.GetSensorVector());
+	//flag = m_sensorService.GetALLSensorByProjectId(project.GetProjectId(), project.GetSensorVector());
+	flag = m_sensorService.GetAllSensorByTestingDeviceId(project.GetTestingDevice().GetId(), project.GetSensorVector());
 	if (!flag)return Result(false, "传感器加载失败");
 	////查询项目对应的产品信息
 	flag = m_productService.GetProductByID(project.GetProduct());
@@ -88,12 +91,14 @@ Result ProjectController::Update(TbProject project){
 	if (!flag) return Result(false, "项目更新失败");
 	//2. 删除项目对应的所有传感器
 	TbSensor condition;
-	condition.SetProjectId(project.GetProjectId());
+	condition.SetTestingdeviceId(project.GetTestingDevice().GetId());
+	//condition.SetProjectId(project.GetProjectId());
 	flag = m_sensorService.Delete(condition);
 	if (!flag) return Result(false, "项目传感器更新失败");
 	//3. 保存所有的传感器对象
 	for (int i = 0; i < project.GetSensorVector().size();i++){
-		project.GetSensorVector()[i].SetProjectId(project.GetProjectId());
+		//project.GetSensorVector()[i].SetProjectId(project.GetProjectId());
+		project.GetSensorVector()[i].SetTestingdeviceId(project.GetTestingDevice().GetId());
 		flag = m_sensorService.AddSensor(project.GetSensorVector()[i]);
 		if (!flag) return Result(false, "项目传感器更新失败");
 	}

@@ -6,10 +6,10 @@ SensorParaService::SensorParaService(){}
 SensorParaService::~SensorParaService(){}
 
 ////根据项目id得到所有的传感器参数
-bool SensorParaService::GetALLSensorParaByProjectId(int projectId, std::vector<TbSensor> &vsensorPara){
-	m_sensorDao.m_projectId.SetValue(projectId);
+bool SensorParaService::GetALLSensorParaByTestingdeviceId(int testingdeviceId, std::vector<TbSensor> &vsensorPara){
+	m_sensorDao.m_testingdeviceId.SetValue(testingdeviceId);
 	vector<TbSensorDao> selectedValueVector;
-	m_sensorDao.SelectObjectsByCondition(selectedValueVector, "project_id='" + CommonUtil::Int2CString(projectId) + "'");
+	m_sensorDao.SelectObjectsByCondition(selectedValueVector, "testingdevice_id='" + CommonUtil::Int2CString(testingdeviceId) + "'");
 	if (!selectedValueVector.empty()){
 		////传感器参数不为空时
 		for (auto tbsenorParaDao : selectedValueVector){

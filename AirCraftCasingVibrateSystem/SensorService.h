@@ -3,7 +3,7 @@
 #include "EchoSignal.h"
 #include "TbSignalDao.h"
 #include "TbRecordSignalDao.h"
-#include "TbProject.h"
+//#include "TbProject.h"
 #include "AcquiredSignal.h"
 #include "ThreadSafeQueue.h"
 #include "Result.h"
@@ -11,6 +11,7 @@
 #include "TbSensor.h"
 #include "TbDictionaryDao.h"
 #include "TbRecordSignal.h"
+//#include "TbTestingDevice.h"
 class CSensorService 
 {
 public:
@@ -79,7 +80,7 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	bool GetALLSensorByProjectId(int projectId, std::vector<TbSensor> &vsensorPara);
+	bool GetALLSensorByTestingdeviceId(int testingdeviceId, std::vector<TbSensor> &vsensorPara);
 	/**********************************************************************
 	功能描述：保存传感器数据
 	输入参数：传感器,需要保存的队列集合，需要保存的数量
