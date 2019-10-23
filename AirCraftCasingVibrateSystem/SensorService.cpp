@@ -174,8 +174,8 @@ bool CSensorService::Delete(TbSensor sensor){
 	CString strSqlWhere = "1 = 1 ";
 	if (sensor.GetId() != 0)
 		strSqlWhere += " and id ='" + CommonUtil::Int2CString(sensor.GetId()) + "'";
-	if (sensor.GetChannels() != "")
-		strSqlWhere += " and sensor_id ='" + sensor.GetChannels() + "'";
+	if (sensor.GetChannelId() != "")
+		strSqlWhere += " and sensor_id ='" + sensor.GetChannelId() + "'";
 	if (sensor.GetProjectId() != 0)
 		strSqlWhere += " and project_id ='" + CommonUtil::Int2CString(sensor.GetProjectId()) + "'";
 	return m_sensorDao.DeleteByCondition(strSqlWhere);

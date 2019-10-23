@@ -24,7 +24,8 @@
 #include "ProjectSetView.h"
 #include "ProjectController.h"
 #include "SmartArray.h"
-
+#include "AdvantechDaqController.h"
+#include <map>
 /////////////////////////////////////
 #include "include/Inc/bdaqctrl.h"
 #include "include/Inc/compatibility.h"
@@ -67,21 +68,23 @@ protected:  // 控件条嵌入成员
 	CMFCRibbonStatusBar  m_wndStatusBar;
 	CMFCCaptionBar    m_wndCaptionBar;
 	CMFCToolBar       m_wndContrlBar;
-
-	WaveformAiCtrl *    m_wfAiCtrl;
 	vector<WaveformAiCtrl *> m_vwfAiCtrl;
-
 	CGraphAttributeView m_graphAttributeView; // 图形属性界面
 	SignalController m_signalController;
 	ProjectController m_projectController;
 	vector<ThreadSafeQueue<AcquiredSignal>>  m_vcollectionData;  //采集的数据
-	DOUBLE * m_collectionData;
 	CSystemParaView    m_systemParaView;
 	CChannelParaView    m_channelParaView;
 	CStateSetDockPanelView m_stateSetDockPanelView;
 	CDockablePane m_Panes[5];  
+	vector<CString> m_vchannelIds; 
+	map<CString, CAirCraftCasingVibrateSystemView*> m_mpsignalCollectionView;
+	map<CString, ThreadSafeQueue<double>> m_mpcolllectioinDataQueue;
+	map<int, DOUBLE *> m_mpcolllectioinData;
 
 	ICollection<DeviceTreeNode>* m_devices;
+	AdvantechDaqController m_advantechDaqController;
+
 public:
 	/**********************************************************************
 	功能描述： 初始化采集窗口，将所有窗口存到vector中
@@ -197,18 +200,6 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	void CheckError(ErrorCode error);
-	/**********************************************************************
-	功能描述： 配置采集设备
-	输入参数：
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
-	***********************************************************************/
-	void ConfigurateDevice();
-
-
 	/**********************************************************************
 	功能描述： 开启线程自动保存采集数据的线程函数
 	输入参数：

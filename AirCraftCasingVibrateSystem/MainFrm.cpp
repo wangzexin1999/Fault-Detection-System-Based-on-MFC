@@ -594,31 +594,24 @@ void CMainFrame::OnButtonImportSysPara()
 void CMainFrame::OnButtonSuspendCapture()
 {
 	theApp.m_icollectionStatus = 2;
-	ErrorCode err = Success;
-	err = m_wfAiCtrl->Stop();
-	if (err != Success)
-	{
-		CheckError(err);
-		return;
+	for (int i = 0; i < m_vwfAiCtrl.size(); i++){
+		ErrorCode err = Success;
+		err = m_vwfAiCtrl[i]->Stop();
+		if (err != Success)
+		{
+			m_advantechDaqController.CheckError(err);
+			return;
+		}
 	}
 
 	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
 		theApp.m_vsignalCaptureView[i]->StopRefershView();
 	}
-
 }
 
 //开始采集
 void CMainFrame::OnButtonStartCapture()
 {
-	///根据采集窗口获取所有窗口的通道号
-	vector<CString> channelIds;
-	
-	for (int i = 0; i < theApp.m_vsignalCaptureView.size();i++){
-		TbSensor sensor;
-		theApp.m_vsignalCaptureView[i]->GetSensor(sensor);
-
-	}
 	// 设置底部坐标轴为自动
 	///如果当前状态为正在采集
 	if (theApp.m_icollectionStatus == 1) return;
@@ -640,27 +633,73 @@ void CMainFrame::OnButtonStartCapture()
 		return;
 	}
 
-	///初始化采集数据的对象
-	m_wfAiCtrl = WaveformAiCtrl::Create();
-	///	给采集设备绑定准备事件
-	m_wfAiCtrl->addDataReadyHandler(OnDataReadyEvent, this);
-	m_collectionData = nullptr;
-
 	///设置当前状态为正在采集状态
 	theApp.m_icollectionStatus = 1;
 	theApp.m_bIsAutoSaveCollectionData = true;
-	///配置设备
-	ConfigurateDevice();
+
+
 	///初始化缓冲区
 	m_vcollectionData.clear();
 	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
 		m_vcollectionData.push_back(ThreadSafeQueue<AcquiredSignal>());
 	}
+	///清空映射关系
+	m_mpcolllectioinData.clear();
+	m_mpsignalCollectionView.clear();
+	m_vchannelIds.clear();
 	//// 初始化采集窗口集合
 	InitCaptureViewVector();
+
+	///根据采集窗口获取所有窗口的通道号和采集卡的DeviceNumber
+	vector<DevConfParam> vdevConfParam(theApp.m_vsignalCaptureView.size());
+	int deviceNum;
+	int channelNum;
+	TbSensor sensor;
+	vector<CString> splitChannelId;
+	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
+		theApp.m_vsignalCaptureView[i]->GetSensor(sensor);
+		splitChannelId = CommonUtil::GetCStringVectorFromSplitCString(sensor.GetChannelId(), "-");
+		deviceNum = CommonUtil::CString2Int(splitChannelId[0]);
+		channelNum = CommonUtil::CString2Int(splitChannelId[1]);
+		vdevConfParam[deviceNum].deviceNumber = deviceNum - 1;
+		vdevConfParam[deviceNum].channelCount++;
+		///记录所有的通道号
+		m_vchannelIds.push_back(CommonUtil::Int2CString(deviceNum - 1) + "-" + CommonUtil::Int2CString(channelNum - 1));
+		///如果是初始化的状态，也即修改默认开始通道0为第一次循环出的开始通道
+		if (vdevConfParam[deviceNum].channelStart == 0){ vdevConfParam[deviceNum].channelStart = channelNum - 1; }
+		///创建窗口与通道之间的关系映射map
+		m_mpsignalCollectionView.insert(pair<CString, CAirCraftCasingVibrateSystemView*>
+			(CommonUtil::Int2CString(deviceNum - 1) + "-" + CommonUtil::Int2CString(channelNum - 1), theApp.m_vsignalCaptureView[i]));
+		///创建通道与保存数据之间的关系映射map
+		m_mpcolllectioinDataQueue.insert(pair<CString, ThreadSafeQueue<double>>
+			(CommonUtil::Int2CString(deviceNum - 1) + "-" + CommonUtil::Int2CString(channelNum - 1), ThreadSafeQueue<double>()));
+	}
+	int a = 1;
+	///根据获取的采集卡的DeviceNumber创建响应的控制类
+	for (int i = 0; i < vdevConfParam.size(); i++){
+		if (vdevConfParam[i].channelCount == 0)continue;
+		///初始化采集数据的对象
+		WaveformAiCtrl *  wfAiCtrl = WaveformAiCtrl::Create();
+		///	给采集设备绑定准备事件
+		wfAiCtrl->addDataReadyHandler(OnDataReadyEvent, this);
+		vdevConfParam[i].clockRatePerChan = 1000;
+		vdevConfParam[i].sectionLength = 1000;
+		vdevConfParam[i].vrgType = 2;
+		DevConfParam b = vdevConfParam[i];
+		m_advantechDaqController.ConfigurateDevice(vdevConfParam[i], wfAiCtrl);
+		TRACE("111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111\n");
+		int deviceNumber = wfAiCtrl->getDevice()->getDeviceNumber();
+		TRACE("	开启开启开启开启开启开启开启开启开启开启开启开启开启开启开启采集卡%d\n", deviceNumber);
+		TRACE("111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111\n");
+		//开启采集
+		wfAiCtrl->Start();
+		m_vwfAiCtrl.push_back(wfAiCtrl);
+		///创建设备与采集缓冲区的map映射关系
+		m_mpcolllectioinData.insert(pair<int, DOUBLE *>
+			(vdevConfParam[i].deviceNumber, new DOUBLE[vdevConfParam[i].sectionLength * vdevConfParam[i].channelCount]));
+	}
 	//// 设置显示信息线程标志
 	//theApp.m_bShowInfThreadActive = true;
-	m_wfAiCtrl->Start();
 	////开启所有窗口刷新数据的
 	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
 		theApp.m_vsignalCaptureView[i]->RefershView();
@@ -670,7 +709,6 @@ void CMainFrame::OnButtonStartCapture()
 	//实时数据传输
 	SetTimer(99, 1000, NULL);
 	///将采集按钮置灰
-
 }
 
 // 停止采集
@@ -679,12 +717,15 @@ void CMainFrame::OnBtnStopCapture()
 	theApp.m_icollectionStatus = 0;
 	KillTimer(99);
 
-	ErrorCode err = Success;
-	err = m_wfAiCtrl->Stop();
-	if (err != Success)
-	{
-		CheckError(err);
-		return;
+	theApp.m_icollectionStatus = 2;
+	for (int i = 0; i < m_vwfAiCtrl.size(); i++){
+		ErrorCode err = Success;
+		err = m_vwfAiCtrl[i]->Stop();
+		if (err != Success)
+		{
+			m_advantechDaqController.CheckError(err);
+			return;
+		}
 	}
 	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
 		theApp.m_vsignalCaptureView[i]->StopRefershView();
@@ -1230,9 +1271,40 @@ void CMainFrame::OnButtonOpenProjectSetView()
 void CMainFrame::OnDataReadyEvent(void * sender, BfdAiEventArgs * args, void *userParam){
 	WaveformAiCtrl * wfAiCtrl = (WaveformAiCtrl *)sender;
 	CMainFrame * uParam = (CMainFrame *)userParam;
-	///设置获取数据的数量
-	int32 getDataCount = 1024 * 4;
-	ErrorCode ret = wfAiCtrl->GetData(getDataCount, uParam->m_collectionData, 0, NULL, NULL, NULL, NULL);
+	int sectionLength = wfAiCtrl->getRecord()->getSectionLength();
+	int startChannel = wfAiCtrl->getConversion()->getChannelStart();
+	int channelCount = wfAiCtrl->getConversion()->getChannelCount();
+	int deviceNumber = wfAiCtrl->getDevice()->getDeviceNumber();
+	TRACE("	采集卡%d\n", deviceNumber);
+	///获取与本设备号绑定的采集数据缓冲区
+	map<int, DOUBLE *>::iterator collectionDataIterator;
+	collectionDataIterator = uParam->m_mpcolllectioinData.find(deviceNumber);
+	if (collectionDataIterator == uParam->m_mpcolllectioinData.end()){	AfxMessageBox("设备没有找到");return;	}
+	///获取所有的窗口的迭代器指针
+	vector<map<CString, CAirCraftCasingVibrateSystemView*>::iterator> vsignalCollectViewIterator;
+	map<CString, CAirCraftCasingVibrateSystemView*>::iterator signalCollectViewIterator;
+	///获取需要存储数据的迭代器指针
+	map<CString, ThreadSafeQueue<double>>::iterator colllectioinDataQueueIterator;
+	vector<map<CString, ThreadSafeQueue<double>>::iterator> vcolllectioinDataQueueIterator;
+
+	CString channelId;
+	for (int i = startChannel; i < startChannel+channelCount; i++){
+		channelId = CommonUtil::Int2CString(deviceNumber) + "-" + CommonUtil::Int2CString(i);
+		signalCollectViewIterator = uParam->m_mpsignalCollectionView.find(channelId);
+		colllectioinDataQueueIterator = uParam->m_mpcolllectioinDataQueue.find(channelId);
+		if (signalCollectViewIterator == uParam->m_mpsignalCollectionView.end() 
+			|| colllectioinDataQueueIterator == uParam->m_mpcolllectioinDataQueue.end()){
+			AfxMessageBox("采集出错");
+			return;
+		}
+		vsignalCollectViewIterator.push_back(signalCollectViewIterator);
+		vcolllectioinDataQueueIterator.push_back(colllectioinDataQueueIterator); 
+	}
+	
+
+	///设置获取数据的数量并获取数据
+	int32 getDataCount = ((sectionLength * channelCount) < args->Count) ? (sectionLength * channelCount) : args->Count;
+	ErrorCode ret = wfAiCtrl->GetData(getDataCount, collectionDataIterator->second, 0, NULL, NULL, NULL, NULL);
 	if ((ret >= ErrorHandleNotValid) && (ret != Success))
 	{
 		CString str;
@@ -1243,18 +1315,19 @@ void CMainFrame::OnDataReadyEvent(void * sender, BfdAiEventArgs * args, void *us
 	//分割数据
 	SmartArray<double> xData; ///x坐标
 	fftw_complex fftw;///单次傅立叶变换的输入
-	vector<SmartFFTWComplexArray> fftwInputArray(4);
+	vector<SmartFFTWComplexArray> fftwInputArray(channelCount);
 	for (int i = 0; i < getDataCount; i++){
-		int channel = i % 4;
-		fftw[0] = uParam->m_collectionData[i];
+		int channel = i % channelCount;
+		fftw[0] = collectionDataIterator->second[i];
 		fftwInputArray[channel].push_back(fftw);
+		vcolllectioinDataQueueIterator[channel]->second.push(collectionDataIterator->second[i]);
 	}
 	//设置x坐标
-	for (int i = 0; i < getDataCount / 4;i++){
+	for (int i = 0; i < getDataCount / channelCount; i++){
 		xData.push_back(i);
 	}
 
-	for (int channel = 0; channel < 4; channel++){
+	for (int channel = 0; channel < channelCount; channel++){
 		SmartArray<double> yData; ///y坐标
 		//对传入的数据进行傅里叶变换处理
 		SmartFFTWComplexArray fftwOutput(fftwInputArray[channel].size());
@@ -1263,89 +1336,11 @@ void CMainFrame::OnDataReadyEvent(void * sender, BfdAiEventArgs * args, void *us
 		//将处理之后的傅里叶变换转换成XY坐标
 		FFTWUtil::FFTDataToXY(fftwOutput, yData, fftwInputArray[channel].size());
 		/////添加到回显数据队列中
-		theApp.m_vsignalCaptureView[channel]->AddData2EchoSignalQueue(EchoSignal(xData, yData));
-
+		vsignalCollectViewIterator[channel]->second->AddData2EchoSignalQueue(EchoSignal(xData, yData));
+		
 	}
 	TRACE("刷新页面了。。。。。。。。。。。\n");
 }
-
-void CMainFrame::CheckError(ErrorCode error){
-	if (BioFailed(error))
-	{
-		KillTimer(0);
-		CString str;
-		str.Format(_T("Some errors happened, the error code is: 0x%X !\n"), error);
-		AfxMessageBox(str);
-	}
-}
-
-void CMainFrame::ConfigurateDevice()
-{
-	ErrorCode	errorCode;
-	// 根据设备号设置一些设备信息
-	int deviceNumber = 0;
-	DeviceInformation devInfo(deviceNumber);
-	errorCode = m_wfAiCtrl->setSelectedDevice(devInfo);
-	CheckError(errorCode);
-	
-	///根据设备信息获得选择的设备
-	m_wfAiCtrl->getSelectedDevice(devInfo);
-
-	//如果数据缓冲区指针不为空，则将其内存删除并置为空
-	if (m_collectionData != NULL){
-		delete[] m_collectionData;
-		m_collectionData = NULL;
-	}
-	//设置缓冲区的大小
-	int32 bufferDataLength = 1024 * 4;
-	m_collectionData = new DOUBLE[bufferDataLength];
-	if (m_collectionData == NULL){
-		AfxMessageBox(_T("分配内存出错"));
-		this->CloseWindow();
-		return;
-	}
-
-	// 为AI的缓冲区设置一些必要的参数 
-	Conversion * conversion = m_wfAiCtrl->getConversion();
-	errorCode = conversion->setChannelStart(0);
-	CheckError(errorCode);
-	errorCode = conversion->setChannelCount(4);
-	CheckError(errorCode);
-	errorCode = conversion->setClockRate(2000);
-	CheckError(errorCode);
-
-	Record * record = m_wfAiCtrl->getRecord();
-	errorCode = record->setSectionCount(0);// 0 means 'streaming mode'.
-	CheckError(errorCode);
-	errorCode = record->setSectionLength(1024);
-	CheckError(errorCode);
-
-	int count = m_wfAiCtrl->getFeatures()->getChannelCountMax();
-	Array<AiChannel> *channels = m_wfAiCtrl->getChannels();
-	int channel = 0;
-	for (int i = 0; i < 4; ++i)
-	{
-		if (channel >= count){
-			channel = 0;
-		}
-		if (channels->getItem(channel).getSignalType() == Differential)
-		{
-			if (channel % 2 == 1){
-				channel -= 1;
-			}
-			errorCode = channels->getItem(channel%count).setValueRange((ValueRange)(1));
-			CheckError(errorCode);
-			channel += 1;
-		}
-		errorCode = channels->getItem(channel%count).setValueRange((ValueRange)(1));
-		CheckError(errorCode);
-		channel += 1;
-	}
-	// 准备好缓冲区
-	errorCode = m_wfAiCtrl->Prepare();
-	CheckError(errorCode);
-}
-
 ////开启线程自动保存线程函数
 void CMainFrame::OpenThread2SaveCollectionData(){
 	thread t(&CMainFrame::AutoSaveCollectionData, this);

@@ -22,9 +22,6 @@
     <Filter Include="源文件\View">
       <UniqueIdentifier>{a82f5050-e76b-4ec3-aa81-81ca5d7c046a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\Controller">
-      <UniqueIdentifier>{cbc929cc-2583-4f72-9820-92e05284f936}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\Service">
       <UniqueIdentifier>{068757be-8ea2-4b76-bffd-cd08397d7584}</UniqueIdentifier>
     </Filter>
@@ -87,6 +84,9 @@
     </Filter>
     <Filter Include="头文件\View\图形属性">
       <UniqueIdentifier>{2d2a8143-5526-41d5-8f59-502f0fdf323b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\dao\Controller">
+      <UniqueIdentifier>{cbc929cc-2583-4f72-9820-92e05284f936}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -789,13 +789,13 @@
       <Filter>源文件\Service</Filter>
     </ClCompile>
     <ClCompile Include="TesterController.cpp">
-      <Filter>源文件\Controller</Filter>
+      <Filter>源文件\dao\Controller</Filter>
     </ClCompile>
     <ClCompile Include="Result.cpp">
       <Filter>源文件\entity</Filter>
     </ClCompile>
     <ClCompile Include="ProjectController.cpp">
-      <Filter>源文件\Controller</Filter>
+      <Filter>源文件\dao\Controller</Filter>
     </ClCompile>
     <ClCompile Include="NewProjectView.cpp">
       <Filter>源文件\View</Filter>
@@ -843,16 +843,16 @@
       <Filter>源文件\Service</Filter>
     </ClCompile>
     <ClCompile Include="ClassifierController.cpp">
-      <Filter>源文件\Controller</Filter>
+      <Filter>源文件\dao\Controller</Filter>
     </ClCompile>
     <ClCompile Include="FeatureExtrationController.cpp">
-      <Filter>源文件\Controller</Filter>
+      <Filter>源文件\dao\Controller</Filter>
     </ClCompile>
     <ClCompile Include="GraphAttributeController.cpp">
-      <Filter>源文件\Controller</Filter>
+      <Filter>源文件\dao\Controller</Filter>
     </ClCompile>
     <ClCompile Include="SelfCheckController.cpp">
-      <Filter>源文件\Controller</Filter>
+      <Filter>源文件\dao\Controller</Filter>
     </ClCompile>
     <ClCompile Include="AlarmParaSetView.cpp">
       <Filter>源文件\View</Filter>
@@ -1008,7 +1008,7 @@
       <Filter>源文件\Service</Filter>
     </ClCompile>
     <ClCompile Include="SensorController.cpp">
-      <Filter>源文件\Controller</Filter>
+      <Filter>源文件\dao\Controller</Filter>
     </ClCompile>
     <ClCompile Include="FFTWUtil.cpp">
       <Filter>源文件\Utils</Filter>
@@ -1017,10 +1017,10 @@
       <Filter>源文件\entity</Filter>
     </ClCompile>
     <ClCompile Include="SensorParaController.cpp">
-      <Filter>源文件\Controller</Filter>
+      <Filter>源文件\dao\Controller</Filter>
     </ClCompile>
     <ClCompile Include="SignalController.cpp">
-      <Filter>源文件\Controller</Filter>
+      <Filter>源文件\dao\Controller</Filter>
     </ClCompile>
     <ClCompile Include="SignalAcquisitionService.cpp">
       <Filter>源文件\Service</Filter>
@@ -1029,7 +1029,7 @@
       <Filter>源文件\entity</Filter>
     </ClCompile>
     <ClCompile Include="TestingDeviceController.cpp">
-      <Filter>源文件\Controller</Filter>
+      <Filter>源文件\dao\Controller</Filter>
     </ClCompile>
     <ClCompile Include="SensorParaService.cpp">
       <Filter>源文件\Service</Filter>
@@ -1122,7 +1122,7 @@
       <Filter>源文件\View\图形属性</Filter>
     </ClCompile>
     <ClCompile Include="DictionaryController.cpp">
-      <Filter>源文件\Controller</Filter>
+      <Filter>源文件\dao\Controller</Filter>
     </ClCompile>
     <ClCompile Include="SelectView.cpp">
       <Filter>源文件\View\图形属性</Filter>

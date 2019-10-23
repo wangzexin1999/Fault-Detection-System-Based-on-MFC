@@ -21,8 +21,23 @@ Modification:
 #include "include/Inc/compatibility.h"
 using namespace Automation::BDaq;
 using namespace std;
-
+#define  USER_BUFFER_LENTH_MAX_PER_CHAN 8000000 //125000000 
 #pragma once
+
+///采集卡配置结构体
+typedef struct DiveceConfigueInfomation
+{
+	int			deviceNumber;
+	int			channelStart;
+	int			channelCount;
+	int			vrgType;
+	double      clockRatePerChan;
+	int32			sectionLength;
+	WCHAR       profilePath[256];
+}DevConfParam;
+
+
+
 class AdvantechDaqController
 {
 public:
@@ -49,5 +64,26 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	void GetChannels(vector<CString> & channels);
+
+	/**********************************************************************
+	功能描述： 配置采集设备
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void ConfigurateDevice(DevConfParam devConfigPara, WaveformAiCtrl *);
+	/**********************************************************************
+	功能描述： 检查采集卡的错误信息
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void CheckError(ErrorCode error);
 };
 

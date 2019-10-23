@@ -162,7 +162,7 @@ void  CAirCraftCasingVibrateSystemView::StopRefershView(){
 
 ////保存采集数据
 void CAirCraftCasingVibrateSystemView::SaveCollectionData(ThreadSafeQueue<AcquiredSignal> acquireSignalQueue){
-	m_sensorController.SaveCollectionData(m_signalSelectView.GetSelectedSensor().GetChannels(), acquireSignalQueue);
+	m_sensorController.SaveCollectionData(m_signalSelectView.GetSelectedSensor().GetChannelId(), acquireSignalQueue);
 }
 
 CDuChartCtrl & CAirCraftCasingVibrateSystemView::GetChartCtrl(){

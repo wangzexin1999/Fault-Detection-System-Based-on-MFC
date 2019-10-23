@@ -52,7 +52,7 @@ public:
 	void SetId(int id);
 	int GetId();
 	void SetChannelId(CString sensor);
-	CString GetChannels();
+	CString GetChannelId();
 	int GetProjectId();
 	void SetProjectId(int projectId);
 	TbDictionary & GetSensorStatus();

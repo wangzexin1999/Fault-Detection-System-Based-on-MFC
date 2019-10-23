@@ -132,7 +132,7 @@ void TbSensorDao::SetTableFieldValues(TbSensor sensor){
 	m_projectId.SetValue(sensor.GetProjectId());
 	m_sensitivity.SetValue(sensor.GetSensitivity());
 	m_sensorDesc.SetValue(sensor.GetSensorDesc());
-	m_sensorId.SetValue(sensor.GetChannels());
+	m_sensorId.SetValue(sensor.GetChannelId());
 	m_sersorStatus.SetValue(sensor.GetSensorStatus().GetDictId());
 	m_triggerMagnitude.SetValue(sensor.GetTriggerMagnitude());
 	m_triggerPolarity.SetValue(sensor.GetTriggerPolarity().GetDictId());
