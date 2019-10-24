@@ -67,7 +67,11 @@ void ChannelParaPresetView::GridCtrlInit()
 	if (endChannelIndex < startChannelIndex){ return; }
 	m_channelParaGridCtrl.SetEditable(false);
 	m_channelParaGridCtrl.SetTextBkColor(RGB(0xFF, 0xFF, 0xE0));//黄色背景
-	m_channelParaGridCtrl.SetRowCount(endChannelIndex-startChannelIndex+2); //初始为n行
+	if (startChannelIndex == -1 && endChannelIndex == -1){
+		///如果两个下拉框都没有数据，则默认显示一行
+		m_channelParaGridCtrl.SetRowCount(1);
+	}
+	else m_channelParaGridCtrl.SetRowCount(endChannelIndex-startChannelIndex+2); //初始为n行
 	m_channelParaGridCtrl.SetColumnCount(7); //初始化为8列
 	m_channelParaGridCtrl.SetFixedRowCount(1); //表头为一行
 	m_channelParaGridCtrl.SetRowResize(TRUE); ///自动设置行和列的大小
