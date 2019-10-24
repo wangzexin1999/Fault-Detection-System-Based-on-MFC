@@ -505,8 +505,7 @@ void CMainFrame::OnButtonOpenDataFile()
 		for (int i = 0; i < channelCount;i++){
 			////查询信号的对象
 			TbSignal searchSignalEntity;
-			searchSignalEntity.SetStartTime(selectedSignal.GetStartTime());
-			searchSignalEntity.SetEndTime(selectedSignal.GetEndTime());
+			searchSignalEntity.SetSaveTime(selectedSignal.GetStartTime());
 			searchSignalEntity.SetProductId(selectedSignal.GetProduct().GetProductId());
 			searchSignalEntity.SetProjectId(selectedSignal.GetProject().GetProjectId());
 			searchSignalEntity.SetTestingDeviceId(selectedSignal.GetTestingDevice().GetId());
@@ -666,7 +665,7 @@ void CMainFrame::OnButtonStartCapture()
 		///记录所有的通道号
 		m_vchannelIds.push_back(CommonUtil::Int2CString(deviceNum - 1) + "-" + CommonUtil::Int2CString(channelNum - 1));
 		///如果是初始化的状态，也即修改默认开始通道0为第一次循环出的开始通道
-		if (vdevConfParam[deviceNum].channelStart == 0){ vdevConfParam[deviceNum].channelStart = channelNum - 1; }
+		if (vdevConfParam[deviceNum].channelStart == 0 && vdevConfParam[deviceNum].channelCount==0){vdevConfParam[deviceNum].channelStart = channelNum - 1; }
 		///创建窗口与通道之间的关系映射map
 		m_mpsignalCollectionView.insert(pair<CString, CAirCraftCasingVibrateSystemView*>
 			(CommonUtil::Int2CString(deviceNum - 1) + "-" + CommonUtil::Int2CString(channelNum - 1), theApp.m_vsignalCaptureView[i]));
@@ -682,8 +681,8 @@ void CMainFrame::OnButtonStartCapture()
 		WaveformAiCtrl *  wfAiCtrl = WaveformAiCtrl::Create();
 		///	给采集设备绑定准备事件
 		wfAiCtrl->addDataReadyHandler(OnDataReadyEvent, this);
-		vdevConfParam[i].clockRatePerChan = 1000;
-		vdevConfParam[i].sectionLength = 1000;
+		vdevConfParam[i].clockRatePerChan = 10000;
+		vdevConfParam[i].sectionLength = 10000;
 		vdevConfParam[i].vrgType = 2;
 		DevConfParam b = vdevConfParam[i];
 		m_advantechDaqController.ConfigurateDevice(vdevConfParam[i], wfAiCtrl);
@@ -705,7 +704,7 @@ void CMainFrame::OnButtonStartCapture()
 		theApp.m_vsignalCaptureView[i]->RefershView();
 	}
 	///开启线程保存数据
-	//OpenThread2SaveCollectionData();
+	OpenThread2SaveCollectionData();
 	//实时数据传输
 	SetTimer(99, 1000, NULL);
 	///将采集按钮置灰
@@ -1347,39 +1346,59 @@ void CMainFrame::OpenThread2SaveCollectionData(){
 	t.detach();
 }
 
-void CMainFrame::SaveCollectionData(vector<ThreadSafeQueue<AcquiredSignal>> & acquireSignal){
-
+void CMainFrame::SaveCollectionData(map<CString, ThreadSafeQueue<double>> & acquireSignal){
+	TbSignal saveSignal;
+	CString channels = "[" + m_vchannelIds[0];
+	for (int i = 1; i < m_vchannelIds.size()-1;i++){
+		channels += m_vchannelIds[i]+",";
+	}
+	channels += m_vchannelIds[m_vchannelIds.size() - 1] + "]";
+	saveSignal.SetChannels(channels);
+	saveSignal.SetPointCount(theApp.m_icollectSignalsStoreCount);
+	saveSignal.SetProjectId(theApp.m_currentProject.GetProjectId());
+	saveSignal.SetProductId(theApp.m_currentProject.GetProduct().GetProductId());
+	saveSignal.SetTestingDeviceId(theApp.m_currentProject.GetTestingDevice().GetId());
+	saveSignal.SetSaveTime(DateUtil::GetCurrentCStringTime());
+	Result res = m_signalController.SaveSignalData(acquireSignal, move(saveSignal));
+	if (!res.GetIsSuccess()){
+		AfxMessageBox(res.GetMessages());
+	}
 }
 
 ////保存采集数据的线程函数
 void  CMainFrame::AutoSaveCollectionData(){
-	vector<ThreadSafeQueue<AcquiredSignal>>  vcollectionData;
-	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
-		vcollectionData.push_back(ThreadSafeQueue<AcquiredSignal>());
+	//创建缓冲的map
+	map<CString, ThreadSafeQueue<double>> mpcolllectioinDataQueue;
+	for (int i = 0; i < m_vchannelIds.size();i++){
+		mpcolllectioinDataQueue.insert(pair<CString, ThreadSafeQueue<double>>
+			(m_vchannelIds[i], ThreadSafeQueue<double>()));
 	}
+	map<CString, ThreadSafeQueue<double>>::iterator iter1;
+	map<CString, ThreadSafeQueue<double>>::iterator iter2;
 	while (theApp.m_bIsAutoSaveCollectionData){
 		bool isSaveStatus = true;
-		///从每个通道获取数据
-		for (int i = 0; i < vcollectionData.size();i++){
-			shared_ptr<AcquiredSignal> acquiredSignal = m_vcollectionData[i].wait_and_pop();
-			vcollectionData[i].push(*acquiredSignal);
-		}
 
-		///遍历采集数据的集合，如果有通道的数据量不够，则跳过
-		for (int i = vcollectionData.size(); i > 0; i--){
-			if (vcollectionData[i].size() < theApp.m_icollectSignalsStoreCount){
+		///从每个通道获取数据
+		iter1 = m_mpcolllectioinDataQueue.begin();
+		iter2 = mpcolllectioinDataQueue.begin();
+		while (iter1 != m_mpcolllectioinDataQueue.end()&&iter2!=mpcolllectioinDataQueue.end()) {
+			iter2->second.push(*iter1->second.wait_and_pop());
+			if (iter2->second.size() < theApp.m_icollectSignalsStoreCount){
+				///如果插入一条元素之后，缓冲map仍然不够保存条件，那么就将是否保存数据置位false
 				isSaveStatus = false;
-				break;
 			}
+			iter1++;
+			iter2++;
 		}
 		///如果当前是正在采集，且符合保存的条件
 		if (isSaveStatus&&theApp.m_icollectionStatus==1){
 			///需要保存的数据
-			thread t(&CMainFrame::SaveCollectionData, this, move(vcollectionData));
+			thread t(&CMainFrame::SaveCollectionData, this, move(mpcolllectioinDataQueue));
 			t.detach();
-			vcollectionData.clear();
-			for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
-				vcollectionData.push_back(ThreadSafeQueue<AcquiredSignal>());
+			mpcolllectioinDataQueue.clear();
+			for (int i = 0; i < m_vchannelIds.size(); i++){
+				mpcolllectioinDataQueue.insert(pair<CString, ThreadSafeQueue<double>>
+					(m_vchannelIds[i], ThreadSafeQueue<double>()));
 			}
 		}
 		///如果当前结束采集或者暂停采集，且缓冲区数据量不足以达到保存条件了。
@@ -1390,11 +1409,10 @@ void  CMainFrame::AutoSaveCollectionData(){
 					break;
 				}
 			}
-			
 		}
 	}
 	///停止或者暂停采集之后保存剩余的所有数据
-	thread t(&CMainFrame::SaveCollectionData, this, move(m_vcollectionData));
+	thread t(&CMainFrame::SaveCollectionData, this, move(m_mpcolllectioinDataQueue));
 	t.detach();
 }
 

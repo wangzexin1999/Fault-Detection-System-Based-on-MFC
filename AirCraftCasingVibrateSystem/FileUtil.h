@@ -24,6 +24,8 @@ Modification:
 #include "Result.h"
 #include "ThreadSafeQueue.h"
 #include <string.h>
+#include <map>
+#include "ThreadSafeQueue.h"
 using namespace std;
 
 
@@ -81,6 +83,18 @@ public:
 	 ----------------------------------------------------------------------
 	 ***********************************************************************/
 	static Result SaveCollectionData(CString path, CString fileName, ThreadSafeQueue<AcquiredSignal> &collectionData);
+
+	/**********************************************************************
+	功能描述： 保存采样数据
+	输入参数： queue的vector向量，文件保存路径，文件名字，保存数量
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	static bool SaveCollectionData(CString path, CString fileName, map<CString, ThreadSafeQueue<double>> & acquireSigna);
+
 	/**********************************************************************
 	 功能描述： 实时信号数据转换为JSON格式
 	 输入参数：

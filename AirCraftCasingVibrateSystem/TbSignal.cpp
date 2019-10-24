@@ -23,18 +23,7 @@ int TbSignal::GetSignalId() {
 void TbSignal::SetSignalId(int signalId) {
 	this->m_signalId = signalId;
 }
-CString TbSignal::GetStartTime() {
-	return m_startTime;
-}
-void TbSignal::SetStartTime(CString startTime) {
-	this->m_startTime = startTime;
-}
-CString TbSignal::GetEndTime() {
-	return m_endTime;
-}
-void TbSignal::SetEndTime(CString endTime) {
-	this->m_endTime = endTime;
-}
+
 CString TbSignal::GetSignalType() {
 	return m_signalType;
 }
@@ -83,4 +72,19 @@ void TbSignal::SetCollectionStatus(CString para){
 }
 CString TbSignal::GetCollectionStatus(){
 	return m_collectionStatus;
+}
+
+void TbSignal::SetPointCount(int pointCount){
+	m_pointCount = pointCount;
+}
+int TbSignal::GetPointCount(){
+	return m_pointCount;
+}
+
+
+CString TbSignal::GetSaveTime(){
+	return m_saveTime;
+}
+void TbSignal::SetSaveTime(CString saveTime){
+	m_saveTime = saveTime;
 }

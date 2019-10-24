@@ -15,8 +15,7 @@ public:
 private:
 
 	int m_signalId;
-	CString m_startTime;
-	CString m_endTime;
+	CString m_saveTime;
 	CString m_signalType;
 	int m_productId;
 	char m_signalStatus;
@@ -25,14 +24,12 @@ private:
 	int  m_projectId;
 	int m_testingDeviceId;
 	CString m_collectionStatus;
-
+	int m_pointCount;
 public:
 	int GetSignalId();
 	void SetSignalId(int signalId);
-	CString GetStartTime();
-	void SetStartTime(CString startTime);
-	CString GetEndTime();
-	void SetEndTime(CString endTime);
+	CString GetSaveTime();
+	void SetSaveTime(CString saveTime);
 	CString GetSignalType();
 	void SetSignalType(CString signalType);
 	int   GetProductId();
@@ -47,10 +44,9 @@ public:
 	void SetChannels(CString  channels);
 	int  GetTestingDeviceId();
 	void SetTestingDeviceId(int  testingDeviceId);
-	
 	void SetCollectionStatus(CString para);
 	CString GetCollectionStatus();
-
-
+	void SetPointCount(int pointNumber);
+	int GetPointCount();
 };
 

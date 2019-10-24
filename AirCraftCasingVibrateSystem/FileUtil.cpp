@@ -426,3 +426,27 @@ bool CFileUtil::ReadSampleDataByPaths(vector<CString> vStrFilePaths, vector<Acqu
 	}
 	
 }
+
+bool  CFileUtil::SaveCollectionData(CString path, CString fileName, map<CString, ThreadSafeQueue<double>> & acquireSignal){
+	CFile file;///文件对象
+	if (!file.Open(_T(path + fileName), CFile::modeCreate | CFile::modeWrite | CFile::modeNoTruncate, NULL)){ return false; }
+	CString separator = ",";////逗号分隔符
+	CString endTime;
+	int saveCount = acquireSignal[0].size();
+	int channelCount = acquireSignal.size();
+	map<CString, ThreadSafeQueue<double>>::iterator signalDataIterator;
+	for (int i = 0; i < saveCount; i++){
+		////循环采集数据的队列去保存数据
+		CString data = "";
+		signalDataIterator = acquireSignal.begin();
+		for (int i = 0; i < channelCount-1;i++){
+			shared_ptr<DOUBLE> signal = signalDataIterator->second.wait_and_pop();
+			data += CommonUtil::DoubleOrFloat2CString(*signal) + separator;
+			signalDataIterator++;
+		}
+		data += CommonUtil::DoubleOrFloat2CString(*signalDataIterator->second.wait_and_pop()) + "\n";
+		file.Write(data, strlen(data));
+	}
+	file.Close();
+	return true;
+}

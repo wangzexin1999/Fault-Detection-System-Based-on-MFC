@@ -25,6 +25,8 @@ Modification:
 #include "TbProductDao.h"
 #include "TbSignal.h"
 #include "TbSignalDao.h"
+#include "ThreadSafeQueue.h"
+#include <map>
 class SignalService
 {
 public:
@@ -35,6 +37,7 @@ protected:
 	TbSensorDao m_sensorParaDao;
 	TbProductDao m_productDao;
 	TbSignalDao m_signalDao;
+	static HANDLE m_hMsqlMutex;
 public:
 	/**********************************************************************
 	功能描述：根据查询条件查询所有的采集数据
@@ -47,5 +50,16 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	bool GetAllSignalBySearchCondition(TbSignal searchEntity, vector<TbSignal> &signalVector);
+
+	/**********************************************************************
+	功能描述：保存信号数据
+	输入参数：封装好的signal对象，需要保存的信号队列
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	bool AddSignalData(map<CString, ThreadSafeQueue<double>> & acquireSignal, TbSignal &saveSignal);
 };
 

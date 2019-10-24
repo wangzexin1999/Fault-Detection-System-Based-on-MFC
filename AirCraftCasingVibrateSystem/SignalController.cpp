@@ -27,3 +27,9 @@ Result SignalController::FindAllSignalBySearchCondition(TbSignal searchEntity, v
 	if (isSuccess) return Result(true, "采集数据查询成功");
 	return Result(false, "采集数据查询失败");
 }
+
+Result SignalController::SaveSignalData(map<CString, ThreadSafeQueue<double>> & acquireSignal, TbSignal &saveSignal){
+	bool isSuccess = m_signalService.AddSignalData(acquireSignal, saveSignal);
+	if (isSuccess) return Result(true, "数据保存成功");
+	return Result(false,"数据保存失败");
+}

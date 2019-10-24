@@ -230,7 +230,7 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	void SaveCollectionData(vector<ThreadSafeQueue<AcquiredSignal>> & acquireSignal);
+	void SaveCollectionData(map<CString, ThreadSafeQueue<double>> & acquireSignal);
 
 	/**********************************************************************
 	功能描述： 保存采集数据

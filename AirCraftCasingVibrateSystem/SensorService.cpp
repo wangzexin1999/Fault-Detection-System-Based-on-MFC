@@ -66,8 +66,10 @@ Result CSensorService::AddCollectData(TbSignal &signal, ThreadSafeQueue<Acquired
 		if (res.GetIsSuccess()){
 		///文件保存成功，将记录保存到数据库
 		signal.SetDataUrl(path + fileName);
-		signal.SetStartTime(startCollectTime);
-		signal.SetEndTime(res.GetMessages());
+		/*signal.SetStartTime(startCollectTime);
+		signal.SetEndTime(res.GetMessages());*/
+		signal.SetSaveTime(startCollectTime);
+
 		//signal.GetTestingDevice().SetTestingdeviceId(project.GetTestingDevicePara().GetTestingdevice().GetId());
 		m_signalDao.SetTableFieldValues(signal);
 

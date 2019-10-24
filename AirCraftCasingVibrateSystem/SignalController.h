@@ -26,6 +26,7 @@ Modification:
 #include "RecordSignalService.h"
 #include "ThreadSafeQueue.h"
 #include "AcquiredSignal.h"
+#include <map>
 class SignalController
 {
 
@@ -83,7 +84,7 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	Result SaveCollectionData(ThreadSafeQueue<AcquiredSignal> &collectionData);
+	Result SaveSignalData(map<CString, ThreadSafeQueue<double>> & acquireSignal,TbSignal &saveSignal);
 
 
 };

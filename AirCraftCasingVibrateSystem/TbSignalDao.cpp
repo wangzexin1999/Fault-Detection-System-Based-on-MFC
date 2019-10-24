@@ -8,8 +8,7 @@ TbSignalDao::TbSignalDao()
 	this->m_strTableName = "tb_signal";
 	m_key = &m_signalId;
 	SetVectorAndField("signal_id", "int", m_signalId);
-	SetVectorAndField("start_time", "CString", m_startTime);
-	SetVectorAndField("end_time", "CString", m_endTime);
+	SetVectorAndField("save_time", "CString", m_saveTime);
 	SetVectorAndField("signal_type", "CString", m_signalType);
 	SetVectorAndField("sensor_id", "CString", m_channels);
 	SetVectorAndField("product_id", "int", m_productId);
@@ -26,8 +25,7 @@ TbSignalDao::TbSignalDao(const TbSignalDao & signal){
 	this->m_strTableName = "tb_signal";
 	m_key = &m_signalId;
 	SetVectorAndField("signal_id", "int", m_signalId);
-	SetVectorAndField("start_time", "CString", m_startTime);
-	SetVectorAndField("end_time", "CString", m_endTime);
+	SetVectorAndField("save_time", "CString", m_saveTime);
 	SetVectorAndField("signal_type", "CString", m_signalType);
 	SetVectorAndField("sensor_id", "CString", m_channels);
 	SetVectorAndField("product_id", "int", m_productId);
@@ -78,14 +76,13 @@ void TbSignalDao::GetTableFieldValues(TbSignal &signal){
 	signal.SetSignalStatus(m_signalStatus.GetInt());
 	signal.SetDataUrl(m_dataUrl.m_strValue);
 	signal.SetProductId(m_productId.GetInt());
-	signal.SetStartTime(m_startTime.m_strValue);
-	signal.SetEndTime(m_endTime.m_strValue);
+	signal.SetSaveTime(m_saveTime.m_strValue);
 	signal.SetSignalType(m_signalType.m_strValue);
 	signal.SetProjectId(m_projectId.GetInt());
 	signal.SetTestingDeviceId(m_testingDeviceId.GetInt());
 	signal.SetChannels(m_channels.m_strValue);
-	
 	signal.SetCollectionStatus(m_collectionStatus.m_strValue);
+	signal.SetPointCount(m_pointCount.GetInt());
 }
 
 void TbSignalDao::SetTableFieldValues(TbSignal signal){
@@ -94,10 +91,10 @@ void TbSignalDao::SetTableFieldValues(TbSignal signal){
 	m_signalId.SetValue(signal.GetSignalId());
 	m_signalStatus.SetValue(signal.GetSignalStatus());
 	m_signalType.SetValue(signal.GetSignalType());
-	m_startTime.SetValue(signal.GetStartTime());
-	m_endTime.SetValue(signal.GetEndTime());
+	m_saveTime.SetValue(signal.GetSaveTime());
 	m_dataUrl.SetValue(signal.GetDataUrl());
 	m_productId.SetValue(signal.GetProductId());
 	m_testingDeviceId.SetValue(signal.GetTestingDeviceId());
 	m_collectionStatus.SetValue(signal.GetCollectionStatus());
+	m_pointCount.SetValue(signal.GetPointCount());
 }
