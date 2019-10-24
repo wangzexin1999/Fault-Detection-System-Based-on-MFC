@@ -52,6 +52,8 @@ BOOL ChannelParaPresetView::OnInitDialog()
 	if (!res.GetIsSuccess()){
 		AfxMessageBox("输入类型查询失败");
 	}
+
+	//把下面这行注释掉
 	m_advantechDaqController.GetChannels(m_vchannelId);
 
 	CDialogEx::OnInitDialog();

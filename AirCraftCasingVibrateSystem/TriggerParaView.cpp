@@ -29,6 +29,7 @@ void CTriggerParaView::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CTriggerParaView, CDialogEx)
+	ON_NOTIFY(NM_DBLCLK, IDC_TRIGGERPARA_GRID, OnGridDblClick)
 END_MESSAGE_MAP()
 
 
@@ -90,4 +91,7 @@ void CTriggerParaView::GridCtrlInit()
 		Item.strText=strText;
 		m_triggerParaGridCtrl.SetItem(&Item);
 	}
+}
+void CTriggerParaView::OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult){
+	m_triggerParaGridCtrl.SetEditable(TRUE);
 }

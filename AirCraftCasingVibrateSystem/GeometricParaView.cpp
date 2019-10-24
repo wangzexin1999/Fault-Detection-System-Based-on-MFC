@@ -29,6 +29,7 @@ void CGeometricParaView::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CGeometricParaView, CDialogEx)
+	ON_NOTIFY(NM_DBLCLK, IDC_GEOMETRICPARA_GRIDCTRL, OnGridDblClick)
 END_MESSAGE_MAP()
 
 // CGeometricParaView 消息处理程序
@@ -90,4 +91,7 @@ void CGeometricParaView::GridCtrlInit()
 		Item.strText=strText;
 		m_geometricParaGridCtrl.SetItem(&Item);
 	}
+}
+void CGeometricParaView::OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult){
+	m_geometricParaGridCtrl.SetEditable(TRUE);
 }
