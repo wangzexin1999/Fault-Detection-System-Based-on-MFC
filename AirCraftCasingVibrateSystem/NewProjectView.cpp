@@ -90,8 +90,6 @@ void CNewProjectView::OnBnClickedOk()
 	else{
 		///加载当前项目
 		theApp.m_currentProject = m_project;
-
-
 		AfxMessageBox(res.GetMessages());
 		CDialogEx::OnOK();
 	}

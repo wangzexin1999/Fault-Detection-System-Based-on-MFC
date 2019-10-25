@@ -4,7 +4,9 @@
 #include "TbDictionary.h"
 #include "DictionaryController.h"
 #include "Result.h"
+#include "include/rapidjson/document.h"
 using namespace std;
+using namespace rapidjson;
 
 // CollectionParaPresetView ¶Ô»°¿ò
 

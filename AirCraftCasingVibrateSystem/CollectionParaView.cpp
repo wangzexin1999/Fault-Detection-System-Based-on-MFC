@@ -109,7 +109,14 @@ void CollectionParaView::CollectionParaInfoInit(){
 	}
 	else{
 		for (int i = 0; i < m_vcollectionFrequency.size(); i++){
-			TbDictionary collecionFrequency = m_vcollectionFrequency[i];
+
+			TbDictionary collection = m_vcollectionFrequency[i];
+			Document doc;
+			doc.Parse(collection.GetDictValue());
+			const Value& title = doc["title"];
+			collection.SetDictValue(title.GetString());
+			//TbDictionary collecionFrequency = m_vcollectionFrequency[i];
+			TbDictionary collecionFrequency = collection;
 			m_collectionFrequencyCombo.InsertString(i, collecionFrequency.GetDictValue());
 			if (testingDevice.GetCollectionFrequency().GetDictId() == collecionFrequency.GetDictId()){
 				curSel = i;
@@ -125,7 +132,14 @@ void CollectionParaView::CollectionParaInfoInit(){
 	else{
 		curSel = 0;
 		for (int i = 0; i < m_vanalysisFrequency.size(); i++){
-			TbDictionary analysisFrequency = m_vanalysisFrequency[i];
+
+			TbDictionary analysis = m_vanalysisFrequency[i];
+			Document doc;
+			doc.Parse(analysis.GetDictValue());
+			const Value& title = doc["title"];
+			analysis.SetDictValue(title.GetString());
+			//TbDictionary analysisFrequency = m_vanalysisFrequency[i];
+			TbDictionary analysisFrequency = analysis;
 			m_analysisFrequencyCombo.InsertString(i, analysisFrequency.GetDictValue());
 			if (testingDevice.GetAnalysisFrequency().GetDictId()==analysisFrequency.GetDictId()){
 				curSel = i;
