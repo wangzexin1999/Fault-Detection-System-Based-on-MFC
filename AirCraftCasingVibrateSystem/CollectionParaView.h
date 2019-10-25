@@ -20,6 +20,9 @@ Modification:
 // CollectionParaView ¶Ô»°¿ò
 #include "DictionaryController.h"
 #include "afxwin.h"
+#include "include/rapidjson/document.h"
+using namespace std;
+using namespace rapidjson;
 class CollectionParaView : public CDialogEx
 {
 	DECLARE_DYNAMIC(CollectionParaView)
