@@ -432,9 +432,9 @@ bool  CFileUtil::SaveCollectionData(CString path, CString fileName, map<CString,
 	if (!file.Open(_T(path + fileName), CFile::modeCreate | CFile::modeWrite | CFile::modeNoTruncate, NULL)){ return false; }
 	CString separator = ",";////逗号分隔符
 	CString endTime;
-	int saveCount = acquireSignal[0].size();
+	map<CString, ThreadSafeQueue<double>>::iterator signalDataIterator = acquireSignal.begin();
+	int saveCount = signalDataIterator->second.size();
 	int channelCount = acquireSignal.size();
-	map<CString, ThreadSafeQueue<double>>::iterator signalDataIterator;
 	for (int i = 0; i < saveCount; i++){
 		////循环采集数据的队列去保存数据
 		CString data = "";

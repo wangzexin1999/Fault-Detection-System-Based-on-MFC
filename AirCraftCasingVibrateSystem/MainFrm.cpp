@@ -682,7 +682,7 @@ void CMainFrame::OnButtonStartCapture()
 		///	给采集设备绑定准备事件
 		wfAiCtrl->addDataReadyHandler(OnDataReadyEvent, this);
 		vdevConfParam[i].clockRatePerChan = 10000;
-		vdevConfParam[i].sectionLength = 10000;
+		vdevConfParam[i].sectionLength = 5000;
 		vdevConfParam[i].vrgType = 2;
 		DevConfParam b = vdevConfParam[i];
 		m_advantechDaqController.ConfigurateDevice(vdevConfParam[i], wfAiCtrl);
@@ -979,14 +979,12 @@ LRESULT CMainFrame::OnSetText(WPARAM wParam, LPARAM lParam)
 	CString title;
 	CString product = "未知产品";
 	CString project = "未知项目";
-	CString rotatingSpeed ="未知转速";
 	CString tester = "未知人";
 	CString sensor = "未知传感器";
 
 	if (theApp.m_currentProject.GetProduct().GetProductType() != "") product = theApp.m_currentProject.GetProduct().GetProductType();
 	if (theApp.m_currentProject.GetProjectName() != "") project = theApp.m_currentProject.GetProjectName();
 	if (theApp.m_currentProject.GetTester().GetTesterName() != "") tester = theApp.m_currentProject.GetTester().GetTesterName();
-	if (theApp.m_collectionRotatingSpeed != "") rotatingSpeed = theApp.m_collectionRotatingSpeed;
 	
 	CAirCraftCasingVibrateSystemView *selectedView = NULL;
 	///获取当前的激活窗口
@@ -996,7 +994,7 @@ LRESULT CMainFrame::OnSetText(WPARAM wParam, LPARAM lParam)
 		selectedView = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
 	}
 	if (selectedView != NULL) sensor = selectedView->GetDocument()->GetTitle();
-	title = product + "-" + project + "-" + rotatingSpeed + "-" + tester + "-" + "(" + sensor + ")";
+	title = product + "-" + project + "-" + "-" + tester + "-" + "(" + sensor + ")";
 	lParam = (LPARAM)title.GetBuffer();
 	DefWindowProc(WM_SETTEXT, wParam, lParam);
 	Invalidate();
@@ -1157,11 +1155,7 @@ void CMainFrame::OnButton9()
 	test.push_back("C:\\collectionData\\3-1-1-1-1566998168677.csv");
 	vector<AcquiredSignal> sampleSignal;
 	CFileUtil::ReadSampleDataByPaths(test, sampleSignal);
-	
 }
-
-
-
 
 
 void CMainFrame::OnCheckStaSet()
@@ -1221,15 +1215,13 @@ LRESULT CMainFrame::OnStatusInf(WPARAM wParam, LPARAM lParam)
 	CString title;
 	CString product = "未知产品";
 	CString project = "未知项目";
-	CString rotatingSpeed = "未知转速";
 	CString tester = "未知人";
 	CString sensor = "未知传感器";
 
 	if (theApp.m_currentProject.GetProduct().GetProductType() != "") product = theApp.m_currentProject.GetProduct().GetProductType();
 	if (theApp.m_currentProject.GetProjectName() != "") project = theApp.m_currentProject.GetProjectName();
 	if (theApp.m_currentProject.GetTester().GetTesterName() != "") tester = theApp.m_currentProject.GetTester().GetTesterName();
-	if (theApp.m_collectionRotatingSpeed != "") rotatingSpeed = theApp.m_collectionRotatingSpeed;
-	title = product + "-" + project + "-" + rotatingSpeed + "-" + tester;
+	title = product + "-" + project + "-" +  "-" + tester;
 	CMFCRibbonBaseElement *pElement = m_wndStatusBar.FindElement(10000);
 	pElement->SetText(title);
 	pElement->Redraw();
@@ -1403,7 +1395,7 @@ void  CMainFrame::AutoSaveCollectionData(){
 		}
 		///如果当前结束采集或者暂停采集，且缓冲区数据量不足以达到保存条件了。
 		if (theApp.m_icollectionStatus != 1){
-			for (int i = m_vcollectionData.size(); i > 0; i--){
+			for (int i = m_vcollectionData.size()-1; i > 0; i--){
 				if (m_vcollectionData[i].size() < theApp.m_icollectSignalsStoreCount){
 					theApp.m_bIsAutoSaveCollectionData = false;
 					break;

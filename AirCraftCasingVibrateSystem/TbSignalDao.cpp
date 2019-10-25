@@ -10,14 +10,14 @@ TbSignalDao::TbSignalDao()
 	SetVectorAndField("signal_id", "int", m_signalId);
 	SetVectorAndField("save_time", "CString", m_saveTime);
 	SetVectorAndField("signal_type", "CString", m_signalType);
-	SetVectorAndField("sensor_id", "CString", m_channels);
+	SetVectorAndField("channels", "CString", m_channels);
 	SetVectorAndField("product_id", "int", m_productId);
 	SetVectorAndField("signal_status", "char", m_signalStatus);
 	SetVectorAndField("data_url", "CString", m_dataUrl);
 	SetVectorAndField("project_id", "int", m_projectId);
 	SetVectorAndField("testingdevice_id", "int", m_testingDeviceId);
 	SetVectorAndField("collectionstatus", "CString", m_collectionStatus);
-
+	SetVectorAndField("point_count", "int", m_pointCount);
 }
 
 TbSignalDao::TbSignalDao(const TbSignalDao & signal){
@@ -27,13 +27,14 @@ TbSignalDao::TbSignalDao(const TbSignalDao & signal){
 	SetVectorAndField("signal_id", "int", m_signalId);
 	SetVectorAndField("save_time", "CString", m_saveTime);
 	SetVectorAndField("signal_type", "CString", m_signalType);
-	SetVectorAndField("sensor_id", "CString", m_channels);
+	SetVectorAndField("channels", "CString", m_channels);
 	SetVectorAndField("product_id", "int", m_productId);
 	SetVectorAndField("signal_status", "char", m_signalStatus);
 	SetVectorAndField("data_url", "CString", m_dataUrl);
 	SetVectorAndField("project_id", "int", m_projectId);
 	SetVectorAndField("testingdevice_id", "int", m_testingDeviceId);
 	SetVectorAndField("collectionstatus", "CString", m_collectionStatus);
+	SetVectorAndField("point_count", "int", m_pointCount);
 	operator = (signal);
 }
 
