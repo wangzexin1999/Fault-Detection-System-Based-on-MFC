@@ -515,50 +515,51 @@ void CMainFrame::OnButtonOpenDataFile()
 			m_signalController.FindAllSignalBySearchCondition(searchSignalEntity, signalVec);
 			collectionData.push_back(signalVec);
 		}
+
 		// 如果可以连接服务器，根据条件查询服务器数据
 		// 否则查询本体数据
-		if (strcmp(theApp.PDsql.m_mysql.host, "127.0.0.1") == 0)/*连接本地*/
-		{
-			//查询传感器个数
-			int nSersor = 4;
-			CMainFrame*pFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
-			CloseAllWindows();
-			// 打开窗口
-			NewDoc(nSersor);
-			// 初始化view
-			InitializeSampleDataEchoView(16);
-			bool bOpenDataFile;
-			/*文件路径vector*/
-			vector<CString> vFilePaths;
-			// 根据传感器信息查找文件路径
-			for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++)
-			{
-				/*汇总路径*/
-				for (int j = 0; j < collectionData[i].size(); j++)
-				{
-					vFilePaths.push_back(collectionData[i][j].GetDataUrl());
+		//if (strcmp(theApp.PDsql.m_mysql.host, "127.0.0.1") == 0)/*连接本地*/
+		//{
+		//	//查询传感器个数
+		//	int nSersor = 4;
+		//	CMainFrame*pFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
+		//	CloseAllWindows();
+		//	// 打开窗口
+		//	NewDoc(nSersor);
+		//	// 初始化view
+		//	InitializeSampleDataEchoView(16);
+		//	bool bOpenDataFile;
+		//	/*文件路径vector*/
+		//	vector<CString> vFilePaths;
+		//	// 根据传感器信息查找文件路径
+		//	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++)
+		//	{
+		//		/*汇总路径*/
+		//		for (int j = 0; j < collectionData[i].size(); j++)
+		//		{
+		//			vFilePaths.push_back(collectionData[i][j].GetDataUrl());
 
-				}
-				//vFilePaths.push_back(collectionData[1][0].GetDataUrl());
-				// 根据路径查找文件，放到各自的view采样队列里面
-				bOpenDataFile = CFileUtil::ReadSampleDataByPaths(vFilePaths,
-					theApp.m_vsignalCaptureView[i]->m_sampleFromFileDataQueue);
-				vFilePaths.clear();
-			}
-			if (!bOpenDataFile)
-			{
-				AfxMessageBox("打开数据文件失败");
-			}
+		//		}
+		//		//vFilePaths.push_back(collectionData[1][0].GetDataUrl());
+		//		// 根据路径查找文件，放到各自的view采样队列里面
+		//		bOpenDataFile = CFileUtil::ReadSampleDataByPaths(vFilePaths,
+		//			theApp.m_vsignalCaptureView[i]->m_sampleFromFileDataQueue);
+		//		vFilePaths.clear();
+		//	}
+		//	if (!bOpenDataFile)
+		//	{
+		//		AfxMessageBox("打开数据文件失败");
+		//	}
 
-			// 窗口水平平铺
-			WindowsHorizontal();
+		//	// 窗口水平平铺
+		//	WindowsHorizontal();
 
-		}
-		else/*连接服务器*/
-		{
+		//}
+		//else/*连接服务器*/
+		//{
 
 
-		}
+		//}
 
 	}
 	

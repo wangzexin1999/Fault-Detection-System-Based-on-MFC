@@ -41,4 +41,5 @@ protected:
 	virtual BOOL OnInitDialog();
 public:
 	void GridCtrlInit();
+	afx_msg void OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult);
 };

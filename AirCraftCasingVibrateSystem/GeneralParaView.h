@@ -20,6 +20,12 @@ Modification:
 #include "afxcmn.h"
 #include "GridCtrl_src/GridCtrl.h"
 #include "SensorParaController.h"
+#include "NewCellTypes/GridCellCheck.h"
+#include "NewCellTypes/GridCellCombo.h"
+#include "DictionaryController.h"
+#include <vector>
+#include "AdvantechDaqController.h"
+using namespace  std;
 // CGeneralParaView 对话框
 
 class CGeneralParaView : public CDialogEx
@@ -30,15 +36,24 @@ public:
 	CGeneralParaView(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CGeneralParaView();
 
-// 对话框数据
+	// 对话框数据
 	enum { IDD = IDD_DIALOG_GENERAL_PARA };
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 	CGridCtrl m_generalParaGridCtrl;
+	//vector<CString> m_vgeneralId;
+
+	DictionaryController m_dictionController;
+	vector<TbDictionary> m_vwindowTypes;
+	vector<TbDictionary> m_vinputMethods;
 
 	DECLARE_MESSAGE_MAP()
 	SensorParaController m_sensorParaController;
 public:
 	virtual BOOL OnInitDialog();
+
 	void GridCtrlInit();
+	void GeneralComboInit();
+	afx_msg void OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult);
+
 };
