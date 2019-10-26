@@ -104,6 +104,8 @@
 #define IDC_COMBO4                      1007
 #define IDC_COMBO5                      1008
 #define IDC_COMBO6                      1009
+#define IDC_COMBO_COLLECTION            1009
+#define IDC_COMBO_COLLECTION_POINTS     1009
 #define IDC_COMBO7                      1010
 #define IDC_COMBO8                      1011
 #define IDC_TREE_SELECTED_CHANNEL       1012
@@ -264,6 +266,7 @@
 #define IDC_TAB_PROJECT_NAVIGATION      1181
 #define IDC_COMBO_START_CHANNEL         1182
 #define IDC_COMBO_END_CHANNEL           1183
+#define IDC_EDIT_COLLECTION_TIMES       1185
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_CHECK2                       32771
 #define ID_COMBO2                       32772
@@ -339,7 +342,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        384
 #define _APS_NEXT_COMMAND_VALUE         32847
-#define _APS_NEXT_CONTROL_VALUE         1184
+#define _APS_NEXT_CONTROL_VALUE         1186
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

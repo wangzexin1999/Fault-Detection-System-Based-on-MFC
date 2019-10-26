@@ -69,7 +69,6 @@ BOOL CSystemParaDialog::OnInitDialog()
 	// 异常:  OCX 属性页应返回 FALSE
 }
 
-
 void CSystemParaDialog::OnSize(UINT nType, int cx, int cy)
 {
 	CDialogEx::OnSize(nType, cx, cy);

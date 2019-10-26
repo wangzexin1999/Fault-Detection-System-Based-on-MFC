@@ -37,28 +37,19 @@ public:
 protected:
 
 	vector<TbDictionary> m_vcollectionFrequency;
+	vector<TbDictionary> m_vanalysisFrequency; 
 	vector<TbDictionary> m_vcollectionMethod;
-	vector<TbDictionary> m_vanalysisFrequency;
-	vector<TbDictionary> m_vtriggerMethod;
-	vector<TbDictionary> m_vdataBlockCount;
+
 	DictionaryController m_dictionaryController;
 	CComboBox m_collectionFrequencyCombo;
 	CComboBox m_collectionMethodCombo;
 	CComboBox m_analysisFrequencyCombo;
-	CComboBox m_triggerMethodCombo;
-	CComboBox m_dataBlockCountCombo;
-	CEdit m_triggerCountEdit;
-	CEdit m_delayBlockCountEdit;
-	CEdit m_collectionBatchEdit;
+	CEdit m_collectionTimesEdit;
 	
 	virtual BOOL OnInitDialog();
 	void CollectionParaInfoInit();
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
 	void GetSelectedTestingDevice(TbTestingDevice &testingDevice);
-	DECLARE_MESSAGE_MAP()
-public:
-	
-	void RefreshView();
 	afx_msg void OnCbnSelchangeCombo1();
 	afx_msg void OnCbnSelchangeCombo2();
 	afx_msg void OnCbnSelchangeCombo3();
@@ -67,4 +58,8 @@ public:
 	afx_msg void OnEnChangeEditDelayblockcount();
 	afx_msg void OnEnChangeEditTriggercount();
 	afx_msg void OnEnChangeEditCollectionbatchs();
+	DECLARE_MESSAGE_MAP()
+public:
+	
+	void RefreshView();
 };

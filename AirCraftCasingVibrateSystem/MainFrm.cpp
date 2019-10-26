@@ -590,24 +590,7 @@ void CMainFrame::OnButtonImportSysPara()
 	// TODO:  在此添加命令处理程序代码
 }
 
-//暂停采集
-void CMainFrame::OnButtonSuspendCapture()
-{
-	theApp.m_icollectionStatus = 2;
-	for (int i = 0; i < m_vwfAiCtrl.size(); i++){
-		ErrorCode err = Success;
-		err = m_vwfAiCtrl[i]->Stop();
-		if (err != Success)
-		{
-			m_advantechDaqController.CheckError(err);
-			return;
-		}
-	}
 
-	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
-		theApp.m_vsignalCaptureView[i]->StopRefershView();
-	}
-}
 
 //开始采集
 void CMainFrame::OnButtonStartCapture()
@@ -683,7 +666,7 @@ void CMainFrame::OnButtonStartCapture()
 		///	给采集设备绑定准备事件
 		wfAiCtrl->addDataReadyHandler(OnDataReadyEvent, this);
 		vdevConfParam[i].clockRatePerChan = 10000;
-		vdevConfParam[i].sectionLength = 5000;
+		vdevConfParam[i].sectionLength = 1024;
 		vdevConfParam[i].vrgType = 2;
 		DevConfParam b = vdevConfParam[i];
 		m_advantechDaqController.ConfigurateDevice(vdevConfParam[i], wfAiCtrl);
@@ -710,14 +693,28 @@ void CMainFrame::OnButtonStartCapture()
 	SetTimer(99, 1000, NULL);
 	///将采集按钮置灰
 }
+//暂停采集
+void CMainFrame::OnButtonSuspendCapture()
+{
+	for (int i = 0; i < m_vwfAiCtrl.size(); i++){
+		ErrorCode err = Success;
+		err = m_vwfAiCtrl[i]->Stop();
+		if (err != Success)
+		{
+			m_advantechDaqController.CheckError(err);
+			return;
+		}
+	}
 
+	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
+		theApp.m_vsignalCaptureView[i]->StopRefershView();
+	}
+	theApp.m_icollectionStatus = 2;
+}
 // 停止采集
 void CMainFrame::OnBtnStopCapture()
 {
-	theApp.m_icollectionStatus = 0;
 	KillTimer(99);
-
-	theApp.m_icollectionStatus = 2;
 	for (int i = 0; i < m_vwfAiCtrl.size(); i++){
 		ErrorCode err = Success;
 		err = m_vwfAiCtrl[i]->Stop();
@@ -730,6 +727,7 @@ void CMainFrame::OnBtnStopCapture()
 	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
 		theApp.m_vsignalCaptureView[i]->StopRefershView();
 	}
+	theApp.m_icollectionStatus = 0;
 }
 
 // 停止回放

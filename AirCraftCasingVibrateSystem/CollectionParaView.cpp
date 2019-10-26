@@ -20,40 +20,21 @@ CollectionParaView::CollectionParaView(CWnd* pParent /*=NULL*/)
 
 CollectionParaView::~CollectionParaView()
 {
-}
-
-CComboBox m_collectionFrequencyCombo;
-CComboBox m_collectionMethodCombo;
-CComboBox m_analysisFrequencyCombo;
-CComboBox m_triggerMethodCombo;
-CComboBox m_dataBlockCountCombo;
-CEdit m_triggerCountEdit;
-CEdit m_delayBlockCountEdit;
-CEdit m_collectionBatchEdit;
+}  
 
 void CollectionParaView::DoDataExchange(CDataExchange* pDX)
 {
 	DDX_Control(pDX, IDC_COMBO1, m_collectionFrequencyCombo);
 	DDX_Control(pDX, IDC_COMBO2, m_analysisFrequencyCombo);
 	DDX_Control(pDX, IDC_COMBO3, m_collectionMethodCombo);
-	DDX_Control(pDX, IDC_COMBO4, m_triggerMethodCombo);
-	DDX_Control(pDX, IDC_COMBO5, m_dataBlockCountCombo);
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_EDIT_TRIGGERCOUNT, m_triggerCountEdit);
-	DDX_Control(pDX, IDC_EDIT_DELAYBLOCKCOUNT, m_delayBlockCountEdit);
-	DDX_Control(pDX, IDC_EDIT_COLLECTIONBATCHS, m_collectionBatchEdit);
+	DDX_Control(pDX, IDC_EDIT_COLLECTION_TIMES, m_collectionTimesEdit);
 }
-
 
 BEGIN_MESSAGE_MAP(CollectionParaView, CDialogEx)
 	ON_CBN_SELCHANGE(IDC_COMBO1, &CollectionParaView::OnCbnSelchangeCombo1)
 	ON_CBN_SELCHANGE(IDC_COMBO2, &CollectionParaView::OnCbnSelchangeCombo2)
 	ON_CBN_SELCHANGE(IDC_COMBO3, &CollectionParaView::OnCbnSelchangeCombo3)
-	ON_CBN_SELCHANGE(IDC_COMBO4, &CollectionParaView::OnCbnSelchangeCombo4)
-	ON_CBN_SELCHANGE(IDC_COMBO5, &CollectionParaView::OnCbnSelchangeCombo5)
-	ON_EN_CHANGE(IDC_EDIT_DELAYBLOCKCOUNT, &CollectionParaView::OnEnChangeEditDelayblockcount)
-	ON_EN_CHANGE(IDC_EDIT_TRIGGERCOUNT, &CollectionParaView::OnEnChangeEditTriggercount)
-	ON_EN_CHANGE(IDC_EDIT_COLLECTIONBATCHS, &CollectionParaView::OnEnChangeEditCollectionbatchs)
 END_MESSAGE_MAP()
 
 
@@ -73,23 +54,12 @@ void CollectionParaView::GetSelectedTestingDevice(TbTestingDevice &testingDevice
 	index = m_analysisFrequencyCombo.GetCurSel();
 	testingDevice.SetAnalysisFrequency(m_vanalysisFrequency[index]);
 
-	index = m_triggerMethodCombo.GetCurSel();
-	testingDevice.SetTriggerMethod(m_vtriggerMethod[index]);
-
 	index = m_collectionMethodCombo.GetCurSel();
 	testingDevice.SetCollectionMethod(m_vcollectionMethod[index]);
 
-	index = m_dataBlockCountCombo.GetCurSel();
-	testingDevice.SetDatablockCount(m_vdataBlockCount[index]);
 
 	CString delayBlockCount, triggerCount, collectionBaths;
 
-	m_collectionBatchEdit.GetWindowTextA(collectionBaths);
-	m_delayBlockCountEdit.GetWindowTextA(delayBlockCount);
-	m_triggerCountEdit.GetWindowTextA(triggerCount);
-	testingDevice.SetCollectionBatchs(atoi(collectionBaths));
-	testingDevice.SetDelayblockCount(atoi(delayBlockCount));
-	testingDevice.SetTriggerCount(atoi(triggerCount));
 	TestingDeviceController m_testingDeviceServiceController;
 	Result res = m_testingDeviceServiceController.UpdateTestingDevice(testingDevice);
 	if (!res.GetIsSuccess()){
@@ -164,44 +134,7 @@ void CollectionParaView::CollectionParaInfoInit(){
 		}
 		m_collectionMethodCombo.SetCurSel(curSel);
 	}
-
-
-	res = m_dictionaryController.FindAllBySearchCondition(m_vdataBlockCount, 0, "datablockcount");
-
-	if (!res.GetIsSuccess()){
-		AfxMessageBox("查询数据块数失败");
-	}
-	else{
-		curSel = 0;
-		for (int i = 0; i < m_vdataBlockCount.size(); i++){
-			TbDictionary dataBlockCount = m_vdataBlockCount[i];
-			m_dataBlockCountCombo.InsertString(i, dataBlockCount.GetDictValue());
-			if (dataBlockCount.GetDictId() == testingDevice.GetDatablockCount().GetDictId()){
-				curSel = i;
-			}
-		}
-		m_dataBlockCountCombo.SetCurSel(curSel);
-	}
-
-	res = m_dictionaryController.FindAllBySearchCondition(m_vtriggerMethod, 0, "triggermethod");
-
-	if (!res.GetIsSuccess()){
-		AfxMessageBox("查询触发方式失败");
-	}
-	else{
-		curSel = 0;
-		for (int i = 0; i < m_vtriggerMethod.size(); i++){
-			TbDictionary triggerMethod = m_vtriggerMethod[i];
-			m_triggerMethodCombo.InsertString(i, triggerMethod.GetDictValue());
-			if (triggerMethod.GetDictId() == testingDevice.GetTriggerMethod().GetDictId()){
-				curSel = i;
-			}
-		}
-		m_triggerMethodCombo.SetCurSel(curSel);
-	}
-	m_delayBlockCountEdit.SetWindowTextA(CommonUtil::Int2CString(testingDevice.GetDelayblockCount()));
-	m_collectionBatchEdit.SetWindowTextA(CommonUtil::Int2CString(testingDevice.GetCollectionBatchs()));
-	m_triggerCountEdit.SetWindowTextA(CommonUtil::Int2CString(testingDevice.GetTriggerCount()));
+	
 }
 
 void CollectionParaView::RefreshView(){
@@ -212,9 +145,7 @@ void CollectionParaView::RefreshView(){
 	m_vcollectionMethod.clear();
 	m_analysisFrequencyCombo.ResetContent();
 	m_vanalysisFrequency.clear();
-	m_dataBlockCountCombo.ResetContent();
 	m_vdataBlockCount.clear();
-	m_triggerMethodCombo.ResetContent();
 	m_vtriggerMethod.clear();
 	///2.采集参数重新初始化
 	CollectionParaInfoInit();
@@ -243,37 +174,16 @@ void CollectionParaView::OnCbnSelchangeCombo3()
 	GetSelectedTestingDevice(testingDevice);
 }
 
-
-
-void CollectionParaView::OnCbnSelchangeCombo4()
-{
-	// TODO:  在此添加控件通知处理程序代码
-	TbTestingDevice testingDevice = theApp.m_currentProject.GetTestingDevice();
-	GetSelectedTestingDevice(testingDevice);
-}
-
-
-void CollectionParaView::OnCbnSelchangeCombo5()
-{
-	// TODO:  在此添加控件通知处理程序代码
-	TbTestingDevice testingDevice = theApp.m_currentProject.GetTestingDevice();
-	GetSelectedTestingDevice(testingDevice);
-}
-
-
 void CollectionParaView::OnEnChangeEditDelayblockcount()
 {
 	// TODO:  如果该控件是 RICHEDIT 控件，它将不
 	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
 	// 函数并调用 CRichEditCtrl().SetEventMask()，
 	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
-
 	// TODO:  在此添加控件通知处理程序代码
 	TbTestingDevice testingDevice = theApp.m_currentProject.GetTestingDevice();
 	GetSelectedTestingDevice(testingDevice);
 }
-
-
 
 void CollectionParaView::OnEnChangeEditTriggercount()
 {
@@ -287,8 +197,6 @@ void CollectionParaView::OnEnChangeEditTriggercount()
 	GetSelectedTestingDevice(testingDevice);
 }
 
-
-
 void CollectionParaView::OnEnChangeEditCollectionbatchs()
 {
 	// TODO:  如果该控件是 RICHEDIT 控件，它将不
@@ -300,3 +208,6 @@ void CollectionParaView::OnEnChangeEditCollectionbatchs()
 	TbTestingDevice testingDevice = theApp.m_currentProject.GetTestingDevice();
 	GetSelectedTestingDevice(testingDevice);
 }
+
+
+
