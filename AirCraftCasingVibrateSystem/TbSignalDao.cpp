@@ -10,7 +10,6 @@ TbSignalDao::TbSignalDao()
 	SetVectorAndField("signal_id", "int", m_signalId);
 	SetVectorAndField("save_time", "CString", m_saveTime);
 	SetVectorAndField("signal_type", "CString", m_signalType);
-	SetVectorAndField("channels", "CString", m_channels);
 	SetVectorAndField("product_id", "int", m_productId);
 	SetVectorAndField("signal_status", "char", m_signalStatus);
 	SetVectorAndField("data_url", "CString", m_dataUrl);
@@ -27,7 +26,6 @@ TbSignalDao::TbSignalDao(const TbSignalDao & signal){
 	SetVectorAndField("signal_id", "int", m_signalId);
 	SetVectorAndField("save_time", "CString", m_saveTime);
 	SetVectorAndField("signal_type", "CString", m_signalType);
-	SetVectorAndField("channels", "CString", m_channels);
 	SetVectorAndField("product_id", "int", m_productId);
 	SetVectorAndField("signal_status", "char", m_signalStatus);
 	SetVectorAndField("data_url", "CString", m_dataUrl);
@@ -81,14 +79,12 @@ void TbSignalDao::GetTableFieldValues(TbSignal &signal){
 	signal.SetSignalType(m_signalType.m_strValue);
 	signal.SetProjectId(m_projectId.GetInt());
 	signal.SetTestingDeviceId(m_testingDeviceId.GetInt());
-	signal.SetChannels(m_channels.m_strValue);
 	signal.SetCollectionStatus(m_collectionStatus.m_strValue);
 	signal.SetPointCount(m_pointCount.GetInt());
 }
 
 void TbSignalDao::SetTableFieldValues(TbSignal signal){
 	m_projectId.SetValue(signal.GetProjectId());
-	m_channels.SetValue(signal.GetChannels());
 	m_signalId.SetValue(signal.GetSignalId());
 	m_signalStatus.SetValue(signal.GetSignalStatus());
 	m_signalType.SetValue(signal.GetSignalType());

@@ -55,12 +55,6 @@ void TbSignal::SetProjectId(int projectId){
 int   TbSignal::GetProjectId(){
 	return this->m_projectId;
 }
-CString   TbSignal::GetChannels(){
-	return m_channels;
-}
-void TbSignal::SetChannels(CString  channel){
-	m_channels = channel;
-}
 int   TbSignal::GetTestingDeviceId(){
 	return m_testingDeviceId;
 }

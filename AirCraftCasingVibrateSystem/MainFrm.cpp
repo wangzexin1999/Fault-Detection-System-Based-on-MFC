@@ -510,7 +510,7 @@ void CMainFrame::OnButtonOpenDataFile()
 			searchSignalEntity.SetProjectId(selectedSignal.GetProject().GetProjectId());
 			searchSignalEntity.SetTestingDeviceId(selectedSignal.GetTestingDevice().GetId());
 			searchSignalEntity.SetCollectionStatus(selectedSignal.GetCollectionStatus());
-			searchSignalEntity.SetChannels(channelsId[i].GetString());
+			//searchSignalEntity.SetChannels(channelsId[i].GetString());
 			vector<TbSignal> signalVec;
 			m_signalController.FindAllSignalBySearchCondition(searchSignalEntity, signalVec);
 			collectionData.push_back(signalVec);
@@ -1344,7 +1344,7 @@ void CMainFrame::SaveCollectionData(map<CString, ThreadSafeQueue<double>> & acqu
 		channels += m_vchannelIds[i]+",";
 	}
 	channels += m_vchannelIds[m_vchannelIds.size() - 1] + "]";
-	saveSignal.SetChannels(channels);
+	//saveSignal.SetChannels(channels);
 	saveSignal.SetPointCount(theApp.m_icollectSignalsStoreCount);
 	saveSignal.SetProjectId(theApp.m_currentProject.GetProjectId());
 	saveSignal.SetProductId(theApp.m_currentProject.GetProduct().GetProductId());

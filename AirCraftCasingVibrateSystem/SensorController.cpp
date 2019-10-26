@@ -22,7 +22,7 @@ Result SensorController::SaveCollectionData(CString sensorId, ThreadSafeQueue<Ac
 	signal.SetProjectId(theApp.m_currentProject.GetProjectId());
 	signal.SetProductId(theApp.m_currentProject.GetProduct().GetProductId());
 	signal.SetTestingDeviceId(theApp.m_currentProject.GetTestingDevice().GetId());
-	signal.SetChannels(sensorId);
+	//signal.SetChannels(sensorId);
 	signal.SetCollectionStatus(theApp.m_jsonCollectionStatusPara);
 	Result res = m_sensorService.AddCollectData(signal,collectionData);
 	return res;

@@ -50,7 +50,7 @@ Result CSensorService::AddCollectData(TbSignal &signal, ThreadSafeQueue<Acquired
 	//2.拼装文件名 项目id_测试设备id_传感器id_产品id_时间戳
 	CString fileName = CommonUtil::Int2CString(signal.GetProjectId()) + "-"
 		+ CommonUtil::Int2CString(signal.GetTestingDeviceId())
-		+ "-" + signal.GetChannels() + "-" + CommonUtil::Int2CString(signal.GetProductId())
+		//+ "-" + signal.GetChannels() + "-" + CommonUtil::Int2CString(signal.GetProductId())
 		+ "-" + DateUtil::GetTimeStampCString()
 		+ ".csv";
 
@@ -100,7 +100,7 @@ Result CSensorService::AddCollectData(TbSignal &signal, ThreadSafeQueue<Acquired
 			{ "data", allData.GetBuffer(), "1.txt", "text/plain" },//数据
 			{ "projectID", CommonUtil::Int2CString(signal.GetProductId()).GetBuffer(), "", "" },
 			//{ "checkDeviceID", CommonUtil::Int2CString(project.GetTestingDevicePara().GetTestingdevice().GetId()).GetBuffer(), "", "" },
-			{ "sensorID", signal.GetChannels().GetBuffer(), "", "" },
+			//{ "sensorID", signal.GetChannels().GetBuffer(), "", "" },
 			{ "startTime", startCollectTime.GetBuffer(), "", "" },
 			{ "endTime", endTime.GetBuffer(), "", "" },
 			{ "productID", CommonUtil::Int2CString(signal.GetProductId()).GetBuffer(), "", "" },

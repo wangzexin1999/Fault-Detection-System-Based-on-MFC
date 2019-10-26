@@ -19,7 +19,6 @@ bool  SignalService::GetAllSignalBySearchCondition(TbSignal searchEntity, vector
 	if (searchEntity.GetTestingDeviceId() != 0)  strSqlWhere += " and testingdevice_id ='" + CommonUtil::Int2CString(searchEntity.GetTestingDeviceId()) + "'";
 	/*if (searchEntity.GetStartTime() != "" && searchEntity.GetEndTime() == "") strSqlWhere += " and end_time >='" + searchEntity.GetStartTime() + "'";
 	if (searchEntity.GetEndTime() != "" && searchEntity.GetStartTime() == "") strSqlWhere += " and start_time <='" + searchEntity.GetEndTime() + "'";*/
-	if (searchEntity.GetChannels() != "") strSqlWhere += " and sensor_id ='" + searchEntity.GetChannels()+"'";
 	if (searchEntity.GetCollectionStatus() != "") strSqlWhere += " and collectionstatus ='" + searchEntity.GetCollectionStatus()+"'";
 	
 	vector<TbSignalDao> signalDaoVec;
@@ -41,7 +40,6 @@ bool SignalService::AddSignalData(map<CString, ThreadSafeQueue<double>> & acquir
 	//2.拼装文件名 项目id_测试设备id_传感器id_产品id_时间戳
 	CString fileName = CommonUtil::Int2CString(saveSignal.GetProjectId()) + "-"
 		+ CommonUtil::Int2CString(saveSignal.GetTestingDeviceId())
-		+ "-" + saveSignal.GetChannels() + "-" + CommonUtil::Int2CString(saveSignal.GetProductId())
 		+ "-" + DateUtil::GetTimeStampCString()
 		+ ".csv";
 	//调用FileUtil保存文件，保存成功返回采集的结束时间

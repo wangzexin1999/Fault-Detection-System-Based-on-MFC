@@ -145,8 +145,6 @@ void CollectionParaView::RefreshView(){
 	m_vcollectionMethod.clear();
 	m_analysisFrequencyCombo.ResetContent();
 	m_vanalysisFrequency.clear();
-	m_vdataBlockCount.clear();
-	m_vtriggerMethod.clear();
 	///2.采集参数重新初始化
 	CollectionParaInfoInit();
 }
