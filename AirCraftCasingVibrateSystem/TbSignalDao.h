@@ -15,7 +15,6 @@ public:
 	PDAttribute m_productId;
 	PDAttribute m_signalStatus;
 	PDAttribute m_dataUrl;
-	PDAttribute m_channels;
 	PDAttribute m_projectId;
 	PDAttribute m_testingDeviceId;
 	PDAttribute m_collectionStatus;
