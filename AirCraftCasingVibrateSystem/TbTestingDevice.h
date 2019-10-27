@@ -33,11 +33,8 @@ protected:
 	TbDictionary m_collectionFrequency;
 	TbDictionary m_analysisFrequency;
 	TbDictionary m_collectionMethod;
-	TbDictionary m_triggerMethod;
-	TbDictionary m_datablockCount;
-	int m_delayblockCount;
-	int m_triggerCount;
-	int m_collectionBatchs;
+	TbDictionary m_collectionPoint;
+	int m_collectionTimes;
 
 public:
 	
@@ -51,16 +48,10 @@ public:
 	void SetAnalysisFrequency(TbDictionary analysisFrequency);
 	TbDictionary  & GetCollectionMethod();
 	void SetCollectionMethod(TbDictionary collectionMethod);
-	TbDictionary  & GetTriggerMethod();
-	void SetTriggerMethod(TbDictionary triggerMethod);
-	TbDictionary  & GetDatablockCount();
-	void SetDatablockCount(TbDictionary datablockCount);
-	int GetDelayblockCount();
-	void SetDelayblockCount(int delayblockCount);
-	int GetTriggerCount();
-	void SetTriggerCount(int triggerCount);
-	int GetCollectionBatchs();
-	void SetCollectionBatchs(int collectionBatchs);
+	TbDictionary  & GetCollectionPoint();
+	void SetCollectionPoint(TbDictionary collectionPoint);
+	int GetCollectionTimes();
+	void SetCollectionTimes(int collectionTimes);
 
 };
 

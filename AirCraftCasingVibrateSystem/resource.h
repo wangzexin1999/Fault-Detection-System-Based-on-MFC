@@ -205,6 +205,7 @@
 #define IDC_COMBO_ANALYSISFREQUENCY     1118
 #define IDC_COMBO_TRIGGERMETHOD         1119
 #define IDC_COMBO_DATABLOCKCOUNT        1120
+#define IDC_COMBO_COLLECTIONPOINT       1120
 #define IDC_COMBO_TRIGGERCOUNT          1121
 #define IDC_COMBO_DELAYBLOCKCOUNT       1122
 #define IDC_COMBO_SAMPLINGBATCH         1123
@@ -217,6 +218,8 @@
 #define IDC_EDIT_COLLECTIONBATCH        1130
 #define IDC_EDIT_TRIGGERCOUNT           1131
 #define IDC_BUTTON_Y_UNIT               1131
+#define IDC_EDIT_                       1131
+#define IDC_EDIT_COLLECTIONTIMES        1131
 #define IDC_BUTTON_OK                   1133
 #define IDC_BUTTON_STATISTIS_INF        1133
 #define IDC_BUTTON_CANNEL               1134

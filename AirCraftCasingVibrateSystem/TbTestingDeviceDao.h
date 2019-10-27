@@ -20,10 +20,8 @@ public:
 	PDAttribute m_collectionFrequency;
 	PDAttribute m_analysisFrequency;
 	PDAttribute m_collectionMethod;
-	PDAttribute m_triggerMethod;
-	PDAttribute m_datablockCount;
-	PDAttribute m_delayblockCount;
-	PDAttribute m_triggerCount;
-	PDAttribute m_collectionBatchs;
+	PDAttribute m_collectionPoint;
+	PDAttribute m_collectionTimes;
+
 };
 

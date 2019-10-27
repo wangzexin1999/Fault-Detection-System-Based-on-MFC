@@ -27,19 +27,15 @@ protected:
 	vector<TbDictionary> m_vcollectionFrequency;
 	vector<TbDictionary> m_vcollectionMethod;
 	vector<TbDictionary> m_vanalysisFrequency;
-	vector<TbDictionary> m_vtriggerMethod;
-	vector<TbDictionary> m_vdataBlockCount;
+	vector<TbDictionary> m_vcollectionPoint;
 
 	DictionaryController m_dictionaryController;
 
 	CComboBox m_collectionFrequencyCombo;
 	CComboBox m_collectionMethodCombo;
 	CComboBox m_analysisFrequencyCombo;
-	CComboBox m_triggerMethodCombo;
-	CComboBox m_dataBlockCountCombo;
-	CEdit m_triggerCountEdit;
-	CEdit m_delayBlockCountEdit;
-	CEdit m_collectionBatchEdit;
+	CComboBox m_collectionPointCombo;
+	CEdit m_collectionTimesEdit;
 
 	DECLARE_MESSAGE_MAP()
 public:

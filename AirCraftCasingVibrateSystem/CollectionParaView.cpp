@@ -27,6 +27,7 @@ void CollectionParaView::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO1, m_collectionFrequencyCombo);
 	DDX_Control(pDX, IDC_COMBO2, m_analysisFrequencyCombo);
 	DDX_Control(pDX, IDC_COMBO3, m_collectionMethodCombo);
+	DDX_Control(pDX, IDC_COMBO_COLLECTION_POINTS, m_collectionPointCombo);
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_EDIT_COLLECTION_TIMES, m_collectionTimesEdit);
 }
@@ -35,6 +36,8 @@ BEGIN_MESSAGE_MAP(CollectionParaView, CDialogEx)
 	ON_CBN_SELCHANGE(IDC_COMBO1, &CollectionParaView::OnCbnSelchangeCombo1)
 	ON_CBN_SELCHANGE(IDC_COMBO2, &CollectionParaView::OnCbnSelchangeCombo2)
 	ON_CBN_SELCHANGE(IDC_COMBO3, &CollectionParaView::OnCbnSelchangeCombo3)
+	ON_CBN_SELCHANGE(IDC_COMBO_COLLECTION_POINTS, &CollectionParaView::OnCbnSelchangeComboCollectionPoints)
+	ON_EN_CHANGE(IDC_EDIT_COLLECTION_TIMES, &CollectionParaView::OnEnChangeEditCollectionTimes)
 END_MESSAGE_MAP()
 
 
@@ -58,7 +61,13 @@ void CollectionParaView::GetSelectedTestingDevice(TbTestingDevice &testingDevice
 	testingDevice.SetCollectionMethod(m_vcollectionMethod[index]);
 
 
-	CString delayBlockCount, triggerCount, collectionBaths;
+	index = m_collectionPointCombo.GetCurSel();
+	testingDevice.SetCollectionPoint(m_vcollectionPoint[index]);
+
+	CString collectionTimes;
+	m_collectionTimesEdit.GetWindowTextA(collectionTimes);
+	testingDevice.SetCollectionTimes(atoi(collectionTimes));
+
 
 	TestingDeviceController m_testingDeviceServiceController;
 	Result res = m_testingDeviceServiceController.UpdateTestingDevice(testingDevice);
@@ -134,6 +143,23 @@ void CollectionParaView::CollectionParaInfoInit(){
 		}
 		m_collectionMethodCombo.SetCurSel(curSel);
 	}
+	res = m_dictionaryController.FindAllBySearchCondition(m_vcollectionPoint, 0, "collectionpoint");
+
+	if (!res.GetIsSuccess()){
+		AfxMessageBox("加载采集点数失败");
+	}
+	else{
+		curSel = 0;
+		for (int i = 0; i < m_vcollectionPoint.size(); i++){
+			TbDictionary collectionPoint = m_vcollectionPoint[i];
+			m_collectionPointCombo.InsertString(i, collectionPoint.GetDictValue());
+			if (collectionPoint.GetDictId() == testingDevice.GetCollectionPoint().GetDictId()){
+				curSel = i;
+			}
+		}
+		m_collectionPointCombo.SetCurSel(curSel);
+	}
+	m_collectionTimesEdit.SetWindowTextA(CommonUtil::Int2CString(testingDevice.GetCollectionTimes()));
 	
 }
 
@@ -145,6 +171,8 @@ void CollectionParaView::RefreshView(){
 	m_vcollectionMethod.clear();
 	m_analysisFrequencyCombo.ResetContent();
 	m_vanalysisFrequency.clear();
+	m_collectionPointCombo.ResetContent();
+	m_vcollectionPoint.clear();
 	///2.采集参数重新初始化
 	CollectionParaInfoInit();
 }
@@ -172,30 +200,20 @@ void CollectionParaView::OnCbnSelchangeCombo3()
 	GetSelectedTestingDevice(testingDevice);
 }
 
-void CollectionParaView::OnEnChangeEditDelayblockcount()
+
+
+
+
+
+void CollectionParaView::OnCbnSelchangeComboCollectionPoints()
 {
-	// TODO:  如果该控件是 RICHEDIT 控件，它将不
-	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
-	// 函数并调用 CRichEditCtrl().SetEventMask()，
-	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
-	// TODO:  在此添加控件通知处理程序代码
+
 	TbTestingDevice testingDevice = theApp.m_currentProject.GetTestingDevice();
 	GetSelectedTestingDevice(testingDevice);
 }
 
-void CollectionParaView::OnEnChangeEditTriggercount()
-{
-	// TODO:  如果该控件是 RICHEDIT 控件，它将不
-	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
-	// 函数并调用 CRichEditCtrl().SetEventMask()，
-	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
 
-	// TODO:  在此添加控件通知处理程序代码
-	TbTestingDevice testingDevice = theApp.m_currentProject.GetTestingDevice();
-	GetSelectedTestingDevice(testingDevice);
-}
-
-void CollectionParaView::OnEnChangeEditCollectionbatchs()
+void CollectionParaView::OnEnChangeEditCollectionTimes()
 {
 	// TODO:  如果该控件是 RICHEDIT 控件，它将不
 	// 发送此通知，除非重写 CDialogEx::OnInitDialog()
@@ -206,6 +224,3 @@ void CollectionParaView::OnEnChangeEditCollectionbatchs()
 	TbTestingDevice testingDevice = theApp.m_currentProject.GetTestingDevice();
 	GetSelectedTestingDevice(testingDevice);
 }
-
-
-

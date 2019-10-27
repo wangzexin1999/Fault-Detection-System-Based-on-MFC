@@ -27,11 +27,9 @@ void CollectionParaPresetView::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO_COLLECTIONFREQUENCY, m_collectionFrequencyCombo);
 	DDX_Control(pDX, IDC_COMBO_COLLECTIONMETHOD, m_collectionMethodCombo);
 	DDX_Control(pDX, IDC_COMBO_ANALYSISFREQUENCY, m_analysisFrequencyCombo);
-	DDX_Control(pDX, IDC_COMBO_TRIGGERMETHOD, m_triggerMethodCombo);
-	DDX_Control(pDX, IDC_COMBO_DATABLOCKCOUNT, m_dataBlockCountCombo);
-	DDX_Control(pDX, IDC_EDIT_TRIGGERCOUNT, m_triggerCountEdit);
-	DDX_Control(pDX, IDC_EDIT_DELAYBLOCKCOUNT, m_delayBlockCountEdit);
-	DDX_Control(pDX, IDC_EDIT_COLLECTIONBATCH, m_collectionBatchEdit);
+	DDX_Control(pDX, IDC_COMBO_COLLECTIONPOINT, m_collectionPointCombo);
+	DDX_Control(pDX, IDC_EDIT_COLLECTIONTIMES, m_collectionTimesEdit);
+
 }
 
 
@@ -56,23 +54,15 @@ void CollectionParaPresetView::GetSelectedTestingDevice(TbTestingDevice &testing
 	index = m_analysisFrequencyCombo.GetCurSel();
 	testingDevicePara.SetAnalysisFrequency(m_vanalysisFrequency[index]);
 
-	index = m_triggerMethodCombo.GetCurSel(); 
-	testingDevicePara.SetTriggerMethod(m_vtriggerMethod[index]);
+	index = m_collectionPointCombo.GetCurSel(); 
+	testingDevicePara.SetCollectionPoint(m_vcollectionPoint[index]);
 
 	index = m_collectionMethodCombo.GetCurSel();
 	testingDevicePara.SetCollectionMethod(m_vcollectionMethod[index]);
+	CString  collectionTimes;
 
-	index = m_dataBlockCountCombo.GetCurSel();
-	testingDevicePara.SetDatablockCount(m_vdataBlockCount[index]);
-
-	CString delayBlockCount, triggerCount, collectionBaths;
-
-	m_collectionBatchEdit.GetWindowTextA(collectionBaths);
-	m_delayBlockCountEdit.GetWindowTextA(delayBlockCount);
-	m_triggerCountEdit.GetWindowTextA(triggerCount);
-	testingDevicePara.SetCollectionBatchs(atoi(collectionBaths));
-	testingDevicePara.SetDelayblockCount(atoi(delayBlockCount));
-	testingDevicePara.SetTriggerCount(atoi(triggerCount));
+	m_collectionTimesEdit.GetWindowTextA(collectionTimes);
+	testingDevicePara.SetCollectionTimes(atoi(collectionTimes));
 }
 
 void CollectionParaPresetView::CollectionParaInfoInit(){
@@ -129,29 +119,18 @@ void CollectionParaPresetView::CollectionParaInfoInit(){
 	}
 
 
-	res = m_dictionaryController.FindAllBySearchCondition(m_vdataBlockCount, 0, "datablockcount");
+
+	res = m_dictionaryController.FindAllBySearchCondition(m_vcollectionPoint, 0, "collectionpoint");
 
 	if (!res.GetIsSuccess()){
-		AfxMessageBox("查询数据块数失败");
+		AfxMessageBox("加载采集点数失败");
 	}
 	else{
-		for (int i = 0; i < m_vdataBlockCount.size(); i++){
-			TbDictionary dataBlockCount = m_vdataBlockCount[i];
-			m_dataBlockCountCombo.InsertString(i, dataBlockCount.GetDictValue());
+		for (int i = 0; i < m_vcollectionPoint.size(); i++){
+			TbDictionary collectionPoint = m_vcollectionPoint[i];
+			m_collectionPointCombo.InsertString(i, collectionPoint.GetDictValue());
 		}
-		m_dataBlockCountCombo.SetCurSel(0);
+		m_collectionPointCombo.SetCurSel(0);
 	}
 
-	res = m_dictionaryController.FindAllBySearchCondition(m_vtriggerMethod, 0, "triggermethod");
-
-	if (!res.GetIsSuccess()){
-		AfxMessageBox("查询触发方式失败");
-	}
-	else{
-		for (int i = 0; i < m_vtriggerMethod.size(); i++){
-			TbDictionary triggerMethod = m_vtriggerMethod[i];
-			m_triggerMethodCombo.InsertString(i, triggerMethod.GetDictValue());
-		}
-		m_triggerMethodCombo.SetCurSel(0);
-	}
 }

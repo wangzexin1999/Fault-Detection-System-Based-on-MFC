@@ -11,11 +11,9 @@ TbTestingDeviceDao::TbTestingDeviceDao()
 	SetVectorAndField("collection_frequency", "int", m_collectionFrequency);
 	SetVectorAndField("analysis_frequency", "int", m_analysisFrequency);
 	SetVectorAndField("collection_method", "int", m_collectionMethod);
-	SetVectorAndField("trigger_method", "int", m_triggerMethod);
-	SetVectorAndField("datablock_count", "int", m_datablockCount);
-	SetVectorAndField("delayblock_count", "int", m_delayblockCount);
-	SetVectorAndField("trigger_count", "int", m_triggerCount);
-	SetVectorAndField("collection_batchs", "int", m_collectionBatchs);
+	SetVectorAndField("collectionpoint", "int", m_collectionPoint);
+	SetVectorAndField("collection_times", "int", m_collectionTimes);
+
 	
 }
 TbTestingDeviceDao::TbTestingDeviceDao(const TbTestingDeviceDao &testingDevice){
@@ -26,11 +24,9 @@ TbTestingDeviceDao::TbTestingDeviceDao(const TbTestingDeviceDao &testingDevice){
 	SetVectorAndField("collection_frequency", "int", m_collectionFrequency);
 	SetVectorAndField("analysis_frequency", "int", m_analysisFrequency);
 	SetVectorAndField("collection_method", "int", m_collectionMethod);
-	SetVectorAndField("trigger_method", "int", m_triggerMethod);
-	SetVectorAndField("datablock_count", "int", m_datablockCount);
-	SetVectorAndField("delayblock_count", "int", m_delayblockCount);
-	SetVectorAndField("trigger_count", "int", m_triggerCount);
-	SetVectorAndField("collection_batchs", "int", m_collectionBatchs);
+	SetVectorAndField("collectionpoint", "int", m_collectionPoint);
+	SetVectorAndField("collection_times", "int", m_collectionTimes);
+
 	operator = (testingDevice);
 }
 
@@ -70,23 +66,17 @@ void TbTestingDeviceDao::GetTableFieldValues(TbTestingDevice &testingDevice){
 	testingDevice.SetId(m_id.GetInt());
 	testingDevice.SetTestingDeviceIp(m_testingDeviceIp.m_strValue);
 	testingDevice.SetAnalysisFrequency(m_analysisFrequency.GetInt());
-	testingDevice.SetDatablockCount(m_datablockCount.GetInt());
-	testingDevice.SetDelayblockCount(m_delayblockCount.GetInt());
-	testingDevice.SetCollectionBatchs(m_collectionBatchs.GetInt());
+	testingDevice.SetCollectionTimes(m_collectionTimes.GetInt());
 	testingDevice.GetCollectionFrequency().SetDictId(m_collectionFrequency.GetInt());
 	testingDevice.GetCollectionMethod().SetDictId(m_collectionMethod.GetInt());
-	testingDevice.SetTriggerCount(m_triggerCount.GetInt());
-	testingDevice.GetTriggerMethod().SetDictId(m_triggerMethod.GetInt());
+	testingDevice.GetCollectionPoint().SetDictId(m_collectionPoint.GetInt());
 }
 void TbTestingDeviceDao::SetTableFieldValues(TbTestingDevice testingDevice){
 	m_id.SetValue(testingDevice.GetId());
 	m_testingDeviceIp.SetValue(testingDevice.GetTestingDeviceIp());
 	m_analysisFrequency.SetValue(testingDevice.GetAnalysisFrequency().GetDictId());
-	m_datablockCount.SetValue(testingDevice.GetDatablockCount().GetDictId());
-	m_delayblockCount.SetValue(testingDevice.GetDelayblockCount());
-	m_collectionBatchs.SetValue(testingDevice.GetCollectionBatchs());
+	m_collectionTimes.SetValue(testingDevice.GetCollectionTimes());
 	m_collectionFrequency.SetValue(testingDevice.GetCollectionFrequency().GetDictId());
 	m_collectionMethod.SetValue(testingDevice.GetCollectionMethod().GetDictId());
-	m_triggerCount.SetValue(testingDevice.GetTriggerCount());
-	m_triggerMethod.SetValue(testingDevice.GetTriggerMethod().GetDictId());
+	m_collectionPoint.SetValue(testingDevice.GetCollectionPoint().GetDictId());
 }

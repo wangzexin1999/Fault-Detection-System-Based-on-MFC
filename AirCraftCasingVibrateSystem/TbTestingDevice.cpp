@@ -4,9 +4,7 @@
 
 TbTestingDevice::TbTestingDevice(){
 	m_id = 0;
-	m_delayblockCount = 0;
-	m_triggerCount = 0;
-	m_collectionBatchs = 0;
+	m_collectionTimes = 0;
 }
 
 bool TbTestingDevice::operator == (TbTestingDevice testingDevice){
@@ -50,11 +48,8 @@ TbDictionary  &  TbTestingDevice::GetAnalysisFrequency(){
 TbDictionary  &  TbTestingDevice::GetCollectionMethod(){
 	return m_collectionMethod;
 }
-TbDictionary  &  TbTestingDevice::GetTriggerMethod(){
-	return m_triggerMethod;
-}
-TbDictionary  &  TbTestingDevice::GetDatablockCount(){
-	return m_datablockCount;
+TbDictionary  &  TbTestingDevice::GetCollectionPoint(){
+	return m_collectionPoint;
 }
 
 void TbTestingDevice::SetCollectionFrequency(TbDictionary collectionFrequency){
@@ -66,33 +61,15 @@ void TbTestingDevice::SetAnalysisFrequency(TbDictionary analysisFrequency){
 void TbTestingDevice::SetCollectionMethod(TbDictionary collectionMethod){
 	m_collectionMethod = collectionMethod;
 }
-void TbTestingDevice::SetTriggerMethod(TbDictionary triggerMethod){
-	m_triggerMethod = triggerMethod;
-}
-void TbTestingDevice::SetDatablockCount(TbDictionary datablockCount){
-	m_datablockCount = datablockCount;
+void TbTestingDevice::SetCollectionPoint(TbDictionary collectionPoint){
+	m_collectionPoint = collectionPoint;
 }
 
-int TbTestingDevice::GetDelayblockCount() {
-	return m_delayblockCount;
+int TbTestingDevice::GetCollectionTimes() {
+	return m_collectionTimes;
 }
 
-void TbTestingDevice::SetDelayblockCount(int delayblockCount) {
-	this->m_delayblockCount = delayblockCount;
+void TbTestingDevice::SetCollectionTimes(int collectionTimes) {
+	this->m_collectionTimes = collectionTimes;
 }
 
-int TbTestingDevice::GetTriggerCount() {
-	return m_triggerCount;
-}
-
-void TbTestingDevice::SetTriggerCount(int triggerCount) {
-	this->m_triggerCount = triggerCount;
-}
-
-int TbTestingDevice::GetCollectionBatchs() {
-	return m_collectionBatchs;
-}
-
-void TbTestingDevice::SetCollectionBatchs(int collectionBatchs) {
-	this->m_collectionBatchs = collectionBatchs;
-}

@@ -39,11 +39,13 @@ protected:
 	vector<TbDictionary> m_vcollectionFrequency;
 	vector<TbDictionary> m_vanalysisFrequency; 
 	vector<TbDictionary> m_vcollectionMethod;
+	vector<TbDictionary> m_vcollectionPoint;
 
 	DictionaryController m_dictionaryController;
 	CComboBox m_collectionFrequencyCombo;
 	CComboBox m_collectionMethodCombo;
 	CComboBox m_analysisFrequencyCombo;
+	CComboBox m_collectionPointCombo;
 	CEdit m_collectionTimesEdit;
 	
 	virtual BOOL OnInitDialog();
@@ -53,13 +55,11 @@ protected:
 	afx_msg void OnCbnSelchangeCombo1();
 	afx_msg void OnCbnSelchangeCombo2();
 	afx_msg void OnCbnSelchangeCombo3();
-	afx_msg void OnCbnSelchangeCombo4();
-	afx_msg void OnCbnSelchangeCombo5();
-	afx_msg void OnEnChangeEditDelayblockcount();
-	afx_msg void OnEnChangeEditTriggercount();
-	afx_msg void OnEnChangeEditCollectionbatchs();
+	afx_msg void OnCbnSelchangeComboCollectionPoints();
+	//afx_msg void OnEnChangeEditCollectiontimes();
 	DECLARE_MESSAGE_MAP()
 public:
-	
 	void RefreshView();
+	//afx_msg void OnCbnSelchangeComboCollectionPoints();
+	afx_msg void OnEnChangeEditCollectionTimes();
 };
