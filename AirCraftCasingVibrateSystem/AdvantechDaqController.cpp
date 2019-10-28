@@ -23,8 +23,8 @@ void  AdvantechDaqController::GetChannels(vector<CString> & channels){
 		WaveformAiCtrl   *wfAiCtrl = WaveformAiCtrl::Create();
 		wfAiCtrl->setSelectedDevice(DeviceInformation(deviceNum));
 		int channelCount = wfAiCtrl->getChannelCount();
-		for (int j = 1; j <= channelCount; j++){
-			channels.push_back(CommonUtil::Int2CString(deviceNum+1) + "-" + CommonUtil::Int2CString(j));
+		for (int j = 0; j <= channelCount; j++){
+			channels.push_back(CommonUtil::Int2CString(deviceNum) + "-" + CommonUtil::Int2CString(j));
 		}
 	}
 }

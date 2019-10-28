@@ -644,18 +644,18 @@ void CMainFrame::OnButtonStartCapture()
 		splitChannelId = CommonUtil::GetCStringVectorFromSplitCString(sensor.GetChannelId(), "-");
 		deviceNum = CommonUtil::CString2Int(splitChannelId[0]);
 		channelNum = CommonUtil::CString2Int(splitChannelId[1]);
-		vdevConfParam[deviceNum].deviceNumber = deviceNum - 1;
+		vdevConfParam[deviceNum].deviceNumber = deviceNum;
 		vdevConfParam[deviceNum].channelCount++;
 		///记录所有的通道号
-		m_vchannelIds.push_back(CommonUtil::Int2CString(deviceNum - 1) + "-" + CommonUtil::Int2CString(channelNum - 1));
+		m_vchannelIds.push_back(CommonUtil::Int2CString(deviceNum) + "-" + CommonUtil::Int2CString(channelNum));
 		///如果是初始化的状态，也即修改默认开始通道0为第一次循环出的开始通道
-		if (vdevConfParam[deviceNum].channelStart == 0 && vdevConfParam[deviceNum].channelCount==0){vdevConfParam[deviceNum].channelStart = channelNum - 1; }
+		if (vdevConfParam[deviceNum].channelStart == 0 && vdevConfParam[deviceNum].channelCount == 1){vdevConfParam[deviceNum].channelStart = channelNum; }
 		///创建窗口与通道之间的关系映射map
 		m_mpsignalCollectionView.insert(pair<CString, CAirCraftCasingVibrateSystemView*>
-			(CommonUtil::Int2CString(deviceNum - 1) + "-" + CommonUtil::Int2CString(channelNum - 1), theApp.m_vsignalCaptureView[i]));
+			(CommonUtil::Int2CString(deviceNum) + "-" + CommonUtil::Int2CString(channelNum), theApp.m_vsignalCaptureView[i]));
 		///创建通道与保存数据之间的关系映射map
 		m_mpcolllectioinDataQueue.insert(pair<CString, ThreadSafeQueue<double>>
-			(CommonUtil::Int2CString(deviceNum - 1) + "-" + CommonUtil::Int2CString(channelNum - 1), ThreadSafeQueue<double>()));
+			(CommonUtil::Int2CString(deviceNum ) + "-" + CommonUtil::Int2CString(channelNum), ThreadSafeQueue<double>()));
 	}
 	int a = 1;
 	Document doc;
@@ -1188,6 +1188,16 @@ void CMainFrame::OnClose()
 {
 	// TODO:  在此添加消息处理程序代码和/或调用默认值
 	KillTimer(StatusBarTimer);
+	for (int i = 0; i < m_vwfAiCtrl.size(); i++){
+		ErrorCode err = Success;
+		err = m_vwfAiCtrl[i]->Stop();
+		if (err != Success)
+		{
+			m_advantechDaqController.CheckError(err);
+			return;
+		}
+	}
+
 	CMDIFrameWndEx::OnClose();
 }
 
