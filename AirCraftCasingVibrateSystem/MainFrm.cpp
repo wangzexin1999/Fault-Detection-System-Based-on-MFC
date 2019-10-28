@@ -713,6 +713,7 @@ void CMainFrame::OnButtonSuspendCapture()
 	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
 		theApp.m_vsignalCaptureView[i]->StopRefershView();
 	}
+	Sleep(100);
 	theApp.m_icollectionStatus = 2;
 }
 // 停止采集
@@ -731,6 +732,8 @@ void CMainFrame::OnBtnStopCapture()
 	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
 		theApp.m_vsignalCaptureView[i]->StopRefershView();
 	}
+	Sleep(100);
+
 	theApp.m_icollectionStatus = 0;
 }
 
