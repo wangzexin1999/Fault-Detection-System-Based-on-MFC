@@ -180,36 +180,26 @@ void CollectionParaView::RefreshView(){
 void CollectionParaView::OnCbnSelchangeCombo1()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	TbTestingDevice testingDevice = theApp.m_currentProject.GetTestingDevice();
-	GetSelectedTestingDevice(testingDevice);
+	GetSelectedTestingDevice(theApp.m_currentProject.GetTestingDevice());
 }
 
 
 void CollectionParaView::OnCbnSelchangeCombo2()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	TbTestingDevice testingDevice = theApp.m_currentProject.GetTestingDevice();
-	GetSelectedTestingDevice(testingDevice);
+	GetSelectedTestingDevice(theApp.m_currentProject.GetTestingDevice());
 }
 
 
 void CollectionParaView::OnCbnSelchangeCombo3()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	TbTestingDevice testingDevice = theApp.m_currentProject.GetTestingDevice();
-	GetSelectedTestingDevice(testingDevice);
+	GetSelectedTestingDevice(theApp.m_currentProject.GetTestingDevice());
 }
-
-
-
-
-
 
 void CollectionParaView::OnCbnSelchangeComboCollectionPoints()
 {
-
-	TbTestingDevice testingDevice = theApp.m_currentProject.GetTestingDevice();
-	GetSelectedTestingDevice(testingDevice);
+	GetSelectedTestingDevice(theApp.m_currentProject.GetTestingDevice());
 }
 
 
@@ -221,6 +211,5 @@ void CollectionParaView::OnEnChangeEditCollectionTimes()
 	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
 
 	// TODO:  在此添加控件通知处理程序代码
-	TbTestingDevice testingDevice = theApp.m_currentProject.GetTestingDevice();
-	GetSelectedTestingDevice(testingDevice);
+	GetSelectedTestingDevice(theApp.m_currentProject.GetTestingDevice());
 }

@@ -298,6 +298,7 @@
     <ClInclude Include="include\rapidjson\stringbuffer.h" />
     <ClInclude Include="include\rapidjson\writer.h" />
     <ClInclude Include="httplib.h" />
+    <ClInclude Include="JsonUtil.h" />
     <ClInclude Include="NewCellTypes\GridCellCheck.h" />
     <ClInclude Include="NewCellTypes\GridCellCombo.h" />
     <ClInclude Include="NewCellTypes\GridCellDateTime.h" />
@@ -457,6 +458,7 @@
     <ClCompile Include="DictionaryService.cpp" />
     <ClCompile Include="EchoSignal.cpp" />
     <ClCompile Include="FFTWUtil.cpp" />
+    <ClCompile Include="JsonUtil.cpp" />
     <ClCompile Include="NewCellTypes\GridCellCheck.cpp" />
     <ClCompile Include="NewCellTypes\GridCellCombo.cpp" />
     <ClCompile Include="NewCellTypes\GridCellDateTime.cpp" />

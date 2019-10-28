@@ -18,12 +18,14 @@ Modification:
 ************************************************************************/
 #pragma once
 #include"TbTestingDeviceDao.h"
+#include"TbDictionaryDao.h"
+
 class TestingDeviceService
 {
 
 private:
 	TbTestingDeviceDao m_testingDeviceDao;
-
+	TbDictionaryDao m_dictionaryDao;
 public:
 	TestingDeviceService();
 

@@ -711,6 +711,9 @@
     <ClInclude Include="AdvantechDaqController.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="JsonUtil.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AirCraftCasingVibrateSystem.cpp">
@@ -1161,6 +1164,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="AdvantechDaqController.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonUtil.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

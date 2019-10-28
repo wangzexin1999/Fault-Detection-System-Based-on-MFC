@@ -658,6 +658,10 @@ void CMainFrame::OnButtonStartCapture()
 			(CommonUtil::Int2CString(deviceNum - 1) + "-" + CommonUtil::Int2CString(channelNum - 1), ThreadSafeQueue<double>()));
 	}
 	int a = 1;
+	Document doc;
+	doc.Parse(theApp.m_currentProject.GetTestingDevice().GetCollectionFrequency().GetDictValue());
+	int collectionFrequency = doc["content"].GetInt();
+	int collectionPoint = atoi(theApp.m_currentProject.GetTestingDevice().GetCollectionPoint().GetDictValue());
 	///根据获取的采集卡的DeviceNumber创建响应的控制类
 	for (int i = 0; i < vdevConfParam.size(); i++){
 		if (vdevConfParam[i].channelCount == 0)continue;
@@ -665,8 +669,8 @@ void CMainFrame::OnButtonStartCapture()
 		WaveformAiCtrl *  wfAiCtrl = WaveformAiCtrl::Create();
 		///	给采集设备绑定准备事件
 		wfAiCtrl->addDataReadyHandler(OnDataReadyEvent, this);
-		vdevConfParam[i].clockRatePerChan = 10000;
-		vdevConfParam[i].sectionLength = 1024;
+		vdevConfParam[i].clockRatePerChan = collectionFrequency;
+		vdevConfParam[i].sectionLength = collectionPoint;
 		vdevConfParam[i].vrgType = 2;
 		DevConfParam b = vdevConfParam[i];
 		m_advantechDaqController.ConfigurateDevice(vdevConfParam[i], wfAiCtrl);
