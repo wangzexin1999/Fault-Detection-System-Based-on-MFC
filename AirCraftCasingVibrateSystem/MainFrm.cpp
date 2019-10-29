@@ -103,7 +103,6 @@ extern TCHAR const * WCHAR_TO_TCHAR(WCHAR const * in, TCHAR * out);
 CMainFrame::CMainFrame()
 {
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_WINDOWS_7);
-
 }
 
 CMainFrame::~CMainFrame(){
@@ -135,6 +134,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	ASSERT(bNameValid);
 	m_wndStatusBar.AddElement(new CMFCRibbonStatusBarPane(ID_STATUSBAR_PANE1, "目前状态", TRUE), "目前状态");
 	m_wndStatusBar.AddExtendedElement(new CMFCRibbonStatusBarPane(ID_STATUSBAR_PANE2, "当前时间:00:00:00", TRUE), strTitlePane2);
+
 
 	//测试加入按钮
 	CMFCRibbonCategory *pCategory = m_wndRibbonBar.GetCategory(3);
@@ -206,7 +206,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	SendMessage(StatusInfMessage);
 	/*状态栏显示时间*/
 	SetTimer(66, 1000, NULL);//安装定时器，并将其时间间隔设为1000毫秒
-	SendMessage(StatusInfMessage);
 	return 0;
 }
 
@@ -644,18 +643,18 @@ void CMainFrame::OnButtonStartCapture()
 		splitChannelId = CommonUtil::GetCStringVectorFromSplitCString(sensor.GetChannelId(), "-");
 		deviceNum = CommonUtil::CString2Int(splitChannelId[0]);
 		channelNum = CommonUtil::CString2Int(splitChannelId[1]);
-		vdevConfParam[deviceNum].deviceNumber = deviceNum - 1;
+		vdevConfParam[deviceNum].deviceNumber = deviceNum;
 		vdevConfParam[deviceNum].channelCount++;
 		///记录所有的通道号
-		m_vchannelIds.push_back(CommonUtil::Int2CString(deviceNum - 1) + "-" + CommonUtil::Int2CString(channelNum - 1));
+		m_vchannelIds.push_back(CommonUtil::Int2CString(deviceNum) + "-" + CommonUtil::Int2CString(channelNum));
 		///如果是初始化的状态，也即修改默认开始通道0为第一次循环出的开始通道
-		if (vdevConfParam[deviceNum].channelStart == 0 && vdevConfParam[deviceNum].channelCount==0){vdevConfParam[deviceNum].channelStart = channelNum - 1; }
+		if (vdevConfParam[deviceNum].channelStart == 0 && vdevConfParam[deviceNum].channelCount == 1){vdevConfParam[deviceNum].channelStart = channelNum; }
 		///创建窗口与通道之间的关系映射map
 		m_mpsignalCollectionView.insert(pair<CString, CAirCraftCasingVibrateSystemView*>
-			(CommonUtil::Int2CString(deviceNum - 1) + "-" + CommonUtil::Int2CString(channelNum - 1), theApp.m_vsignalCaptureView[i]));
+			(CommonUtil::Int2CString(deviceNum) + "-" + CommonUtil::Int2CString(channelNum), theApp.m_vsignalCaptureView[i]));
 		///创建通道与保存数据之间的关系映射map
 		m_mpcolllectioinDataQueue.insert(pair<CString, ThreadSafeQueue<double>>
-			(CommonUtil::Int2CString(deviceNum - 1) + "-" + CommonUtil::Int2CString(channelNum - 1), ThreadSafeQueue<double>()));
+			(CommonUtil::Int2CString(deviceNum ) + "-" + CommonUtil::Int2CString(channelNum), ThreadSafeQueue<double>()));
 	}
 	int a = 1;
 	Document doc;
@@ -713,6 +712,7 @@ void CMainFrame::OnButtonSuspendCapture()
 	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
 		theApp.m_vsignalCaptureView[i]->StopRefershView();
 	}
+	Sleep(100);
 	theApp.m_icollectionStatus = 2;
 }
 // 停止采集
@@ -731,6 +731,8 @@ void CMainFrame::OnBtnStopCapture()
 	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
 		theApp.m_vsignalCaptureView[i]->StopRefershView();
 	}
+	Sleep(100);
+
 	theApp.m_icollectionStatus = 0;
 }
 
@@ -975,7 +977,6 @@ void CMainFrame::RealTimeSignal2Server()
 
 }
 
-
 ///标题栏修改的响应事件
 LRESULT CMainFrame::OnSetText(WPARAM wParam, LPARAM lParam)
 {
@@ -1093,11 +1094,11 @@ void CMainFrame::CreateCaptureWindow(vector<TbSensor> vsensor){
 			CDocument * pdoc = curTemplate->OpenDocumentFile(NULL);
 			////获得新建的文档的view类
 			POSITION pos = pdoc->GetFirstViewPosition();
-			pdoc->SetTitle(vsensor[i].GetSensorDesc());
 			while (pos != NULL){
-				CAirCraftCasingVibrateSystemView* pView = (CAirCraftCasingVibrateSystemView*)pdoc->GetNextView(pos);
+				CAirCraftCasingVibrateSystemView* currentView = (CAirCraftCasingVibrateSystemView*)pdoc->GetNextView(pos);
 				/////设置传感器
-				pView->SetSensor(vsensor[i]);
+				currentView->SetSensor(vsensor[i]);
+				theApp.m_vsignalCaptureView.push_back(currentView);
 			}
 		}
 	}
@@ -1188,6 +1189,16 @@ void CMainFrame::OnClose()
 {
 	// TODO:  在此添加消息处理程序代码和/或调用默认值
 	KillTimer(StatusBarTimer);
+	for (int i = 0; i < m_vwfAiCtrl.size(); i++){
+		ErrorCode err = Success;
+		err = m_vwfAiCtrl[i]->Stop();
+		if (err != Success)
+		{
+			m_advantechDaqController.CheckError(err);
+			return;
+		}
+	}
+
 	CMDIFrameWndEx::OnClose();
 }
 

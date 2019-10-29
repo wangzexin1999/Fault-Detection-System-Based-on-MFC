@@ -33,6 +33,7 @@ void ChannelParaPresetView::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(ChannelParaPresetView, CDialogEx)
 	ON_NOTIFY(NM_CLICK, IDC_GRIDCTRL_CHANNELPARA, OnGridClick)
 	ON_NOTIFY(NM_DBLCLK, IDC_GRIDCTRL_CHANNELPARA, OnGridDblClick)
+	
 	ON_CBN_SELCHANGE(IDC_COMBO_START_CHANNEL, &ChannelParaPresetView::OnCbnSelchangeComboStartChannel)
 	ON_CBN_SELCHANGE(IDC_COMBO_END_CHANNEL, &ChannelParaPresetView::OnCbnSelchangeComboEndChannel)
 END_MESSAGE_MAP()
@@ -187,6 +188,8 @@ void ChannelParaPresetView::SetGridCellCheck(int row, int col, bool isChecked){
 void ChannelParaPresetView::OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult){
 	m_channelParaGridCtrl.SetEditable(TRUE);
 }
+
+
 
 void ChannelParaPresetView::GetSelectedChannels(vector<TbSensor> & vsensors){
 	for (int row = 1; row < m_channelParaGridCtrl.GetRowCount(); row++){

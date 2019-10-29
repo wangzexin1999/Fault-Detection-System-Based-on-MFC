@@ -284,6 +284,16 @@ public:
 	void OnBtnSelfScale();
 	void OnBtnNoCorror();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	/**********************************************************************
+	功能描述：配置chart图表
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：设置采集窗口的传感器
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void ConfigurateChart(double min,double max);
 };
 
 #ifndef _DEBUG  // AirCraftCasingVibrateSystemView.cpp 中的调试版本
