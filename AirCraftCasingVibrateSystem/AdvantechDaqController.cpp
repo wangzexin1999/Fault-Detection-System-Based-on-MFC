@@ -87,33 +87,6 @@ void AdvantechDaqController::ConfigurateDevice(DevConfParam devConfigPara, Wavef
 	CheckError(errorCode);
 }
 
-//void AdvantechDaqController::GetValueRangeDesc(WaveformAiCtrl *waveformAiCtrl, vector<CString> & valueDescVec){
-//	Array<ValueRange>* ValueRanges = waveformAiCtrl->getFeatures()->getValueRanges();
-//	WCHAR	vrgDescription[128];
-//	MathInterval	ranges;
-//	ValueUnit    u = Volt;
-//	ErrorCode	errorCode;
-//	CString valueDesc;
-//	for (int i = 0; i < ValueRanges->getCount(); i++)
-//	{
-//		errorCode = AdxGetValueRangeInformation((ValueRanges->getItem(i)), sizeof(vrgDescription), vrgDescription, &ranges, &u);
-//		CheckError(errorCode);
-//		if (u == CelsiusUnit)
-//		{
-//			continue;
-//		}
-//		valueDesc = vrgDescription;
-//		valueDescVec.push_back(valueDesc);
-//	}
-//}
-//
-//void  AdvantechDaqController::GetValueRangeDescByDeviceNum(int deviceNum, vector<CString>& valueDescVec){
-//	DeviceInformation devInfo(deviceNum);
-//	WaveformAiCtrl *  wfAiCtrl = WaveformAiCtrl::Create();
-//	ErrorCode errorCode = wfAiCtrl->setSelectedDevice(devInfo);
-//	CheckError(errorCode);
-//	GetValueRangeDesc(wfAiCtrl, valueDescVec);
-//}
 
 void  AdvantechDaqController::GetValueRangeInformationByVrgType(MathInterval & rangeY){
 	ValueUnit	  unit;
