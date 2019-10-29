@@ -1082,7 +1082,7 @@ void CMainFrame::OnBtnGraphAttribute()
 }
 
 void CMainFrame::CreateCaptureWindow(vector<TbSensor> vsensor){
-
+	    
 	for (int i = 0; i < vsensor.size(); i++)
 	{
 		// 新建文档

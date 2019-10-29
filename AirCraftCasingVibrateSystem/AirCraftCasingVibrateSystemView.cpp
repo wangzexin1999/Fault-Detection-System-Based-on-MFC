@@ -56,6 +56,7 @@ CAirCraftCasingVibrateSystemView::CAirCraftCasingVibrateSystemView()
 
 CAirCraftCasingVibrateSystemView::~CAirCraftCasingVibrateSystemView()
 {
+
 }
 
 void CAirCraftCasingVibrateSystemView::DoDataExchange(CDataExchange* pDX)
