@@ -103,7 +103,6 @@ extern TCHAR const * WCHAR_TO_TCHAR(WCHAR const * in, TCHAR * out);
 CMainFrame::CMainFrame()
 {
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_WINDOWS_7);
-
 }
 
 CMainFrame::~CMainFrame(){
@@ -135,6 +134,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	ASSERT(bNameValid);
 	m_wndStatusBar.AddElement(new CMFCRibbonStatusBarPane(ID_STATUSBAR_PANE1, "目前状态", TRUE), "目前状态");
 	m_wndStatusBar.AddExtendedElement(new CMFCRibbonStatusBarPane(ID_STATUSBAR_PANE2, "当前时间:00:00:00", TRUE), strTitlePane2);
+
 
 	//测试加入按钮
 	CMFCRibbonCategory *pCategory = m_wndRibbonBar.GetCategory(3);
@@ -206,7 +206,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	SendMessage(StatusInfMessage);
 	/*状态栏显示时间*/
 	SetTimer(66, 1000, NULL);//安装定时器，并将其时间间隔设为1000毫秒
-	SendMessage(StatusInfMessage);
 	return 0;
 }
 
@@ -978,7 +977,6 @@ void CMainFrame::RealTimeSignal2Server()
 
 }
 
-
 ///标题栏修改的响应事件
 LRESULT CMainFrame::OnSetText(WPARAM wParam, LPARAM lParam)
 {
@@ -1096,11 +1094,11 @@ void CMainFrame::CreateCaptureWindow(vector<TbSensor> vsensor){
 			CDocument * pdoc = curTemplate->OpenDocumentFile(NULL);
 			////获得新建的文档的view类
 			POSITION pos = pdoc->GetFirstViewPosition();
-			pdoc->SetTitle(vsensor[i].GetSensorDesc());
 			while (pos != NULL){
-				CAirCraftCasingVibrateSystemView* pView = (CAirCraftCasingVibrateSystemView*)pdoc->GetNextView(pos);
+				CAirCraftCasingVibrateSystemView* currentView = (CAirCraftCasingVibrateSystemView*)pdoc->GetNextView(pos);
 				/////设置传感器
-				pView->SetSensor(vsensor[i]);
+				currentView->SetSensor(vsensor[i]);
+				theApp.m_vsignalCaptureView.push_back(currentView);
 			}
 		}
 	}

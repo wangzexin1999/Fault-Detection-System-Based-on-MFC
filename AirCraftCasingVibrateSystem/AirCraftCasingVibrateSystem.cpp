@@ -177,6 +177,7 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 
 	// 创建主 MDI 框架窗口
 	CMainFrame* pMainFrame = new CMainFrame();
+
 	if (!pMainFrame || !pMainFrame->LoadFrame(IDR_MAINFRAME))
 	{
 		delete pMainFrame;

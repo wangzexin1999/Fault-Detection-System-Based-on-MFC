@@ -41,17 +41,27 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 	CGridCtrl m_generalParaGridCtrl;
-	//vector<CString> m_vgeneralId;
 
 	DictionaryController m_dictionController;
-	vector<TbDictionary> m_vwindowTypes;
-	vector<TbDictionary> m_vinputMethods;
+	vector<TbDictionary> m_vwindowTypes;  // 窗类型
+	vector<TbDictionary> m_vinputMethods; // 输入方式
+	AdvantechDaqController m_advantechDaqController; // 硬件控制类
+	vector<vector<int>>  m_measuringRange;
 
 	DECLARE_MESSAGE_MAP()
 	SensorParaController m_sensorParaController;
 public:
 	virtual BOOL OnInitDialog();
-
+	/**********************************************************************
+	功能描述：通道参数表格的双击事件，双击设置可修改信息
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	afx_msg void OnGridEndEdit(NMHDR *pNotifyStruct, LRESULT* pResult);
 	void GridCtrlInit();
 	void GeneralComboInit();
 	afx_msg void OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult);

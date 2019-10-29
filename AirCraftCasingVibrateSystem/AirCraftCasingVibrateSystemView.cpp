@@ -138,6 +138,12 @@ void CAirCraftCasingVibrateSystemView::OnTimer(UINT_PTR nIDEvent){
 	
 }
 
+void CAirCraftCasingVibrateSystemView::ConfigurateChart(double min, double max){
+	CChartStandardAxisDu* pLeftAxis = m_chart.CreateStandardAxisDu(CChartCtrl::LeftAxis, 0);
+	pLeftAxis->SetMinMax(min, max);
+	pLeftAxis->SetTickIncrement(false, 3);
+}
+
 ////刷新图标控件的数据
 void  CAirCraftCasingVibrateSystemView::RefershChartCtrlData(){
 	m_pLineSerie->ClearSerie();
@@ -464,6 +470,7 @@ void CAirCraftCasingVibrateSystemView::SplitVector(SmartArray<double> &dXData, S
 
 void  CAirCraftCasingVibrateSystemView::SetSensor(TbSensor sensor){
 	m_signalSelectView.SetSensor(sensor);
+	GetDocument()->SetTitle(sensor.GetSensorDesc());
 }
 void  CAirCraftCasingVibrateSystemView::GetSensor(TbSensor & sensor){
 	 m_signalSelectView.GetSensor(sensor);

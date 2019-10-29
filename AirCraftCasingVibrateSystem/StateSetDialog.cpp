@@ -151,19 +151,19 @@ HBRUSH CStateSetDialog::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	HBRUSH hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
 
 	// TODO:  在此更改 DC 的任何特性
-	if (pWnd->GetDlgCtrlID() == IDC_STATIC_CUR_PLAN_PARA)
-	{
-		//设置显示字体
+	//if (pWnd->GetDlgCtrlID() == IDC_STATIC_CUR_PLAN_PARA)
+	//{
+	//	//设置显示字体
 
-		CFont * cFont = new CFont;
+	//	CFont * cFont = new CFont;
 
-		cFont->CreateFont(16, 0, 0, 0, FW_SEMIBOLD, FALSE, FALSE, 0,ANSI_CHARSET, 
-			OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
-			DEFAULT_PITCH&FF_SWISS, "黑体");
-		pDC->SetTextColor(RGB(255, 0, 0));
-		pWnd->SetFont(cFont); //设置字体
-		delete cFont;
-	}
+	//	cFont->CreateFont(16, 0, 0, 0, FW_SEMIBOLD, FALSE, FALSE, 0,ANSI_CHARSET, 
+	//		OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
+	//		DEFAULT_PITCH&FF_SWISS, "黑体");
+	//	pDC->SetTextColor(RGB(255, 0, 0));
+	//	pWnd->SetFont(cFont); //设置字体
+	//	delete cFont;
+	//}
 	// TODO:  如果默认的不是所需画笔，则返回另一个画笔
 	return hbr;
 }

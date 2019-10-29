@@ -93,5 +93,7 @@ void CGeometricParaView::GridCtrlInit()
 	}
 }
 void CGeometricParaView::OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult){
+
 	m_geometricParaGridCtrl.SetEditable(TRUE);
+
 }
