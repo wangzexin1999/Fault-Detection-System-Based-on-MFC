@@ -22,7 +22,7 @@ TbSensorDao::TbSensorDao()
 	SetVectorAndField("is_reference", "int", m_isReference);
 	SetVectorAndField("engineering_units", "int", m_engineeringUnits);
 	SetVectorAndField("sensitivity", "float", m_sensitivity);
-	SetVectorAndField("mileage_range", "float", m_mileageRange);
+	SetVectorAndField("mileage_range", "int", m_mileageRange);
 	SetVectorAndField("integral_type", "int", m_integralType);
 	SetVectorAndField("integral_units", "int", m_integralUnits);
 	SetVectorAndField("input_method", "int", m_inputMethod);
@@ -52,7 +52,7 @@ TbSensorDao::TbSensorDao(const TbSensorDao & sensor){
 	SetVectorAndField("is_reference", "int", m_isReference);
 	SetVectorAndField("engineering_units", "int", m_engineeringUnits);
 	SetVectorAndField("sensitivity", "float", m_sensitivity);
-	SetVectorAndField("mileage_range", "float", m_mileageRange);
+	SetVectorAndField("mileage_range", "int", m_mileageRange);
 	SetVectorAndField("integral_type", "int", m_integralType);
 	SetVectorAndField("integral_units", "int", m_integralUnits);
 	SetVectorAndField("input_method", "int", m_inputMethod);
@@ -105,7 +105,7 @@ void  TbSensorDao::GetTableFieldValues(TbSensor & sensor){
 	sensor.SetIsReference(m_isReference.GetInt());
 	sensor.SetMaxFrequency(m_maxFrequency.GetFloatOrDouble());
 	sensor.GetMessureType().SetDictId(m_messureType.GetInt());
-	sensor.SetMileageRange(m_mileageRange.GetFloatOrDouble());
+	sensor.SetMileageRange(m_mileageRange.GetInt());
 	sensor.SetPointNum(m_pointNum.GetInt());
 	sensor.SetTestingdeviceId(m_testingdeviceId.GetInt());
 	sensor.SetSensitivity(m_sensitivity.GetFloatOrDouble());

@@ -109,10 +109,10 @@ float TbSensor::GetSensitivity() {
 void TbSensor::SetSensitivity(float sensitivity) {
 	this->m_sensitivity = sensitivity;
 }
-float TbSensor::GetMileageRange() {
+int TbSensor::GetMileageRange() {
 	return m_mileageRange;
 }
-void TbSensor::SetMileageRange(float mileageRange) {
+void TbSensor::SetMileageRange(int mileageRange) {
 	this->m_mileageRange = mileageRange;
 }
 TbDictionary & TbSensor::GetIntegralType() {

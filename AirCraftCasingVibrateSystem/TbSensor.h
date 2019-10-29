@@ -38,7 +38,7 @@ private:
 	char m_isReference;
 	TbDictionary m_engineeringUnits;
 	float  m_sensitivity;
-	float m_mileageRange;
+	int m_mileageRange;
 	TbDictionary m_integralType;
 	TbDictionary m_integralUnits;
 	TbDictionary m_inputMethod;
@@ -80,8 +80,8 @@ public:
 	void SetEngineeringUnits(TbDictionary engineeringUnits);
 	float GetSensitivity();
 	void SetSensitivity(float sensitivity);
-	float GetMileageRange();
-	void SetMileageRange(float mileageRange);
+	int GetMileageRange();
+	void SetMileageRange(int mileageRange);
 	TbDictionary & GetIntegralType();
 	void SetIntegralType(TbDictionary integralType);
 	TbDictionary & GetIntegralUnits();

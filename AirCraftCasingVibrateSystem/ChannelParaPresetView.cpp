@@ -54,7 +54,7 @@ BOOL ChannelParaPresetView::OnInitDialog()
 	}
 
 	//把下面这行注释掉
-	m_advantechDaqController.GetChannels(m_vchannelId);
+	//m_advantechDaqController.GetChannels(m_vchannelId);
 
 	CDialogEx::OnInitDialog();
 	ChannelComboInit();
