@@ -182,3 +182,8 @@ bool CSensorService::Delete(TbSensor sensor){
 		strSqlWhere += " and testingdevice_id ='" + CommonUtil::Int2CString(sensor.GetTestingdeviceId()) + "'";
 	return m_sensorDao.DeleteByCondition(strSqlWhere);
 }
+bool CSensorService::Update(TbSensor sensor){
+	m_sensorDao.SetTableFieldValues(sensor);
+	bool isSuccess = m_sensorDao.UpdateByKey();
+	return isSuccess;
+}

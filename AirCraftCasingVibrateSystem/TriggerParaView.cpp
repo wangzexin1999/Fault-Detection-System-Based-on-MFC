@@ -83,7 +83,12 @@ void CTriggerParaView::GridCtrlInit()
 
 		Item.nFormat = DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS;
 		CString strText;
-		if (col == 0) strText = CommonUtil::Int2CString(row);
+		//if (col == 0) strText = CommonUtil::Int2CString(row);
+		if (col == 0)
+		{
+			strText = theApp.m_currentProject.GetSensorVector()[row - 1].GetChannelId();
+			m_triggerParaGridCtrl.SetItemState(row, col, GVIS_READONLY);
+		}
 		if (col == 1) strText = "±£¡Ù";
 		if (col == 2) strText = CommonUtil::DoubleOrFloat2CString(theApp.m_currentProject.GetSensorVector()[row - 1].GetTriggerMagnitude());
 		if (col == 3) strText = theApp.m_currentProject.GetSensorVector()[row - 1].GetTriggerPolarity().GetDictValue();

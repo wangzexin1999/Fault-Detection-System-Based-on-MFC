@@ -82,3 +82,10 @@ CString TbSignal::GetSaveTime(){
 void TbSignal::SetSaveTime(CString saveTime){
 	m_saveTime = saveTime;
 }
+
+void TbSignal::SetCollectionPara(CString collectionPara){
+	m_collectionPara = collectionPara;
+}
+CString TbSignal::GetCollectionPara(){
+	return m_collectionPara;
+}

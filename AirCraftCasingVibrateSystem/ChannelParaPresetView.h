@@ -6,6 +6,7 @@
 #include <vector>
 #include "afxwin.h"
 #include "AdvantechDaqController.h"
+#include "SensorParaController.h"
 using namespace  std;
 // ChannelParaPresetView 对话框
 
@@ -30,6 +31,7 @@ protected:
 	AdvantechDaqController m_advantechDaqController;
 	CComboBox m_startChannelCombo;
 	CComboBox m_endChannelCombo;
+	vector<vector<int>>  m_measuringRange;
 	DECLARE_MESSAGE_MAP()
 	/**********************************************************************
 	功能描述：初始化表格控件

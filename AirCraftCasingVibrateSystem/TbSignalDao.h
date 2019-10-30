@@ -19,6 +19,7 @@ public:
 	PDAttribute m_testingDeviceId;
 	PDAttribute m_collectionStatus;
 	PDAttribute m_pointCount;
+	PDAttribute m_collectionPara;
 
 	
 	bool SelectObjectsByCondition(vector<TbSignalDao> &selectedValueVector, CString strSqlQueryWhere = "");

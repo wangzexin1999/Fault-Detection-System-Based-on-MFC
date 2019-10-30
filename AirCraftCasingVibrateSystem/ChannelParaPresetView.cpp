@@ -55,7 +55,7 @@ BOOL ChannelParaPresetView::OnInitDialog()
 	}
 
 	//把下面这行注释掉
-	//m_advantechDaqController.GetChannels(m_vchannelId);
+	m_advantechDaqController.GetChannels(m_vchannelId);
 
 	CDialogEx::OnInitDialog();
 	ChannelComboInit();
@@ -84,6 +84,13 @@ void ChannelParaPresetView::GridCtrlInit()
 	
 	m_channelParaGridCtrl.SetSingleRowSelection(true);
 	//m_channelParaGridCtrl.OnGridClick();
+	int deviceNum;
+	WCHAR	vrgDescription[128];
+	MathInterval	ranges;
+	ValueUnit    u = Volt;
+	Array<ValueRange>* g_valueRanges = nullptr;
+	int valueRangeIndex;
+	//CStringArray OptionsType;
 	for (int row = 0; row < m_channelParaGridCtrl.GetRowCount(); row++)
 	for (int col = 0; col < m_channelParaGridCtrl.GetColumnCount(); col++)
 	{
@@ -113,6 +120,7 @@ void ChannelParaPresetView::GridCtrlInit()
 			if (col == 5){
 				Item.strText = "输入方式";
 			}
+
 			if (col == 6){
 				Item.strText = "量程";
 			}
@@ -151,6 +159,7 @@ void ChannelParaPresetView::GridCtrlInit()
 			Item.strText = OptionsType[0];
 		}
 		if (col == 6) Item.strText = "";
+
 		m_channelParaGridCtrl.SetItem(&Item);
 	}
 	///默认选中所有通道
@@ -214,7 +223,8 @@ void ChannelParaPresetView::GetSelectedChannels(vector<TbSensor> & vsensors){
 					int index = pCellCombo->GetCurSel();
 					currentSensor.SetInputMethod(m_vinputMethods[index]); 
 				}
-				if (col == 6) currentSensor.SetMileageRange(atoi(m_channelParaGridCtrl.GetItemText(row, col)));
+				if (col == 6)
+					currentSensor.SetMileageRange(atoi(m_channelParaGridCtrl.GetItemText(row, col)));
 			}
 			vsensors.push_back(currentSensor);
 		}

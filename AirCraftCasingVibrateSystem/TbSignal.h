@@ -24,6 +24,7 @@ private:
 	int m_testingDeviceId;
 	CString m_collectionStatus;
 	int m_pointCount;
+	CString m_collectionPara;
 public:
 	int GetSignalId();
 	void SetSignalId(int signalId);
@@ -45,5 +46,7 @@ public:
 	CString GetCollectionStatus();
 	void SetPointCount(int pointNumber);
 	int GetPointCount();
+	CString GetCollectionPara();
+	void SetCollectionPara(CString collectionpara);
 };
 

@@ -36,3 +36,10 @@ Result SensorController::FindAllSensorByTestingDeviceId(int testingDeviceId, vec
 	}
 	return Result(false, "加载传感器数据失败");
 }
+Result SensorController::UpdateSensor(TbSensor sensor){
+	bool isSuccess = m_sensorService.Update(sensor);
+	if (isSuccess){
+		return Result(true, "添加成功");
+	}
+	return Result(false, "添加失败");
+}

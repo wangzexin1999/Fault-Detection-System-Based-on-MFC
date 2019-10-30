@@ -79,6 +79,11 @@ void CGeneralParaView::OnGridEndEdit(NMHDR *pNotifyStruct, LRESULT* pResult)
 	theApp.m_vsignalCaptureView[pItem->iRow - 1]->SetSensor(theApp.m_currentProject.GetSensorVector()[pItem->iRow - 1]);
 	///更新数据库，交给周书航了
 
+	SensorController m_SensorController;
+	Result res = m_SensorController.UpdateSensor(theApp.m_currentProject.GetSensorVector()[pItem->iRow - 1]);
+	if (!res.GetIsSuccess()){
+		AfxMessageBox(res.GetMessages());
+	}
 
 
 	///将表格设置为不可编辑

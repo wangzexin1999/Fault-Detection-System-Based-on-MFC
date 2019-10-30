@@ -17,6 +17,7 @@ TbSignalDao::TbSignalDao()
 	SetVectorAndField("testingdevice_id", "int", m_testingDeviceId);
 	SetVectorAndField("collectionstatus", "CString", m_collectionStatus);
 	SetVectorAndField("point_count", "int", m_pointCount);
+	SetVectorAndField("collectionpara", "CString", m_collectionPara);
 }
 
 TbSignalDao::TbSignalDao(const TbSignalDao & signal){
@@ -33,6 +34,7 @@ TbSignalDao::TbSignalDao(const TbSignalDao & signal){
 	SetVectorAndField("testingdevice_id", "int", m_testingDeviceId);
 	SetVectorAndField("collectionstatus", "CString", m_collectionStatus);
 	SetVectorAndField("point_count", "int", m_pointCount);
+	SetVectorAndField("collectionpara", "CString", m_collectionPara);
 	operator = (signal);
 }
 
@@ -81,6 +83,7 @@ void TbSignalDao::GetTableFieldValues(TbSignal &signal){
 	signal.SetTestingDeviceId(m_testingDeviceId.GetInt());
 	signal.SetCollectionStatus(m_collectionStatus.m_strValue);
 	signal.SetPointCount(m_pointCount.GetInt());
+	signal.SetCollectionPara(m_collectionPara.m_strValue);
 }
 
 void TbSignalDao::SetTableFieldValues(TbSignal signal){
@@ -94,4 +97,5 @@ void TbSignalDao::SetTableFieldValues(TbSignal signal){
 	m_testingDeviceId.SetValue(signal.GetTestingDeviceId());
 	m_collectionStatus.SetValue(signal.GetCollectionStatus());
 	m_pointCount.SetValue(signal.GetPointCount());
+	m_collectionPara.SetValue(signal.GetCollectionPara());
 }
