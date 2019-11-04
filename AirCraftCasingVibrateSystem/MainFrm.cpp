@@ -670,7 +670,7 @@ void CMainFrame::OnButtonStartCapture()
 		wfAiCtrl->addDataReadyHandler(OnDataReadyEvent, this);
 		vdevConfParam[i].clockRatePerChan = collectionFrequency;
 		vdevConfParam[i].sectionLength = collectionPoint;
-		vdevConfParam[i].vrgType = 2;
+		vdevConfParam[i].vrgType = 13;
 		DevConfParam b = vdevConfParam[i];
 		m_advantechDaqController.ConfigurateDevice(vdevConfParam[i], wfAiCtrl);
 		TRACE("111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111\n");
@@ -1006,8 +1006,6 @@ LRESULT CMainFrame::OnSetText(WPARAM wParam, LPARAM lParam)
 
 }
 
-
-
 // 图形属性
 void CMainFrame::OnBtnGraphAttribute()
 {
@@ -1192,10 +1190,10 @@ void CMainFrame::OnClose()
 	for (int i = 0; i < m_vwfAiCtrl.size(); i++){
 		ErrorCode err = Success;
 		err = m_vwfAiCtrl[i]->Stop();
+		m_vwfAiCtrl[i]->Dispose();
 		if (err != Success)
 		{
 			m_advantechDaqController.CheckError(err);
-			return;
 		}
 	}
 
@@ -1331,7 +1329,7 @@ void CMainFrame::OnDataReadyEvent(void * sender, BfdAiEventArgs * args, void *us
 	for (int i = 0; i < getDataCount / channelCount; i++){
 		xData.push_back(i);
 	}
-
+	
 	for (int channel = 0; channel < channelCount; channel++){
 		SmartArray<double> yData; ///y坐标
 		//对传入的数据进行傅里叶变换处理

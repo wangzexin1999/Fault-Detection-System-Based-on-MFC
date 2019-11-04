@@ -31,7 +31,8 @@ protected:
 	AdvantechDaqController m_advantechDaqController;
 	CComboBox m_startChannelCombo;
 	CComboBox m_endChannelCombo;
-	vector<vector<int>>  m_measuringRange;
+	vector<vector<int>>  c_measuringRange;
+	SensorParaController m_sensorParaController;
 	DECLARE_MESSAGE_MAP()
 	/**********************************************************************
 	功能描述：初始化表格控件

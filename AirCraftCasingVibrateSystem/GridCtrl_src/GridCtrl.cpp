@@ -4741,10 +4741,8 @@ BOOL CGridCtrl::SetItemState(int nRow, int nCol, UINT state)
     ASSERT(pCell);
     if (!pCell)
         return FALSE;
-
     // Set the cell's state
     pCell->SetState(state);
-
     return TRUE;
 }
 

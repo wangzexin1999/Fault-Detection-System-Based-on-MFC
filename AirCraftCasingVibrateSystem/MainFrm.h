@@ -68,7 +68,9 @@ protected:  // 控件条嵌入成员
 	CMFCRibbonStatusBar  m_wndStatusBar;
 	CMFCCaptionBar    m_wndCaptionBar;
 	CMFCToolBar       m_wndContrlBar;
+
 	vector<WaveformAiCtrl *> m_vwfAiCtrl;
+
 	CGraphAttributeView m_graphAttributeView; // 图形属性界面
 	SignalController m_signalController;
 	ProjectController m_projectController;

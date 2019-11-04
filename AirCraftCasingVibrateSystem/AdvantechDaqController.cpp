@@ -52,6 +52,7 @@ void AdvantechDaqController::ConfigurateDevice(DevConfParam devConfigPara, Wavef
 	Conversion * conversion = waveformAiCtrl->getConversion();
 	errorCode = conversion->setChannelStart(devConfigPara.channelStart);
 	CheckError(errorCode);
+
 	errorCode = conversion->setChannelCount(devConfigPara.channelCount);
 	CheckError(errorCode);
 	errorCode = conversion->setClockRate(devConfigPara.clockRatePerChan);
@@ -82,6 +83,12 @@ void AdvantechDaqController::ConfigurateDevice(DevConfParam devConfigPara, Wavef
 		CheckError(errorCode);
 		channel += 1;
 	}
+	int a = waveformAiCtrl->getRecord()->getSectionLength();
+	int b = waveformAiCtrl->getConversion()->getChannelStart();
+	int c = waveformAiCtrl->getConversion()->getChannelCount();
+
+	int d = waveformAiCtrl->getDevice()->getDeviceNumber();
+
 	// ×¼±¸ buffered AI. 
 	errorCode = waveformAiCtrl->Prepare();
 	CheckError(errorCode);

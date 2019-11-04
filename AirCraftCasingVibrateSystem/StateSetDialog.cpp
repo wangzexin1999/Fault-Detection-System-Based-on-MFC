@@ -133,6 +133,7 @@ void  CStateSetDialog::ComboBoxInit(){
 
 void CStateSetDialog::RefreshView(){
 	///1.解析项目表记录的json数据
+	if (theApp.m_currentProject.GetCollectionPlans() == "") return;
 	m_collectionPlanDoc.Parse(theApp.m_currentProject.GetCollectionPlans());
 	if (m_collectionPlanDoc.HasParseError()){
 		AfxMessageBox("采集计划加载失败");

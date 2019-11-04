@@ -7,6 +7,7 @@
 #include "afxdialogex.h"
 #include "CommonUtil.h"
 #include "Result.h"
+
 // ChannelParaPresetView 对话框
 
 IMPLEMENT_DYNAMIC(ChannelParaPresetView, CDialogEx)
@@ -64,6 +65,8 @@ BOOL ChannelParaPresetView::OnInitDialog()
 }
 void ChannelParaPresetView::GridCtrlInit()
 {
+	//c_measuringRange.resize(m_channelParaGridCtrl.GetRowCount());
+
 	int startChannelIndex = m_startChannelCombo.GetCurSel();
 	int endChannelIndex = m_endChannelCombo.GetCurSel();
 	m_channelParaGridCtrl.DeleteAllItems();
@@ -84,13 +87,7 @@ void ChannelParaPresetView::GridCtrlInit()
 	
 	m_channelParaGridCtrl.SetSingleRowSelection(true);
 	//m_channelParaGridCtrl.OnGridClick();
-	int deviceNum;
-	WCHAR	vrgDescription[128];
-	MathInterval	ranges;
-	ValueUnit    u = Volt;
-	Array<ValueRange>* g_valueRanges = nullptr;
-	int valueRangeIndex;
-	//CStringArray OptionsType;
+	c_measuringRange.resize(m_channelParaGridCtrl.GetRowCount()-1);
 	for (int row = 0; row < m_channelParaGridCtrl.GetRowCount(); row++)
 	for (int col = 0; col < m_channelParaGridCtrl.GetColumnCount(); col++)
 	{
@@ -131,7 +128,11 @@ void ChannelParaPresetView::GridCtrlInit()
 		Item.nFormat = DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS;
 		CString strText;
 		if (col == 0){ m_channelParaGridCtrl.SetCellType(row, 0, RUNTIME_CLASS(CGridCellCheck)); }
-		if (col == 1) Item.strText = m_vchannelId[startChannelIndex ++];
+		if (col == 1)
+		{
+			Item.strText = m_vchannelId[startChannelIndex++];
+			m_channelParaGridCtrl.SetItemState(row, col, GVIS_READONLY);
+		}
 		if (col == 2) Item.strText = "通道" + CommonUtil::Int2CString(row);
 		if (col == 3) {
 			m_channelParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCombo));
@@ -158,8 +159,55 @@ void ChannelParaPresetView::GridCtrlInit()
 			pCellCombo->SetCurSel(0);
 			Item.strText = OptionsType[0];
 		}
-		if (col == 6) Item.strText = "";
+		//int deviceNum=0;
+		if (col == 6)
+			//Item.strText = "";
+		{
+			int deviceNum;
+			WCHAR	c_vrgDescription[128];
+			MathInterval	c_ranges;
+			ValueUnit    c_u = Volt;
+			Array<ValueRange>* c_valueRanges = nullptr;
+			int valueRangeIndex;
+			CStringArray OptionsType;
 
+			m_channelParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCombo));
+			CGridCellCombo* pCellCombo = (CGridCellCombo*)m_channelParaGridCtrl.GetCell(row, col);
+			pCellCombo->SetStyle(CBS_DROPDOWN);
+
+			OptionsType.RemoveAll();
+			valueRangeIndex = 0;
+
+			//deviceNum = CommonUtil::CString2Int(CommonUtil::GetCStringVectorFromSplitCString(theApp.m_currentProject.GetSensorVector()[row - 1].GetChannelId(), "-")[0]);
+			deviceNum = CommonUtil::CString2Int(CommonUtil::GetCStringVectorFromSplitCString(m_vchannelId[row-1], "-")[0]);
+			m_advantechDaqController.GetValueRangeInformationByDeviceNum(deviceNum, c_valueRanges);
+			for (int i = 0; i < c_valueRanges->getCount(); i++){
+				ErrorCode error = AdxGetValueRangeInformation((c_valueRanges->getItem(i)), sizeof(c_vrgDescription), c_vrgDescription, &c_ranges, &c_u);
+				m_advantechDaqController.CheckError(error);
+				if (c_u == CelsiusUnit)
+				{
+					continue;
+				}
+				CString str(c_vrgDescription);
+				OptionsType.Add(str);
+				//if (c_valueRanges->getItem(i) == theApp.m_currentProject.GetSensorVector()[row - 1].GetMileageRange()){
+				//	///记录上次选中的量程的索引
+				//	valueRangeIndex = i;
+				//}
+				c_measuringRange[row - 1].push_back((int)c_valueRanges->getItem(i));
+			}
+
+
+			pCellCombo->SetOptions(OptionsType);
+			pCellCombo->SetCurSel(0);
+			///如果未选择量程，则默认量程是第一个
+			Item.strText = OptionsType[valueRangeIndex];
+			/*///设置对应采集窗口的量程
+			MathInterval yInterval;
+			yInterval.Type = m_measuringRange[row - 1][valueRangeIndex];
+			m_advantechDaqController.GetValueRangeInformationByVrgType(yInterval);
+			theApp.m_vsignalCaptureView[row - 1]->ConfigurateChart(yInterval.Min, yInterval.Max);*/
+		}
 		m_channelParaGridCtrl.SetItem(&Item);
 	}
 	///默认选中所有通道
@@ -208,7 +256,7 @@ void ChannelParaPresetView::GetSelectedChannels(vector<TbSensor> & vsensors){
 		TbSensor currentSensor;
 		if (pCell->GetCheck()){
 			for (int col = 0; col < m_channelParaGridCtrl.GetColumnCount();col++){
-				if (col == 1) currentSensor.SetChannelId(m_channelParaGridCtrl.GetItemText(row, col));
+				if (col == 1)currentSensor.SetChannelId(m_channelParaGridCtrl.GetItemText(row, col));
 				if (col == 2) currentSensor.SetSensorDesc(m_channelParaGridCtrl.GetItemText(row,col));
 				if (col == 3){
 					///拿到选择的窗类型
@@ -224,7 +272,13 @@ void ChannelParaPresetView::GetSelectedChannels(vector<TbSensor> & vsensors){
 					currentSensor.SetInputMethod(m_vinputMethods[index]); 
 				}
 				if (col == 6)
-					currentSensor.SetMileageRange(atoi(m_channelParaGridCtrl.GetItemText(row, col)));
+					//currentSensor.SetMileageRange(atoi(m_channelParaGridCtrl.GetItemText(row, col)));
+				{
+					///拿到选择的量程范围
+					CGridCellCombo* pCellCombo = (CGridCellCombo*)m_channelParaGridCtrl.GetCell(row, col);
+					int index = pCellCombo->GetCurSel();
+					currentSensor.SetMileageRange(c_measuringRange[row - 1][index]);
+				}
 			}
 			vsensors.push_back(currentSensor);
 		}
