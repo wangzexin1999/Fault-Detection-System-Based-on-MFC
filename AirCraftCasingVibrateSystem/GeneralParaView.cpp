@@ -74,7 +74,7 @@ void CGeneralParaView::OnGridEndEdit(NMHDR *pNotifyStruct, LRESULT* pResult)
 	MathInterval yInterval;
 	yInterval.Type = theApp.m_currentProject.GetSensorVector()[pItem->iRow - 1].GetMileageRange();
 	m_advantechDaqController.GetValueRangeInformationByVrgType(yInterval);
-	theApp.m_vsignalCaptureView[pItem->iRow - 1]->ConfigurateChart(yInterval.Min,yInterval.Max);
+	theApp.m_vsignalCaptureView[pItem->iRow - 1]->SetChartXYCoordinateLen(0,-1,yInterval.Min, yInterval.Max);
 	///刷新窗口显示的传感器
 	theApp.m_vsignalCaptureView[pItem->iRow - 1]->SetSensor(theApp.m_currentProject.GetSensorVector()[pItem->iRow - 1]);
 	///更新数据库，交给周书航了

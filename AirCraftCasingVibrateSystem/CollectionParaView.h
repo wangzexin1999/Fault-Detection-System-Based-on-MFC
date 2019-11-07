@@ -51,7 +51,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	void CollectionParaInfoInit();
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
-	void GetSelectedTestingDevice(TbTestingDevice &testingDevice);
+	void SaveTestingDevice(TbTestingDevice &testingDevice);
 	afx_msg void OnCbnSelchangeCombo1();
 	afx_msg void OnCbnSelchangeCombo2();
 	afx_msg void OnCbnSelchangeCombo3();

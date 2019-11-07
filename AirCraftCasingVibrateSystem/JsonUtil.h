@@ -16,19 +16,32 @@ Modification:
 修 改 人：
 修改内容：
 ************************************************************************/
+#include "include/rapidjson/document.h"
+#include "include/rapidjson/writer.h"
+#include "include/rapidjson/stringbuffer.h"
+#include "Result.h"
+using namespace rapidjson;
+
 #pragma once
-struct Json
-{
-	CString m_key;
-	CString m_value;
-};
 
 class JsonUtil
 {
+private:
+	Document m_document;
 public:
 	JsonUtil();
 	~JsonUtil();
-	void GetValue(CString jsonString,CString key);
+
+	/**********************************************************************
+	功能描述：从json格式的字符串中拿到指定key的Value对象
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	static Result GetValueFromJsonString(CString jsonString, CString key, Value & value);
 
 };
 

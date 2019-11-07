@@ -49,7 +49,9 @@ BOOL CollectionParaView::OnInitDialog()
 	CollectionParaInfoInit();
 	return TRUE; 
 }
-void CollectionParaView::GetSelectedTestingDevice(TbTestingDevice &testingDevice){
+
+
+void CollectionParaView::SaveTestingDevice(TbTestingDevice &testingDevice){
 	int index = m_collectionFrequencyCombo.GetCurSel();
 	//m_collectionFrequencyCombo.GetLBText(index, strInfo1);//通过索引获取对应的值
 	testingDevice.SetCollectionFrequency(m_vcollectionFrequency[index]);
@@ -74,7 +76,6 @@ void CollectionParaView::GetSelectedTestingDevice(TbTestingDevice &testingDevice
 	if (!res.GetIsSuccess()){
 		AfxMessageBox(res.GetMessages());
 	}
-
 }
 
 void CollectionParaView::CollectionParaInfoInit(){
@@ -180,26 +181,29 @@ void CollectionParaView::RefreshView(){
 void CollectionParaView::OnCbnSelchangeCombo1()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	GetSelectedTestingDevice(theApp.m_currentProject.GetTestingDevice());
+	SaveTestingDevice(theApp.m_currentProject.GetTestingDevice());
 }
 
 
 void CollectionParaView::OnCbnSelchangeCombo2()
 {
-	// TODO:  在此添加控件通知处理程序代码
-	GetSelectedTestingDevice(theApp.m_currentProject.GetTestingDevice());
+	///调整坐标系的大小
+	SaveTestingDevice(theApp.m_currentProject.GetTestingDevice());
+	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
+		theApp.m_vsignalCaptureView[i]->SetChartXYCoordinateLen();
+	}
 }
 
 
 void CollectionParaView::OnCbnSelchangeCombo3()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	GetSelectedTestingDevice(theApp.m_currentProject.GetTestingDevice());
+	SaveTestingDevice(theApp.m_currentProject.GetTestingDevice());
 }
 
 void CollectionParaView::OnCbnSelchangeComboCollectionPoints()
 {
-	GetSelectedTestingDevice(theApp.m_currentProject.GetTestingDevice());
+	SaveTestingDevice(theApp.m_currentProject.GetTestingDevice());
 }
 
 
@@ -211,5 +215,5 @@ void CollectionParaView::OnEnChangeEditCollectionTimes()
 	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
 
 	// TODO:  在此添加控件通知处理程序代码
-	GetSelectedTestingDevice(theApp.m_currentProject.GetTestingDevice());
+	SaveTestingDevice(theApp.m_currentProject.GetTestingDevice());
 }

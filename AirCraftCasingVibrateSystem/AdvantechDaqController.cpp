@@ -75,20 +75,19 @@ void AdvantechDaqController::ConfigurateDevice(DevConfParam devConfigPara, Wavef
 			if (channel % 2 == 1){
 				channel -= 1;
 			}
-			errorCode = channels->getItem(channel%count).setValueRange((ValueRange)(devConfigPara.vrgType));
+			errorCode = channels->getItem(channel%count).setValueRange((ValueRange)(devConfigPara.vrgTypes[i]));
 			CheckError(errorCode);
 			channel += 1;
 		}
-		errorCode = channels->getItem(channel%count).setValueRange((ValueRange)(devConfigPara.vrgType));
+		errorCode = channels->getItem(channel%count).setValueRange((ValueRange)(devConfigPara.vrgTypes[i]));
 		CheckError(errorCode);
 		channel += 1;
 	}
+
 	int a = waveformAiCtrl->getRecord()->getSectionLength();
 	int b = waveformAiCtrl->getConversion()->getChannelStart();
 	int c = waveformAiCtrl->getConversion()->getChannelCount();
-
 	int d = waveformAiCtrl->getDevice()->getDeviceNumber();
-
 	// ×¼±¸ buffered AI. 
 	errorCode = waveformAiCtrl->Prepare();
 	CheckError(errorCode);

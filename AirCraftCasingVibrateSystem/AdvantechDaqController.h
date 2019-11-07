@@ -31,10 +31,10 @@ typedef struct DiveceConfigueInfomation
 	int			deviceNumber;
 	int			channelStart;
 	int			channelCount;
-	int			vrgType;
 	double      clockRatePerChan;
 	int32			sectionLength;
 	WCHAR       profilePath[256];
+	vector<int>	vrgTypes;
 }DevConfParam;
 
 

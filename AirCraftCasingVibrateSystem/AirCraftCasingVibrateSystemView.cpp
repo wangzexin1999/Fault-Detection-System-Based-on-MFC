@@ -17,7 +17,6 @@
 #ifndef SHARED_HANDLERS
 #include "AirCraftCasingVibrateSystem.h"
 #endif
-
 #include "AirCraftCasingVibrateSystemDoc.h"
 #include "AirCraftCasingVibrateSystemView.h"
 #include "DateUtil.h"
@@ -92,14 +91,11 @@ void CAirCraftCasingVibrateSystemView::OnInitialUpdate()
 	// 清空所有
 	CDuChartCtrlStaticFunction::RemoveAll(pDuChartCtrl);
 	// 构造坐标轴
-	//CDuChartCtrlStaticFunction::CreateAxis(pDuChartCtrl, nSelectChannelCount, nXAxisType, nYAxisType);
-	CChartStandardAxisDu* pBottomAxis;
-	pBottomAxis = m_chart.CreateStandardAxisDu(CChartCtrl::BottomAxis, 0);
-	pBottomAxis->SetMinMax(0, 500);//设置下刻度
-	pBottomAxis->SetTickIncrement(false, 100);
-	CChartStandardAxisDu* pLeftAxis = m_chart.CreateStandardAxisDu(CChartCtrl::LeftAxis, 0);
-	pLeftAxis->SetMinMax(-15, 15);
-	pLeftAxis->SetTickIncrement(false,3);
+	CChartStandardAxisDu* axisDu = m_chart.CreateStandardAxisDu(CChartCtrl::BottomAxis, 0);
+	axisDu->SetTickIncrement(true, 100);
+	axisDu = m_chart.CreateStandardAxisDu(CChartCtrl::LeftAxis, 0);
+	axisDu->SetTickIncrement(true, 1);
+	SetChartXYCoordinateLen(0, 500, -15, 15);
 	// 构造曲线
 	CDuChartCtrlStaticFunction::CreateSeries(pDuChartCtrl, nSelectChannelCount, nSerieType);
 	// 构造光标
@@ -139,10 +135,45 @@ void CAirCraftCasingVibrateSystemView::OnTimer(UINT_PTR nIDEvent){
 	
 }
 
-void CAirCraftCasingVibrateSystemView::ConfigurateChart(double min, double max){
-	CChartStandardAxisDu* pLeftAxis = m_chart.CreateStandardAxisDu(CChartCtrl::LeftAxis, 0);
-	pLeftAxis->SetMinMax(min, max);
-	pLeftAxis->SetTickIncrement(false, 3);
+void CAirCraftCasingVibrateSystemView::SetChartXYCoordinateLen(double xmin, double ymax, double ymin, double xmax){
+	///坐标值存在默认参数-1，如果使用默认参数的话，默认的设置为采集窗口绑定的传感器的参数取值
+	Value temp;
+	Result res;
+	if (xmax == -1){
+		///xmax如果使用默认参数,那么就将x的最大值设置为采集频率
+		res =   JsonUtil::GetValueFromJsonString(theApp.m_currentProject.GetTestingDevice().GetAnalysisFrequency().GetDictValue(), "content", temp);
+		if (res.GetIsSuccess()){
+			xmax = temp.GetFloat();
+		}
+	}
+	if (ymax==-1||ymin==-1){
+		///量程的最大和最小值默认设置为当前采集窗口绑定的传感器的量程
+		MathInterval yInterval;
+		TbSensor currentSensor;
+		m_signalSelectView.GetSensor(currentSensor);
+		yInterval.Type = currentSensor.GetMileageRange();
+		m_advantechDaqController.GetValueRangeInformationByVrgType(yInterval);
+		ymin = yInterval.Min;
+		ymax = yInterval.Max;
+	}
+	///设置x坐标的长度
+	CChartAxis * pxAxis = m_chart.GetAxisDu(CChartCtrl::BottomAxis, 0);
+	pxAxis->SetMinMax(xmin, xmax);
+
+	///设置y坐标的长度
+	CChartAxis * pyAxis = m_chart.GetAxisDu(CChartCtrl::LeftAxis, 0);
+	pyAxis->SetMinMax(ymin, ymax);
+
+	//CChartStandardAxisDu* pBottomAxis;
+	//pBottomAxis = m_chart.CreateStandardAxisDu(CChartCtrl::BottomAxis, 0);
+
+	//pBottomAxis->SetMinMax(xmin, xmax);//设置下刻度
+	//pBottomAxis->SetTickIncrement(true, 100);
+
+	///设置y坐标的长度
+	/*CChartStandardAxisDu* pLeftAxis = m_chart.CreateStandardAxisDu(CChartCtrl::LeftAxis, 0);
+	pLeftAxis->SetMinMax(ymin, ymax);
+	pLeftAxis->SetTickIncrement(true, 3);*/
 }
 
 ////刷新图标控件的数据
@@ -472,6 +503,7 @@ void CAirCraftCasingVibrateSystemView::SplitVector(SmartArray<double> &dXData, S
 void  CAirCraftCasingVibrateSystemView::SetSensor(TbSensor sensor){
 	m_signalSelectView.SetSensor(sensor);
 	GetDocument()->SetTitle(sensor.GetSensorDesc());
+	SetChartXYCoordinateLen();
 }
 void  CAirCraftCasingVibrateSystemView::GetSensor(TbSensor & sensor){
 	 m_signalSelectView.GetSensor(sensor);

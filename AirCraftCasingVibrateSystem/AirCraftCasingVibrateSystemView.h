@@ -24,7 +24,7 @@
 #include "resource.h"
 #include "SignalSelectView.h"
 #include "SensorController.h"
-
+#include "AdvantechDaqController.h"
 #include "TbSensor.h"
 #include "SmartFFTWComplexArray.h"
 #include "SmartArray.h"
@@ -32,6 +32,10 @@
 #include "EchoSignal.h"
 #include "redisUtil.h"
 #include "RealTimeSignal.h"
+#include "JsonUtil.h"
+#include "DictionaryController.h"
+
+
 
 class CAirCraftCasingVibrateSystemView : public CFormView
 {
@@ -55,7 +59,9 @@ private:
 	static int m_iwindowCount;//窗口数量
 	int m_realTimeSignalCaptureflag = true; // 采集实时数据时，第一次是push，接下来是赋值
 	int m_icountNumsReadDraw = 0; //采样数据截取时的索引
-	
+	AdvantechDaqController m_advantechDaqController;
+
+
 public:
 	ThreadSafeQueue<RealTimeSignal> m_realTimeSignal;  // 实时数据队列
 	vector<AcquiredSignal> m_sampleFromFileDataQueue;  // 采样队列从文件中获得
@@ -254,7 +260,7 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 	virtual void OnInitialUpdate(); // 构造后第一次调用
-
+	DictionaryController m_dictionaryController;
 // 实现
 public:
 	virtual ~CAirCraftCasingVibrateSystemView();
@@ -270,6 +276,7 @@ protected:
 	afx_msg void OnFilePrintPreview();
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnPaint();
@@ -285,15 +292,17 @@ public:
 	void OnBtnNoCorror();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	/**********************************************************************
-	功能描述：配置chart图表
-	输入参数：
+	功能描述：设置xy坐标的最小值和最大值
+	输入参数：xmin,xmax,ymin,ymax
 	输出参数：
 	返 回 值：
-	其它说明：设置采集窗口的传感器
+	其它说明：坐标值存在默认参数-1，如果使用默认参数的话，默认的设置为采集窗口绑定的传感器的参数取值
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	void ConfigurateChart(double min,double max);
+	void SetChartXYCoordinateLen(double xmin = 0, double ymax = -1, double ymin = -1, double xmax = -1);
+
+
 };
 
 #ifndef _DEBUG  // AirCraftCasingVibrateSystemView.cpp 中的调试版本

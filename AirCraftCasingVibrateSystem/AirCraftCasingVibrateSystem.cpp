@@ -186,6 +186,8 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	m_pMainWnd = pMainFrame;
 
 
+	
+
 	// 分析标准 shell 命令、DDE、打开文件操作的命令行
 	CCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
