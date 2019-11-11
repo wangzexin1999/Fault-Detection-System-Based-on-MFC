@@ -38,8 +38,9 @@ BEGIN_MESSAGE_MAP(CAirCraftCasingVibrateSystemView, CFormView)
 	ON_WM_RBUTTONUP()
 	ON_WM_PAINT()
 	ON_COMMAND(ID_BUTTON_SIGNAL_SELECT, &CAirCraftCasingVibrateSystemView::OnButtonSignalSelect)
-	
 	ON_WM_TIMER()
+
+	ON_MESSAGE(WM_USER_REFRESH_CHART, &CAirCraftCasingVibrateSystemView::OnRefreshChart)
 
 END_MESSAGE_MAP()
 
@@ -125,14 +126,10 @@ void CAirCraftCasingVibrateSystemView::OnInitialUpdate()
 }
 
 void CAirCraftCasingVibrateSystemView::OnTimer(UINT_PTR nIDEvent){
-	if (m_icurrentWindowNumber == nIDEvent){
-		RefershChartCtrlData();  // 采集数据回显
-	}
 	if (m_iSampleDataEchoTimerNum == nIDEvent)
 	{
 		SampleDataEcho();  //采样数据回显
 	}
-	
 }
 
 void CAirCraftCasingVibrateSystemView::SetChartXYCoordinateLen(double xmin, double ymax, double ymin, double xmax){
@@ -175,28 +172,6 @@ void CAirCraftCasingVibrateSystemView::SetChartXYCoordinateLen(double xmin, doub
 	pLeftAxis->SetMinMax(ymin, ymax);
 	pLeftAxis->SetTickIncrement(true, 3);*/
 }
-
-////刷新图标控件的数据
-void  CAirCraftCasingVibrateSystemView::RefershChartCtrlData(){
-	m_pLineSerie->ClearSerie();
-	m_pLineSerie->SetNeedCalStatValue(TRUE);
-	//TRACE("\n刷新%d窗口.......................................................\n", m_icurrentWindowNumber);
-	shared_ptr<EchoSignal> echoSignal = m_echoSignalQueue.wait_and_pop();
-	SmartArray<double> xData = echoSignal->GetXData();
-	SmartArray<double> yData = echoSignal->GetYData();
-
-	m_pLineSerie->AddPoints(xData.GetSmartArray(),yData.GetSmartArray(),xData.size() / 2);
-}
-///刷新数据
-void  CAirCraftCasingVibrateSystemView::RefershView(){
-	///开启定时器去刷新页面
-	SetTimer(m_icurrentWindowNumber, 10, NULL);
-}
-///停止刷新数据
-void  CAirCraftCasingVibrateSystemView::StopRefershView(){
-	KillTimer(m_icurrentWindowNumber);
-}
-
 
 ////保存采集数据
 void CAirCraftCasingVibrateSystemView::SaveCollectionData(ThreadSafeQueue<AcquiredSignal> acquireSignalQueue){
@@ -329,7 +304,6 @@ void CAirCraftCasingVibrateSystemView::OnBtnAutoScale()
 {
 	//CAirCraftCasingVibrateSystemView *view;
 	//view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
-
 	CDuChartCtrlStaticFunction::AutoXScale(&this->m_chart,FALSE);
 	//CDuChartCtrlStaticFunction::AutoYScale(&view->m_chart, FALSE);
 }
@@ -509,6 +483,17 @@ void  CAirCraftCasingVibrateSystemView::GetSensor(TbSensor & sensor){
 	 m_signalSelectView.GetSensor(sensor);
 }
 
-void  CAirCraftCasingVibrateSystemView::AddData2EchoSignalQueue(EchoSignal echoSignal){
-	m_echoSignalQueue.push(echoSignal);
+void  CAirCraftCasingVibrateSystemView::SetEchoSignalData(EchoSignal &echoSignal){
+	m_echoSignal = echoSignal;
+	SendMessage(WM_USER_REFRESH_CHART);
+}
+
+LRESULT CAirCraftCasingVibrateSystemView::OnRefreshChart(WPARAM wParam, LPARAM lParam)
+{
+	m_pLineSerie->ClearSerie();
+	m_pLineSerie->SetNeedCalStatValue(TRUE);
+	SmartArray<double> xData = m_echoSignal.GetXData();
+	SmartArray<double> yData = m_echoSignal.GetYData();
+	m_pLineSerie->AddPoints(xData.GetSmartArray(), yData.GetSmartArray(), xData.size() / 2);
+	return 0;
 }

@@ -62,13 +62,13 @@ public:
 #endif
 
 protected:  // 控件条嵌入成员
+
 	CMFCRibbonBar     m_wndRibbonBar;
 	CMFCRibbonApplicationButton m_MainButton;
 	CMFCToolBarImages m_PanelImages;
 	CMFCRibbonStatusBar  m_wndStatusBar;
 	CMFCCaptionBar    m_wndCaptionBar;
 	CMFCToolBar       m_wndContrlBar;
-
 	vector<WaveformAiCtrl *> m_vwfAiCtrl;
 	CGraphAttributeView m_graphAttributeView; // 图形属性界面
 	SignalController m_signalController;
@@ -84,6 +84,7 @@ protected:  // 控件条嵌入成员
 	map<int, DevConfParam> m_vdevConfParams;
 	ICollection<DeviceTreeNode>* m_devices;
 	AdvantechDaqController m_advantechDaqController;
+
 public:
 	/**********************************************************************
 	功能描述： 初始化采集窗口，将所有窗口存到vector中

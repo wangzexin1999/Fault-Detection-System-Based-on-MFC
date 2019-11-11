@@ -628,8 +628,6 @@ void CMainFrame::OnButtonStartCapture()
 
 	///设置当前状态为正在采集状态
 	theApp.m_icollectionStatus = 1;
-	theApp.m_bIsAutoSaveCollectionData = true;
-
 	///初始化采集数据缓冲区
 	m_mpcolllectioinDataQueue.clear();
 	m_vdevConfParams.clear();
@@ -693,7 +691,7 @@ void CMainFrame::OnButtonStartCapture()
 		WaveformAiCtrl *  wfAiCtrl = WaveformAiCtrl::Create();
 		///	给采集设备绑定准备事件
 		wfAiCtrl->addDataReadyHandler(OnDataReadyEvent, this);
-		devConfParaIterator->second.clockRatePerChan = collectionFrequency.GetInt();
+		devConfParaIterator->second.clockRatePerChan = 234375; //collectionFrequency.GetInt();
 		devConfParaIterator->second.sectionLength = collectionPoint;
 		m_advantechDaqController.ConfigurateDevice(devConfParaIterator->second, wfAiCtrl);
 		TRACE("111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111\n");
@@ -711,7 +709,7 @@ void CMainFrame::OnButtonStartCapture()
 	//theApp.m_bShowInfThreadActive = true;
 	////开启所有窗口刷新数据的
 	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
-		theApp.m_vsignalCaptureView[i]->RefershView();
+		//theApp.m_vsignalCaptureView[i]->RefershView();
 	}
 	///开启线程保存数据
 	OpenThread2SaveCollectionData();
@@ -732,10 +730,7 @@ void CMainFrame::OnButtonSuspendCapture()
 			return;
 		}
 	}
-
-	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
-		theApp.m_vsignalCaptureView[i]->StopRefershView();
-	}
+	
 	Sleep(100);
 	theApp.m_icollectionStatus = 2;
 }
@@ -752,9 +747,7 @@ void CMainFrame::OnBtnStopCapture()
 			return;
 		}
 	}
-	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
-		theApp.m_vsignalCaptureView[i]->StopRefershView();
-	}
+	
 	Sleep(100);
 
 	theApp.m_icollectionStatus = 0;
@@ -1210,6 +1203,10 @@ void CMainFrame::OnUpdateCheckStaSet(CCmdUI *pCmdUI)
 void CMainFrame::OnClose()
 {
 	// TODO:  在此添加消息处理程序代码和/或调用默认值
+	if (theApp.m_icollectionStatus != 0){
+		AfxMessageBox("正在采集数据，不能关闭程序");
+		return;
+	}
 	bool isSavingData = false;
 	map<CString, ThreadSafeQueue<double>>::iterator it = m_mpcolllectioinDataQueue.begin();
 	while (it != m_mpcolllectioinDataQueue.end()) {
@@ -1220,7 +1217,7 @@ void CMainFrame::OnClose()
 		it++;
 	}
 	if (isSavingData == true){
-		AfxMessageBox("正在保存数据，请稍候关闭");
+		AfxMessageBox("正在保存数据，请稍候关闭程序");
 		return;
 	}
 	KillTimer(StatusBarTimer);
@@ -1376,10 +1373,8 @@ void CMainFrame::OnDataReadyEvent(void * sender, BfdAiEventArgs * args, void *us
 		//将处理之后的傅里叶变换转换成XY坐标
 		FFTWUtil::FFTDataToXY(fftwOutput, yData, fftwInputArray[channel].size());
 		/////添加到回显数据队列中
-		vsignalCollectViewIterator[channel]->second->AddData2EchoSignalQueue(EchoSignal(xData, yData));
-		
+		vsignalCollectViewIterator[channel]->second->SetEchoSignalData(EchoSignal(xData, yData));
 	}
-	TRACE("刷新页面了。。。。。。。。。。。\n");
 }
 ////开启线程自动保存线程函数
 void CMainFrame::OpenThread2SaveCollectionData(){
@@ -1408,6 +1403,7 @@ void CMainFrame::SaveCollectionData(map<CString, ThreadSafeQueue<double>> & acqu
 
 ////保存采集数据的线程函数
 void  CMainFrame::AutoSaveCollectionData(){
+	theApp.m_bisSave = true;
 	//创建缓冲的map
 	map<CString, ThreadSafeQueue<double>> mpcolllectioinDataQueue;
 	for (int i = 0; i < m_vchannelIds.size();i++){
@@ -1416,7 +1412,7 @@ void  CMainFrame::AutoSaveCollectionData(){
 	}
 	map<CString, ThreadSafeQueue<double>>::iterator iter1;
 	map<CString, ThreadSafeQueue<double>>::iterator iter2;
-	while (theApp.m_bIsAutoSaveCollectionData){
+	while (theApp.m_bisSave){
 		bool isSaveStatus = true;
 
 		///从每个通道获取数据
@@ -1459,6 +1455,7 @@ void  CMainFrame::AutoSaveCollectionData(){
 	///停止或者暂停采集之后保存剩余的所有数据
 	thread t(&CMainFrame::SaveCollectionData, this, move(m_mpcolllectioinDataQueue));
 	t.detach();
+	theApp.m_bisSave = false;
 }
 
 void CMainFrame::GetInstalledDevices(ICollection<DeviceTreeNode> *& devices){

@@ -19,6 +19,7 @@ Modification:
 #include <vector>
 #include "include/Inc/bdaqctrl.h"
 #include "include/Inc/compatibility.h"
+#include "Result.h"
 using namespace Automation::BDaq;
 using namespace std;
 #define  USER_BUFFER_LENTH_MAX_PER_CHAN 8000000 //125000000 

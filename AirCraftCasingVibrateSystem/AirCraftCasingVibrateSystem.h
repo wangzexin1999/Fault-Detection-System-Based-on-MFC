@@ -56,7 +56,8 @@ public:
 	int m_icollectSignalsStoreCount = 100000; ///采集信号的存储数量。 
 	int m_icollectionStatus; ////采集状态 0 ：停止采集 1：开始采集 2：暂停采集 
 	int m_signalEchoCount = 1000; //信号回显数量
-	bool m_bIsAutoSaveCollectionData = true; ///是否自动保存采集数据
+	///bool m_bIsAutoSaveCollectionData = true; ///是否自动保存采集数据
+	bool m_bisSave = false;//保存状态
 	CString m_collectionRotatingSpeed = "";
 	vector<SignalAcquisitionService> m_vSignalAcquisitionService; ////信号采集服务
 	TbRecordSignal m_recordSignal; // 采样数据
