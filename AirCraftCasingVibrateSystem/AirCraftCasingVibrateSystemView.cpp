@@ -494,6 +494,8 @@ LRESULT CAirCraftCasingVibrateSystemView::OnRefreshChart(WPARAM wParam, LPARAM l
 	m_pLineSerie->SetNeedCalStatValue(TRUE);
 	SmartArray<double> xData = m_echoSignal.GetXData();
 	SmartArray<double> yData = m_echoSignal.GetYData();
+	TRACE("\nË¢ÐÂÊý¾Ý¡£¡£¡£¡£\n");
+	
 	m_pLineSerie->AddPoints(xData.GetSmartArray(), yData.GetSmartArray(), xData.size() / 2);
 	return 0;
 }

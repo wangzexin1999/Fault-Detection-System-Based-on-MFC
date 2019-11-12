@@ -106,6 +106,8 @@ CMainFrame::CMainFrame()
 	this->m_bAutoMenuEnable = false;
 }
 
+
+
 CMainFrame::~CMainFrame(){
 
 }
@@ -683,6 +685,7 @@ void CMainFrame::OnButtonStartCapture()
 		AfxMessageBox(res.GetMessages());
 		return;
 	}
+	m_icollectionFrequency = collectionFrequency.GetInt();
 	int collectionPoint = atoi(theApp.m_currentProject.GetTestingDevice().GetCollectionPoint().GetDictValue());
 
 	///根据获取的采集卡的DeviceNumber创建响应的控制类
@@ -691,7 +694,7 @@ void CMainFrame::OnButtonStartCapture()
 		WaveformAiCtrl *  wfAiCtrl = WaveformAiCtrl::Create();
 		///	给采集设备绑定准备事件
 		wfAiCtrl->addDataReadyHandler(OnDataReadyEvent, this);
-		devConfParaIterator->second.clockRatePerChan = 234375; //collectionFrequency.GetInt();
+		devConfParaIterator->second.clockRatePerChan = 234375;
 		devConfParaIterator->second.sectionLength = collectionPoint;
 		m_advantechDaqController.ConfigurateDevice(devConfParaIterator->second, wfAiCtrl);
 		TRACE("111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111\n");
@@ -747,7 +750,7 @@ void CMainFrame::OnBtnStopCapture()
 			return;
 		}
 	}
-	
+	theApp.m_bisSave = false;
 	Sleep(100);
 
 	theApp.m_icollectionStatus = 0;
@@ -1312,7 +1315,8 @@ void CMainFrame::OnDataReadyEvent(void * sender, BfdAiEventArgs * args, void *us
 	int startChannel = wfAiCtrl->getConversion()->getChannelStart();
 	int channelCount = wfAiCtrl->getConversion()->getChannelCount();
 	int deviceNumber = wfAiCtrl->getDevice()->getDeviceNumber();
-	TRACE("	采集卡%d\n", deviceNumber);
+	double clockConvertRate =  wfAiCtrl->getConversion()->getClockRate();
+	TRACE("	采集卡%d采集数据\n", deviceNumber);
 	///获取与本设备号绑定的采集数据缓冲区
 	map<int, DOUBLE *>::iterator collectionDataIterator;
 	collectionDataIterator = uParam->m_mpcolllectioinData.find(deviceNumber);
@@ -1341,7 +1345,10 @@ void CMainFrame::OnDataReadyEvent(void * sender, BfdAiEventArgs * args, void *us
 
 	///设置获取数据的数量并获取数据
 	int32 getDataCount = ((sectionLength * channelCount) < args->Count) ? (sectionLength * channelCount) : args->Count;
+	///计算下采样的倍数
+	int sampleTimes = clockConvertRate / uParam->m_icollectionFrequency;
 	ErrorCode ret = wfAiCtrl->GetData(getDataCount, collectionDataIterator->second, 0, NULL, NULL, NULL, NULL);
+
 	if ((ret >= ErrorHandleNotValid) && (ret != Success))
 	{
 		CString str;
@@ -1353,14 +1360,15 @@ void CMainFrame::OnDataReadyEvent(void * sender, BfdAiEventArgs * args, void *us
 	SmartArray<double> xData; ///x坐标
 	fftw_complex fftw;///单次傅立叶变换的输入
 	vector<SmartFFTWComplexArray> fftwInputArray(channelCount);
-	for (int i = 0; i < getDataCount; i++){
-		int channel = i % channelCount;
-		fftw[0] = collectionDataIterator->second[i];
-		fftwInputArray[channel].push_back(fftw);
-		vcolllectioinDataQueueIterator[channel]->second.push(collectionDataIterator->second[i]);
+	for (int i = 0; i < getDataCount; i+= (channelCount* sampleTimes)){
+		for (int channel = startChannel; channel < startChannel + channelCount;channel++){
+			fftw[0] = collectionDataIterator->second[i+channel];
+			fftwInputArray[channel].push_back(fftw);
+			//vcolllectioinDataQueueIterator[channel]->second.push(collectionDataIterator->second[i+channel]);
+		}
 	}
 	//设置x坐标
-	for (int i = 0; i < getDataCount / channelCount; i++){
+	for (int i = 0; i <= getDataCount / (channelCount*sampleTimes); i++){
 		xData.push_back(i);
 	}
 	
@@ -1369,9 +1377,13 @@ void CMainFrame::OnDataReadyEvent(void * sender, BfdAiEventArgs * args, void *us
 		//对传入的数据进行傅里叶变换处理
 		SmartFFTWComplexArray fftwOutput(fftwInputArray[channel].size());
 		FFTWUtil::FastFourierTransformation(fftwInputArray[channel].size(), fftwInputArray[channel].GeFFTWComplexArray(),
-		fftwOutput.GeFFTWComplexArray());
+			fftwOutput.GeFFTWComplexArray());
 		//将处理之后的傅里叶变换转换成XY坐标
 		FFTWUtil::FFTDataToXY(fftwOutput, yData, fftwInputArray[channel].size());
+		for (int i = 0; i < yData.size(); i++){
+			TRACE("\nindex = %d,in = %f,out = %f,y = %f\n", i, fftwInputArray[channel].GeFFTWComplexArray()[i][0], fftwOutput.GeFFTWComplexArray()[i][0], yData.GetSmartArray()[i]);
+		}
+
 		/////添加到回显数据队列中
 		vsignalCollectViewIterator[channel]->second->SetEchoSignalData(EchoSignal(xData, yData));
 	}
@@ -1403,59 +1415,59 @@ void CMainFrame::SaveCollectionData(map<CString, ThreadSafeQueue<double>> & acqu
 
 ////保存采集数据的线程函数
 void  CMainFrame::AutoSaveCollectionData(){
-	theApp.m_bisSave = true;
-	//创建缓冲的map
-	map<CString, ThreadSafeQueue<double>> mpcolllectioinDataQueue;
-	for (int i = 0; i < m_vchannelIds.size();i++){
-		mpcolllectioinDataQueue.insert(pair<CString, ThreadSafeQueue<double>>
-			(m_vchannelIds[i], ThreadSafeQueue<double>()));
-	}
-	map<CString, ThreadSafeQueue<double>>::iterator iter1;
-	map<CString, ThreadSafeQueue<double>>::iterator iter2;
-	while (theApp.m_bisSave){
-		bool isSaveStatus = true;
+	//theApp.m_bisSave = true;
+	////创建缓冲的map
+	//map<CString, ThreadSafeQueue<double>> mpcolllectioinDataQueue;
+	//for (int i = 0; i < m_vchannelIds.size();i++){
+	//	mpcolllectioinDataQueue.insert(pair<CString, ThreadSafeQueue<double>>
+	//		(m_vchannelIds[i], ThreadSafeQueue<double>()));
+	//}
+	//map<CString, ThreadSafeQueue<double>>::iterator iter1;
+	//map<CString, ThreadSafeQueue<double>>::iterator iter2;
+	//while (theApp.m_bisSave){
+	//	bool isSaveStatus = true;
 
-		///从每个通道获取数据
-		iter1 = m_mpcolllectioinDataQueue.begin();
-		iter2 = mpcolllectioinDataQueue.begin();
+	//	///从每个通道获取数据
+	//	iter1 = m_mpcolllectioinDataQueue.begin();
+	//	iter2 = mpcolllectioinDataQueue.begin();
 
-		if (iter1->second.empty()) continue;
+	//	if (iter1->second.empty()) continue;
 
-		while (iter1 != m_mpcolllectioinDataQueue.end()&&iter2!=mpcolllectioinDataQueue.end()) {
-			iter2->second.push(*iter1->second.wait_and_pop());
-			if (iter2->second.size() < theApp.m_icollectSignalsStoreCount){
-				///如果插入一条元素之后，缓冲map仍然不够保存条件，那么就将是否保存数据置位false
-				isSaveStatus = false;
-			}
-			iter1++;
-			iter2++;
-		}
-		///如果当前是正在采集，且符合保存的条件
-		if (isSaveStatus&&theApp.m_icollectionStatus==1){
-			///需要保存的数据
-			thread t(&CMainFrame::SaveCollectionData, this, move(mpcolllectioinDataQueue));
-			t.detach();
-			mpcolllectioinDataQueue.clear();
-			for (int i = 0; i < m_vchannelIds.size(); i++){
-				mpcolllectioinDataQueue.insert(pair<CString, ThreadSafeQueue<double>>
-					(m_vchannelIds[i], ThreadSafeQueue<double>()));
-			}
-		}
-		///如果当前结束采集或者暂停采集，且缓冲区数据量不足以达到保存条件了。
-		///保存暂且搁置
-		/*if (theApp.m_icollectionStatus != 1){
-			for (int i = m_vcollectionData.size()-1; i > 0; i--){
-			if (m_vcollectionData[i].size() < theApp.m_icollectSignalsStoreCount){
-			theApp.m_bIsAutoSaveCollectionData = false;
-			break;
-			}
-			}
-			}*/
-	}
-	///停止或者暂停采集之后保存剩余的所有数据
-	thread t(&CMainFrame::SaveCollectionData, this, move(m_mpcolllectioinDataQueue));
-	t.detach();
-	theApp.m_bisSave = false;
+	//	while (iter1 != m_mpcolllectioinDataQueue.end()&&iter2!=mpcolllectioinDataQueue.end()) {
+	//		iter2->second.push(*iter1->second.wait_and_pop());
+	//		if (iter2->second.size() < theApp.m_icollectSignalsStoreCount){
+	//			///如果插入一条元素之后，缓冲map仍然不够保存条件，那么就将是否保存数据置位false
+	//			isSaveStatus = false;
+	//		}
+	//		iter1++;
+	//		iter2++;
+	//	}
+	//	///如果当前是正在采集，且符合保存的条件
+	//	if (isSaveStatus&&theApp.m_icollectionStatus==1){
+	//		///需要保存的数据
+	//		thread t(&CMainFrame::SaveCollectionData, this, move(mpcolllectioinDataQueue));
+	//		t.detach();
+	//		mpcolllectioinDataQueue.clear();
+	//		for (int i = 0; i < m_vchannelIds.size(); i++){
+	//			mpcolllectioinDataQueue.insert(pair<CString, ThreadSafeQueue<double>>
+	//				(m_vchannelIds[i], ThreadSafeQueue<double>()));
+	//		}
+	//	}
+	//	///如果当前结束采集或者暂停采集，且缓冲区数据量不足以达到保存条件了。
+	//	///保存暂且搁置
+	//	/*if (theApp.m_icollectionStatus != 1){
+	//		for (int i = m_vcollectionData.size()-1; i > 0; i--){
+	//		if (m_vcollectionData[i].size() < theApp.m_icollectSignalsStoreCount){
+	//		theApp.m_bIsAutoSaveCollectionData = false;
+	//		break;
+	//		}
+	//		}
+	//		}*/
+	//}
+	/////停止或者暂停采集之后保存剩余的所有数据
+	//thread t(&CMainFrame::SaveCollectionData, this, move(m_mpcolllectioinDataQueue));
+	//t.detach();
+	//theApp.m_bisSave = false;
 }
 
 void CMainFrame::GetInstalledDevices(ICollection<DeviceTreeNode> *& devices){

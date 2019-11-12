@@ -84,8 +84,9 @@ protected:  // 控件条嵌入成员
 	map<int, DevConfParam> m_vdevConfParams;
 	ICollection<DeviceTreeNode>* m_devices;
 	AdvantechDaqController m_advantechDaqController;
-
 public:
+	int m_icollectionFrequency; ///采样频率
+
 	/**********************************************************************
 	功能描述： 初始化采集窗口，将所有窗口存到vector中
 	输入参数：nWindowInitial--窗口初始数
