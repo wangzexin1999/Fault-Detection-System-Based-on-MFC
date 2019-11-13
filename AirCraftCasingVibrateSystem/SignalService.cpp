@@ -37,7 +37,7 @@ bool SignalService::AddSignalData(map<CString, ThreadSafeQueue<double>> & acquir
 	///1.拼装保存路径
 	CString path = "C:/collectionData/";
 	//CString escapePath = "C:\\\\collectionData\\\\";
-	//2.拼装文件名 项目id_测试设备id_传感器id_产品id_时间戳
+	//2.拼装 文件名 项目id_测试设备id_产品id_时间戳
 	CString fileName = CommonUtil::Int2CString(saveSignal.GetProjectId()) + "-"
 		+ CommonUtil::Int2CString(saveSignal.GetTestingDeviceId())
 		+ "-" + DateUtil::GetTimeStampCString()

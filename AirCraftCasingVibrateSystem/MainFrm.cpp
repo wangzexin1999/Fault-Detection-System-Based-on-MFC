@@ -106,8 +106,6 @@ CMainFrame::CMainFrame()
 	this->m_bAutoMenuEnable = false;
 }
 
-
-
 CMainFrame::~CMainFrame(){
 
 }
@@ -137,7 +135,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	ASSERT(bNameValid);
 	m_wndStatusBar.AddElement(new CMFCRibbonStatusBarPane(ID_STATUSBAR_PANE1, "目前状态", TRUE), "目前状态");
 	m_wndStatusBar.AddExtendedElement(new CMFCRibbonStatusBarPane(ID_STATUSBAR_PANE2, "当前时间:00:00:00", TRUE), strTitlePane2);
-
 
 	//测试加入按钮
 	CMFCRibbonCategory *pCategory = m_wndRibbonBar.GetCategory(3);
@@ -612,18 +609,7 @@ void CMainFrame::OnButtonStartCapture()
 		return;
 	}
 	///判断当前是否正在保存数据
-
-	bool isSavingData = false;
-	map<CString, ThreadSafeQueue<double>>::iterator it = m_mpcolllectioinDataQueue.begin();
-	while (it != m_mpcolllectioinDataQueue.end()) {
-		if (!it->second.empty()){
-			isSavingData = true;
-			break;
-		}
-		it++;
-	}
-	
-	if (isSavingData == true){
+	if (theApp.m_bisSave){
 		AfxMessageBox("正在保存数据，请稍候进行采集");
 		return;
 	}
@@ -680,7 +666,13 @@ void CMainFrame::OnButtonStartCapture()
 
 	///获取采集频率和采集点数
 	Value collectionFrequency;
+	Value analysisFrequency;
 	Result res = JsonUtil::GetValueFromJsonString(theApp.m_currentProject.GetTestingDevice().GetCollectionFrequency().GetDictValue(), "content", collectionFrequency);
+	if (!res.GetIsSuccess()){
+		AfxMessageBox(res.GetMessages());
+		return;
+	}
+	res = JsonUtil::GetValueFromJsonString(theApp.m_currentProject.GetTestingDevice().GetAnalysisFrequency().GetDictValue(), "content", analysisFrequency);
 	if (!res.GetIsSuccess()){
 		AfxMessageBox(res.GetMessages());
 		return;
@@ -695,12 +687,8 @@ void CMainFrame::OnButtonStartCapture()
 		///	给采集设备绑定准备事件
 		wfAiCtrl->addDataReadyHandler(OnDataReadyEvent, this);
 		devConfParaIterator->second.clockRatePerChan = 234375;
-		devConfParaIterator->second.sectionLength = collectionPoint;
+		devConfParaIterator->second.sectionLength = collectionPoint*devConfParaIterator->second.channelCount;//analysisFrequency.GetInt()*(234375 / collectionFrequency.GetInt()) * 2;
 		m_advantechDaqController.ConfigurateDevice(devConfParaIterator->second, wfAiCtrl);
-		TRACE("111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111\n");
-		int deviceNumber = wfAiCtrl->getDevice()->getDeviceNumber();
-		TRACE("	开启开启开启开启开启开启开启开启开启开启开启开启开启开启开启采集卡%d\n", deviceNumber);
-		TRACE("111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111\n");
 		//开启采集
 		wfAiCtrl->Start();
 		m_vwfAiCtrl.push_back(wfAiCtrl);
@@ -708,12 +696,7 @@ void CMainFrame::OnButtonStartCapture()
 		m_mpcolllectioinData.insert(pair<int, DOUBLE *>
 			(devConfParaIterator->second.deviceNumber, new DOUBLE[devConfParaIterator->second.sectionLength * devConfParaIterator->second.channelCount]));
 	}
-	//// 设置显示信息线程标志
-	//theApp.m_bShowInfThreadActive = true;
-	////开启所有窗口刷新数据的
-	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
-		//theApp.m_vsignalCaptureView[i]->RefershView();
-	}
+	
 	///开启线程保存数据
 	OpenThread2SaveCollectionData();
 	//实时数据传输
@@ -733,14 +716,14 @@ void CMainFrame::OnButtonSuspendCapture()
 			return;
 		}
 	}
-	
-	Sleep(100);
 	theApp.m_icollectionStatus = 2;
 }
+
 // 停止采集
 void CMainFrame::OnBtnStopCapture()
 {
 	KillTimer(99);
+
 	for (int i = 0; i < m_vwfAiCtrl.size(); i++){
 		ErrorCode err = Success;
 		err = m_vwfAiCtrl[i]->Stop();
@@ -750,9 +733,6 @@ void CMainFrame::OnBtnStopCapture()
 			return;
 		}
 	}
-	theApp.m_bisSave = false;
-	Sleep(100);
-
 	theApp.m_icollectionStatus = 0;
 }
 
@@ -1210,17 +1190,8 @@ void CMainFrame::OnClose()
 		AfxMessageBox("正在采集数据，不能关闭程序");
 		return;
 	}
-	bool isSavingData = false;
-	map<CString, ThreadSafeQueue<double>>::iterator it = m_mpcolllectioinDataQueue.begin();
-	while (it != m_mpcolllectioinDataQueue.end()) {
-		if (!it->second.empty()){
-			isSavingData = true;
-			break;
-		}
-		it++;
-	}
-	if (isSavingData == true){
-		AfxMessageBox("正在保存数据，请稍候关闭程序");
+	if (theApp.m_bisSave) {
+		AfxMessageBox("数据保存过程中不能关闭程序");
 		return;
 	}
 	KillTimer(StatusBarTimer);
@@ -1306,7 +1277,6 @@ void CMainFrame::OnButtonOpenProjectSetView()
 	}
 }
 
-
 ///准备好采集数据的响应事件
 void CMainFrame::OnDataReadyEvent(void * sender, BfdAiEventArgs * args, void *userParam){
 	WaveformAiCtrl * wfAiCtrl = (WaveformAiCtrl *)sender;
@@ -1333,16 +1303,14 @@ void CMainFrame::OnDataReadyEvent(void * sender, BfdAiEventArgs * args, void *us
 		channelId = CommonUtil::Int2CString(deviceNumber) + "-" + CommonUtil::Int2CString(i);
 		signalCollectViewIterator = uParam->m_mpsignalCollectionView.find(channelId);
 		colllectioinDataQueueIterator = uParam->m_mpcolllectioinDataQueue.find(channelId);
-		if (signalCollectViewIterator == uParam->m_mpsignalCollectionView.end() 
-			|| colllectioinDataQueueIterator == uParam->m_mpcolllectioinDataQueue.end()){
+		if (signalCollectViewIterator == uParam->m_mpsignalCollectionView.end()||
+			 colllectioinDataQueueIterator == uParam->m_mpcolllectioinDataQueue.end()){
 			AfxMessageBox("采集出错");
 			return;
 		}
 		vsignalCollectViewIterator.push_back(signalCollectViewIterator);
 		vcolllectioinDataQueueIterator.push_back(colllectioinDataQueueIterator); 
 	}
-	
-
 	///设置获取数据的数量并获取数据
 	int32 getDataCount = ((sectionLength * channelCount) < args->Count) ? (sectionLength * channelCount) : args->Count;
 	///计算下采样的倍数
@@ -1355,39 +1323,33 @@ void CMainFrame::OnDataReadyEvent(void * sender, BfdAiEventArgs * args, void *us
 		str.Format(_T("有错误出现，错误码为: 0x%X !\n"), ret);
 		AfxMessageBox(str);
 	}
-
 	//分割数据
 	SmartArray<double> xData; ///x坐标
 	fftw_complex fftw;///单次傅立叶变换的输入
-	vector<SmartFFTWComplexArray> fftwInputArray(channelCount);
+	vector<SmartArray<double>> fftwInputArray(channelCount);
 	for (int i = 0; i < getDataCount; i+= (channelCount* sampleTimes)){
 		for (int channel = startChannel; channel < startChannel + channelCount;channel++){
-			fftw[0] = collectionDataIterator->second[i+channel];
-			fftwInputArray[channel].push_back(fftw);
-			//vcolllectioinDataQueueIterator[channel]->second.push(collectionDataIterator->second[i+channel]);
+			fftwInputArray[channel].push_back(collectionDataIterator->second[i + channel]);
+			vcolllectioinDataQueueIterator[channel]->second.push(collectionDataIterator->second[i+channel]);
 		}
 	}
 	//设置x坐标
 	for (int i = 0; i <= getDataCount / (channelCount*sampleTimes); i++){
 		xData.push_back(i);
 	}
-	
 	for (int channel = 0; channel < channelCount; channel++){
 		SmartArray<double> yData; ///y坐标
 		//对传入的数据进行傅里叶变换处理
 		SmartFFTWComplexArray fftwOutput(fftwInputArray[channel].size());
-		FFTWUtil::FastFourierTransformation(fftwInputArray[channel].size(), fftwInputArray[channel].GeFFTWComplexArray(),
+		FFTWUtil::FastFourierTransformation(fftwInputArray[channel].size(), fftwInputArray[channel].GetSmartArray(),
 			fftwOutput.GeFFTWComplexArray());
 		//将处理之后的傅里叶变换转换成XY坐标
 		FFTWUtil::FFTDataToXY(fftwOutput, yData, fftwInputArray[channel].size());
-		for (int i = 0; i < yData.size(); i++){
-			TRACE("\nindex = %d,in = %f,out = %f,y = %f\n", i, fftwInputArray[channel].GeFFTWComplexArray()[i][0], fftwOutput.GeFFTWComplexArray()[i][0], yData.GetSmartArray()[i]);
-		}
-
 		/////添加到回显数据队列中
 		vsignalCollectViewIterator[channel]->second->SetEchoSignalData(EchoSignal(xData, yData));
 	}
 }
+
 ////开启线程自动保存线程函数
 void CMainFrame::OpenThread2SaveCollectionData(){
 	thread t(&CMainFrame::AutoSaveCollectionData, this);
@@ -1415,59 +1377,57 @@ void CMainFrame::SaveCollectionData(map<CString, ThreadSafeQueue<double>> & acqu
 
 ////保存采集数据的线程函数
 void  CMainFrame::AutoSaveCollectionData(){
-	//theApp.m_bisSave = true;
-	////创建缓冲的map
-	//map<CString, ThreadSafeQueue<double>> mpcolllectioinDataQueue;
-	//for (int i = 0; i < m_vchannelIds.size();i++){
-	//	mpcolllectioinDataQueue.insert(pair<CString, ThreadSafeQueue<double>>
-	//		(m_vchannelIds[i], ThreadSafeQueue<double>()));
-	//}
-	//map<CString, ThreadSafeQueue<double>>::iterator iter1;
-	//map<CString, ThreadSafeQueue<double>>::iterator iter2;
-	//while (theApp.m_bisSave){
-	//	bool isSaveStatus = true;
+	theApp.m_bisSave = true;
+	//创建缓冲的map
+	map<CString, ThreadSafeQueue<double>> mpcolllectioinDataQueue;
+	for (int i = 0; i < m_vchannelIds.size();i++){
+		mpcolllectioinDataQueue.insert(pair<CString, ThreadSafeQueue<double>>
+			(m_vchannelIds[i], ThreadSafeQueue<double>()));
+	}
+	map<CString, ThreadSafeQueue<double>>::iterator iter1;
+	map<CString, ThreadSafeQueue<double>>::iterator iter2;
 
-	//	///从每个通道获取数据
-	//	iter1 = m_mpcolllectioinDataQueue.begin();
-	//	iter2 = mpcolllectioinDataQueue.begin();
+	while (theApp.m_bisSave){
+		bool isSaveStatus = true;
+		TRACE("\n状态：%d\n", theApp.m_icollectionStatus);
+		///从每个通道获取数据
+		iter1 = m_mpcolllectioinDataQueue.begin();
+		iter2 = mpcolllectioinDataQueue.begin();
 
-	//	if (iter1->second.empty()) continue;
-
-	//	while (iter1 != m_mpcolllectioinDataQueue.end()&&iter2!=mpcolllectioinDataQueue.end()) {
-	//		iter2->second.push(*iter1->second.wait_and_pop());
-	//		if (iter2->second.size() < theApp.m_icollectSignalsStoreCount){
-	//			///如果插入一条元素之后，缓冲map仍然不够保存条件，那么就将是否保存数据置位false
-	//			isSaveStatus = false;
-	//		}
-	//		iter1++;
-	//		iter2++;
-	//	}
-	//	///如果当前是正在采集，且符合保存的条件
-	//	if (isSaveStatus&&theApp.m_icollectionStatus==1){
-	//		///需要保存的数据
-	//		thread t(&CMainFrame::SaveCollectionData, this, move(mpcolllectioinDataQueue));
-	//		t.detach();
-	//		mpcolllectioinDataQueue.clear();
-	//		for (int i = 0; i < m_vchannelIds.size(); i++){
-	//			mpcolllectioinDataQueue.insert(pair<CString, ThreadSafeQueue<double>>
-	//				(m_vchannelIds[i], ThreadSafeQueue<double>()));
-	//		}
-	//	}
-	//	///如果当前结束采集或者暂停采集，且缓冲区数据量不足以达到保存条件了。
-	//	///保存暂且搁置
-	//	/*if (theApp.m_icollectionStatus != 1){
-	//		for (int i = m_vcollectionData.size()-1; i > 0; i--){
-	//		if (m_vcollectionData[i].size() < theApp.m_icollectSignalsStoreCount){
-	//		theApp.m_bIsAutoSaveCollectionData = false;
-	//		break;
-	//		}
-	//		}
-	//		}*/
-	//}
-	/////停止或者暂停采集之后保存剩余的所有数据
-	//thread t(&CMainFrame::SaveCollectionData, this, move(m_mpcolllectioinDataQueue));
-	//t.detach();
-	//theApp.m_bisSave = false;
+		while (iter1 != m_mpcolllectioinDataQueue.end()&&iter2!=mpcolllectioinDataQueue.end()) {
+			iter2->second.push(*iter1->second.wait_and_pop());
+			if (iter2->second.size() < theApp.m_icollectSignalsStoreCount){
+				///如果插入一条元素之后，缓冲map仍然不够保存条件，那么就将是否保存数据置位false
+				isSaveStatus = false;
+			}
+			iter1++;
+			iter2++;
+		}
+		///如果当前是正在采集，且符合保存的条件
+		if (isSaveStatus&&theApp.m_icollectionStatus==1){
+			///需要保存的数据
+			thread t(&CMainFrame::SaveCollectionData, this, move(mpcolllectioinDataQueue));
+			t.detach();
+			mpcolllectioinDataQueue.clear();
+			for (int i = 0; i < m_vchannelIds.size(); i++){
+				mpcolllectioinDataQueue.insert(pair<CString, ThreadSafeQueue<double>>
+					(m_vchannelIds[i], ThreadSafeQueue<double>()));
+			}
+		}
+		///如果当前结束采集或者暂停采集，且缓冲区数据量不足以达到保存条件了。
+		///保存暂且搁置
+		if (theApp.m_icollectionStatus != 1){
+			for (iter1 = m_mpcolllectioinDataQueue.begin(); iter1 != m_mpcolllectioinDataQueue.end(); iter1++){
+				if (iter1->second.size() < theApp.m_icollectSignalsStoreCount){
+					///停止或者暂停采集之后保存剩余的所有数据
+					thread t(&CMainFrame::SaveCollectionData, this, move(m_mpcolllectioinDataQueue));
+					t.detach();
+					theApp.m_bisSave = false;
+					break;
+				}
+			}
+		}
+	}
 }
 
 void CMainFrame::GetInstalledDevices(ICollection<DeviceTreeNode> *& devices){
