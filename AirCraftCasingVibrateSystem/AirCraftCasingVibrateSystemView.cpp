@@ -446,7 +446,6 @@ void CAirCraftCasingVibrateSystemView::StopSampleEncho()
 	KillTimer(m_iSampleDataEchoTimerNum);
 }
 
-
 void CAirCraftCasingVibrateSystemView::SplitVector(SmartArray<double> &dXData, SmartArray<double> &dYData, int nNums)
 {
 	if (m_sampleFromFileDataQueue.size() == 0)

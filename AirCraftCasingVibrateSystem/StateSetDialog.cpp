@@ -153,13 +153,13 @@ void CStateSetDialog::RefreshView(){
 	if (theApp.m_currentProject.GetCollectionPlans() == "") return;
 	m_collectionPlanDoc.Parse(theApp.m_currentProject.GetCollectionPlans());
 	if (m_collectionPlanDoc.HasParseError()){
-		AfxMessageBox("采集计划加载失败");
+		//AfxMessageBox("采集计划加载失败");
 		return;
 	}
 	if (theApp.m_currentProject.GetCollectionStatus() == "") return;
 	m_collectionPlanStatus.Parse(theApp.m_currentProject.GetCollectionStatus());
 	if (m_collectionPlanStatus.HasParseError()){
-		AfxMessageBox("采集计划加载失败");
+		//AfxMessageBox("采集计划加载失败");
 		return;
 	}
 	///2.清空下拉列表的显示
