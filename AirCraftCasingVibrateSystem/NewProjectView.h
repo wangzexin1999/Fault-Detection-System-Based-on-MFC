@@ -55,4 +55,5 @@ protected:
 	afx_msg void OnTcnSelchangeTabProjectnavigation(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedButtonLaststep();
 	afx_msg void OnBnClickedButtonNextstep();
+
 };

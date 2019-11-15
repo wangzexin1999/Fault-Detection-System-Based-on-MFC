@@ -181,6 +181,26 @@ void CollectionParaView::RefreshView(){
 void CollectionParaView::OnCbnSelchangeCombo1()
 {
 	// TODO:  在此添加控件通知处理程序代码
+	//SaveTestingDevice(theApp.m_currentProject.GetTestingDevice());
+	int index = m_collectionFrequencyCombo.GetCurSel();
+	TbDictionary collection = m_vcollectionFrequency[index];
+	Document collection_doc;
+	collection_doc.Parse(collection.GetDictValue());
+	const Value& collection_content = collection_doc["content"];
+
+
+	//double x = collection_doc["content"].GetDouble();
+	for (int i = 0; i < m_vanalysisFrequency.size(); i++){
+		TbDictionary analysis = m_vanalysisFrequency[i];
+		Document analysis_doc;
+		analysis_doc.Parse(analysis.GetDictValue());
+		const Value& analysis_content = analysis_doc["content"];
+		if (analysis_doc["content"].GetDouble() == (collection_doc["content"].GetDouble() / 2.56))
+		{
+			m_analysisFrequencyCombo.SetCurSel(i);
+		}
+	}
+
 	SaveTestingDevice(theApp.m_currentProject.GetTestingDevice());
 }
 
@@ -188,10 +208,11 @@ void CollectionParaView::OnCbnSelchangeCombo1()
 void CollectionParaView::OnCbnSelchangeCombo2()
 {
 	///调整坐标系的大小
-	SaveTestingDevice(theApp.m_currentProject.GetTestingDevice());
+	//SaveTestingDevice(theApp.m_currentProject.GetTestingDevice());
 	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
 		theApp.m_vsignalCaptureView[i]->SetChartXYCoordinateLen();
 	}
+	SaveTestingDevice(theApp.m_currentProject.GetTestingDevice());
 }
 
 

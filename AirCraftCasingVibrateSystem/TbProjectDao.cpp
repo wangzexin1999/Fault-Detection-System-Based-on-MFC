@@ -15,6 +15,7 @@ TbProjectDao::TbProjectDao()
 	SetVectorAndField("product_id", "int", m_productId);
 	SetVectorAndField("project_status", "int", m_projectStatus);
 	SetVectorAndField("collection_plan", "CString", m_collectionPlans);
+	SetVectorAndField("collectionstatus", "CString", m_collectionStatus);
 }
 
 
@@ -35,6 +36,7 @@ TbProjectDao::TbProjectDao(const TbProjectDao &project){
 	SetVectorAndField("product_id", "int", m_productId);
 	SetVectorAndField("project_status", "int", m_projectStatus);
 	SetVectorAndField("collection_plan", "CString", m_collectionPlans);
+	SetVectorAndField("collectionstatus", "CString", m_collectionStatus);
 	operator = (project);
 }
 
@@ -79,6 +81,7 @@ void TbProjectDao::SetTableFieldValues(TbProject project){
 	this->m_testingDeviceid.SetValue(project.GetTestingDevice().GetId());
 	this->m_projectStatus.SetValue(project.GetProjectStatus());
 	this->m_collectionPlans.m_strValue = project.GetCollectionPlans();
+	this->m_collectionStatus.m_strValue = project.GetCollectionStatus();
 }
 
 void TbProjectDao::GetTableFieldValues(TbProject &project){
@@ -91,4 +94,5 @@ void TbProjectDao::GetTableFieldValues(TbProject &project){
 	project.GetProduct().SetProductId(m_productId.GetInt());
 	project.GetTestingDevice().SetId(m_testingDeviceid.GetInt());
 	project.SetCollectionPlans(m_collectionPlans.m_strValue);
+	project.SetCollectionStatus(m_collectionStatus.m_strValue);
 }

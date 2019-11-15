@@ -93,6 +93,14 @@ void TbProject::SetCollectionPlans(CString collectionPlans){
 CString TbProject::GetCollectionPlans(){
 	return m_collectionPlans;
 }
+
+void TbProject::SetCollectionStatus(CString collectionStatus){
+	m_collectionStatus = collectionStatus;
+}
+CString TbProject::GetCollectionStatus(){
+	return m_collectionStatus;
+}
+
 CString TbProject::GetProjectUpdateTime(){
 	return m_projectUpdatetime;
 }

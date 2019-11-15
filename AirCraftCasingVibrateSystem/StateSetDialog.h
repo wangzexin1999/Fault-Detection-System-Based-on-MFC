@@ -5,6 +5,8 @@
 #include "include/rapidjson/stringbuffer.h"
 #include <iostream>
 #include "afxwin.h"
+#include "ProjectController.h"
+#include "TbProject.h"
 using namespace std;
 using namespace rapidjson;
 // CStateSetDialog 对话框
@@ -25,10 +27,14 @@ public:
 protected:
 
 	Document m_collectionPlanDoc;
+	Document m_collectionPlanStatus;
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 	CGridCtrl m_collectionPlanGrid;
 	DECLARE_MESSAGE_MAP()
 	CComboBox m_collectionPlanCombo;
+
+	TbProject m_project;
+	ProjectController m_projectController;
 public:
 	/**********************************************************************
 	功能描述： 下拉框的选项改变事件

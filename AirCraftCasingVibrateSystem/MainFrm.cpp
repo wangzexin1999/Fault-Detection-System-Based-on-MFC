@@ -694,6 +694,7 @@ void CMainFrame::OnButtonStartCapture()
 		WaveformAiCtrl *  wfAiCtrl = WaveformAiCtrl::Create();
 		///	给采集设备绑定准备事件
 		wfAiCtrl->addDataReadyHandler(OnDataReadyEvent, this);
+
 		devConfParaIterator->second.clockRatePerChan = 234375;
 		devConfParaIterator->second.sectionLength = collectionPoint;
 		m_advantechDaqController.ConfigurateDevice(devConfParaIterator->second, wfAiCtrl);
@@ -836,7 +837,7 @@ void CMainFrame::OnBtnStopSample()
 	theApp.m_recordSignal.SetSensorInfo(sensorInfo);
 	theApp.m_recordSignal.SetEndTime(DateUtil::GetCurrentCStringTime());
 	Result res = m_signalController.SaveSampleSignal(theApp.m_recordSignal);
-	if (!res.GetIsSuccess()){
+ 	if (!res.GetIsSuccess()){
 		AfxMessageBox("采样数据保存失败");
 	}
 }
@@ -1297,6 +1298,7 @@ void CMainFrame::OnButtonOpenProjectView()
 	}
 }
 
+///项目设置
 void CMainFrame::OnButtonOpenProjectSetView()
 {
 	ProjectSetView projectSetView;

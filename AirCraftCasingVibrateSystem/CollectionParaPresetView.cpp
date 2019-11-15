@@ -34,6 +34,7 @@ void CollectionParaPresetView::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CollectionParaPresetView, CDialogEx)
+	ON_CBN_SELCHANGE(IDC_COMBO_COLLECTIONFREQUENCY, &CollectionParaPresetView::OnCbnSelchangeComboCollectionfrequency)
 END_MESSAGE_MAP()
 
 
@@ -133,4 +134,29 @@ void CollectionParaPresetView::CollectionParaInfoInit(){
 		m_collectionPointCombo.SetCurSel(0);
 	}
 
+}
+
+void CollectionParaPresetView::OnCbnSelchangeComboCollectionfrequency()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	int index = m_collectionFrequencyCombo.GetCurSel();
+	TbDictionary collection = m_vcollectionFrequency[index];
+	Document collection_doc;
+	collection_doc.Parse(collection.GetDictValue());
+	const Value& collection_content = collection_doc["content"];
+
+
+	//double x = collection_doc["content"].GetDouble();
+	for (int i = 0; i < m_vanalysisFrequency.size(); i++){
+		TbDictionary analysis = m_vanalysisFrequency[i];
+		Document analysis_doc;
+		analysis_doc.Parse(analysis.GetDictValue());
+		const Value& analysis_content = analysis_doc["content"];
+		if (analysis_doc["content"].GetDouble() == (collection_doc["content"].GetDouble() / 2.56))
+		{
+			m_analysisFrequencyCombo.SetCurSel(i);
+		}
+	}
+
+	//SaveTestingDevice(theApp.m_currentProject.GetTestingDevice());
 }

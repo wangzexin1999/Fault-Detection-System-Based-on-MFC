@@ -32,6 +32,7 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	void GetCollectionPlan(Value &planEntity,  Document::AllocatorType & allocator);
+	void GetDefaultCollectionPlan(Value &planEntity_default, Document::AllocatorType & allocator);
 
 protected:
 

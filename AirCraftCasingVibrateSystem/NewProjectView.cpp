@@ -57,23 +57,47 @@ void CNewProjectView::OnBnClickedOk()
 	Value root(kObjectType);
 	//采集计划的内容
 	Value collectionPlans(kArrayType);
+	Value planEntity_default(kObjectType);
+
 	for (int i = m_newDialogIndex; i < m_pDialogVec.size(); i++){
 		CollectionPlanParaPresetView* collectionPlanPresetView = dynamic_cast<CollectionPlanParaPresetView*>(m_pDialogVec[i]);
 		if (collectionPlanPresetView != NULL){
 			Value planEntity(kObjectType);
 			collectionPlanPresetView->GetCollectionPlan(planEntity, allocator);
+
+			Value Array_z(kArrayType);
+			if (planEntity["planParaContent"].GetArray().Size()==0)
+			{
+				CString v_planName = planEntity["planName"].GetString();
+				AfxMessageBox(_T("请选择“")+v_planName + _T("”的参数"));
+				return;
+			}
+			
 			collectionPlans.PushBack(planEntity, allocator);
+
+			if (i == m_newDialogIndex)
+			{
+				collectionPlanPresetView->GetDefaultCollectionPlan(planEntity_default, allocator);
+
+			}
 		}
 	}
-
 	root.AddMember("collectionPlans", collectionPlans, allocator);
 
 	StringBuffer buffer;
 	Writer<StringBuffer> writer(buffer);
 	root.Accept(writer);
+
+	StringBuffer buffer_default;
+	Writer<StringBuffer> writer_default(buffer_default);
+	planEntity_default.Accept(writer_default);
+
 	std::string result = buffer.GetString();
+	std::string result_default = buffer_default.GetString();
 	///给项目对象设置采集
 	m_project.SetCollectionPlans(result.c_str());
+	m_project.SetCollectionStatus(result_default.c_str());
+
 	///封装project对象
 	TbTester tester = theApp.m_currentProject.GetTester();
 	m_project.SetTester(tester);
@@ -83,6 +107,7 @@ void CNewProjectView::OnBnClickedOk()
 	m_project.SetSensorVector(m_vsensors);
 	///保存项目数据
 	Result res = m_projectController.AddProject(m_project);
+
 	if (!res.GetIsSuccess()){
 		AfxMessageBox(res.GetMessages());
 		CDialogEx::OnCancel();

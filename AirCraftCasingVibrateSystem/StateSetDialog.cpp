@@ -44,18 +44,25 @@ BOOL CStateSetDialog::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 	RefreshView();
+
 	/*设置文本内容*/
 	CString strPlanName;
 	m_collectionPlanCombo.GetWindowTextA(strPlanName);
 	int selectedIndex = m_collectionPlanCombo.GetCurSel();
 	///根据选择的采集计划序号解析相应的采集计划对象
 	if (!m_collectionPlanDoc.IsNull()){
-		Value  doc;
-		doc.CopyFrom(m_collectionPlanDoc, m_collectionPlanDoc.GetAllocator());
-		const Value & colectionPlans = doc["collectionPlans"].GetArray();
-		///拿到采集计划的标题信息 
-		const Value & planTitle = colectionPlans[selectedIndex]["planParaTitle"];
-		m_staticCurrentPlanPara.SetWindowTextA(strPlanName+"--参数：");
+		m_project = theApp.m_currentProject;
+		m_collectionPlanStatus.Parse(theApp.m_currentProject.GetCollectionStatus());
+		Value  status;
+		status.CopyFrom(m_collectionPlanStatus, m_collectionPlanStatus.GetAllocator());
+		CString currentPlanPara_display = "\n\n";
+		for (int i = 0; i < status["planParaTitle"].Size(); i++)
+		{
+			currentPlanPara_display = currentPlanPara_display + status["planParaTitle"][i].GetString() + ":" + status["planParaContent"][i].GetString()+"\n";
+		}
+
+
+		m_staticCurrentPlanPara.SetWindowTextA(strPlanName + "--参数：" + currentPlanPara_display);
 	}
 
 	return TRUE; 
@@ -77,6 +84,8 @@ void CStateSetDialog::GridCtrlInit()
 	const Value & planTitle = colectionPlans[selectedIndex]["planParaTitle"];
 	///拿到采集计划的参数信息
 	const Value & planParaContent = colectionPlans[selectedIndex]["planParaContent"];
+
+
 	m_collectionPlanGrid.SetEditable(true);
 	// 2. 获得信息
 	m_collectionPlanGrid.SetEditable(true);
@@ -124,11 +133,19 @@ void  CStateSetDialog::ComboBoxInit(){
 	doc.CopyFrom(m_collectionPlanDoc, m_collectionPlanDoc.GetAllocator());
 	const Value & colectionPlans = doc["collectionPlans"].GetArray();
 
+	Value  status;
+	status.CopyFrom(m_collectionPlanStatus, m_collectionPlanStatus.GetAllocator());
+	int curSel = 0;
 	for (int i = 0; i < colectionPlans.Size(); i++){
 		string planName = colectionPlans[i]["planName"].GetString();
 		m_collectionPlanCombo.InsertString(i, planName.c_str());
+
+		if (status["planName"].GetString() == planName)
+		{
+			curSel = i;
+		}
 	}
-	m_collectionPlanCombo.SetCurSel(0);
+	m_collectionPlanCombo.SetCurSel(curSel);
 }
 
 void CStateSetDialog::RefreshView(){
@@ -136,6 +153,12 @@ void CStateSetDialog::RefreshView(){
 	if (theApp.m_currentProject.GetCollectionPlans() == "") return;
 	m_collectionPlanDoc.Parse(theApp.m_currentProject.GetCollectionPlans());
 	if (m_collectionPlanDoc.HasParseError()){
+		AfxMessageBox("采集计划加载失败");
+		return;
+	}
+	if (theApp.m_currentProject.GetCollectionStatus() == "") return;
+	m_collectionPlanStatus.Parse(theApp.m_currentProject.GetCollectionStatus());
+	if (m_collectionPlanStatus.HasParseError()){
 		AfxMessageBox("采集计划加载失败");
 		return;
 	}
@@ -174,26 +197,77 @@ void CStateSetDialog::OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult){
 	NM_GRIDVIEW* pItem = (NM_GRIDVIEW*)pNotifyStruct;
 
 
+	m_project = theApp.m_currentProject;
+
 	CString strPlanName;
 	m_collectionPlanCombo.GetWindowTextA(strPlanName);
 	///得到当前选中的采集计划序号
 	int selectedIndex = m_collectionPlanCombo.GetCurSel();
+	//pItem->iRow == 0 || pItem->iRow > m_projectVector.size()
 	if (selectedIndex < 0) return;
 	///根据选择的采集计划序号解析相应的采集计划对象
 	Value  doc;
 	doc.CopyFrom(m_collectionPlanDoc, m_collectionPlanDoc.GetAllocator());
 	const Value & colectionPlans = doc["collectionPlans"].GetArray();
 
+
+	Value  status;
+	status.CopyFrom(m_collectionPlanStatus, m_collectionPlanStatus.GetAllocator());
+
+
 	///拿到采集计划的标题信息 
-	const Value & planTitle = colectionPlans[selectedIndex]["planParaTitle"];
+	const Value & planTitle = colectionPlans[selectedIndex]["planName"];
+	status["planName"].SetString(planTitle.GetString(), m_collectionPlanStatus.GetAllocator());
+
 	///拿到采集计划的参数信息
 	const Value & planParaContent = colectionPlans[selectedIndex]["planParaContent"];
-	CString currentPlanPara = planParaContent[pItem->iRow - 1][0].GetString();
+	status["planParaContent"].Clear();
+
+	const Value & planParaTitle = colectionPlans[selectedIndex]["planParaTitle"];
+	status["planParaTitle"].Clear();
+
+	vector<CString>currentPlanPara;
+	CString currentPlanPara_display = "\n\n";
+	currentPlanPara.resize(m_collectionPlanGrid.GetColumnCount());
 
 
-	m_staticCurrentPlanPara.SetWindowTextA(strPlanName + "--参数：" + planTitle[0].GetString() + ":" + currentPlanPara);
-	theApp.m_collectionRotatingSpeed = currentPlanPara;
+	for (int i = 0; i < m_collectionPlanGrid.GetColumnCount(); i++)
+	{
+		currentPlanPara[i] = planParaContent[pItem->iRow - 1][i].GetString();
+		currentPlanPara_display = currentPlanPara_display + planParaTitle[i].GetString() + ":" + currentPlanPara[i] + "\n";
+		
+		Value  planParaTitle_para(kStringType);
+		string  planParaTitle_temp;
+		planParaTitle_temp = planParaTitle[i].GetString();
+		planParaTitle_para.SetString(planParaTitle_temp.c_str(), planParaTitle_temp.size(), m_collectionPlanStatus.GetAllocator());
+		status["planParaTitle"].PushBack(planParaTitle_para, m_collectionPlanStatus.GetAllocator());
+
+		Value  planParaContent_para(kStringType);
+		string  planParaContent_temp;
+		planParaContent_temp = currentPlanPara[i];
+		planParaContent_para.SetString(planParaContent_temp.c_str(), planParaContent_temp.size(), m_collectionPlanStatus.GetAllocator());
+		status["planParaContent"].PushBack(planParaContent_para, m_collectionPlanStatus.GetAllocator());
+		
+	}
+	m_staticCurrentPlanPara.SetWindowTextA(strPlanName + "--参数：" + currentPlanPara_display);
+
+	theApp.m_collectionRotatingSpeed = currentPlanPara_display;
 	CMainFrame *mainFram = (CMainFrame *)AfxGetMainWnd();
 	mainFram->SendMessage(WM_SETTEXT);
 	mainFram->SendMessage(StatusInfMessage);
+
+	StringBuffer buffer;
+	Writer<StringBuffer> writer(buffer);
+	status.Accept(writer);
+	std::string result = buffer.GetString();
+	m_project.SetCollectionStatus(result.c_str());
+	Result res = m_projectController.Update(m_project);
+	if (!res.GetIsSuccess()){
+		AfxMessageBox(res.GetMessages());
+		CDialogEx::OnCancel();
+	}
+	else{
+		///加载当前项目
+		theApp.m_currentProject = m_project;
+	}
 }

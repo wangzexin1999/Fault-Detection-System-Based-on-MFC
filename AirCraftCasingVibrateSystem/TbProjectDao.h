@@ -19,6 +19,7 @@ public:
 	PDAttribute m_productId;
 	PDAttribute m_projectStatus;
 	PDAttribute m_collectionPlans;
+	PDAttribute m_collectionStatus;
 
 	void SetTableFieldValues(TbProject project);
 	void GetTableFieldValues(TbProject &project);

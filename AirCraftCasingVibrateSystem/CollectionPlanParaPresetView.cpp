@@ -176,6 +176,46 @@ void  CollectionPlanParaPresetView::GetCollectionPlan(Value &planEntity, Documen
 			planParaContent.GetArray().PushBack(lineData, planDoc.GetAllocator());
 		}
 	}
+
+	//if (planParaContent.GetArray().Size ()== 0)
+	//{
+	//	//AfxMessageBox("参数不能为空"); 
+	//	return;
+	//}
+
+
 	planDoc.AddMember("planId", planId, planDoc.GetAllocator());
 	planEntity.CopyFrom(planDoc,allocator);
+}
+
+void  CollectionPlanParaPresetView::GetDefaultCollectionPlan(Value &planEntity_default, Document::AllocatorType & allocator){
+	///解析原计划模板
+	Document planDoc;
+	planDoc.Parse(m_collectionPlan.GetDictValue());
+	if (!planDoc.HasMember("planParaContent")){ return; }
+	Value& planParaContent = planDoc["planParaContent"];
+	planDoc.EraseMember("planIntro");
+
+	/// 清空
+	//planParaContent.GetArray().Clear();
+	for (int row = 1; row < m_collectionStatusGridCtrl.GetRowCount(); row++){
+		if (!m_collectionStatusGridCtrl.GetCell(row, 0)->IsKindOf(RUNTIME_CLASS(CGridCellCheck)))
+			m_collectionStatusGridCtrl.SetCellType(row, 0, RUNTIME_CLASS(CGridCellCheck));
+		CGridCellCheck* pCell = (CGridCellCheck*)m_collectionStatusGridCtrl.GetCell(row, 0);
+		if (pCell->GetCheck()){
+			Value lineData(kArrayType);
+			for (int col = 1; col < m_collectionStatusGridCtrl.GetColumnCount(); col++){
+				///获得每一行每一列的参数
+				Value  para(kStringType);
+				string  temp;
+				temp = m_collectionStatusGridCtrl.GetItemText(row, col).GetString();
+				para.SetString(temp.c_str(), temp.size(), planDoc.GetAllocator());
+				lineData.PushBack(para, planDoc.GetAllocator());
+			}
+			planDoc.EraseMember("planParaContent");
+			planDoc.AddMember("planParaContent", lineData, planDoc.GetAllocator());
+			row = m_collectionStatusGridCtrl.GetRowCount();
+		}
+	}
+	planEntity_default.CopyFrom(planDoc, allocator);
 }

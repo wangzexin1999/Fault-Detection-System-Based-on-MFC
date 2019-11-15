@@ -42,4 +42,5 @@ public:
 	virtual BOOL OnInitDialog();
 	void CollectionParaInfoInit();
 	void GetSelectedTestingDevice(TbTestingDevice &testingDevice);
+	afx_msg void OnCbnSelchangeComboCollectionfrequency();
 };
