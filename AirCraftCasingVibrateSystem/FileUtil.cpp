@@ -246,7 +246,6 @@ file.Write(data, strlen(data));
 
 */
 Result CFileUtil::SaveCollectionData(CString path, CString fileName, ThreadSafeQueue<AcquiredSignal> &collectionData){
-	
 	CFile file;///文件对象
 	if (!file.Open(_T(path+fileName), CFile::modeCreate | CFile::modeWrite | CFile::modeNoTruncate, NULL)){
 		return Result(false, "创建文件失败"); ////创建文件失败，则不操作
