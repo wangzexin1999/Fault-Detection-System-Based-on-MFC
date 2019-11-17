@@ -286,7 +286,7 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	void SetChartXYCoordinateLen(double xmin = 0, double ymax = -1, double ymin = -1, double xmax = -1);
+	void SetChartXYCoordinateLen(double xmin = 0, double xmax = -1, double ymin = -1, double ymax = -1);
 
 
 };

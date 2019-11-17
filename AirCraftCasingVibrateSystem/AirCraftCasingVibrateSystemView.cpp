@@ -132,7 +132,7 @@ void CAirCraftCasingVibrateSystemView::OnTimer(UINT_PTR nIDEvent){
 	}
 }
 
-void CAirCraftCasingVibrateSystemView::SetChartXYCoordinateLen(double xmin, double ymax, double ymin, double xmax){
+void CAirCraftCasingVibrateSystemView::SetChartXYCoordinateLen(double xmin, double xmax, double ymin, double ymax){
 	///坐标值存在默认参数-1，如果使用默认参数的话，默认的设置为采集窗口绑定的传感器的参数取值
 	Value temp;
 	Result res;

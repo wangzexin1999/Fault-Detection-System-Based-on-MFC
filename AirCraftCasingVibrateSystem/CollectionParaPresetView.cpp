@@ -92,6 +92,7 @@ void CollectionParaPresetView::CollectionParaInfoInit(){
 		AfxMessageBox("¼ÓÔØ·ÖÎöÆµÂÊÊ§°Ü");
 	}
 	else{
+		int cursel = 0;
 		for (int i = 0; i < m_vanalysisFrequency.size(); i++){
 			TbDictionary analysis = m_vanalysisFrequency[i];
 			Document doc;
@@ -99,11 +100,23 @@ void CollectionParaPresetView::CollectionParaInfoInit(){
 			const Value& title = doc["title"];
 			analysis.SetDictValue(title.GetString());
 
-			//TbDictionary analysisFrequency = m_vanalysisFrequency[i];
 			TbDictionary analysisFrequency = analysis;
 			m_analysisFrequencyCombo.InsertString(i, analysisFrequency.GetDictValue());
+
+			int index = m_collectionFrequencyCombo.GetCurSel();
+			TbDictionary collection = m_vcollectionFrequency[index];
+			Document collection_doc;
+			collection_doc.Parse(collection.GetDictValue());
+			const Value& collection_content = collection_doc["content"];
+
+
+			if (doc["content"].GetDouble() == (collection_doc["content"].GetDouble() / 2.56))
+			{
+				//m_analysisFrequencyCombo.SetCurSel(i);
+				cursel = i;
+			}
 		}
-		m_analysisFrequencyCombo.SetCurSel(0);
+		m_analysisFrequencyCombo.SetCurSel(cursel);
 	}
 
 	res = m_dictionaryController.FindAllBySearchCondition(m_vcollectionMethod, 0, "collectionmethod");
@@ -145,8 +158,7 @@ void CollectionParaPresetView::OnCbnSelchangeComboCollectionfrequency()
 	collection_doc.Parse(collection.GetDictValue());
 	const Value& collection_content = collection_doc["content"];
 
-
-	//double x = collection_doc["content"].GetDouble();
+	int cursel = 0;
 	for (int i = 0; i < m_vanalysisFrequency.size(); i++){
 		TbDictionary analysis = m_vanalysisFrequency[i];
 		Document analysis_doc;
@@ -154,9 +166,9 @@ void CollectionParaPresetView::OnCbnSelchangeComboCollectionfrequency()
 		const Value& analysis_content = analysis_doc["content"];
 		if (analysis_doc["content"].GetDouble() == (collection_doc["content"].GetDouble() / 2.56))
 		{
-			m_analysisFrequencyCombo.SetCurSel(i);
+			cursel = i;
 		}
 	}
+	m_analysisFrequencyCombo.SetCurSel(cursel);
 
-	//SaveTestingDevice(theApp.m_currentProject.GetTestingDevice());
 }

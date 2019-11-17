@@ -40,11 +40,10 @@ bool TestingDeviceService::Update(TbTestingDevice testingDevice){
 	return isSuccess;
 }
 
-bool TestingDeviceService::AddTestingDevice(TbTestingDevice & testingDevice){
+bool TestingDeviceService::AddTestingDevice(TbTestingDevice testingDevice){
 	TbTestingDeviceDao testingDeviceDao;
 	testingDeviceDao.SetTableFieldValues(testingDevice);
 	bool isSuccess =  testingDeviceDao.Insert(false);
-	testingDeviceDao.GetTableFieldValues(testingDevice);
 	return isSuccess;
 }
 bool TestingDeviceService::GetOneById(TbTestingDevice &searchEntity){

@@ -50,9 +50,7 @@ BOOL CStateSetDialog::OnInitDialog()
 	m_collectionPlanCombo.GetWindowTextA(strPlanName);
 	int selectedIndex = m_collectionPlanCombo.GetCurSel();
 	///根据选择的采集计划序号解析相应的采集计划对象
-	if (!m_collectionPlanDoc.IsNull()){
-		m_project = theApp.m_currentProject;
-		m_collectionPlanStatus.Parse(theApp.m_currentProject.GetCollectionStatus());
+	if (!m_collectionPlanStatus.IsNull()){
 		Value  status;
 		status.CopyFrom(m_collectionPlanStatus, m_collectionPlanStatus.GetAllocator());
 		CString currentPlanPara_display = "\n\n";
@@ -153,13 +151,13 @@ void CStateSetDialog::RefreshView(){
 	if (theApp.m_currentProject.GetCollectionPlans() == "") return;
 	m_collectionPlanDoc.Parse(theApp.m_currentProject.GetCollectionPlans());
 	if (m_collectionPlanDoc.HasParseError()){
-		AfxMessageBox("采集计划加载失败");
+		//AfxMessageBox("采集计划加载失败");
 		return;
 	}
 	if (theApp.m_currentProject.GetCollectionStatus() == "") return;
 	m_collectionPlanStatus.Parse(theApp.m_currentProject.GetCollectionStatus());
 	if (m_collectionPlanStatus.HasParseError()){
-		AfxMessageBox("采集计划加载失败");
+		//AfxMessageBox("采集计划加载失败");
 		return;
 	}
 	///2.清空下拉列表的显示
@@ -196,6 +194,8 @@ HBRUSH CStateSetDialog::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 void CStateSetDialog::OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult){
 	NM_GRIDVIEW* pItem = (NM_GRIDVIEW*)pNotifyStruct;
 
+	//if (pItem->iRow == 0 || pItem->iRow > .size()) return;
+	if (pItem->iRow == 0 || pItem->iRow > m_collectionPlanGrid.GetRowCount()) return;
 
 	m_project = theApp.m_currentProject;
 
@@ -203,8 +203,8 @@ void CStateSetDialog::OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult){
 	m_collectionPlanCombo.GetWindowTextA(strPlanName);
 	///得到当前选中的采集计划序号
 	int selectedIndex = m_collectionPlanCombo.GetCurSel();
-	//pItem->iRow == 0 || pItem->iRow > m_projectVector.size()
-	if (selectedIndex < 0) return;
+
+	if (selectedIndex <= 0 ) return;
 	///根据选择的采集计划序号解析相应的采集计划对象
 	Value  doc;
 	doc.CopyFrom(m_collectionPlanDoc, m_collectionPlanDoc.GetAllocator());
