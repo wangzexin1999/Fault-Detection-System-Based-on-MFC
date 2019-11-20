@@ -21,6 +21,7 @@ Modification:
 #include "DictionaryController.h"
 #include "afxwin.h"
 #include "include/rapidjson/document.h"
+#include "JsonUtil.h"
 using namespace std;
 using namespace rapidjson;
 class CollectionParaView : public CDialogEx
@@ -56,8 +57,11 @@ protected:
 	afx_msg void OnCbnSelchangeCombo2();
 	afx_msg void OnCbnSelchangeCombo3();
 	afx_msg void OnCbnSelchangeComboCollectionPoints();
+
+	JsonUtil m_jsonUtil;
 	//afx_msg void OnEnChangeEditCollectiontimes();
 	DECLARE_MESSAGE_MAP()
+
 public:
 	void RefreshView();
 	//afx_msg void OnCbnSelchangeComboCollectionPoints();

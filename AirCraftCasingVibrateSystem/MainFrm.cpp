@@ -687,8 +687,8 @@ void CMainFrame::OnButtonStartCapture()
 		///	给采集设备绑定准备事件
 		wfAiCtrl->addDataReadyHandler(OnDataReadyEvent, this);
 
-		devConfParaIterator->second.clockRatePerChan = 234375;
-		devConfParaIterator->second.sectionLength = collectionPoint*devConfParaIterator->second.channelCount;//analysisFrequency.GetInt()*(234375 / collectionFrequency.GetInt()) * 2;
+		devConfParaIterator->second.clockRatePerChan = 256000;//234375;
+		devConfParaIterator->second.sectionLength = 25600;//collectionPoint*devConfParaIterator->second.channelCount;//analysisFrequency.GetInt()*(234375 / collectionFrequency.GetInt()) * 2;
 		m_advantechDaqController.ConfigurateDevice(devConfParaIterator->second, wfAiCtrl);
 		//开启采集
 		wfAiCtrl->Start();
@@ -1180,14 +1180,12 @@ void CMainFrame::OnCheckStaSet()
 
 void CMainFrame::OnUpdateCheckStaSet(CCmdUI *pCmdUI)
 {
-	// TODO:  在此添加命令更新用户界面处理程序代码
 	pCmdUI->SetCheck(m_stateSetDockPanelView.IsVisible());
 }
 
 
 void CMainFrame::OnClose()
 {
-	// TODO:  在此添加消息处理程序代码和/或调用默认值
 	if (theApp.m_icollectionStatus != 0){
 		AfxMessageBox("正在采集数据，不能关闭程序");
 		return;
@@ -1431,6 +1429,7 @@ void  CMainFrame::AutoSaveCollectionData(){
 			}
 		}
 	}
+	theApp.m_bisSave = false;
 }
 
 void CMainFrame::GetInstalledDevices(ICollection<DeviceTreeNode> *& devices){
