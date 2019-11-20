@@ -1081,7 +1081,8 @@ void CMainFrame::OnBtnGraphAttribute()
 }
 
 void CMainFrame::CreateCaptureWindow(vector<TbSensor> vsensor){
-	    
+	  
+	//theApp.m_vsignalCaptureView.clear();
 	for (int i = 0; i < vsensor.size(); i++)
 	{
 		// 新建文档

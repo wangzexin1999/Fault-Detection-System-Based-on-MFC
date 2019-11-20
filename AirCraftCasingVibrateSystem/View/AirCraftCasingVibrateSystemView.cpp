@@ -64,6 +64,7 @@ void CAirCraftCasingVibrateSystemView::DoDataExchange(CDataExchange* pDX)
 	CFormView::DoDataExchange(pDX);
 }
 
+
 BOOL CAirCraftCasingVibrateSystemView::PreCreateWindow(CREATESTRUCT& cs)
 {
 	//  CREATESTRUCT cs 来修改窗口类或样式
@@ -138,6 +139,7 @@ void CAirCraftCasingVibrateSystemView::SetChartXYCoordinateLen(double xmin, doub
 	Result res;
 	if (xmax == -1){
 		///xmax如果使用默认参数,那么就将x的最大值设置为采集频率
+		xmax = 0;
 		res =   JsonUtil::GetValueFromJsonString(theApp.m_currentProject.GetTestingDevice().GetAnalysisFrequency().GetDictValue(), "content", temp);
 		if (res.GetIsSuccess()){
 			xmax = temp.GetFloat();

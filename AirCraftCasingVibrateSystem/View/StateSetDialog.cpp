@@ -194,7 +194,6 @@ HBRUSH CStateSetDialog::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 void CStateSetDialog::OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult){
 	NM_GRIDVIEW* pItem = (NM_GRIDVIEW*)pNotifyStruct;
 
-	//if (pItem->iRow == 0 || pItem->iRow > .size()) return;
 	if (pItem->iRow == 0 || pItem->iRow > m_collectionPlanGrid.GetRowCount()) return;
 
 	m_project = theApp.m_currentProject;

@@ -131,7 +131,11 @@ void ProjectSetView::OnBnClickedButtonNextstep()
 
 void ProjectSetView::OnBnClickedOk()
 {
+	
 	m_project = theApp.m_currentProject;
+
+
+
 
 	// 得到所有的通道
 	m_vsensors.clear();
