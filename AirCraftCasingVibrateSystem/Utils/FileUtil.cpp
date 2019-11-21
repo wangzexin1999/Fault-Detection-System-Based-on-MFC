@@ -464,7 +464,7 @@ bool CFileUtil::IsDir(CString strPath){
 	return stat(strFilePath.c_str(), &st) >= 0 && S_ISREG(st.st_mode);
 }
 
-bool CFileUtil::SaveCollectionData2Binary(CString path, CString fileName,TbSignal fileInfor, map<CString, ThreadSafeQueue<double>> & acquireSignal)
+bool CFileUtil::SaveCollectionData2Binary(CString path, CString fileName,TbSignal fileInfor, map<CString, ThreadSafeQueue<double>>& acquireSignal)
 {
 	map<CString, ThreadSafeQueue<double>>::iterator signalDataIterator = acquireSignal.begin();
 	int saveCount = signalDataIterator->second.size();
@@ -474,9 +474,9 @@ bool CFileUtil::SaveCollectionData2Binary(CString path, CString fileName,TbSigna
 	if (IsFile(path + fileName))
 	{
 		std::ofstream  ofs(_T(path + fileName), std::ios::binary | std::ios::out | std::ios::app);
-		/*写文件信息*/
-
-		/*数据格式： 通道1通道2...*/
+		/*写文件信息,加到头部*/
+		ofs.write((const char *)&fileInfor, sizeof(TbSignal));
+		/*数据格式： 通道1通道2通道3通道4...*/
 		for (int i = 0; i < saveCount; i++){
 			////循环采集数据的队列去保存数据
 			signalDataIterator = acquireSignal.begin();
@@ -491,10 +491,17 @@ bool CFileUtil::SaveCollectionData2Binary(CString path, CString fileName,TbSigna
 	}
 	else
 	{
-		std::ofstream  ofs(_T(path + fileName), std::ios::binary | std::ios::out | std::ios::app);
 		/*加入头信息:128个字节*/
-		ofs << fileName << endl;
-		/*数据格式： 通道1通道2...*/
+		long pos;
+		fstream fout;
+		fout.open(_T(path + fileName), std::ios_base::binary | fstream::out | fstream::in);
+		pos = fout.tellp();
+		fout.seekp(0, ios::cur);
+		fout.write((const char *)&fileInfor, sizeof(TbSignal));
+		fout.close();
+		/*加入数据*/
+		std::ofstream  ofs(_T(path + fileName), std::ios::binary | std::ios::out | std::ios::app);
+		/*数据格式： 通道1通道2通道3通道4...*/
 		for (int i = 0; i < saveCount; i++){
 			////循环采集数据的队列去保存数据
 			signalDataIterator = acquireSignal.begin();
