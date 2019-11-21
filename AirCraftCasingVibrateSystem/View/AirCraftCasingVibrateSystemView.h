@@ -48,7 +48,7 @@ private:
 	CChartLineSerieDu *m_pLineSerie; // 线
 	int m_flag = false;  // 调整控件大小标志
 	EchoSignal m_echoSignal;
-	//CSignalSelectView  m_signalSelectView;   //信号选择界面
+	CSignalSelectView  m_signalSelectView;   //信号选择界面
 
 	SensorController m_sensorController; ///传感器控制类
 
