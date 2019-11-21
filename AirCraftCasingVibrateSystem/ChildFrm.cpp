@@ -26,6 +26,7 @@
 IMPLEMENT_DYNCREATE(CChildFrame, CMDIChildWndEx)
 
 BEGIN_MESSAGE_MAP(CChildFrame, CMDIChildWndEx)
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 // CChildFrame ππ‘Ï/Œˆππ
@@ -49,6 +50,10 @@ BOOL CChildFrame::PreCreateWindow(CREATESTRUCT& cs)
 	return TRUE;
 }
 
+void CChildFrame::OnClose()
+{
+
+}
 // CChildFrame ’Ô∂œ
 
 #ifdef _DEBUG

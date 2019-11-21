@@ -40,10 +40,12 @@ bool TestingDeviceService::Update(TbTestingDevice testingDevice){
 	return isSuccess;
 }
 
-bool TestingDeviceService::AddTestingDevice(TbTestingDevice testingDevice){
+bool TestingDeviceService::AddTestingDevice(TbTestingDevice & testingDevice){
 	TbTestingDeviceDao testingDeviceDao;
 	testingDeviceDao.SetTableFieldValues(testingDevice);
+	//得到当前插入的id
 	bool isSuccess =  testingDeviceDao.Insert(false);
+	testingDevice.SetId(testingDeviceDao.m_id.GetInt());
 	return isSuccess;
 }
 bool TestingDeviceService::GetOneById(TbTestingDevice &searchEntity){

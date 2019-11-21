@@ -34,6 +34,9 @@ public:
 	void GetCollectionPlan(Value &planEntity,  Document::AllocatorType & allocator);
 	void GetDefaultCollectionPlan(Value &planEntity_default, Document::AllocatorType & allocator);
 
+
+	bool GetGridCellCheck(int row, int col);
+
 protected:
 
 	TbDictionary m_collectionPlan; ///采集计划对象

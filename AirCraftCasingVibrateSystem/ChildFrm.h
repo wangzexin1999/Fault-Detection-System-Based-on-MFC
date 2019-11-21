@@ -22,7 +22,7 @@ public:
 
 // ÌØÐÔ
 public:
-
+	afx_msg void OnClose();
 // ²Ù×÷
 public:
 
