@@ -64,7 +64,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_BTN_STOP_CAPTURE, &CMainFrame::OnBtnStopCapture)
 	ON_COMMAND(ID_BTN_STOP_PLAYBACK, &CMainFrame::OnBtnStopPlayback)
 	ON_COMMAND(ID_BTN_START_PLAYBACK, &CMainFrame::OnBtnStartPlayback)
-	ON_COMMAND(ID_BTN_CLOSE_ALL_WINDOW, &CMainFrame::OnBtnCloseAllWindow)
+	//ON_COMMAND(ID_BTN_CLOSE_ALL_WINDOW, &CMainFrame::OnBtnCloseAllWindow)
 
 	ON_COMMAND(ID_BTN_START_SMAPLE, &CMainFrame::OnBtnStartSmaple)
 	ON_COMMAND(ID_BTN_STOP_SAMPLE, &CMainFrame::OnBtnStopSample)
@@ -599,7 +599,14 @@ void CMainFrame::OnButtonStartCapture()
 {
 	////将暂停采集、结束采集、结束采样、开始采样置灰
 	//m_pMenu->EnableMenuItem(ID_BUTTON_SUSPEND_CAPTURE, MF_BYCOMMAND | MF_GRAYED);
-	// 设置底部坐标轴为自动
+	// 设置底部坐标轴为自动.
+	///如果此时是暂停采集状态，则启动采集事件
+	if (theApp.m_icollectionStatus == 2){ 
+		for (int i = 0; i < m_vwfAiCtrl.size();i++){
+			m_vwfAiCtrl[i]->Start();
+		}
+		return;
+	}
 	///如果当前状态为正在采集
 	if (theApp.m_icollectionStatus == 1) return;
 
@@ -686,9 +693,8 @@ void CMainFrame::OnButtonStartCapture()
 		WaveformAiCtrl *  wfAiCtrl = WaveformAiCtrl::Create();
 		///	给采集设备绑定准备事件
 		wfAiCtrl->addDataReadyHandler(OnDataReadyEvent, this);
-
-		devConfParaIterator->second.clockRatePerChan = 234375;
-		devConfParaIterator->second.sectionLength = collectionPoint*devConfParaIterator->second.channelCount;//analysisFrequency.GetInt()*(234375 / collectionFrequency.GetInt()) * 2;
+		devConfParaIterator->second.clockRatePerChan = 256000;//234375;
+		devConfParaIterator->second.sectionLength = 25600;//collectionPoint*devConfParaIterator->second.channelCount;//analysisFrequency.GetInt()*(234375 / collectionFrequency.GetInt()) * 2;
 		m_advantechDaqController.ConfigurateDevice(devConfParaIterator->second, wfAiCtrl);
 		//开启采集
 		wfAiCtrl->Start();
@@ -703,7 +709,7 @@ void CMainFrame::OnButtonStartCapture()
 	//实时数据传输
 	SetTimer(99, 1000, NULL);
 	///将采集按钮置灰
-	
+
 }
 //暂停采集
 void CMainFrame::OnButtonSuspendCapture()
@@ -758,12 +764,12 @@ void CMainFrame::OnBtnStartPlayback()
 }
 
 // 关闭所有窗口
-void CMainFrame::OnBtnCloseAllWindow()
-{
-	// TODO:  在此添加命令处理程序代码
-	// 关闭所有窗口
-	CloseAllWindows();
-}
+//void CMainFrame::OnBtnCloseAllWindow()
+//{
+//	// TODO:  在此添加命令处理程序代码
+//	// 关闭所有窗口
+//	CloseAllWindows();
+//}
 
 
 
@@ -1180,14 +1186,12 @@ void CMainFrame::OnCheckStaSet()
 
 void CMainFrame::OnUpdateCheckStaSet(CCmdUI *pCmdUI)
 {
-	// TODO:  在此添加命令更新用户界面处理程序代码
 	pCmdUI->SetCheck(m_stateSetDockPanelView.IsVisible());
 }
 
 
 void CMainFrame::OnClose()
 {
-	// TODO:  在此添加消息处理程序代码和/或调用默认值
 	if (theApp.m_icollectionStatus != 0){
 		AfxMessageBox("正在采集数据，不能关闭程序");
 		return;
@@ -1380,7 +1384,15 @@ void CMainFrame::SaveCollectionData(map<CString, ThreadSafeQueue<double>> & acqu
 
 ////保存采集数据的线程函数
 void  CMainFrame::AutoSaveCollectionData(){
+	TbSignal saveSignal;
 	theApp.m_bisSave = true;
+	saveSignal.SetCollectionPara(theApp.m_currentProject.GetCollectionStatus());
+	saveSignal.SetProductId(theApp.m_currentProject.GetProduct().GetProductId());
+	saveSignal.SetProjectId(theApp.m_currentProject.GetProjectId());
+	saveSignal.SetSaveTime(DateUtil::GetCurrentCStringTime());
+	saveSignal.SetTestingDeviceId(theApp.m_currentProject.GetTestingDevice().GetId());
+	///得到输出流
+	ofstream outputStream = CFileUtil::GetOfstreamByFileName("C:/collectionData/"+ DateUtil::GetTimeStampCString()+".bat");
 	//创建缓冲的map
 	map<CString, ThreadSafeQueue<double>> mpcolllectioinDataQueue;
 	for (int i = 0; i < m_vchannelIds.size();i++){
@@ -1389,48 +1401,39 @@ void  CMainFrame::AutoSaveCollectionData(){
 	}
 	map<CString, ThreadSafeQueue<double>>::iterator iter1;
 	map<CString, ThreadSafeQueue<double>>::iterator iter2;
-
 	while (theApp.m_bisSave){
-		bool isSaveStatus = true;
-		TRACE("\n状态：%d\n", theApp.m_icollectionStatus);
-		///从每个通道获取数据
+		///如果此时状态是暂停采集 continue
+		if (theApp.m_icollectionStatus == 2){ continue;}
 		iter1 = m_mpcolllectioinDataQueue.begin();
 		iter2 = mpcolllectioinDataQueue.begin();
-
-		while (iter1 != m_mpcolllectioinDataQueue.end()&&iter2!=mpcolllectioinDataQueue.end()) {
-			iter2->second.push(*iter1->second.wait_and_pop());
-			if (iter2->second.size() < theApp.m_icollectSignalsStoreCount){
-				///如果插入一条元素之后，缓冲map仍然不够保存条件，那么就将是否保存数据置位false
-				isSaveStatus = false;
+		///如果缓存中有大于1000条数据，并且需要保存的数据中少于1000条数据 ，每次取1000条数据
+		///如果
+		while (iter2->second.size() != 1000 && iter1->second.size() >= 1000 ||
+			theApp.m_icollectionStatus == 0 && iter1->second.size() < 1000 && iter1->second.size()>0){
+			while (iter1 != m_mpcolllectioinDataQueue.end() && iter2 != mpcolllectioinDataQueue.end()) {
+				iter2->second.push(*iter1->second.wait_and_pop());
+				iter1++;
+				iter2++;
 			}
-			iter1++;
-			iter2++;
+			iter1 = m_mpcolllectioinDataQueue.begin();
+			iter2 = mpcolllectioinDataQueue.begin();
 		}
-		///如果当前是正在采集，且符合保存的条件
-		if (isSaveStatus&&theApp.m_icollectionStatus==1){
-			///需要保存的数据
-			thread t(&CMainFrame::SaveCollectionData, this, move(mpcolllectioinDataQueue));
-			t.detach();
-			mpcolllectioinDataQueue.clear();
-			for (int i = 0; i < m_vchannelIds.size(); i++){
-				mpcolllectioinDataQueue.insert(pair<CString, ThreadSafeQueue<double>>
-					(m_vchannelIds[i], ThreadSafeQueue<double>()));
-			}
+		///将1000条数据保存到文件
+		CFileUtil::SaveCollectionData2Binary(outputStream, move(mpcolllectioinDataQueue));
+		///重新构建保存的缓冲区
+		mpcolllectioinDataQueue.clear();
+		for (int i = 0; i < m_vchannelIds.size(); i++){
+			mpcolllectioinDataQueue.insert(pair<CString, ThreadSafeQueue<double>>
+				(m_vchannelIds[i], ThreadSafeQueue<double>()));
 		}
-		///如果当前结束采集或者暂停采集，且缓冲区数据量不足以达到保存条件了。
-		///保存暂且搁置
-		if (theApp.m_icollectionStatus != 1){
-			for (iter1 = m_mpcolllectioinDataQueue.begin(); iter1 != m_mpcolllectioinDataQueue.end(); iter1++){
-				if (iter1->second.size() < theApp.m_icollectSignalsStoreCount){
-					///停止或者暂停采集之后保存剩余的所有数据
-					thread t(&CMainFrame::SaveCollectionData, this, move(m_mpcolllectioinDataQueue));
-					t.detach();
-					theApp.m_bisSave = false;
-					break;
-				}
-			}
+		iter1 = m_mpcolllectioinDataQueue.begin();
+		///如果此时是停止采集且缓冲区已经为空
+		if (iter1->second.empty() && theApp.m_icollectionStatus == 0){
+			theApp.m_bisSave = false;
 		}
 	}
+	theApp.m_bisSave = false;
+	outputStream.close();
 }
 
 void CMainFrame::GetInstalledDevices(ICollection<DeviceTreeNode> *& devices){

@@ -266,7 +266,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnPaint();
-	afx_msg void OnButtonSignalSelect();
+	//afx_msg void OnButtonSignalSelect();
 	void OnBtnTransverseAmplification();
 	void OnBtnHorizontalReduction();
 	void OnBtnVerticalReduction();

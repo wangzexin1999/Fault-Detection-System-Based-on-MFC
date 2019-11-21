@@ -37,7 +37,7 @@ BEGIN_MESSAGE_MAP(CAirCraftCasingVibrateSystemView, CFormView)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
 	ON_WM_PAINT()
-	ON_COMMAND(ID_BUTTON_SIGNAL_SELECT, &CAirCraftCasingVibrateSystemView::OnButtonSignalSelect)
+	//ON_COMMAND(ID_BUTTON_SIGNAL_SELECT, &CAirCraftCasingVibrateSystemView::OnButtonSignalSelect)
 	ON_WM_TIMER()
 
 	ON_MESSAGE(WM_USER_REFRESH_CHART, &CAirCraftCasingVibrateSystemView::OnRefreshChart)
@@ -121,6 +121,7 @@ void CAirCraftCasingVibrateSystemView::OnInitialUpdate()
 		//pSerie->SetNeedCalStatValue(true);
 	}
 	pDuChartCtrl->m_shuxing.m_bDrawStatValue = TRUE;
+	pDuChartCtrl->SetPanEnabled(false);/*设置控件右键不可拖动*/
 	pDuChartCtrl->EnableRefresh(true);
 	m_flag = true;
 	RefreshGraphAttri(); //加载图形属性
@@ -203,7 +204,7 @@ void CAirCraftCasingVibrateSystemView::OnContextMenu(CWnd* /* pWnd */, CPoint po
 #ifndef SHARED_HANDLERS
 	/*theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
 	IDR_MENU_RIGHT_KEY*/
-	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_MENU_RIGHT_KEY, point.x, point.y, this, TRUE);
+	//theApp.GetContextMenuManager()->ShowPopupMenu(IDR_MENU_RIGHT_KEY, point.x, point.y, this, TRUE);
 #endif
 }
 
@@ -246,10 +247,10 @@ void CAirCraftCasingVibrateSystemView::OnPaint()
 }
 
 // 信号选择
-void CAirCraftCasingVibrateSystemView::OnButtonSignalSelect()
-{
-	m_signalSelectView.DoModal();
-}
+//void CAirCraftCasingVibrateSystemView::OnButtonSignalSelect()
+//{
+//	//m_signalSelectView.DoModal();
+//}
 
 // 横向放大
 void CAirCraftCasingVibrateSystemView::OnBtnTransverseAmplification()
@@ -493,10 +494,7 @@ LRESULT CAirCraftCasingVibrateSystemView::OnRefreshChart(WPARAM wParam, LPARAM l
 {
 	m_pLineSerie->ClearSerie();
 	m_pLineSerie->SetNeedCalStatValue(TRUE);
-	SmartArray<double> xData = m_echoSignal.GetXData();
-	SmartArray<double> yData = m_echoSignal.GetYData();
-	TRACE("\n刷新数据。。。。\n");
-	
-	m_pLineSerie->AddPoints(xData.GetSmartArray(), yData.GetSmartArray(), xData.size() / 2);
+	TRACE("\n刷新采集窗口。。。。\n");
+	m_pLineSerie->AddPoints(m_echoSignal.GetXData().GetSmartArray(), m_echoSignal.GetYData().GetSmartArray(), m_echoSignal.GetXData().size()/2);
 	return 0;
 }

@@ -53,7 +53,6 @@ BOOL CollectionParaView::OnInitDialog()
 
 void CollectionParaView::SaveTestingDevice(TbTestingDevice &testingDevice){
 	int index = m_collectionFrequencyCombo.GetCurSel();
-	//m_collectionFrequencyCombo.GetLBText(index, strInfo1);//通过索引获取对应的值
 	testingDevice.SetCollectionFrequency(m_vcollectionFrequency[index]);
 
 	index = m_analysisFrequencyCombo.GetCurSel();
@@ -69,12 +68,15 @@ void CollectionParaView::SaveTestingDevice(TbTestingDevice &testingDevice){
 	CString collectionTimes;
 	m_collectionTimesEdit.GetWindowTextA(collectionTimes);
 	testingDevice.SetCollectionTimes(atoi(collectionTimes));
-
-
 	TestingDeviceController m_testingDeviceServiceController;
 	Result res = m_testingDeviceServiceController.UpdateTestingDevice(testingDevice);
 	if (!res.GetIsSuccess()){
 		AfxMessageBox(res.GetMessages());
+	}
+
+	///调整坐标系的大小
+	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
+		theApp.m_vsignalCaptureView[i]->SetChartXYCoordinateLen();
 	}
 }
 
@@ -180,38 +182,23 @@ void CollectionParaView::RefreshView(){
 
 void CollectionParaView::OnCbnSelchangeCombo1()
 {
-	// TODO:  在此添加控件通知处理程序代码
-	//SaveTestingDevice(theApp.m_currentProject.GetTestingDevice());
 	int index = m_collectionFrequencyCombo.GetCurSel();
-	TbDictionary collection = m_vcollectionFrequency[index];
-	Document collection_doc;
-	collection_doc.Parse(collection.GetDictValue());
-	const Value& collection_content = collection_doc["content"];
-
-
-	//double x = collection_doc["content"].GetDouble();
+	Value collectionFre;
+	Value analysisFre;
+	m_jsonUtil.GetValueFromJsonString(m_vcollectionFrequency[index].GetDictValue(), "content", collectionFre);
 	for (int i = 0; i < m_vanalysisFrequency.size(); i++){
-		TbDictionary analysis = m_vanalysisFrequency[i];
-		Document analysis_doc;
-		analysis_doc.Parse(analysis.GetDictValue());
-		const Value& analysis_content = analysis_doc["content"];
-		if (analysis_doc["content"].GetDouble() == (collection_doc["content"].GetDouble() / 2.56))
-		{
+		m_jsonUtil.GetValueFromJsonString(m_vanalysisFrequency[i].GetDictValue(), "content", analysisFre);
+		if (analysisFre.GetDouble() == (collectionFre.GetDouble() / 2.56)){
 			m_analysisFrequencyCombo.SetCurSel(i);
 		}
 	}
-
 	SaveTestingDevice(theApp.m_currentProject.GetTestingDevice());
 }
 
 
 void CollectionParaView::OnCbnSelchangeCombo2()
 {
-	///调整坐标系的大小
-	//SaveTestingDevice(theApp.m_currentProject.GetTestingDevice());
-	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
-		theApp.m_vsignalCaptureView[i]->SetChartXYCoordinateLen();
-	}
+	
 	SaveTestingDevice(theApp.m_currentProject.GetTestingDevice());
 }
 

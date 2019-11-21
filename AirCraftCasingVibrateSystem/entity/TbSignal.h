@@ -25,6 +25,22 @@ private:
 	CString m_collectionStatus;
 	int m_pointCount;
 	CString m_collectionPara;
+
+	/*通道个数*/
+	int m_iChannelNums = 0;
+	/*设备号*/
+	int m_iDeviceID = 0;
+	/*开始通道*/
+	int m_iStartChannel = 0;
+	/*结束通道*/
+	int m_iEndChannel = 0;
+	/*采集频率*/
+	int m_iCollectFre = 0;
+	/*采集计划参数*/
+	char  m_cCollectPlanPara[64];
+	/*信号大小*/
+	long long m_llSiganlSize = 0;
+
 public:
 	int GetSignalId();
 	void SetSignalId(int signalId);

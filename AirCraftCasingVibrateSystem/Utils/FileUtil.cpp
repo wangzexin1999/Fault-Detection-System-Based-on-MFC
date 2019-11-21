@@ -449,3 +449,100 @@ bool  CFileUtil::SaveCollectionData(CString path, CString fileName, map<CString,
 	file.Close();
 	return true;
 }
+
+bool CFileUtil::IsFile(CString strPath)
+{
+	struct stat st;
+	string strFilePath = strPath.GetBuffer(0);
+	return stat(strFilePath.c_str(), &st) >= 0 && S_ISREG(st.st_mode);
+}
+
+bool CFileUtil::IsDir(CString strPath){
+
+	struct stat st;
+	string strFilePath = strPath.GetBuffer(0);
+	return stat(strFilePath.c_str(), &st) >= 0 && S_ISREG(st.st_mode);
+}
+
+bool CFileUtil::SaveCollectionData2Binary(CString path, CString fileName,TbSignal fileInfor, map<CString, ThreadSafeQueue<double>>& acquireSignal)
+{
+	map<CString, ThreadSafeQueue<double>>::iterator signalDataIterator = acquireSignal.begin();
+	int saveCount = signalDataIterator->second.size();
+	int channelCount = acquireSignal.size();
+	double* data = new double[channelCount];
+	/*判断文件是否存在，如果不存在，则创建文件，并加入信息*/
+	if (IsFile(path + fileName))
+	{
+		std::ofstream  ofs(_T(path + fileName), std::ios::binary | std::ios::out | std::ios::app);
+		/*写文件信息,加到头部*/
+		ofs.write((const char *)&fileInfor, sizeof(TbSignal));
+		/*数据格式： 通道1通道2通道3通道4...*/
+		for (int i = 0; i < saveCount; i++){
+			////循环采集数据的队列去保存数据
+			signalDataIterator = acquireSignal.begin();
+			for (int j = 0; j < channelCount; j++){
+				shared_ptr<DOUBLE> signal = signalDataIterator->second.wait_and_pop();
+				data[j] = *signal;
+				signalDataIterator++;
+			}
+			ofs.write((const char*)data, sizeof(double)* channelCount);
+		}
+		ofs.close();
+	}
+	else
+	{
+		/*加入头信息:128个字节*/
+		long pos;
+		fstream fout;
+		fout.open(_T(path + fileName), std::ios_base::binary | fstream::out | fstream::in);
+		pos = fout.tellp();
+		fout.seekp(0, ios::cur);
+		fout.write((const char *)&fileInfor, sizeof(TbSignal));
+		fout.close();
+		/*加入数据*/
+		std::ofstream  ofs(_T(path + fileName), std::ios::binary | std::ios::out | std::ios::app);
+		/*数据格式： 通道1通道2通道3通道4...*/
+		for (int i = 0; i < saveCount; i++){
+			////循环采集数据的队列去保存数据
+			signalDataIterator = acquireSignal.begin();
+			for (int j = 0; j < channelCount; j++){
+				shared_ptr<DOUBLE> signal = signalDataIterator->second.wait_and_pop();
+				data[j] = *signal;
+				signalDataIterator++;
+			}
+			ofs.write((const char*)data, sizeof(double)* channelCount);
+		}
+		ofs.close();
+
+	}
+
+	delete[] data;
+	return true;
+
+}
+
+
+bool  CFileUtil::SaveCollectionData2Binary(ofstream &outputStream, map<CString, ThreadSafeQueue<double>> & acquireSignal){
+	map<CString, ThreadSafeQueue<double>>::iterator signalDataIterator = acquireSignal.begin();
+	int saveCount = signalDataIterator->second.size();
+	int channelCount = acquireSignal.size();
+	double* saveData = new double[channelCount];
+	for (int i = 0; i < saveCount; i++){
+		////循环采集数据的队列去保存数据
+		signalDataIterator = acquireSignal.begin();
+		for (int j = 0; j < channelCount; j++){
+			shared_ptr<DOUBLE> signal = signalDataIterator->second.wait_and_pop();
+			saveData[j] = *signal;
+			signalDataIterator++;
+		}
+		outputStream.write((const char*)saveData, sizeof(double)* channelCount);
+	}
+	delete[] saveData;
+	return false;
+}
+
+ofstream CFileUtil::GetOfstreamByFileName(CString fileName){
+	ofstream  ofs(_T(fileName), std::ios::binary | std::ios::out | std::ios::app);
+	return ofs;
+}
+
