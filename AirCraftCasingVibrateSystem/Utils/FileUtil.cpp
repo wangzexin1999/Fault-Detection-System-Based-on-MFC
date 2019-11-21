@@ -449,3 +449,67 @@ bool  CFileUtil::SaveCollectionData(CString path, CString fileName, map<CString,
 	file.Close();
 	return true;
 }
+
+bool CFileUtil::IsFile(CString strPath)
+{
+	struct stat st;
+	string strFilePath = strPath.GetBuffer(0);
+	return stat(strFilePath.c_str(), &st) >= 0 && S_ISREG(st.st_mode);
+}
+
+bool CFileUtil::IsDir(CString strPath){
+
+	struct stat st;
+	string strFilePath = strPath.GetBuffer(0);
+	return stat(strFilePath.c_str(), &st) >= 0 && S_ISREG(st.st_mode);
+}
+
+bool CFileUtil::SaveCollectionData2Binary(CString path, CString fileName,TbSignal fileInfor, map<CString, ThreadSafeQueue<double>> & acquireSignal)
+{
+	map<CString, ThreadSafeQueue<double>>::iterator signalDataIterator = acquireSignal.begin();
+	int saveCount = signalDataIterator->second.size();
+	int channelCount = acquireSignal.size();
+	double* data = new double[channelCount];
+	/*判断文件是否存在，如果不存在，则创建文件，并加入信息*/
+	if (IsFile(path + fileName))
+	{
+		std::ofstream  ofs(_T(path + fileName), std::ios::binary | std::ios::out | std::ios::app);
+		/*写文件信息*/
+
+		/*数据格式： 通道1通道2...*/
+		for (int i = 0; i < saveCount; i++){
+			////循环采集数据的队列去保存数据
+			signalDataIterator = acquireSignal.begin();
+			for (int j = 0; j < channelCount; j++){
+				shared_ptr<DOUBLE> signal = signalDataIterator->second.wait_and_pop();
+				data[j] = *signal;
+				signalDataIterator++;
+			}
+			ofs.write((const char*)data, sizeof(double)* channelCount);
+		}
+		ofs.close();
+	}
+	else
+	{
+		std::ofstream  ofs(_T(path + fileName), std::ios::binary | std::ios::out | std::ios::app);
+		/*加入头信息:128个字节*/
+		ofs << fileName << endl;
+		/*数据格式： 通道1通道2...*/
+		for (int i = 0; i < saveCount; i++){
+			////循环采集数据的队列去保存数据
+			signalDataIterator = acquireSignal.begin();
+			for (int j = 0; j < channelCount; j++){
+				shared_ptr<DOUBLE> signal = signalDataIterator->second.wait_and_pop();
+				data[j] = *signal;
+				signalDataIterator++;
+			}
+			ofs.write((const char*)data, sizeof(double)* channelCount);
+		}
+		ofs.close();
+
+	}
+
+	delete[] data;
+	return true;
+
+}

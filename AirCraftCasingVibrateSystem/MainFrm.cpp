@@ -64,7 +64,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_BTN_STOP_CAPTURE, &CMainFrame::OnBtnStopCapture)
 	ON_COMMAND(ID_BTN_STOP_PLAYBACK, &CMainFrame::OnBtnStopPlayback)
 	ON_COMMAND(ID_BTN_START_PLAYBACK, &CMainFrame::OnBtnStartPlayback)
-	ON_COMMAND(ID_BTN_CLOSE_ALL_WINDOW, &CMainFrame::OnBtnCloseAllWindow)
+	//ON_COMMAND(ID_BTN_CLOSE_ALL_WINDOW, &CMainFrame::OnBtnCloseAllWindow)
 
 	ON_COMMAND(ID_BTN_START_SMAPLE, &CMainFrame::OnBtnStartSmaple)
 	ON_COMMAND(ID_BTN_STOP_SAMPLE, &CMainFrame::OnBtnStopSample)
@@ -757,12 +757,12 @@ void CMainFrame::OnBtnStartPlayback()
 }
 
 // 关闭所有窗口
-void CMainFrame::OnBtnCloseAllWindow()
-{
-	// TODO:  在此添加命令处理程序代码
-	// 关闭所有窗口
-	CloseAllWindows();
-}
+//void CMainFrame::OnBtnCloseAllWindow()
+//{
+//	// TODO:  在此添加命令处理程序代码
+//	// 关闭所有窗口
+//	CloseAllWindows();
+//}
 
 
 
