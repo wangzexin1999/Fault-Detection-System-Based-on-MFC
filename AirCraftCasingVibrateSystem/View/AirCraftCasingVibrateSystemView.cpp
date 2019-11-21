@@ -121,6 +121,7 @@ void CAirCraftCasingVibrateSystemView::OnInitialUpdate()
 		//pSerie->SetNeedCalStatValue(true);
 	}
 	pDuChartCtrl->m_shuxing.m_bDrawStatValue = TRUE;
+	pDuChartCtrl->SetPanEnabled(false);/*设置控件右键不可拖动*/
 	pDuChartCtrl->EnableRefresh(true);
 	m_flag = true;
 	RefreshGraphAttri(); //加载图形属性
