@@ -267,7 +267,7 @@ void CAirCraftCasingVibrateSystemApp::PreLoadState()
 	bNameValid = strName.LoadString(IDS_EDIT_MENU);
 	ASSERT(bNameValid);
 	GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EDIT);*/
-	GetContextMenuManager()->AddMenu(_T("ViewÓÒ¼ü"), IDR_MENU_RIGHT_KEY);
+	//GetContextMenuManager()->AddMenu(_T("ViewÓÒ¼ü"), IDR_MENU_RIGHT_KEY);
 }
 
 void CAirCraftCasingVibrateSystemApp::LoadCustomState()

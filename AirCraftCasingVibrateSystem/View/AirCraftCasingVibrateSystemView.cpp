@@ -37,7 +37,7 @@ BEGIN_MESSAGE_MAP(CAirCraftCasingVibrateSystemView, CFormView)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
 	ON_WM_PAINT()
-	ON_COMMAND(ID_BUTTON_SIGNAL_SELECT, &CAirCraftCasingVibrateSystemView::OnButtonSignalSelect)
+	//ON_COMMAND(ID_BUTTON_SIGNAL_SELECT, &CAirCraftCasingVibrateSystemView::OnButtonSignalSelect)
 	ON_WM_TIMER()
 
 	ON_MESSAGE(WM_USER_REFRESH_CHART, &CAirCraftCasingVibrateSystemView::OnRefreshChart)
@@ -149,7 +149,7 @@ void CAirCraftCasingVibrateSystemView::SetChartXYCoordinateLen(double xmin, doub
 		///量程的最大和最小值默认设置为当前采集窗口绑定的传感器的量程
 		MathInterval yInterval;
 		TbSensor currentSensor;
-		m_signalSelectView.GetSensor(currentSensor);
+		//m_signalSelectView.GetSensor(currentSensor);
 		yInterval.Type = currentSensor.GetMileageRange();
 		m_advantechDaqController.GetValueRangeInformationByVrgType(yInterval);
 		ymin = yInterval.Min;
@@ -177,7 +177,7 @@ void CAirCraftCasingVibrateSystemView::SetChartXYCoordinateLen(double xmin, doub
 
 ////保存采集数据
 void CAirCraftCasingVibrateSystemView::SaveCollectionData(ThreadSafeQueue<AcquiredSignal> acquireSignalQueue){
-	m_sensorController.SaveCollectionData(m_signalSelectView.GetSelectedSensor().GetChannelId(), acquireSignalQueue);
+	//m_sensorController.SaveCollectionData(m_signalSelectView.GetSelectedSensor().GetChannelId(), acquireSignalQueue);
 }
 
 CDuChartCtrl & CAirCraftCasingVibrateSystemView::GetChartCtrl(){
@@ -203,7 +203,7 @@ void CAirCraftCasingVibrateSystemView::OnContextMenu(CWnd* /* pWnd */, CPoint po
 #ifndef SHARED_HANDLERS
 	/*theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
 	IDR_MENU_RIGHT_KEY*/
-	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_MENU_RIGHT_KEY, point.x, point.y, this, TRUE);
+	//theApp.GetContextMenuManager()->ShowPopupMenu(IDR_MENU_RIGHT_KEY, point.x, point.y, this, TRUE);
 #endif
 }
 
@@ -246,10 +246,10 @@ void CAirCraftCasingVibrateSystemView::OnPaint()
 }
 
 // 信号选择
-void CAirCraftCasingVibrateSystemView::OnButtonSignalSelect()
-{
-	m_signalSelectView.DoModal();
-}
+//void CAirCraftCasingVibrateSystemView::OnButtonSignalSelect()
+//{
+//	//m_signalSelectView.DoModal();
+//}
 
 // 横向放大
 void CAirCraftCasingVibrateSystemView::OnBtnTransverseAmplification()
@@ -476,12 +476,12 @@ void CAirCraftCasingVibrateSystemView::SplitVector(SmartArray<double> &dXData, S
 }
 
 void  CAirCraftCasingVibrateSystemView::SetSensor(TbSensor sensor){
-	m_signalSelectView.SetSensor(sensor);
-	GetDocument()->SetTitle(sensor.GetSensorDesc());
+	//m_signalSelectView.SetSensor(sensor);
+	//GetDocument()->SetTitle(sensor.GetSensorDesc());
 	SetChartXYCoordinateLen();
 }
 void  CAirCraftCasingVibrateSystemView::GetSensor(TbSensor & sensor){
-	 m_signalSelectView.GetSensor(sensor);
+	 //m_signalSelectView.GetSensor(sensor);
 }
 
 void  CAirCraftCasingVibrateSystemView::SetEchoSignalData(EchoSignal &echoSignal){

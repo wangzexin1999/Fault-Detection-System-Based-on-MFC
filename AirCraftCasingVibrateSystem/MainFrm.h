@@ -276,7 +276,7 @@ public:
 	afx_msg void OnBtnStopCapture(); ///停止采集
 	afx_msg void OnBtnStartPlayback();///开始回放 
 	afx_msg void OnBtnStopPlayback(); ///停止回放
-	afx_msg void OnBtnCloseAllWindow();///关闭所有窗口
+	//afx_msg void OnBtnCloseAllWindow();///关闭所有窗口
 
 	afx_msg void OnBtnStartSmaple();///开始采样 
 	afx_msg void OnBtnStopSample();///停止采样
