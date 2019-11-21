@@ -686,7 +686,6 @@ void CMainFrame::OnButtonStartCapture()
 		WaveformAiCtrl *  wfAiCtrl = WaveformAiCtrl::Create();
 		///	给采集设备绑定准备事件
 		wfAiCtrl->addDataReadyHandler(OnDataReadyEvent, this);
-
 		devConfParaIterator->second.clockRatePerChan = 256000;//234375;
 		devConfParaIterator->second.sectionLength = 25600;//collectionPoint*devConfParaIterator->second.channelCount;//analysisFrequency.GetInt()*(234375 / collectionFrequency.GetInt()) * 2;
 		m_advantechDaqController.ConfigurateDevice(devConfParaIterator->second, wfAiCtrl);
@@ -703,7 +702,7 @@ void CMainFrame::OnButtonStartCapture()
 	//实时数据传输
 	SetTimer(99, 1000, NULL);
 	///将采集按钮置灰
-	
+
 }
 //暂停采集
 void CMainFrame::OnButtonSuspendCapture()
