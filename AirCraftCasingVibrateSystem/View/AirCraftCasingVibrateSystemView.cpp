@@ -150,7 +150,7 @@ void CAirCraftCasingVibrateSystemView::SetChartXYCoordinateLen(double xmin, doub
 		///量程的最大和最小值默认设置为当前采集窗口绑定的传感器的量程
 		MathInterval yInterval;
 		TbSensor currentSensor;
-		//m_signalSelectView.GetSensor(currentSensor);
+		m_signalSelectView.GetSensor(currentSensor);
 		yInterval.Type = currentSensor.GetMileageRange();
 		m_advantechDaqController.GetValueRangeInformationByVrgType(yInterval);
 		ymin = yInterval.Min;
@@ -178,7 +178,7 @@ void CAirCraftCasingVibrateSystemView::SetChartXYCoordinateLen(double xmin, doub
 
 ////保存采集数据
 void CAirCraftCasingVibrateSystemView::SaveCollectionData(ThreadSafeQueue<AcquiredSignal> acquireSignalQueue){
-	//m_sensorController.SaveCollectionData(m_signalSelectView.GetSelectedSensor().GetChannelId(), acquireSignalQueue);
+	m_sensorController.SaveCollectionData(m_signalSelectView.GetSelectedSensor().GetChannelId(), acquireSignalQueue);
 }
 
 CDuChartCtrl & CAirCraftCasingVibrateSystemView::GetChartCtrl(){
@@ -477,12 +477,12 @@ void CAirCraftCasingVibrateSystemView::SplitVector(SmartArray<double> &dXData, S
 }
 
 void  CAirCraftCasingVibrateSystemView::SetSensor(TbSensor sensor){
-	//m_signalSelectView.SetSensor(sensor);
-	//GetDocument()->SetTitle(sensor.GetSensorDesc());
+	m_signalSelectView.SetSensor(sensor);
+	GetDocument()->SetTitle(sensor.GetSensorDesc());
 	SetChartXYCoordinateLen();
 }
 void  CAirCraftCasingVibrateSystemView::GetSensor(TbSensor & sensor){
-	 //m_signalSelectView.GetSensor(sensor);
+	 m_signalSelectView.GetSensor(sensor);
 }
 
 void  CAirCraftCasingVibrateSystemView::SetEchoSignalData(EchoSignal &echoSignal){
@@ -494,10 +494,7 @@ LRESULT CAirCraftCasingVibrateSystemView::OnRefreshChart(WPARAM wParam, LPARAM l
 {
 	m_pLineSerie->ClearSerie();
 	m_pLineSerie->SetNeedCalStatValue(TRUE);
-	SmartArray<double> xData = m_echoSignal.GetXData();
-	SmartArray<double> yData = m_echoSignal.GetYData();
-	TRACE("\n刷新数据。。。。\n");
-	
-	m_pLineSerie->AddPoints(xData.GetSmartArray(), yData.GetSmartArray(), xData.size() / 2);
+	TRACE("\n刷新采集窗口。。。。\n");
+	m_pLineSerie->AddPoints(m_echoSignal.GetXData().GetSmartArray(), m_echoSignal.GetYData().GetSmartArray(), m_echoSignal.GetXData().size()/2);
 	return 0;
 }
