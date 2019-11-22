@@ -56,6 +56,7 @@ Result CSensorService::AddCollectData(TbSignal &signal, ThreadSafeQueue<Acquired
 
 	CString startCollectTime = collectionData.front().GetAcquireTime();
 	
+	
 	Result res;
 	/*如果可以连接到远程服务器则发送数据到远程，否则保存到本地*/
 	if ((strcmp(theApp.PDsql.m_mysql.host, "127.0.0.1") == 0) || (strcmp(theApp.PDsql.m_mysql.host, "localhost") == 0))
@@ -68,7 +69,8 @@ Result CSensorService::AddCollectData(TbSignal &signal, ThreadSafeQueue<Acquired
 		signal.SetDataUrl(path + fileName);
 		/*signal.SetStartTime(startCollectTime);
 		signal.SetEndTime(res.GetMessages());*/
-		signal.SetSaveTime(startCollectTime);
+		signal.SetStartTime(startCollectTime);
+
 
 		//signal.GetTestingDevice().SetTestingdeviceId(project.GetTestingDevicePara().GetTestingdevice().GetId());
 		m_signalDao.SetTableFieldValues(signal);
@@ -112,6 +114,7 @@ Result CSensorService::AddCollectData(TbSignal &signal, ThreadSafeQueue<Acquired
 			theApp.m_cli = cli;
 			auto result = theApp.m_cli.Post("/collection", items);
 		}
+		signal.SetEndTime(endTime);
 	}
 	return res;
 }

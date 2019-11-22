@@ -178,6 +178,27 @@ void BaseProjectInfoView::OnGridClick(NMHDR *pNotifyStruct, LRESULT* pResult){
 			SetGridCellCheck(row,0,!isChecked);
 		}
 	}
+	else
+	{
+		if (isChecked)
+		{
+			SetGridCellCheck(0, 0, !isChecked);
+		}
+		else
+		{
+			int count = 0;
+			for (int row = 1; row < m_projectPlanGridCtrl.GetRowCount(); row++){
+				if (GetGridCellCheck(row, 0))
+				{
+					count = count + 1;
+				}
+			}
+			if (count == m_projectPlanGridCtrl.GetRowCount() - 1)
+			{
+				SetGridCellCheck(0, 0, !isChecked);
+			}
+		}
+	}
 }
 void BaseProjectInfoView::SetGridCellCheck(int row, int col, bool isChecked){
 	if (!m_projectPlanGridCtrl.GetCell(row, col)->IsKindOf(RUNTIME_CLASS(CGridCellCheck)))
@@ -185,6 +206,15 @@ void BaseProjectInfoView::SetGridCellCheck(int row, int col, bool isChecked){
 	CGridCellCheck* pCell = (CGridCellCheck*)m_projectPlanGridCtrl.GetCell(row, col);
 	pCell->SetCheck(isChecked); 
 }
+
+bool BaseProjectInfoView::GetGridCellCheck(int row, int col){
+	if (!m_projectPlanGridCtrl.GetCell(row, col)->IsKindOf(RUNTIME_CLASS(CGridCellCheck)))
+		m_projectPlanGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCheck));
+	CGridCellCheck* pCell = (CGridCellCheck*)m_projectPlanGridCtrl.GetCell(row, col);
+	bool isChecked = pCell->GetCheck();
+	return isChecked;
+}
+
 
 void BaseProjectInfoView::GetSelectedCollectionPlan(vector<TbDictionary> &selectedPlan){
 	for (int row = 1; row < m_projectPlanGridCtrl.GetRowCount(); row++){

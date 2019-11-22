@@ -63,6 +63,7 @@ public:
 	TbRecordSignal m_recordSignal; // 采样数据
 	double tempRead[100][1000]; ///模拟数据
 	httplib::Client m_cli; // http连接
+	bool m_newProjectStatus = false;
 
 	std::vector<CAirCraftCasingVibrateSystemView *> m_vsignalCaptureView;///采集窗口的集合
 

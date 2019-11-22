@@ -26,6 +26,8 @@
 IMPLEMENT_DYNCREATE(CChildFrame, CMDIChildWndEx)
 
 BEGIN_MESSAGE_MAP(CChildFrame, CMDIChildWndEx)
+	ON_WM_CLOSE()
+	//ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 // CChildFrame 构造/析构
@@ -43,12 +45,22 @@ CChildFrame::~CChildFrame()
 BOOL CChildFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
 	// TODO:  在此处通过修改 CREATESTRUCT cs 来修改窗口类或样式
-	cs.style &= ~WS_SYSMENU;
+	//cs.style &= ~WS_SYSMENU;
 	if( !CMDIChildWndEx::PreCreateWindow(cs) )
 		return FALSE;
 
 	return TRUE;
 }
+
+void CChildFrame::OnClose()
+{
+	if (theApp.m_newProjectStatus == true)
+	{
+		CMDIChildWndEx::OnClose();
+	}
+}
+
+
 
 // CChildFrame 诊断
 

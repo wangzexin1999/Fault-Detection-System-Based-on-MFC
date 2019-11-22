@@ -10,7 +10,8 @@ public:
 	TbSignalDao(const TbSignalDao & signal);
 
 	PDAttribute m_signalId;
-	PDAttribute m_saveTime;
+	PDAttribute m_startTime;
+	PDAttribute m_endTime;
 	PDAttribute m_signalType;
 	PDAttribute m_productId;
 	PDAttribute m_signalStatus;
@@ -18,8 +19,7 @@ public:
 	PDAttribute m_projectId;
 	PDAttribute m_testingDeviceId;
 	PDAttribute m_collectionStatus;
-	PDAttribute m_pointCount;
-	PDAttribute m_collectionPara;
+	PDAttribute m_sensorInfo;
 
 	
 	bool SelectObjectsByCondition(vector<TbSignalDao> &selectedValueVector, CString strSqlQueryWhere = "");

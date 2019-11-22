@@ -127,7 +127,11 @@ void ChannelParaPresetView::GridCtrlInit()
 
 		Item.nFormat = DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS;
 		CString strText;
-		if (col == 0){ m_channelParaGridCtrl.SetCellType(row, 0, RUNTIME_CLASS(CGridCellCheck)); }
+		if (col == 0)
+		{
+			m_channelParaGridCtrl.SetCellType(row, 0, RUNTIME_CLASS(CGridCellCheck));
+			m_channelParaGridCtrl.SetItemState(row, col, GVIS_READONLY);
+		}
 		if (col == 1)
 		{
 			Item.strText = m_vchannelId[startChannelIndex++];
@@ -232,6 +236,27 @@ void ChannelParaPresetView::OnGridClick(NMHDR *pNotifyStruct, LRESULT* pResult){
 			SetGridCellCheck(row, 0, !isChecked);
 		}
 	}
+	else
+	{
+		if (isChecked)
+		{
+			SetGridCellCheck(0, 0, !isChecked);
+		}
+		else
+		{
+			int count = 0;
+			for (int row = 1; row < m_channelParaGridCtrl.GetRowCount(); row++){
+				if (GetGridCellCheck(row, 0))
+				{
+					count = count + 1;
+				}
+			}
+			if (count == m_channelParaGridCtrl.GetRowCount() - 1)
+			{
+				SetGridCellCheck(0, 0, !isChecked);
+			}
+		}
+	}
 }
 
 
@@ -240,6 +265,14 @@ void ChannelParaPresetView::SetGridCellCheck(int row, int col, bool isChecked){
 		m_channelParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCheck));
 	CGridCellCheck* pCell = (CGridCellCheck*)m_channelParaGridCtrl.GetCell(row, col);
 	pCell->SetCheck(isChecked);
+}
+
+bool ChannelParaPresetView::GetGridCellCheck(int row, int col){
+	if (!m_channelParaGridCtrl.GetCell(row, col)->IsKindOf(RUNTIME_CLASS(CGridCellCheck)))
+		m_channelParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCheck));
+	CGridCellCheck* pCell = (CGridCellCheck*)m_channelParaGridCtrl.GetCell(row, col);
+	bool isChecked = pCell->GetCheck();
+	return isChecked;
 }
 
 void ChannelParaPresetView::OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult){

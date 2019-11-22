@@ -102,5 +102,5 @@ protected:
 	afx_msg void OnCbnSelchangeComboEndChannel();
 public:
 	void GetSelectedChannels(vector<TbSensor> & vsensors);
-
+	bool GetGridCellCheck(int row, int col);
 };

@@ -97,7 +97,10 @@ void CollectionPlanParaPresetView::GridCtrlInit()
 
 		Item.nFormat = DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS;
 
-		if (col == 0){ m_collectionStatusGridCtrl.SetCellType(row, 0, RUNTIME_CLASS(CGridCellCheck)); }
+		if (col == 0){
+			m_collectionStatusGridCtrl.SetCellType(row, 0, RUNTIME_CLASS(CGridCellCheck)); 
+			m_collectionStatusGridCtrl.SetItemState(row, col, GVIS_READONLY);
+		}
 		CString strText;
 		if (col != 0) 
 				strText = planParaContent[row - 1][col -1 ].GetString();
@@ -122,9 +125,28 @@ void CollectionPlanParaPresetView::OnGridClick(NMHDR *pNotifyStruct, LRESULT* pR
 			SetGridCellCheck(row, 0, !isChecked);
 		}
 	}
-	else{
-
+	else
+	{
+		if (isChecked)
+		{
+			SetGridCellCheck(0, 0, !isChecked);
+		}
+		else
+		{
+			int count = 0;
+			for (int row = 1; row < m_collectionStatusGridCtrl.GetRowCount(); row++){
+				if (GetGridCellCheck(row, 0))
+				{
+					count = count + 1;
+				}
+			}
+			if (count == m_collectionStatusGridCtrl.GetRowCount() - 1)
+			{
+				SetGridCellCheck(0, 0, !isChecked);
+			}
+		}
 	}
+
 }
 
 void CollectionPlanParaPresetView::OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult){
@@ -136,6 +158,13 @@ void CollectionPlanParaPresetView::SetGridCellCheck(int row, int col, bool isChe
 		m_collectionStatusGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCheck));
 	CGridCellCheck* pCell = (CGridCellCheck*)m_collectionStatusGridCtrl.GetCell(row, col);
 	pCell->SetCheck(isChecked);
+}
+bool CollectionPlanParaPresetView::GetGridCellCheck(int row, int col){
+	if (!m_collectionStatusGridCtrl.GetCell(row, col)->IsKindOf(RUNTIME_CLASS(CGridCellCheck)))
+		m_collectionStatusGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCheck));
+	CGridCellCheck* pCell = (CGridCellCheck*)m_collectionStatusGridCtrl.GetCell(row, col);
+	bool isChecked = pCell->GetCheck();
+	return isChecked;
 }
 
 void CollectionPlanParaPresetView::OnBnClickedButtonAdd()
