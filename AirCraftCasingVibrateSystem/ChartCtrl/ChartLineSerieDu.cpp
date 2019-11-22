@@ -133,6 +133,7 @@ void CChartLineSerieDu::CalSamplingStatValue(double* pY, unsigned Count)
 		if (m_dStatMinValue > pY[i]) m_dStatMinValue = pY[i];
 		dSum += pY[i];
 	}
+	m_dStatSumValue = dSum;
 	m_dStatAveValue = dSum / Count;
 	m_dStatPeakValue = m_dStatMaxValue - m_dStatMinValue;
 

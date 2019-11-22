@@ -90,6 +90,7 @@ public:
 	BOOL m_bDrawStatPeak;				// 是否显示峰峰值
 	BOOL m_bDrawStatStd;				// 是否显示标准差
 	BOOL m_bDrawStatRms;				// 是否显示有效值
+	BOOL m_bDrawStatSum;                // 是否显示总值
 
 	CRectTracker m_rectCursorValue;		// 光标值区域
 	CRectTracker m_rectLegend;			// 图例区域

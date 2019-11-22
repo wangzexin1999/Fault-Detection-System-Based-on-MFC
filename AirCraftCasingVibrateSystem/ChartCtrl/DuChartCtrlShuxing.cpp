@@ -673,16 +673,18 @@ void CDuChartCtrlShuxing::ClipStatValueArea(CDC * pDC)
 	m_nTrackerValueRowCount++;
 
 	BOOL b[] = {m_bDrawStatMax, m_bDrawStatMin, m_bDrawStatAve, 
-		m_bDrawStatPeak, m_bDrawStatStd, m_bDrawStatRms};
+		m_bDrawStatPeak, m_bDrawStatStd, m_bDrawStatRms,m_bDrawStatSum};
 	double d[] = {pChartLineSerie->m_dStatMaxValue, 
 		pChartLineSerie->m_dStatMinValue, 
 		pChartLineSerie->m_dStatAveValue, 
 		pChartLineSerie->m_dStatPeakValue, 
 		pChartLineSerie->m_dStatStdValue, 
-		pChartLineSerie->m_dStatRmsValue};
+		pChartLineSerie->m_dStatRmsValue,
+		pChartLineSerie->m_dStatSumValue,
+	};
 	LPCTSTR lpsz[] = {"最大值:%%.%df", "最小值:%%.%df", 
 		"平均值:%%.%df", "峰峰值:%%.%df", 
-		"标准差:%%.%df", "有效值:%%.%df"};
+		"标准差:%%.%df", "有效值:%%.%df", "总值:%%.%df" };
 	for (int i=0; i<sizeof(b)/sizeof(BOOL); i++)
 	{
 		_stprintf_s(tchFormatV, lpsz[i], pStdAxisV->m_nDigits);

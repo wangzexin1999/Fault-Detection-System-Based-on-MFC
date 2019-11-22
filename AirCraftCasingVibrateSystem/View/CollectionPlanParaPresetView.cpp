@@ -97,7 +97,10 @@ void CollectionPlanParaPresetView::GridCtrlInit()
 
 		Item.nFormat = DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS;
 
-		if (col == 0){ m_collectionStatusGridCtrl.SetCellType(row, 0, RUNTIME_CLASS(CGridCellCheck)); }
+		if (col == 0){
+			m_collectionStatusGridCtrl.SetCellType(row, 0, RUNTIME_CLASS(CGridCellCheck)); 
+			m_collectionStatusGridCtrl.SetItemState(row, col, GVIS_READONLY);
+		}
 		CString strText;
 		if (col != 0) 
 				strText = planParaContent[row - 1][col -1 ].GetString();

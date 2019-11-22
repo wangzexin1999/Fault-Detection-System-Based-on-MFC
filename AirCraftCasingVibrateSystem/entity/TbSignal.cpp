@@ -68,24 +68,27 @@ CString TbSignal::GetCollectionStatus(){
 	return m_collectionStatus;
 }
 
-void TbSignal::SetPointCount(int pointCount){
-	m_pointCount = pointCount;
+
+
+
+CString TbSignal::GetStartTime(){
+	return m_startTime;
 }
-int TbSignal::GetPointCount(){
-	return m_pointCount;
+void TbSignal::SetStartTime(CString startTime){
+	m_startTime = startTime;
+}
+
+CString TbSignal::GetEndTime(){
+	return m_endTime;
+}
+void TbSignal::SetEndTime(CString endTime){
+	m_endTime = endTime;
 }
 
 
-CString TbSignal::GetSaveTime(){
-	return m_saveTime;
+void TbSignal::SetSensorInfo(CString sensorInfo){
+	m_sensorInfo = sensorInfo;
 }
-void TbSignal::SetSaveTime(CString saveTime){
-	m_saveTime = saveTime;
-}
-
-void TbSignal::SetCollectionPara(CString collectionPara){
-	m_collectionPara = collectionPara;
-}
-CString TbSignal::GetCollectionPara(){
-	return m_collectionPara;
+CString TbSignal::GetSensorInfo(){
+	return m_sensorInfo;
 }

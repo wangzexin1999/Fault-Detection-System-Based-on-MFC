@@ -32,4 +32,5 @@ protected:
 	double m_dStatPeakValue;
 	double m_dStatStdValue;
 	double m_dStatRmsValue;
+	double m_dStatSumValue;
 };
