@@ -57,7 +57,7 @@ public:
 	bool m_bisSave = false;//保存状态
 	CString m_collectionRotatingSpeed = "";
 	vector<SignalAcquisitionService> m_vSignalAcquisitionService; ////信号采集服务
-	TbRecordSignal m_recordSignal; // 采样数据
+	
 	double tempRead[100][1000]; ///模拟数据
 	httplib::Client m_cli; // http连接
 	bool m_newProjectStatus = false;

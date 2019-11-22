@@ -26,13 +26,11 @@
 #include "SmartArray.h"
 #include "AdvantechDaqController.h"
 #include <map>
+#include "JsonUtil.h"
 #include "TbRecordSignal.h"
-
-
 /////////////////////////////////////
 #include "include/Inc/bdaqctrl.h"
 #include "include/Inc/compatibility.h"
-
 using namespace Automation::BDaq;
 using namespace std;
 /////////////////////////////////////
@@ -89,6 +87,32 @@ protected:  // 控件条嵌入成员
 	AdvantechDaqController m_advantechDaqController;
 	Value m_collectionFrequency;
 	Value m_analysisFrequency;
+	JsonUtil m_jsonUtil;
+	Value m_channelInfo;
+	Value m_collectionStatus;
+	Document m_doc;
+	TbRecordSignal m_recordSignal; // 采样数据
+
+	/**********************************************************************
+	功能描述： 设置通道信息的json值
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void SetChannelInfoJsonValue();
+	/**********************************************************************
+	功能描述： 设置采集状态信息的json值
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void SetCollectionStatusJsonValue();
 public:
 	int m_icollectionFrequency; ///采样频率
 

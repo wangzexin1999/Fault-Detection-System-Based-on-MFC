@@ -18,6 +18,7 @@ TbRecordSignal::TbRecordSignal(int signalId, CString startTime, CString endTime,
 TbRecordSignal::TbRecordSignal()
 {
 	m_signalId = 0;
+	m_signalStatus = 0;
 }
 
 

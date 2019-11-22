@@ -18,9 +18,13 @@ Modification:
 ************************************************************************/
 #include "include/rapidjson/document.h"
 #include "include/rapidjson/writer.h"
+#include "include/rapidjson/rapidjson.h"
 #include "include/rapidjson/stringbuffer.h"
 #include "Result.h"
 #include "TbSensor.h"
+#include "TbTestingDevice.h"
+#include <iostream>
+using namespace std;
 using namespace rapidjson;
 
 #pragma once
@@ -28,11 +32,10 @@ using namespace rapidjson;
 class JsonUtil
 {
 private:
-	Document m_document;
+	static Document m_document;
 public:
 	JsonUtil();
 	~JsonUtil();
-
 	/**********************************************************************
 	功能描述：从json格式的字符串中拿到指定key的Value对象
 	输入参数：
@@ -43,9 +46,6 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	static Result GetValueFromJsonString(CString jsonString, CString key, Value & value);
-
-
-
 	/**********************************************************************
 	功能描述：将sensor对象封装成一个json格式的dom树Value
 	输入参数：
@@ -57,7 +57,26 @@ public:
 	***********************************************************************/
 	static Result ConvertSensor2Value(TbSensor sensor,Value & value);
 
-
+	/**********************************************************************
+	功能描述：将sensor对象封装成一个json格式的dom树Value
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	static void ConvertTestingDevice2Value(TbTestingDevice testingDevice, Value & value);
+	/**********************************************************************
+	功能描述：将Value对象解析成json字符串
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	static CString GetStringFromDom(const Value &val);
 
 };
 

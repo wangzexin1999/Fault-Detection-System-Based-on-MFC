@@ -22,6 +22,11 @@ Result SignalController::SaveSampleSignal(TbRecordSignal m_recordSignal){
 	if (isSuccess) return Result(true,"采样数据保存成功");
 	return Result(false, "采样数据保存失败");
 }
+Result SignalController::SaveCollectionSignal(TbSignal collectionSignal){
+	bool isSuccess = m_signalService.AddSignal(collectionSignal);
+	if (isSuccess) return Result(true, "采集数据保存成功");
+	return Result(false, "采集数据保存失败");
+}
 Result SignalController::FindAllSignalBySearchCondition(TbSignal searchEntity, vector<TbSignal> &signalVector){
 	bool isSuccess = m_signalService.GetAllSignalBySearchCondition(searchEntity, signalVector);
 	if (isSuccess) return Result(true, "采集数据查询成功");
