@@ -17,3 +17,12 @@ Result JsonUtil::GetValueFromJsonString(CString jsonString, CString key, Value &
 	value = std::move(doc[key.GetString()]);
 	return Result(true,"成功解析json");
 }
+
+Result JsonUtil::ConvertSensor2Value(TbSensor sensor, Value & value){
+	Value channelId;
+	Value channelDesc;
+	Value testingDeviceId;
+	Value sensorStatus;
+
+	return Result(true, "成功解析json");
+}

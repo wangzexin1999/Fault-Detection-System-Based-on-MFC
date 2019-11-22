@@ -26,6 +26,9 @@
 #include "SmartArray.h"
 #include "AdvantechDaqController.h"
 #include <map>
+#include "TbRecordSignal.h"
+
+
 /////////////////////////////////////
 #include "include/Inc/bdaqctrl.h"
 #include "include/Inc/compatibility.h"

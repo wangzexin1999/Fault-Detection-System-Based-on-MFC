@@ -793,12 +793,12 @@ void CMainFrame::OnBtnStartSmaple()
 		AfxMessageBox("当前没有采集状态");
 		return;
 	}
-	/*开始采样，记录开始采集时间*/
+	/*开始采样，封装采样信号的对象*/
 	theApp.m_recordSignal.SetStartTime(DateUtil::GetCurrentCStringTime());
 	theApp.m_recordSignal.SetProject(theApp.m_currentProject);
 	theApp.m_recordSignal.SetProduct(theApp.m_currentProject.GetProduct());
 	theApp.m_recordSignal.SetTesingDevice(theApp.m_currentProject.GetTestingDevice());
-	theApp.m_recordSignal.SetCollectionStatus(theApp.m_jsonCollectionStatusPara);
+	theApp.m_recordSignal.SetCollectionStatus(theApp.m_currentProject.GetCollectionStatus());
 
 }
 
@@ -814,7 +814,6 @@ void CMainFrame::OnBtnStopSample()
 	//Document::AllocatorType& allocator = doc.GetAllocator();
 	//Value root(kObjectType);
 	//Value channelCount(kNumberType);
-
 	//////计算通道的个数
 	//channelCount.SetInt(theApp.m_currentProject.GetSensorVector().size());
 
@@ -1384,7 +1383,10 @@ void CMainFrame::SaveCollectionData(map<CString, ThreadSafeQueue<double>> & acqu
 
 ////保存采集数据的线程函数
 void  CMainFrame::AutoSaveCollectionData(){
+	CString startTime = DateUtil::GetCurrentCStringTime();
 	TbSignal saveSignal;
+	
+
 	theApp.m_bisSave = true;
 	saveSignal.SetCollectionPara(theApp.m_currentProject.GetCollectionStatus());
 	saveSignal.SetProductId(theApp.m_currentProject.GetProduct().GetProductId());

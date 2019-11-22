@@ -28,6 +28,7 @@ class TbRecordSignal
 {
 public:
 
+	TbRecordSignal(int signalId, CString startTime, CString endTime, CString signalType, char signalStatus, TbProject project, TbProduct product, TbTestingDevice testingDevice, CString collectionStatus, CString sensorInfo);
 	TbRecordSignal();
 	~TbRecordSignal();
 

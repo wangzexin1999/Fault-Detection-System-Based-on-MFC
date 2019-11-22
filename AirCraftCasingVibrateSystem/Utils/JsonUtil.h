@@ -20,6 +20,7 @@ Modification:
 #include "include/rapidjson/writer.h"
 #include "include/rapidjson/stringbuffer.h"
 #include "Result.h"
+#include "TbSensor.h"
 using namespace rapidjson;
 
 #pragma once
@@ -42,6 +43,21 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	static Result GetValueFromJsonString(CString jsonString, CString key, Value & value);
+
+
+
+	/**********************************************************************
+	功能描述：将sensor对象封装成一个json格式的dom树Value
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	static Result ConvertSensor2Value(TbSensor sensor,Value & value);
+
+
 
 };
 

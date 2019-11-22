@@ -44,7 +44,6 @@ bool  SignalController::SaveCollectionData2Binary(ofstream &outputStream, map<CS
 		signalDataIterator = acquireSignal.begin();
 		for (int j = 0; j < channelCount; j++){
 			shared_ptr<DOUBLE> signal = signalDataIterator->second.wait_and_pop();
-			TRACE("±£´æÊý¾Ý£º%f \n", *signal);
 			saveData[j] = *signal;
 			signalDataIterator++;
 		}
