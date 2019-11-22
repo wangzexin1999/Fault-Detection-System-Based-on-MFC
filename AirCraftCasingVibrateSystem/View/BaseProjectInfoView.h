@@ -68,7 +68,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
-
+	bool GetGridCellCheck(int row, int col);
 	/**********************************************************************
 	功能描述：得到选中的项目采集计划
 	输入参数：
