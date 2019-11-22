@@ -127,7 +127,11 @@ void ChannelParaPresetView::GridCtrlInit()
 
 		Item.nFormat = DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS;
 		CString strText;
-		if (col == 0){ m_channelParaGridCtrl.SetCellType(row, 0, RUNTIME_CLASS(CGridCellCheck)); }
+		if (col == 0)
+		{
+			m_channelParaGridCtrl.SetCellType(row, 0, RUNTIME_CLASS(CGridCellCheck));
+			m_channelParaGridCtrl.SetItemState(row, col, GVIS_READONLY);
+		}
 		if (col == 1)
 		{
 			Item.strText = m_vchannelId[startChannelIndex++];

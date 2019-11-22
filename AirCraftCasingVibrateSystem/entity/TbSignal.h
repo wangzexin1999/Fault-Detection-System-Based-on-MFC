@@ -15,7 +15,8 @@ public:
 private:
 
 	int m_signalId;
-	CString m_saveTime;
+	CString m_startTime;
+	CString m_endTime;
 	CString m_signalType;
 	int m_productId;
 	char m_signalStatus;
@@ -23,8 +24,7 @@ private:
 	int  m_projectId;
 	int m_testingDeviceId;
 	CString m_collectionStatus;
-	int m_pointCount;
-	CString m_collectionPara;
+	CString m_sensorInfo;
 
 	/*通道个数*/
 	int m_iChannelNums = 0;
@@ -44,8 +44,12 @@ private:
 public:
 	int GetSignalId();
 	void SetSignalId(int signalId);
-	CString GetSaveTime();
-	void SetSaveTime(CString saveTime);
+
+	CString GetStartTime();
+	void SetStartTime(CString startTime);
+	CString GetEndTime();
+	void SetEndTime(CString endTime);
+
 	CString GetSignalType();
 	void SetSignalType(CString signalType);
 	int   GetProductId();
@@ -60,9 +64,7 @@ public:
 	void SetTestingDeviceId(int  testingDeviceId);
 	void SetCollectionStatus(CString para);
 	CString GetCollectionStatus();
-	void SetPointCount(int pointNumber);
-	int GetPointCount();
-	CString GetCollectionPara();
-	void SetCollectionPara(CString collectionpara);
+	CString GetSensorInfo();
+	void SetSensorInfo(CString sensorinfo);
 };
 

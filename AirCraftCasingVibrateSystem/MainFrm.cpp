@@ -507,7 +507,8 @@ void CMainFrame::OnButtonOpenDataFile()
 		for (int i = 0; i < channelCount;i++){
 			////查询信号的对象
 			TbSignal searchSignalEntity;
-			searchSignalEntity.SetSaveTime(selectedSignal.GetStartTime());
+			searchSignalEntity.SetStartTime(selectedSignal.GetStartTime());
+			searchSignalEntity.SetEndTime(selectedSignal.GetEndTime());
 			searchSignalEntity.SetProductId(selectedSignal.GetProduct().GetProductId());
 			searchSignalEntity.SetProjectId(selectedSignal.GetProject().GetProjectId());
 			searchSignalEntity.SetTestingDeviceId(selectedSignal.GetTestingDevice().GetId());
@@ -1148,8 +1149,9 @@ void CMainFrame::CloseAllWindows()
 	while ((pFrame->MDIGetActive())!=NULL)
 	{
 		this->GetActiveFrame()->SendMessage(WM_CLOSE);
-	}	
 
+	}	
+	theApp.m_newProjectStatus = false;
 }
 
 
@@ -1215,6 +1217,8 @@ void CMainFrame::OnClose()
 }
 
 LRESULT CMainFrame::OnRefreshViewByProject(WPARAM wParam, LPARAM lParam){
+
+	theApp.m_newProjectStatus = true;
 	///1.关闭所有已经打开采集的窗口
 	CloseAllWindows();
 	///2.根据项目的传感器重新创建相对应的窗口
@@ -1371,11 +1375,12 @@ void CMainFrame::SaveCollectionData(map<CString, ThreadSafeQueue<double>> & acqu
 	}
 	channels += m_vchannelIds[m_vchannelIds.size() - 1] + "]";
 	//saveSignal.SetChannels(channels);
-	saveSignal.SetPointCount(theApp.m_icollectSignalsStoreCount);
+	//saveSignal.SetPointCount(theApp.m_icollectSignalsStoreCount);
 	saveSignal.SetProjectId(theApp.m_currentProject.GetProjectId());
 	saveSignal.SetProductId(theApp.m_currentProject.GetProduct().GetProductId());
 	saveSignal.SetTestingDeviceId(theApp.m_currentProject.GetTestingDevice().GetId());
-	saveSignal.SetSaveTime(DateUtil::GetCurrentCStringTime());
+	saveSignal.SetStartTime(DateUtil::GetCurrentCStringTime());
+
 	Result res = m_signalController.SaveSignalData(acquireSignal, move(saveSignal));
 	if (!res.GetIsSuccess()){
 		AfxMessageBox(res.GetMessages());
@@ -1386,10 +1391,11 @@ void CMainFrame::SaveCollectionData(map<CString, ThreadSafeQueue<double>> & acqu
 void  CMainFrame::AutoSaveCollectionData(){
 	TbSignal saveSignal;
 	theApp.m_bisSave = true;
-	saveSignal.SetCollectionPara(theApp.m_currentProject.GetCollectionStatus());
+	//saveSignal.SetCollectionPara(theApp.m_currentProject.GetCollectionStatus());
 	saveSignal.SetProductId(theApp.m_currentProject.GetProduct().GetProductId());
 	saveSignal.SetProjectId(theApp.m_currentProject.GetProjectId());
-	saveSignal.SetSaveTime(DateUtil::GetCurrentCStringTime());
+	saveSignal.SetStartTime(DateUtil::GetCurrentCStringTime());
+
 	saveSignal.SetTestingDeviceId(theApp.m_currentProject.GetTestingDevice().GetId());
 	///得到输出流
 	ofstream outputStream = CFileUtil::GetOfstreamByFileName("C:/collectionData/"+ DateUtil::GetTimeStampCString()+".bat");
