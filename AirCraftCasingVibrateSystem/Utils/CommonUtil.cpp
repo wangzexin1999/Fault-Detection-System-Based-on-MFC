@@ -83,3 +83,8 @@ int CommonUtil::CString2Int(CString strValue)
 	return _ttoi(strValue);
 
 }
+
+
+void CStringToChar(CString str, char ch[]){
+
+}
