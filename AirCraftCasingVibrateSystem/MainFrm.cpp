@@ -672,19 +672,18 @@ void CMainFrame::OnButtonStartCapture()
 	}
 
 	///获取采集频率和采集点数
-	Value collectionFrequency;
-	Value analysisFrequency;
-	Result res = JsonUtil::GetValueFromJsonString(theApp.m_currentProject.GetTestingDevice().GetCollectionFrequency().GetDictValue(), "content", collectionFrequency);
+	
+	Result res = JsonUtil::GetValueFromJsonString(theApp.m_currentProject.GetTestingDevice().GetCollectionFrequency().GetDictValue(), "content", m_collectionFrequency);
 	if (!res.GetIsSuccess()){
 		AfxMessageBox(res.GetMessages());
 		return;
 	}
-	res = JsonUtil::GetValueFromJsonString(theApp.m_currentProject.GetTestingDevice().GetAnalysisFrequency().GetDictValue(), "content", analysisFrequency);
+	res = JsonUtil::GetValueFromJsonString(theApp.m_currentProject.GetTestingDevice().GetAnalysisFrequency().GetDictValue(), "content", m_analysisFrequency);
 	if (!res.GetIsSuccess()){
 		AfxMessageBox(res.GetMessages());
 		return;
 	}
-	m_icollectionFrequency = collectionFrequency.GetInt();
+	m_icollectionFrequency = m_collectionFrequency.GetInt();
 	int collectionPoint = atoi(theApp.m_currentProject.GetTestingDevice().GetCollectionPoint().GetDictValue());
 
 	///根据获取的采集卡的DeviceNumber创建响应的控制类
@@ -904,7 +903,8 @@ void CMainFrame::OnBtnPeakValue()
 {
 	CAirCraftCasingVibrateSystemView *view;
 	view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
-	CDuChartCtrlStaticFunction::SetCursorPeak(&view->GetChartCtrl());
+	view->GetChartCtrl().SetCursorPeak(TRUE);
+	//CDuChartCtrlStaticFunction::SetCursorPeak(&view->GetChartCtrl());
 }
 
 
@@ -1391,8 +1391,24 @@ void  CMainFrame::AutoSaveCollectionData(){
 	saveSignal.SetProjectId(theApp.m_currentProject.GetProjectId());
 	saveSignal.SetSaveTime(DateUtil::GetCurrentCStringTime());
 	saveSignal.SetTestingDeviceId(theApp.m_currentProject.GetTestingDevice().GetId());
+	///封裝文件名：项目id_测试设备id_产品id_时间戳
+	CString fileName = "C:/collectionData/"+CommonUtil::Int2CString(theApp.m_currentProject.GetProjectId()) + "-"
+		+ CommonUtil::Int2CString(theApp.m_currentProject.GetTestingDevice().GetId()) + "-"
+		+ CommonUtil::Int2CString(theApp.m_currentProject.GetProduct().GetProductId())
+				+ "-" + DateUtil::GetTimeStampCString() + ".data";
+	///封装二进制信号文件头
+	SignalInfoHeader signalInfoHeader;
+	strcpy_s(signalInfoHeader.m_cCollectPlanPara, theApp.m_currentProject.GetCollectionStatus());
+	strcpy_s(signalInfoHeader.m_cStartChannel, theApp.m_currentProject.GetSensorVector()[0].GetChannelId());
+	strcpy_s(signalInfoHeader.m_cEndChannel, theApp.m_currentProject.GetSensorVector()[theApp.m_currentProject.GetSensorVector().size() - 1].GetChannelId());
+	signalInfoHeader.m_iChannelNums = theApp.m_currentProject.GetSensorVector().size();
+	signalInfoHeader.m_iCollectFre = m_collectionFrequency.GetInt();
+	signalInfoHeader.m_llSiganlSize = 0;
+	m_signalController.SaveCollectionDataHeadInfo(fileName, signalInfoHeader);
+
 	///得到输出流
-	ofstream outputStream = CFileUtil::GetOfstreamByFileName("C:/collectionData/"+ DateUtil::GetTimeStampCString()+".bat");
+	ofstream outputStream = CFileUtil::GetOfstreamByFileName(fileName);
+	//outputStream.write((const char *)&signalInfoHeader, sizeof(TbSignal));
 	//创建缓冲的map
 	map<CString, ThreadSafeQueue<double>> mpcolllectioinDataQueue;
 	for (int i = 0; i < m_vchannelIds.size();i++){
@@ -1411,7 +1427,9 @@ void  CMainFrame::AutoSaveCollectionData(){
 		while (iter2->second.size() != 1000 && iter1->second.size() >= 1000 ||
 			theApp.m_icollectionStatus == 0 && iter1->second.size() < 1000 && iter1->second.size()>0){
 			while (iter1 != m_mpcolllectioinDataQueue.end() && iter2 != mpcolllectioinDataQueue.end()) {
+				//TRACE("采集数据：%f \n", iter1->second.front());
 				iter2->second.push(*iter1->second.wait_and_pop());
+				signalInfoHeader.m_llSiganlSize++;
 				iter1++;
 				iter2++;
 			}
@@ -1419,7 +1437,7 @@ void  CMainFrame::AutoSaveCollectionData(){
 			iter2 = mpcolllectioinDataQueue.begin();
 		}
 		///将1000条数据保存到文件
-		CFileUtil::SaveCollectionData2Binary(outputStream, move(mpcolllectioinDataQueue));
+		m_signalController.SaveCollectionData2Binary(outputStream, move(mpcolllectioinDataQueue));
 		///重新构建保存的缓冲区
 		mpcolllectioinDataQueue.clear();
 		for (int i = 0; i < m_vchannelIds.size(); i++){
@@ -1432,8 +1450,12 @@ void  CMainFrame::AutoSaveCollectionData(){
 			theApp.m_bisSave = false;
 		}
 	}
+	
 	theApp.m_bisSave = false;
 	outputStream.close();
+
+	signalInfoHeader.m_llSiganlSize *= sizeof(double);
+	m_signalController.SaveCollectionDataHeadInfo(fileName, signalInfoHeader);
 }
 
 void CMainFrame::GetInstalledDevices(ICollection<DeviceTreeNode> *& devices){

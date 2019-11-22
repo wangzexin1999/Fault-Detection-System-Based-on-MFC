@@ -521,26 +521,6 @@ bool CFileUtil::SaveCollectionData2Binary(CString path, CString fileName,TbSigna
 
 }
 
-
-bool  CFileUtil::SaveCollectionData2Binary(ofstream &outputStream, map<CString, ThreadSafeQueue<double>> & acquireSignal){
-	map<CString, ThreadSafeQueue<double>>::iterator signalDataIterator = acquireSignal.begin();
-	int saveCount = signalDataIterator->second.size();
-	int channelCount = acquireSignal.size();
-	double* saveData = new double[channelCount];
-	for (int i = 0; i < saveCount; i++){
-		////循环采集数据的队列去保存数据
-		signalDataIterator = acquireSignal.begin();
-		for (int j = 0; j < channelCount; j++){
-			shared_ptr<DOUBLE> signal = signalDataIterator->second.wait_and_pop();
-			saveData[j] = *signal;
-			signalDataIterator++;
-		}
-		outputStream.write((const char*)saveData, sizeof(double)* channelCount);
-	}
-	delete[] saveData;
-	return false;
-}
-
 ofstream CFileUtil::GetOfstreamByFileName(CString fileName){
 	ofstream  ofs(_T(fileName), std::ios::binary | std::ios::out | std::ios::app);
 	return ofs;

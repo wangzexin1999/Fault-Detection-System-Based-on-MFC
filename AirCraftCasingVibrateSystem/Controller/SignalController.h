@@ -26,7 +26,26 @@ Modification:
 #include "RecordSignalService.h"
 #include "ThreadSafeQueue.h"
 #include "AcquiredSignal.h"
+#include <fstream>
 #include <map>
+using namespace std;
+struct SignalInfoHeader{
+	/*通道个数*/
+	int m_iChannelNums = 0;
+	/*开始通道*/
+	char m_cStartChannel[4];
+	/*结束通道*/
+	char m_cEndChannel[4];
+	/*采集频率*/
+	int m_iCollectFre = 0;
+	/*采集计划参数*/
+	char  m_cCollectPlanPara[500];
+	/*信号大小*/
+	long long m_llSiganlSize = 0;
+};
+
+
+
 class SignalController
 {
 
@@ -85,7 +104,26 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	Result SaveSignalData(map<CString, ThreadSafeQueue<double>> & acquireSignal,TbSignal &saveSignal);
+	/**********************************************************************
+	功能描述： 保存采样数据为二进制文件
+	输入参数：outputStream--输出流；acquireSigna--采集信号
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	bool SaveCollectionData2Binary(ofstream &outputStream, map<CString, ThreadSafeQueue<double>> & acquireSigna);
 
-
+	/**********************************************************************
+	功能描述： 保存采样数据的二进制文件头部信息
+	输入参数：outputStream--输出流；signalInfoHeader--采集信号信息头
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	void SaveCollectionDataHeadInfo(CString fileName, SignalInfoHeader  signalInfoHeader);
 };
 

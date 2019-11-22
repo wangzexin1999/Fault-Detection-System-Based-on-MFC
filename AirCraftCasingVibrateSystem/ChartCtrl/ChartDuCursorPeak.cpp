@@ -26,4 +26,6 @@ void CChartDuCursorPeak::AutoDingweiCursorPositionIndexInData()
 		return;
 
 	m_lPositionIndexInData = pActiveSeries->m_nMaxPositionIndexInData;
+	//SetPositionIndex(m_lPositionIndexInData);
+	TRACE("\n当前最大位置%d\n",m_lPositionIndexInData);
 }

@@ -176,16 +176,7 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	static bool SaveCollectionData2Binary(CString strPath, CString strFileName, TbSignal fileInfor, map<CString, ThreadSafeQueue<double>> & acquireSigna);
-	/**********************************************************************
-	功能描述： 保存采样数据为二进制文件
-	输入参数：outputStream--输出流；acquireSigna--采集信号
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
-	***********************************************************************/
-	static bool SaveCollectionData2Binary(ofstream &outputStream,map<CString, ThreadSafeQueue<double>> & acquireSigna);
+
 
 	/**********************************************************************
 	功能描述： 得到指定文件的输出流

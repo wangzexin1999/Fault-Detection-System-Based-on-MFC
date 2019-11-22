@@ -84,6 +84,8 @@ protected:  // 控件条嵌入成员
 	map<int, DevConfParam> m_vdevConfParams;
 	ICollection<DeviceTreeNode>* m_devices;
 	AdvantechDaqController m_advantechDaqController;
+	Value m_collectionFrequency;
+	Value m_analysisFrequency;
 public:
 	int m_icollectionFrequency; ///采样频率
 

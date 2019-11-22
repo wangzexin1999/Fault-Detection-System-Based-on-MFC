@@ -494,7 +494,8 @@ LRESULT CAirCraftCasingVibrateSystemView::OnRefreshChart(WPARAM wParam, LPARAM l
 {
 	m_pLineSerie->ClearSerie();
 	m_pLineSerie->SetNeedCalStatValue(TRUE);
-	TRACE("\n刷新采集窗口。。。。\n");
+	//TRACE("\n刷新采集窗口。。。。\n");
 	m_pLineSerie->AddPoints(m_echoSignal.GetXData().GetSmartArray(), m_echoSignal.GetYData().GetSmartArray(), m_echoSignal.GetXData().size()/2);
+	//this->m_chart.SetCursorPeak(TRUE);
 	return 0;
 }
