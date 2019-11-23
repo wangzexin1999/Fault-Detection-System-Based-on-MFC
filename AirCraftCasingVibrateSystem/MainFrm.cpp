@@ -25,12 +25,8 @@
 #include "FileUtil.h"
 #include "Constant.h"
 #include "EchoSignal.h"
-#include "include/rapidjson/document.h"
-#include "include/rapidjson/writer.h"
-#include "include/rapidjson/stringbuffer.h"
 #include "ProjectController.h"
 #include "FFTWUtil.h"
-using namespace rapidjson;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -639,7 +635,9 @@ void CMainFrame::OnButtonStartCapture()
 	int channelNum;
 	TbSensor sensor;
 	vector<CString> splitChannelId;
-
+	///封装采集通道的信息的dom树
+	SetChannelInfoJsonValue();
+	SetCollectionStatusJsonValue();
 	map<int, DevConfParam>::iterator devConfParaIterator;
 	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
 		theApp.m_vsignalCaptureView[i]->GetSensor(sensor);
@@ -673,7 +671,6 @@ void CMainFrame::OnButtonStartCapture()
 	}
 
 	///获取采集频率和采集点数
-	
 	Result res = JsonUtil::GetValueFromJsonString(theApp.m_currentProject.GetTestingDevice().GetCollectionFrequency().GetDictValue(), "content", m_collectionFrequency);
 	if (!res.GetIsSuccess()){
 		AfxMessageBox(res.GetMessages());
@@ -684,9 +681,10 @@ void CMainFrame::OnButtonStartCapture()
 		AfxMessageBox(res.GetMessages());
 		return;
 	}
+
+
 	m_icollectionFrequency = m_collectionFrequency.GetInt();
 	int collectionPoint = atoi(theApp.m_currentProject.GetTestingDevice().GetCollectionPoint().GetDictValue());
-
 	///根据获取的采集卡的DeviceNumber创建响应的控制类
 	for (devConfParaIterator = m_vdevConfParams.begin(); devConfParaIterator != m_vdevConfParams.end(); devConfParaIterator++){
 		///初始化采集数据的对象
@@ -709,8 +707,43 @@ void CMainFrame::OnButtonStartCapture()
 	//实时数据传输
 	SetTimer(99, 1000, NULL);
 	///将采集按钮置灰
-
+	
 }
+void CMainFrame::SetChannelInfoJsonValue(){
+	m_channelInfo.SetObject();
+	m_channelInfo.RemoveAllMembers();
+	Value channelCount;
+	channelCount.SetInt(theApp.m_currentProject.GetSensorVector().size());
+	m_channelInfo.AddMember("channelCount", channelCount, m_doc.GetAllocator());
+
+	Value startChannel;
+	startChannel.SetString(theApp.m_currentProject.GetSensorVector()[0].GetChannelId(), m_doc.GetAllocator());
+	m_channelInfo.AddMember("startChannel", startChannel, m_doc.GetAllocator());
+
+	Value endChannel;
+	endChannel.SetString(theApp.m_currentProject.GetSensorVector()[theApp.m_currentProject.GetSensorVector().size() - 1].GetChannelId(), m_doc.GetAllocator());
+	m_channelInfo.AddMember("endChannel", endChannel, m_doc.GetAllocator());
+
+	Value channels(kArrayType);
+	for (int i = 0; i < theApp.m_currentProject.GetSensorVector().size(); i++){
+		Value channel(kObjectType);
+		JsonUtil::ConvertSensor2Value(theApp.m_currentProject.GetSensorVector()[i], channel);
+		channels.PushBack(channel, m_doc.GetAllocator());
+	}
+	m_channelInfo.AddMember("channels", channels, m_doc.GetAllocator());
+}
+void CMainFrame::SetCollectionStatusJsonValue(){
+	m_collectionStatus.SetObject();
+	m_collectionStatus.RemoveAllMembers();
+	///解析原有的项目里面保存的采集状态
+	m_doc.Parse(theApp.m_currentProject.GetCollectionStatus());
+	m_collectionStatus.CopyFrom(m_doc, m_doc.GetAllocator());
+	///再加入采集参数的一些东西。
+	Value testingDevice(kObjectType);
+	JsonUtil::ConvertTestingDevice2Value(theApp.m_currentProject.GetTestingDevice(), testingDevice);
+	m_collectionStatus.AddMember("testingDevice", testingDevice, m_doc.GetAllocator());
+}
+
 //暂停采集
 void CMainFrame::OnButtonSuspendCapture()
 {
@@ -794,35 +827,27 @@ void CMainFrame::OnBtnStartSmaple()
 		AfxMessageBox("当前没有采集状态");
 		return;
 	}
-	/*开始采样，记录开始采集时间*/
-	theApp.m_recordSignal.SetStartTime(DateUtil::GetCurrentCStringTime());
-	theApp.m_recordSignal.SetProject(theApp.m_currentProject);
-	theApp.m_recordSignal.SetProduct(theApp.m_currentProject.GetProduct());
-	theApp.m_recordSignal.SetTesingDevice(theApp.m_currentProject.GetTestingDevice());
-	theApp.m_recordSignal.SetCollectionStatus(theApp.m_jsonCollectionStatusPara);
+	/*开始采样，封装采样信号的对象*/
+	m_recordSignal.SetStartTime(DateUtil::GetCurrentCStringTime());
+	m_recordSignal.SetProject(theApp.m_currentProject);
+	m_recordSignal.SetProduct(theApp.m_currentProject.GetProduct());
+	m_recordSignal.SetTesingDevice(theApp.m_currentProject.GetTestingDevice());
+	m_recordSignal.SetCollectionStatus(theApp.m_currentProject.GetCollectionStatus());
 
 }
 
 // 停止采样
 void CMainFrame::OnBtnStopSample()
 {
-	if (theApp.m_recordSignal.GetStartTime() == ""){
+	if (m_recordSignal.GetStartTime() == ""){
 		AfxMessageBox("当前未在采集");
 		return;
 	}
 	//////封装json格式的传感器数据。
-	//Document doc;
-	//Document::AllocatorType& allocator = doc.GetAllocator();
-	//Value root(kObjectType);
-	//Value channelCount(kNumberType);
-
-	//////计算通道的个数
-	//channelCount.SetInt(theApp.m_currentProject.GetSensorVector().size());
-
-	CString sensorInfo = "{\"channelCount\":4,\"channelsId\" : [\"#012s-1\", \"#012s-2\",\"#012s-3\",\"#012s-4\"]}";
-	theApp.m_recordSignal.SetSensorInfo(sensorInfo);
-	theApp.m_recordSignal.SetEndTime(DateUtil::GetCurrentCStringTime());
-	Result res = m_signalController.SaveSampleSignal(theApp.m_recordSignal);
+	m_recordSignal.SetSensorInfo(JsonUtil::GetStringFromDom(m_channelInfo));
+	m_recordSignal.SetCollectionStatus(JsonUtil::GetStringFromDom(m_collectionStatus));
+	m_recordSignal.SetEndTime(DateUtil::GetCurrentCStringTime());
+	Result res = m_signalController.SaveSampleSignal(m_recordSignal);
  	if (!res.GetIsSuccess()){
 		AfxMessageBox("采样数据保存失败");
 	}
@@ -1389,7 +1414,10 @@ void CMainFrame::SaveCollectionData(map<CString, ThreadSafeQueue<double>> & acqu
 
 ////保存采集数据的线程函数
 void  CMainFrame::AutoSaveCollectionData(){
+	CString startTime = DateUtil::GetCurrentCStringTime();
 	TbSignal saveSignal;
+	
+
 	theApp.m_bisSave = true;
 	//saveSignal.SetCollectionPara(theApp.m_currentProject.GetCollectionStatus());
 	saveSignal.SetProductId(theApp.m_currentProject.GetProduct().GetProductId());
@@ -1462,6 +1490,12 @@ void  CMainFrame::AutoSaveCollectionData(){
 
 	signalInfoHeader.m_llSiganlSize *= sizeof(double);
 	m_signalController.SaveCollectionDataHeadInfo(fileName, signalInfoHeader);
+	saveSignal.SetSensorInfo(JsonUtil::GetStringFromDom(m_channelInfo));
+	saveSignal.SetCollectionStatus(JsonUtil::GetStringFromDom(m_collectionStatus));
+	saveSignal.SetEndTime(DateUtil::GetCurrentCStringTime());
+	saveSignal.SetDataUrl(fileName);
+	m_signalController.SaveCollectionSignal(saveSignal);
+
 }
 
 void CMainFrame::GetInstalledDevices(ICollection<DeviceTreeNode> *& devices){

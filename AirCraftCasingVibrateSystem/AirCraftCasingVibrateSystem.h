@@ -47,9 +47,6 @@ public:
 	bool m_bcon = false;  // 判断网络通信是否连接成功
 	Redis *m_redisCon = new Redis();  
 	bool m_bShowInfThreadActive = true;
-
-	CString m_jsonCollectionStatusPara = "{\"collectionPlan\":\"平稳状态\",\"collectionPlanTitle\" : [\"转速\"],\"collectionPlanPara\" : [\"126hz\"]}";
-
 	/// 用户
 	TbProject m_currentProject;
 	int m_chartCtrlIndex = 10000;/*画图控件ID*/
@@ -60,7 +57,7 @@ public:
 	bool m_bisSave = false;//保存状态
 	CString m_collectionRotatingSpeed = "";
 	vector<SignalAcquisitionService> m_vSignalAcquisitionService; ////信号采集服务
-	TbRecordSignal m_recordSignal; // 采样数据
+	
 	double tempRead[100][1000]; ///模拟数据
 	httplib::Client m_cli; // http连接
 	bool m_newProjectStatus = false;
