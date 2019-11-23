@@ -34,7 +34,7 @@ Result SignalController::SaveSignalData(map<CString, ThreadSafeQueue<double>> & 
 	return Result(false,"数据保存失败");
 }
 
-bool  SignalController::SaveCollectionData2Binary(ofstream &outputStream, map<CString, ThreadSafeQueue<double>> & acquireSignal){
+bool SignalController::SaveCollectionData2Binary(ofstream &outputStream, map<CString, ThreadSafeQueue<double>> & acquireSignal){
 	map<CString, ThreadSafeQueue<double>>::iterator signalDataIterator = acquireSignal.begin();
 	int saveCount = signalDataIterator->second.size();
 	int channelCount = acquireSignal.size();
@@ -54,6 +54,37 @@ bool  SignalController::SaveCollectionData2Binary(ofstream &outputStream, map<CS
 	return false;
 }
 
+bool SignalController::GetCollectionData(ifstream &inputStream, long long llReadSize, vector<double>& vSignal, long long llStart = 0, long long llend = 0)
+{
+	/*计算总的数*/
+	inputStream.seekg(sizeof(SignalInfoHeader), std::ios_base::end);
+	long long llFileSize = inputStream.tellg()/sizeof(double);
+	inputStream.seekg(sizeof(SignalInfoHeader));
+	if ((llFileSize - llStart) <= llReadSize)
+	{
+		double* dpReadData = new double[(llFileSize - llStart)];
+		inputStream.read((char*)dpReadData, (llFileSize - llStart)*sizeof(double));
+		for (int i = 0; i < (llFileSize-llStart); i++)
+		{
+			/*读不够size的部分*/
+			vSignal.push_back(dpReadData[i]);
+		}
+		delete[] dpReadData;
+	}
+	else
+	{
+		double* dpReadData = new double[llReadSize];
+		inputStream.read((char*)dpReadData, llReadSize * sizeof(double));
+		for (int i = 0; i < llReadSize; i++)
+		{
+			/*readSize*/
+			vSignal.push_back(dpReadData[i]);
+		}
+		delete[] dpReadData;
+	}
+
+}
+
 void SignalController::SaveCollectionDataHeadInfo(CString fileName, SignalInfoHeader  signalInfoHeader){
 	/*如果文件不存在创建文件*/
 	if (access(_T(fileName), 0))
@@ -67,4 +98,22 @@ void SignalController::SaveCollectionDataHeadInfo(CString fileName, SignalInfoHe
 	fout.write((const char *)&signalInfoHeader, sizeof(SignalInfoHeader));
 	fout.flush();
 	fout.close();
+}
+
+
+bool SignalController::GetCollectionDataHeadInfo(CString fileName, SignalInfoHeader& signalInfoHeader)
+{
+
+	/*如果文件不存在返回false*/
+	if (access(_T(fileName), 0))
+	{
+		return false;
+	}
+	else
+	{
+		std::ifstream fs(_T(fileName), std::ios_base::binary | std::ios::in);
+		fs.read((char *)&signalInfoHeader, sizeof(SignalInfoHeader));
+		fs.close();
+	}
+	return true;
 }
