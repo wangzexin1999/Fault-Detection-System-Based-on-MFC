@@ -58,7 +58,7 @@ bool SignalController::SaveCollectionData2Binary(ofstream &outputStream, map<CSt
 	return false;
 }
 
-bool SignalController::GetCollectionData(ifstream &inputStream, long long llReadSize, vector<double>& vSignal, long long llStart = 0, long long llend = 0)
+bool SignalController::GetCollectionData(ifstream &inputStream, long long llReadSize, vector<double>& vSignal, long long llStart, long long llend)
 {
 	/*计算总的数*/
 	inputStream.seekg(sizeof(SignalInfoHeader), std::ios_base::end);
@@ -86,7 +86,7 @@ bool SignalController::GetCollectionData(ifstream &inputStream, long long llRead
 		}
 		delete[] dpReadData;
 	}
-
+	return false;
 }
 
 void SignalController::SaveCollectionDataHeadInfo(CString fileName, SignalInfoHeader  signalInfoHeader){
