@@ -44,6 +44,7 @@ BOOL CGeneralParaView::OnInitDialog()
 void CGeneralParaView::OnGridEndEdit(NMHDR *pNotifyStruct, LRESULT* pResult)
 {
 	NM_GRIDVIEW* pItem = (NM_GRIDVIEW*)pNotifyStruct;
+	int index;
 	TRACE("\n保存第%d行\n", pItem->iRow);
 	
 	///获取指定行的数据，同步到全局项目对象
@@ -52,20 +53,24 @@ void CGeneralParaView::OnGridEndEdit(NMHDR *pNotifyStruct, LRESULT* pResult)
 		if (col == 3){
 			///拿到选择的窗类型
 			CGridCellCombo* pCellCombo = (CGridCellCombo*)m_generalParaGridCtrl.GetCell(pItem->iRow, col);
-			int index = pCellCombo->GetCurSel();
+			index = pCellCombo->GetCurSel();
+			if (index < 0) continue;
 			theApp.m_currentProject.GetSensorVector()[pItem->iRow - 1].SetWindowType(m_vwindowTypes[index]);
 		}
-		if (col == 4) theApp.m_currentProject.GetSensorVector()[pItem->iRow - 1].SetSensitivity(atoi(m_generalParaGridCtrl.GetItemText(pItem->iRow, col)));
+		if (col == 4) 
+			theApp.m_currentProject.GetSensorVector()[pItem->iRow - 1].SetSensitivity(atoi(m_generalParaGridCtrl.GetItemText(pItem->iRow, col)));
 		if (col == 5){
 			///拿到选择的窗类型
 			CGridCellCombo* pCellCombo = (CGridCellCombo*)m_generalParaGridCtrl.GetCell(pItem->iRow, col);
-			int index = pCellCombo->GetCurSel();
+			index = pCellCombo->GetCurSel();
+			if (index < 0) continue;
 			theApp.m_currentProject.GetSensorVector()[pItem->iRow - 1].SetInputMethod(m_vinputMethods[index]);
 		}
 		if (col == 6){
 			///拿到选择的量程范围
 			CGridCellCombo* pCellCombo = (CGridCellCombo*)m_generalParaGridCtrl.GetCell(pItem->iRow, col);
-			int index = pCellCombo->GetCurSel();
+			index = pCellCombo->GetCurSel();
+			if (index < 0) continue;
 			theApp.m_currentProject.GetSensorVector()[pItem->iRow - 1].SetMileageRange(m_measuringRange[pItem->iRow - 1][index]);
 		}
 			
@@ -94,10 +99,6 @@ void CGeneralParaView::GridCtrlInit()
 {
 	//初始化足够数量的采集卡对象数据
 	m_measuringRange.resize(theApp.m_currentProject.GetSensorVector().size());
-	/////如果当前已经打开了项目,则加载当前项目的所有传感器参数
-	if (theApp.m_currentProject.GetProjectId() != 0){
-		m_sensorParaController.FindALLSensorParaByProjectId(theApp.m_currentProject);
-	}
 	m_generalParaGridCtrl.SetEditable(false);
 	m_generalParaGridCtrl.SetTextBkColor(RGB(0xFF, 0xFF, 0xE0));//黄色背景
 	m_generalParaGridCtrl.SetRowCount(theApp.m_currentProject.GetSensorVector().size() + 1); //初始为n行
@@ -147,7 +148,8 @@ void CGeneralParaView::GridCtrlInit()
 			m_generalParaGridCtrl.SetItemState(row, col, GVIS_READONLY);
 		}
 		if (col == 1) Item.strText = theApp.m_currentProject.GetSensorVector()[row - 1].GetSensorStatus().GetDictValue();
-		if (col == 2) Item.strText = theApp.m_currentProject.GetSensorVector()[row - 1].GetSensorDesc();
+		if (col == 2) 
+			Item.strText = theApp.m_currentProject.GetSensorVector()[row - 1].GetSensorDesc();
 		if (col == 3) {
 			m_generalParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCombo));
 			CGridCellCombo* pCellCombo = (CGridCellCombo*)m_generalParaGridCtrl.GetCell(row, col);

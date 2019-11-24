@@ -24,7 +24,7 @@ TbRecordSignalDao::TbRecordSignalDao()
 }
 TbRecordSignalDao::TbRecordSignalDao(const TbRecordSignalDao  & signal){
 	this->m_strTableName = "tb_recordsignal";
-	m_key = &m_signalId;
+	m_key = &m_id;
 	SetVectorAndField("id", "int", m_id);
 	SetVectorAndField("signal_id", "CString", m_signalId);
 	SetVectorAndField("start_time", "CString", m_startTime);
@@ -57,7 +57,7 @@ bool TbRecordSignalDao::SelectObjectsByCondition(vector<TbRecordSignalDao> &sele
 	{
 		for (int iStart = 0; iStart < tmpDetectedObjecIDs.size(); iStart++)
 		{
-			recordSignal.m_signalId.m_strValue = tmpDetectedObjecIDs[iStart];
+			recordSignal.m_key->m_strValue = tmpDetectedObjecIDs[iStart];
 			if (recordSignal.SelectByKey())
 			{
 				selectedValueVector.push_back(recordSignal);
