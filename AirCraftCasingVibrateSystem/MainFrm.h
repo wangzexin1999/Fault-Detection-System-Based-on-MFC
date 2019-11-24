@@ -351,6 +351,7 @@ public:
 	afx_msg void OnButtonOpenCollectionPlanManage();
 	afx_msg void OnButtonOpenProjectView();
 	afx_msg void OnButtonOpenProjectSetView();
+	afx_msg void OnEditAnalyseFreMin();
 };
 
 
