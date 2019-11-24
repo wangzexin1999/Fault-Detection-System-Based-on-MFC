@@ -92,6 +92,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_MESSAGE(StatusInfMessage, OnStatusInf)
 	ON_MESSAGE(WM_REFRESHVIEW_BY_PROJECT, &CMainFrame::OnRefreshViewByProject)
 	ON_MESSAGE(WM_SETTEXT, &CMainFrame::OnSetText)
+	ON_COMMAND(ID_EDIT_ANALYSE_FRE_MIN, &CMainFrame::OnEditAnalyseFreMin)
 END_MESSAGE_MAP()
 
 // CMainFrame 构造/析构
@@ -1515,4 +1516,10 @@ void  CMainFrame::GetChannels(vector<CString> & channels){
 			channels.push_back(CommonUtil::Int2CString(deviceNum) + "-" + CommonUtil::Int2CString(j));
 		}
 	}
+}
+
+void CMainFrame::OnEditAnalyseFreMin()
+{
+	// TODO:  在此添加命令处理程序代码
+	AfxMessageBox("test");
 }
