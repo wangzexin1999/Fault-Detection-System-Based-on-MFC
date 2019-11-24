@@ -15,9 +15,12 @@ public:
 	void SetValue(double dValue);//设置double类型值
 	void SetValue(float fValue);//设置float类型值
 	void SetValue(int iValue);//设置int类型值
+	void SetValue(long long iValue);//设置longlong类型值
 	void SetValue(CString strValue);//设置CString类型值	
 	int GetInt();//获取int类型的值
+	long long GetLongLong();//获取int类型的值
 	float GetFloatOrDouble();//获取float或者double类型的值
+
 private:
 	CString m_strKind;//数据类型
 };

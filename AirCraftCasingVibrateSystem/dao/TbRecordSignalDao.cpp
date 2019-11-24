@@ -6,10 +6,13 @@ using namespace std;
 TbRecordSignalDao::TbRecordSignalDao()
 {
 	this->m_strTableName = "tb_recordsignal";
-	m_key = &m_signalId;
-	SetVectorAndField("signal_id", "int", m_signalId);
+	m_key = &m_id;
+	SetVectorAndField("id", "int", m_id);
+	SetVectorAndField("signal_id", "CString", m_signalId);
 	SetVectorAndField("start_time", "CString", m_startTime);
 	SetVectorAndField("end_time", "CString", m_endTime);
+	SetVectorAndField("start_pos", "longlong", m_startPos);
+	SetVectorAndField("end_pos", "longlong", m_endPos);
 	SetVectorAndField("signal_type", "CString", m_signalType);
 	SetVectorAndField("product_id", "int", m_productId);
 	SetVectorAndField("signal_status", "char", m_signalStatus);
@@ -22,9 +25,12 @@ TbRecordSignalDao::TbRecordSignalDao()
 TbRecordSignalDao::TbRecordSignalDao(const TbRecordSignalDao  & signal){
 	this->m_strTableName = "tb_recordsignal";
 	m_key = &m_signalId;
-	SetVectorAndField("signal_id", "int", m_signalId);
+	SetVectorAndField("id", "int", m_id);
+	SetVectorAndField("signal_id", "CString", m_signalId);
 	SetVectorAndField("start_time", "CString", m_startTime);
 	SetVectorAndField("end_time", "CString", m_endTime);
+	SetVectorAndField("start_pos", "longlong", m_startPos);
+	SetVectorAndField("end_pos", "longlong", m_endPos);
 	SetVectorAndField("signal_type", "CString", m_signalType);
 	SetVectorAndField("product_id", "int", m_productId);
 	SetVectorAndField("signal_status", "char", m_signalStatus);
@@ -69,11 +75,14 @@ bool TbRecordSignalDao::SelectObjectsByCondition(vector<TbRecordSignalDao> &sele
 	}
 }
 void TbRecordSignalDao::GetTableFieldValues(TbRecordSignal &signal){
+	signal.SetId(m_id.GetInt());
 	signal.SetSignalId(m_signalId.m_strValue);
 	signal.SetSignalStatus(m_signalStatus.GetInt());
 	signal.GetProduct().SetProductId(m_productId.GetInt());
 	signal.SetStartTime(m_startTime.m_strValue);
 	signal.SetEndTime(m_endTime.m_strValue);
+	signal.SetStartPos(m_startPos.GetLongLong());
+	signal.SetEndPos(m_endPos.GetLongLong());
 	signal.SetSignalType(m_signalType.m_strValue);
 	signal.GetProject().SetProjectId(m_projectId.GetInt());
 	signal.GetTestingDevice().SetId(m_testingDeviceId.GetInt());
@@ -82,12 +91,15 @@ void TbRecordSignalDao::GetTableFieldValues(TbRecordSignal &signal){
 }
 
 void TbRecordSignalDao::SetTableFieldValues(TbRecordSignal signal){
-	m_projectId.SetValue(signal.GetProject().GetProjectId());
+	m_id.SetValue(signal.GetId());
 	m_signalId.SetValue(signal.GetSignalId());
+	m_projectId.SetValue(signal.GetProject().GetProjectId());
 	m_signalStatus.SetValue(signal.GetSignalStatus());
 	m_signalType.SetValue(signal.GetSignalType());
 	m_startTime.SetValue(signal.GetStartTime());
 	m_endTime.SetValue(signal.GetEndTime());
+	m_startPos.SetValue(signal.GetStartPos());
+	m_endPos.SetValue(signal.GetEndPos());
 	m_productId.SetValue(signal.GetProduct().GetProductId());
 	m_testingDeviceId.SetValue(signal.GetTestingDevice().GetId());
 	m_collectionStatus.SetValue(signal.GetCollectionStatus());

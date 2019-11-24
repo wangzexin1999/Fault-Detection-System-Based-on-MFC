@@ -10,9 +10,12 @@ public:
 	TbRecordSignalDao(const TbRecordSignalDao  & signal);
 	~TbRecordSignalDao();
 
+	PDAttribute m_id;
 	PDAttribute m_signalId;
 	PDAttribute m_startTime;
 	PDAttribute m_endTime;
+	PDAttribute m_startPos;
+	PDAttribute m_endPos;
 	PDAttribute m_signalType;
 	PDAttribute m_productId;
 	PDAttribute m_signalStatus;

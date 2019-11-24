@@ -23,6 +23,12 @@ TbRecordSignal::TbRecordSignal()
 TbRecordSignal::~TbRecordSignal()
 {
 }
+int TbRecordSignal::GetId(){
+	return m_id;
+}
+void TbRecordSignal::SetId(int id){
+	m_id = id;
+}
 
 CString TbRecordSignal::GetSignalId() {
 	return m_signalId;
@@ -48,7 +54,19 @@ CString TbRecordSignal::GetSignalType() {
 void TbRecordSignal::SetSignalType(CString signalType) {
 	this->m_signalType = signalType;
 }
+int  TbRecordSignal::GetStartPos(){
+	return m_startPos;
+}
+void TbRecordSignal::SetStartPos(long long startPos){
+	m_startPos = startPos;
+}
 
+int  TbRecordSignal::GetEndPos(){
+	return	m_endPos;
+}
+void TbRecordSignal::SetEndPos(long long endPos){
+	m_endPos = endPos;
+}
 
 TbProduct & TbRecordSignal::GetProduct() {
 	return m_product;

@@ -33,10 +33,12 @@ public:
 	~TbRecordSignal();
 
 private:
-
+	int m_id;
 	CString m_signalId;
 	CString m_startTime;
 	CString m_endTime;
+	long long m_startPos;
+	long long m_endPos;
 	CString m_signalType;
 	TbProduct m_product;
 	char m_signalStatus;
@@ -46,6 +48,8 @@ private:
 	CString m_sensorInfo;
 
 public:
+	int GetId();
+	void SetId(int id);
 	CString GetSignalId();
 	void SetSignalId(CString signalId);
 	CString GetStartTime();
@@ -53,17 +57,21 @@ public:
 	CString GetEndTime();
 	void SetEndTime(CString endTime);
 	CString GetSignalType();
+
+	int  GetStartPos();
+	void SetStartPos(long long startPos);
+
+	int  GetEndPos();
+	void SetEndPos(long long endPos);
+
+
 	void SetSignalType(CString signalType);
 	TbProduct & GetProduct();
 	void SetProduct(TbProduct product);
 	char GetSignalStatus();
 	void SetSignalStatus(char signal_status);
-
 	void SetProject(TbProject project);
 	TbProject & GetProject();
-
-
-
 	TbTestingDevice & GetTestingDevice();
 	void SetTesingDevice(TbTestingDevice  testingDevice);
 	void SetCollectionStatus(CString collectionStatus);

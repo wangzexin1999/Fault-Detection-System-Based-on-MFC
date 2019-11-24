@@ -36,6 +36,10 @@ void PDAttribute::SetValue(int value)
 	ASSERT(this->m_strKind == "int" || this->m_strKind == "char");
 	this->m_strValue.Format("%d", value);
 }
+void PDAttribute::SetValue(long long value){
+	ASSERT(this->m_strKind == "longlong");
+	this->m_strValue.Format("%I64d", value);
+}
 
 void PDAttribute::SetValue(float value)
 {
@@ -62,6 +66,15 @@ int PDAttribute::GetInt()
 	else
 		ASSERT(0);
 }
+
+long long PDAttribute::GetLongLong(){
+	if (this->m_strKind == "longlong"){
+		return atoll(this->m_strValue);
+	}
+	else
+		ASSERT(0);
+}
+
 
 float PDAttribute::GetFloatOrDouble()
 {
