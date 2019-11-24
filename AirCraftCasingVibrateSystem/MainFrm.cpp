@@ -478,7 +478,7 @@ void CMainFrame::OnButtonNewProject()
 
 // 项目管理
 void CMainFrame::OnButtonProjectManage()
-{
+{ 
 	
 }
 
@@ -492,29 +492,21 @@ void CMainFrame::OnButtonOpenDataFile()
 		//去查询采集数据
 		///得到选中的采样信号
 		TbRecordSignal selectedSignal = sampleDataView.GetSelectedRecordSignal();
-		Document doc;
-		doc.Parse(selectedSignal.GetSensorInfo());
-		if (doc.HasParseError()){ return; }
+		Value channelCount;
+		JsonUtil::GetValueFromJsonString(selectedSignal.GetSensorInfo(), "channelCount", channelCount);
 		///拿到通道个数
-		int channelCount = doc["channelCount"].GetInt();
-		///拿到通道的序列号
-		const Value& channelsId = doc["channelsId"];
-		///每个通道也许会对应多条采集数据
-		vector<vector<TbSignal>> collectionData;
-		for (int i = 0; i < channelCount;i++){
-			////查询信号的对象
-			TbSignal searchSignalEntity;
-			searchSignalEntity.SetStartTime(selectedSignal.GetStartTime());
-			searchSignalEntity.SetEndTime(selectedSignal.GetEndTime());
-			searchSignalEntity.SetProductId(selectedSignal.GetProduct().GetProductId());
-			searchSignalEntity.SetProjectId(selectedSignal.GetProject().GetProjectId());
-			searchSignalEntity.SetTestingDeviceId(selectedSignal.GetTestingDevice().GetId());
-			searchSignalEntity.SetCollectionStatus(selectedSignal.GetCollectionStatus());
-			//searchSignalEntity.SetChannels(channelsId[i].GetString());
-			vector<TbSignal> signalVec;
-			m_signalController.FindAllSignalBySearchCondition(searchSignalEntity, signalVec);
-			collectionData.push_back(signalVec);
+		///拿到所有通道便于回显
+		vector<TbSensor> vsensor;
+		Value josnChannels;
+		JsonUtil::GetValueFromJsonString(selectedSignal.GetSensorInfo(), "channels", josnChannels);
+		for (int i = 0; i < josnChannels.Size(); i++){
+			TbSensor currentSensor;
+			JsonUtil::ConvertValue2Sensor(josnChannels[i], currentSensor);
+			vsensor.push_back(currentSensor);
 		}
+		theApp.m_currentProject.SetSensorVector(vsensor);
+		SendMessage(WM_REFRESHVIEW_BY_PROJECT);
+
 
 		// 如果可以连接服务器，根据条件查询服务器数据
 		// 否则查询本体数据
@@ -557,8 +549,6 @@ void CMainFrame::OnButtonOpenDataFile()
 		//}
 		//else/*连接服务器*/
 		//{
-
-
 		//}
 
 	}
@@ -941,6 +931,7 @@ void CMainFrame::OnBtnAutoScale()
 	CAirCraftCasingVibrateSystemView *view;
 	view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
 	CDuChartCtrlStaticFunction::AutoXScale(&view->GetChartCtrl(), FALSE);
+	CDuChartCtrlStaticFunction::AutoYScale(&view->GetChartCtrl(), FALSE);
 	//CDuChartCtrlStaticFunction::AutoYScale(&view->GetChartCtrl(), FALSE);
 
 }
@@ -1423,6 +1414,7 @@ void  CMainFrame::AutoSaveCollectionData(){
 	//saveSignal.SetCollectionPara(theApp.m_currentProject.GetCollectionStatus());
 	UUIDUtil::GetUUID(tag);
 	saveSignal.SetSignalId(tag);
+	m_recordSignal.SetSignalId(tag);
 	saveSignal.SetProductId(theApp.m_currentProject.GetProduct().GetProductId());
 	saveSignal.SetProjectId(theApp.m_currentProject.GetProjectId());
 	saveSignal.SetStartTime(DateUtil::GetCurrentCStringTime());
@@ -1491,7 +1483,7 @@ void  CMainFrame::AutoSaveCollectionData(){
 	theApp.m_bisSave = false;
 	outputStream.close();
 
-	signalInfoHeader.m_llSiganlSize *= sizeof(double);
+	signalInfoHeader.m_llSiganlSize = signalInfoHeader.m_llSiganlSize * sizeof(double)+sizeof(SignalInfoHeader);
 	m_signalController.SaveCollectionDataHeadInfo(fileName, signalInfoHeader);
 	saveSignal.SetSensorInfo(JsonUtil::GetStringFromDom(m_channelInfo));
 	saveSignal.SetCollectionStatus(JsonUtil::GetStringFromDom(m_collectionStatus));

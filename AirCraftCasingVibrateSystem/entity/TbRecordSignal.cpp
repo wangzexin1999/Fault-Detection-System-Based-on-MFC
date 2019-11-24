@@ -54,14 +54,14 @@ CString TbRecordSignal::GetSignalType() {
 void TbRecordSignal::SetSignalType(CString signalType) {
 	this->m_signalType = signalType;
 }
-int  TbRecordSignal::GetStartPos(){
+long long  TbRecordSignal::GetStartPos(){
 	return m_startPos;
 }
 void TbRecordSignal::SetStartPos(long long startPos){
 	m_startPos = startPos;
 }
 
-int  TbRecordSignal::GetEndPos(){
+long long  TbRecordSignal::GetEndPos(){
 	return	m_endPos;
 }
 void TbRecordSignal::SetEndPos(long long endPos){

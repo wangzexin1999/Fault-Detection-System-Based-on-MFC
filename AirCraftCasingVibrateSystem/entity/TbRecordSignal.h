@@ -58,10 +58,10 @@ public:
 	void SetEndTime(CString endTime);
 	CString GetSignalType();
 
-	int  GetStartPos();
+	long long   GetStartPos();
 	void SetStartPos(long long startPos);
 
-	int  GetEndPos();
+	long long  GetEndPos();
 	void SetEndPos(long long endPos);
 
 

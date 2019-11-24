@@ -127,9 +127,8 @@ void CSignalDataView::GridCtrlInit(){
 		doc.Parse(m_signalVector[row - 1].GetCollectionStatus());
 
 		if (doc.HasParseError()){ continue; }
-
-		CString collectionPlan = ((string)doc["collectionPlan"].GetString()).c_str();
-		const Value& collectionPlanPara = doc["collectionPlanPara"];
+		CString collectionPlan = ((string)doc["planName"].GetString()).c_str();
+		const Value& collectionPlanPara = doc["planParaContent"];
 		////2.解析通道信息
 		int	channelCount = 0;
 		doc.Parse(m_signalVector[row - 1].GetSensorInfo());
@@ -225,9 +224,7 @@ void CSignalDataView::OnGridClick(NMHDR *pNotifyStruct, LRESULT * /*pResult*/)
 ////点击确定按钮
 void CSignalDataView::OnBnClickedOk()
 {
-	
-
-	if (MessageBox("是否打开数据 " + m_selectedSignal.GetSignalId(), "打开数据", MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL) return;
+	if (MessageBox("是否打开数据", "确认打开数据？", MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL) return;
 	CDialogEx::OnOK();
 }
 
