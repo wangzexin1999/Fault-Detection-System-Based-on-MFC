@@ -91,6 +91,10 @@ protected:  // 控件条嵌入成员
 	Value m_collectionStatus;
 	Document m_doc;
 	TbRecordSignal m_recordSignal; // 采样数据
+	bool m_bIsAnalyseFreMin = false;
+	bool m_bIsAnalyseFreMax = false;
+	int m_iAnalyseFreMax;
+	int m_iAnalyseFreMin;
 	/**********************************************************************
 	功能描述： 设置通道信息的json值
 	输入参数：
@@ -351,7 +355,10 @@ public:
 	afx_msg void OnButtonOpenCollectionPlanManage();
 	afx_msg void OnButtonOpenProjectView();
 	afx_msg void OnButtonOpenProjectSetView();
+	afx_msg void OnUpdateEditAnalyseFreMin(CCmdUI *pCmdUI);
 	afx_msg void OnEditAnalyseFreMin();
+	afx_msg void OnEditAnalyseFreMax();
+	afx_msg void OnUpdateEditAnalyseFreMax(CCmdUI *pCmdUI);
 };
 
 

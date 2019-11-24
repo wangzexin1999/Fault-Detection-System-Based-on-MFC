@@ -53,5 +53,6 @@ public:
 	static void HengxiangSuoxiao(class CDuChartCtrl * pDuChartCtrl);
 	static void ZongxiangFangda(class CDuChartCtrl * pDuChartCtrl);
 	static void ZongxiangSuoxiao(class CDuChartCtrl * pDuChartCtrl);
+	
 };
 
