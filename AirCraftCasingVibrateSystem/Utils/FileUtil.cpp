@@ -526,3 +526,9 @@ ofstream CFileUtil::GetOfstreamByFileName(CString fileName){
 	return ofs;
 }
 
+ifstream CFileUtil::GetIfstreamByFileName(CString strFileName)
+{
+	std::ifstream  ifs(_T(strFileName), std::ios::binary | std::ios::in);
+	return ifs;
+}
+
