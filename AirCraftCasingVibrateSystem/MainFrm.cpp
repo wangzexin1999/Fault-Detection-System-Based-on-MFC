@@ -1415,11 +1415,13 @@ void CMainFrame::SaveCollectionData(map<CString, ThreadSafeQueue<double>> & acqu
 ////保存采集数据的线程函数
 void  CMainFrame::AutoSaveCollectionData(){
 	CString startTime = DateUtil::GetCurrentCStringTime();
+	CString tag;
 	TbSignal saveSignal;
-	
 
 	theApp.m_bisSave = true;
 	//saveSignal.SetCollectionPara(theApp.m_currentProject.GetCollectionStatus());
+	UUIDUtil::GetUUID(tag);
+	saveSignal.SetSignalId(tag);
 	saveSignal.SetProductId(theApp.m_currentProject.GetProduct().GetProductId());
 	saveSignal.SetProjectId(theApp.m_currentProject.GetProjectId());
 	saveSignal.SetStartTime(DateUtil::GetCurrentCStringTime());

@@ -9,12 +9,12 @@ using namespace std;
 class TbSignal
 {
 public:
-	TbSignal(int signalId = 0);
+	TbSignal(CString signalId = "");
 	~TbSignal();
 
 private:
 
-	int m_signalId;
+	CString m_signalId;
 	CString m_startTime;
 	CString m_endTime;
 	CString m_signalType;
@@ -29,8 +29,8 @@ private:
 	
 
 public:
-	int GetSignalId();
-	void SetSignalId(int signalId);
+	CString GetSignalId();
+	void SetSignalId(CString signalId);
 
 	CString GetStartTime();
 	void SetStartTime(CString startTime);

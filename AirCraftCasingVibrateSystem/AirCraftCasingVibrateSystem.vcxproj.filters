@@ -714,6 +714,9 @@
     <ClInclude Include="View\TriggerParaView.h">
       <Filter>头文件\View</Filter>
     </ClInclude>
+    <ClInclude Include="UUIDUtil.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AirCraftCasingVibrateSystem.cpp">
@@ -1165,6 +1168,9 @@
     </ClCompile>
     <ClCompile Include="View\TriggerParaView.cpp">
       <Filter>源文件\View</Filter>
+    </ClCompile>
+    <ClCompile Include="UUIDUtil.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

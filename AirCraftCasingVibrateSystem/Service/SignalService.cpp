@@ -58,6 +58,6 @@ bool SignalService::AddSignalData(map<CString, ThreadSafeQueue<double>> & acquir
 
 bool SignalService::AddSignal(TbSignal saveSignal){
 	m_signalDao.SetTableFieldValues(saveSignal);
-	bool isSuccess = m_signalDao.Insert(false);
+	bool isSuccess = m_signalDao.Insert(true);
 	return isSuccess;
 }

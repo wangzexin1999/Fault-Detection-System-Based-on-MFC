@@ -28,13 +28,13 @@ class TbRecordSignal
 {
 public:
 
-	TbRecordSignal(int signalId, CString startTime, CString endTime, CString signalType, char signalStatus, TbProject project, TbProduct product, TbTestingDevice testingDevice, CString collectionStatus, CString sensorInfo);
+	TbRecordSignal(CString signalId, CString startTime, CString endTime, CString signalType, char signalStatus, TbProject project, TbProduct product, TbTestingDevice testingDevice, CString collectionStatus, CString sensorInfo);
 	TbRecordSignal();
 	~TbRecordSignal();
 
 private:
 
-	int m_signalId;
+	CString m_signalId;
 	CString m_startTime;
 	CString m_endTime;
 	CString m_signalType;
@@ -46,8 +46,8 @@ private:
 	CString m_sensorInfo;
 
 public:
-	int GetSignalId();
-	void SetSignalId(int signalId);
+	CString GetSignalId();
+	void SetSignalId(CString signalId);
 	CString GetStartTime();
 	void SetStartTime(CString startTime);
 	CString GetEndTime();

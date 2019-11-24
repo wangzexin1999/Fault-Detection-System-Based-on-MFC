@@ -2,7 +2,7 @@
 #include "TbRecordSignal.h"
 
 
-TbRecordSignal::TbRecordSignal(int signalId, CString startTime, CString endTime, CString signalType, char signalStatus, TbProject project, TbProduct product, TbTestingDevice testingDevice, CString collectionStatus, CString sensorInfo){
+TbRecordSignal::TbRecordSignal(CString signalId, CString startTime, CString endTime, CString signalType, char signalStatus, TbProject project, TbProduct product, TbTestingDevice testingDevice, CString collectionStatus, CString sensorInfo){
 	SetCollectionStatus(collectionStatus);
 	SetStartTime(startTime);
 	SetEndTime(endTime);
@@ -12,12 +12,10 @@ TbRecordSignal::TbRecordSignal(int signalId, CString startTime, CString endTime,
 	SetSignalStatus(signalStatus);
 	SetSignalType(signalType);
 	SetTesingDevice(testingDevice);
-	SetSignalId(signalId);
 }
 
 TbRecordSignal::TbRecordSignal()
 {
-	m_signalId = 0;
 	m_signalStatus = 0;
 }
 
@@ -26,10 +24,10 @@ TbRecordSignal::~TbRecordSignal()
 {
 }
 
-int TbRecordSignal::GetSignalId() {
+CString TbRecordSignal::GetSignalId() {
 	return m_signalId;
 }
-void TbRecordSignal::SetSignalId(int signalId) {
+void TbRecordSignal::SetSignalId(CString signalId) {
 	this->m_signalId = signalId;
 }
 CString TbRecordSignal::GetStartTime() {

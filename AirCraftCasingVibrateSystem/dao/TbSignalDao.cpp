@@ -7,7 +7,7 @@ TbSignalDao::TbSignalDao()
 {
 	this->m_strTableName = "tb_signal";
 	m_key = &m_signalId;
-	SetVectorAndField("signal_id", "int", m_signalId);
+	SetVectorAndField("signal_id", "CString", m_signalId);
 	SetVectorAndField("start_time", "CString", m_startTime);
 	SetVectorAndField("end_time", "CString",m_endTime);
 	SetVectorAndField("signal_type", "CString", m_signalType);
@@ -24,7 +24,7 @@ TbSignalDao::TbSignalDao(const TbSignalDao & signal){
 
 	this->m_strTableName = "tb_signal";
 	m_key = &m_signalId;
-	SetVectorAndField("signal_id", "int", m_signalId);
+	SetVectorAndField("signal_id", "CString", m_signalId);
 	SetVectorAndField("start_time", "CString", m_startTime);
 	SetVectorAndField("end_time", "CString", m_endTime);
 	SetVectorAndField("signal_type", "CString", m_signalType);
@@ -73,7 +73,7 @@ bool TbSignalDao::SelectObjectsByCondition(vector<TbSignalDao> &selectedValueVec
 	}
 }
 void TbSignalDao::GetTableFieldValues(TbSignal &signal){
-	signal.SetSignalId(m_signalId.GetInt());
+	signal.SetSignalId(m_signalId.m_strValue);
 	signal.SetSignalStatus(m_signalStatus.GetInt());
 	signal.SetDataUrl(m_dataUrl.m_strValue);
 	signal.SetProductId(m_productId.GetInt());

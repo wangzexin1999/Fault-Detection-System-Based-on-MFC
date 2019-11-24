@@ -2,10 +2,9 @@
 #include "TbSignal.h"
 
 
-TbSignal::TbSignal(int signalId)
+TbSignal::TbSignal(CString signalId)
 {
 
-	m_signalId = 0;
 	m_productId = 0;
 	m_signalStatus = 0;
 	m_projectId = 0;
@@ -17,10 +16,10 @@ TbSignal::~TbSignal()
 {
 }
 
-int TbSignal::GetSignalId() {
+CString TbSignal::GetSignalId() {
 	return m_signalId;
 }
-void TbSignal::SetSignalId(int signalId) {
+void TbSignal::SetSignalId(CString signalId) {
 	this->m_signalId = signalId;
 }
 

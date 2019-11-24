@@ -10,8 +10,6 @@
 // 保留所有权利。
 
 // MainFrm.h : CMainFrame 类的接口
-//
-
 #pragma once
 #include "SystemParaView.h"
 #include "ChannelParaView.h"
@@ -28,6 +26,7 @@
 #include <map>
 #include "JsonUtil.h"
 #include "TbRecordSignal.h"
+#include "UUIDUtil.h"
 /////////////////////////////////////
 #include "include/Inc/bdaqctrl.h"
 #include "include/Inc/compatibility.h"
@@ -92,7 +91,6 @@ protected:  // 控件条嵌入成员
 	Value m_collectionStatus;
 	Document m_doc;
 	TbRecordSignal m_recordSignal; // 采样数据
-
 	/**********************************************************************
 	功能描述： 设置通道信息的json值
 	输入参数：

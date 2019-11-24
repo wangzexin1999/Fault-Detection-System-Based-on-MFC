@@ -199,6 +199,7 @@
     <ClInclude Include="Controller\AdvantechDaqController.h" />
     <ClInclude Include="AirCraftCasingVibrateSystem.h" />
     <ClInclude Include="AirCraftCasingVibrateSystemDoc.h" />
+    <ClInclude Include="UUIDUtil.h" />
     <ClInclude Include="View\AirCraftCasingVibrateSystemView.h" />
     <ClInclude Include="View\AlarmParaSetView.h" />
     <ClInclude Include="View\BaseProjectInfoView.h" />
@@ -408,6 +409,7 @@
     <ClCompile Include="Controller\AdvantechDaqController.cpp" />
     <ClCompile Include="AirCraftCasingVibrateSystem.cpp" />
     <ClCompile Include="AirCraftCasingVibrateSystemDoc.cpp" />
+    <ClCompile Include="UUIDUtil.cpp" />
     <ClCompile Include="View\AirCraftCasingVibrateSystemView.cpp" />
     <ClCompile Include="View\AlarmParaSetView.cpp" />
     <ClCompile Include="View\BaseProjectInfoView.cpp" />

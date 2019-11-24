@@ -69,7 +69,7 @@ bool TbRecordSignalDao::SelectObjectsByCondition(vector<TbRecordSignalDao> &sele
 	}
 }
 void TbRecordSignalDao::GetTableFieldValues(TbRecordSignal &signal){
-	signal.SetSignalId(m_signalId.GetInt());
+	signal.SetSignalId(m_signalId.m_strValue);
 	signal.SetSignalStatus(m_signalStatus.GetInt());
 	signal.GetProduct().SetProductId(m_productId.GetInt());
 	signal.SetStartTime(m_startTime.m_strValue);
