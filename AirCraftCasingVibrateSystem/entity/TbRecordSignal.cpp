@@ -14,9 +14,8 @@ TbRecordSignal::TbRecordSignal(CString signalId, CString startTime, CString endT
 	SetTesingDevice(testingDevice);
 }
 
-TbRecordSignal::TbRecordSignal()
-{
-	m_signalStatus = 0;
+TbRecordSignal::TbRecordSignal() :m_signalStatus(0), m_startPos(0), m_endPos(0){
+
 }
 
 

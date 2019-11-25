@@ -176,8 +176,6 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	static bool SaveCollectionData2Binary(CString strPath, CString strFileName, TbSignal fileInfor, map<CString, ThreadSafeQueue<double>> & acquireSigna);
-
-
 	/**********************************************************************
 	功能描述： 得到指定文件的输出流
 	输入参数：strPath--文件路径；strFileName--文件名；acquireSigna--采集信号
@@ -198,5 +196,6 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	static ifstream GetIfstreamByFileName(CString strFileName);
+
 };
 

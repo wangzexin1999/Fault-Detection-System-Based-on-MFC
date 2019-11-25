@@ -91,6 +91,11 @@ protected:  // 控件条嵌入成员
 	Value m_collectionStatus;
 	Document m_doc;
 	TbRecordSignal m_recordSignal; // 采样数据
+	ofstream m_outputStream;
+	ifstream m_inputStream;
+	TbRecordSignal m_selectedRecordSignal;
+
+protected:
 	/**********************************************************************
 	功能描述： 设置通道信息的json值
 	输入参数：

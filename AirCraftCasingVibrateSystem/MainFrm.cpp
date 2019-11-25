@@ -491,14 +491,14 @@ void CMainFrame::OnButtonOpenDataFile()
 	{
 		//去查询采集数据
 		///得到选中的采样信号
-		TbRecordSignal selectedSignal = sampleDataView.GetSelectedRecordSignal();
+		m_selectedRecordSignal = sampleDataView.GetSelectedRecordSignal();
 		Value channelCount;
-		JsonUtil::GetValueFromJsonString(selectedSignal.GetSensorInfo(), "channelCount", channelCount);
+		JsonUtil::GetValueFromJsonString(m_selectedRecordSignal.GetSensorInfo(), "channelCount", channelCount);
 		///拿到通道个数
 		///拿到所有通道便于回显
 		vector<TbSensor> vsensor;
 		Value josnChannels;
-		JsonUtil::GetValueFromJsonString(selectedSignal.GetSensorInfo(), "channels", josnChannels);
+		JsonUtil::GetValueFromJsonString(m_selectedRecordSignal.GetSensorInfo(), "channels", josnChannels);
 		for (int i = 0; i < josnChannels.Size(); i++){
 			TbSensor currentSensor;
 			JsonUtil::ConvertValue2Sensor(josnChannels[i], currentSensor);
@@ -506,7 +506,6 @@ void CMainFrame::OnButtonOpenDataFile()
 		}
 		theApp.m_currentProject.SetSensorVector(vsensor);
 		SendMessage(WM_REFRESHVIEW_BY_PROJECT);
-
 
 		// 如果可以连接服务器，根据条件查询服务器数据
 		// 否则查询本体数据
@@ -770,7 +769,6 @@ void CMainFrame::OnBtnStopCapture()
 // 停止回放
 void CMainFrame::OnBtnStopPlayback()
 {
-	// TODO:  在此添加命令处理程序代码
 	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
 		theApp.m_vsignalCaptureView[i]->StopSampleEncho();
 	}
@@ -779,12 +777,29 @@ void CMainFrame::OnBtnStopPlayback()
 //开始回放
 void CMainFrame::OnBtnStartPlayback()
 {
-	// TODO:  在此添加命令处理程序代码
-	////开启所有窗口的采样回放
-	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
+	///根据采样数据记录的信号id去查询采集数据表的url
+	TbSignal signal;
+	vector<TbSignal> vsignal;
+	signal.SetSignalId(m_recordSignal.GetSignalId());
+	m_signalController.FindAllSignalBySearchCondition(signal, vsignal);
+	m_inputStream = CFileUtil::GetIfstreamByFileName(vsignal[0].GetDataUrl());
+	//m_inputStream = CFileUtil::GetIfstreamByFileName("C:/collectionData/171-139-1-1574602220762.data");
+	if (m_inputStream.good()){
+		///本地文件存在，直接读取本地文件
+		/////文件指针定位到开始采集的文件位置
+		m_inputStream.seekg(m_recordSignal.GetStartPos());
 
-		theApp.m_vsignalCaptureView[i]->StartSampleEncho();
+		AfxMessageBox("存在");
 	}
+	else{
+		///本地文件不存在，从服务器读取文件。
+
+		AfxMessageBox("bucunzai");
+	}
+	////开启所有窗口的采样回放
+	/*for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
+		theApp.m_vsignalCaptureView[i]->StartSampleEncho();
+		}*/
 }
 
 // 关闭所有窗口
@@ -824,7 +839,7 @@ void CMainFrame::OnBtnStartSmaple()
 	m_recordSignal.SetProduct(theApp.m_currentProject.GetProduct());
 	m_recordSignal.SetTesingDevice(theApp.m_currentProject.GetTestingDevice());
 	m_recordSignal.SetCollectionStatus(theApp.m_currentProject.GetCollectionStatus());
-
+	m_recordSignal.SetStartPos(m_outputStream.tellp());
 }
 
 // 停止采样
@@ -838,6 +853,7 @@ void CMainFrame::OnBtnStopSample()
 	m_recordSignal.SetSensorInfo(JsonUtil::GetStringFromDom(m_channelInfo));
 	m_recordSignal.SetCollectionStatus(JsonUtil::GetStringFromDom(m_collectionStatus));
 	m_recordSignal.SetEndTime(DateUtil::GetCurrentCStringTime());
+	m_recordSignal.SetEndPos(m_outputStream.tellp());
 	Result res = m_signalController.SaveSampleSignal(m_recordSignal);
  	if (!res.GetIsSuccess()){
 		AfxMessageBox("采样数据保存失败");
@@ -1436,7 +1452,7 @@ void  CMainFrame::AutoSaveCollectionData(){
 	m_signalController.SaveCollectionDataHeadInfo(fileName, signalInfoHeader);
 
 	///得到输出流
-	ofstream outputStream = CFileUtil::GetOfstreamByFileName(fileName);
+	m_outputStream = CFileUtil::GetOfstreamByFileName(fileName);
 	//outputStream.write((const char *)&signalInfoHeader, sizeof(TbSignal));
 	//创建缓冲的map
 	map<CString, ThreadSafeQueue<double>> mpcolllectioinDataQueue;
@@ -1466,7 +1482,7 @@ void  CMainFrame::AutoSaveCollectionData(){
 			iter2 = mpcolllectioinDataQueue.begin();
 		}
 		///将1000条数据保存到文件
-		m_signalController.SaveCollectionData2Binary(outputStream, move(mpcolllectioinDataQueue));
+		m_signalController.SaveCollectionData2Binary(m_outputStream, move(mpcolllectioinDataQueue));
 		///重新构建保存的缓冲区
 		mpcolllectioinDataQueue.clear();
 		for (int i = 0; i < m_vchannelIds.size(); i++){
@@ -1481,7 +1497,7 @@ void  CMainFrame::AutoSaveCollectionData(){
 	}
 	
 	theApp.m_bisSave = false;
-	outputStream.close();
+	m_outputStream.close();
 
 	signalInfoHeader.m_llSiganlSize = signalInfoHeader.m_llSiganlSize * sizeof(double)+sizeof(SignalInfoHeader);
 	m_signalController.SaveCollectionDataHeadInfo(fileName, signalInfoHeader);
