@@ -92,7 +92,10 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_MESSAGE(StatusInfMessage, OnStatusInf)
 	ON_MESSAGE(WM_REFRESHVIEW_BY_PROJECT, &CMainFrame::OnRefreshViewByProject)
 	ON_MESSAGE(WM_SETTEXT, &CMainFrame::OnSetText)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_ANALYSE_FRE_MIN, &CMainFrame::OnUpdateEditAnalyseFreMin)
 	ON_COMMAND(ID_EDIT_ANALYSE_FRE_MIN, &CMainFrame::OnEditAnalyseFreMin)
+	ON_COMMAND(ID_EDIT_ANALYSE_FRE_MAX, &CMainFrame::OnEditAnalyseFreMax)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_ANALYSE_FRE_MAX, &CMainFrame::OnUpdateEditAnalyseFreMax)
 END_MESSAGE_MAP()
 
 // CMainFrame 构造/析构
@@ -1528,8 +1531,83 @@ void  CMainFrame::GetChannels(vector<CString> & channels){
 	}
 }
 
+
+
+
+void CMainFrame::OnUpdateEditAnalyseFreMin(CCmdUI *pCmdUI)
+{
+	// TODO:  在此添加命令更新用户界面处理程序代码
+	if (m_bIsAnalyseFreMin)
+	{
+		CString strAnalyseFreMin;
+		pCmdUI->Enable(TRUE); 
+		CMFCRibbonCategory* pRibbonUICategory = m_wndRibbonBar.GetCategory(3);  //获得主页，主页的id是1
+		if (pRibbonUICategory != NULL)
+		{
+			CMFCRibbonPanel* pPanel = pRibbonUICategory->GetPanel(2); //获得第3个面板，从左到右是0,1,2,..
+			if (pPanel != NULL)
+			{
+				CMFCRibbonEdit* pElem = (CMFCRibbonEdit*)pPanel->FindByID(ID_EDIT_ANALYSE_FRE_MIN); //获得第2个元素,即编辑框的值（也从0开始）
+				//(pElem->GetText());         //获得控件的名字，而不是编辑框的值
+				strAnalyseFreMin = pElem->GetEditText();        //获得编辑框的值
+				m_bIsAnalyseFreMin = false;
+				m_iAnalyseFreMin = CommonUtil::CString2Int(strAnalyseFreMin);
+				if (m_iAnalyseFreMin >= 0)
+				{
+					CAirCraftCasingVibrateSystemView *view;
+					view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
+					view->SetChartXYCoordinateLen(m_iAnalyseFreMin);
+				}
+
+			}
+		}
+	}
+	
+	
+}
+
+
 void CMainFrame::OnEditAnalyseFreMin()
 {
 	// TODO:  在此添加命令处理程序代码
-	AfxMessageBox("test");
+	m_bIsAnalyseFreMin = true;
+}
+
+
+void CMainFrame::OnEditAnalyseFreMax()
+{
+	// TODO:  在此添加命令处理程序代码
+	m_bIsAnalyseFreMax = true;
+}
+
+
+void CMainFrame::OnUpdateEditAnalyseFreMax(CCmdUI *pCmdUI)
+{
+	// TODO:  在此添加命令更新用户界面处理程序代码
+	if (m_bIsAnalyseFreMax)
+	{
+		CString strAnalyseFreMax;
+		pCmdUI->Enable(TRUE);
+		CMFCRibbonCategory* pRibbonUICategory = m_wndRibbonBar.GetCategory(3);  //获得主页，主页的id是1
+		if (pRibbonUICategory != NULL)
+		{
+			CMFCRibbonPanel* pPanel = pRibbonUICategory->GetPanel(2); //获得第3个面板，从左到右是0,1,2,..
+			if (pPanel != NULL)
+			{
+				CMFCRibbonEdit* pElem = (CMFCRibbonEdit*)pPanel->FindByID(ID_EDIT_ANALYSE_FRE_MAX); //获得第2个元素,即编辑框的值（也从0开始）
+				//(pElem->GetText());         //获得控件的名字，而不是编辑框的值
+				strAnalyseFreMax = pElem->GetEditText();        //获得编辑框的值
+				m_bIsAnalyseFreMax = false;
+				m_iAnalyseFreMax = CommonUtil::CString2Int(strAnalyseFreMax);
+				if ((m_iAnalyseFreMax >= 0) && (m_iAnalyseFreMin>=0))
+				{
+					CAirCraftCasingVibrateSystemView *view;
+					view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
+					view->SetChartXYCoordinateLen(m_iAnalyseFreMin, m_iAnalyseFreMax);
+				}
+
+
+			}
+		}
+	}
 }
