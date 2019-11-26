@@ -24,7 +24,8 @@ CollectionParaPresetView::~CollectionParaPresetView()
 void CollectionParaPresetView::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_COMBO_COLLECTIONFREQUENCY, m_collectionFrequencyCombo);
+	//DDX_Control(pDX, IDC_COMBO_COLLECTIONFREQUENCY, m_sampleFrequencyCombo);
+	DDX_Control(pDX, IDC_COMBO_SAMPLEFREQUENCY, m_sampleFrequencyCombo);
 	DDX_Control(pDX, IDC_COMBO_COLLECTIONMETHOD, m_collectionMethodCombo);
 	DDX_Control(pDX, IDC_COMBO_ANALYSISFREQUENCY, m_analysisFrequencyCombo);
 	DDX_Control(pDX, IDC_COMBO_COLLECTIONPOINT, m_collectionPointCombo);
@@ -34,7 +35,7 @@ void CollectionParaPresetView::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CollectionParaPresetView, CDialogEx)
-	ON_CBN_SELCHANGE(IDC_COMBO_COLLECTIONFREQUENCY, &CollectionParaPresetView::OnCbnSelchangeComboCollectionfrequency)
+	ON_CBN_SELCHANGE(IDC_COMBO_COLLECTIONFREQUENCY, &CollectionParaPresetView::OnCbnSelchangeComboSamplefrequency)
 END_MESSAGE_MAP()
 
 
@@ -49,8 +50,8 @@ BOOL CollectionParaPresetView::OnInitDialog()
 	return TRUE; 
 }
 void CollectionParaPresetView::GetSelectedTestingDevice(TbTestingDevice &testingDevicePara){
-	int index = m_collectionFrequencyCombo.GetCurSel();
-	testingDevicePara.SetCollectionFrequency(m_vcollectionFrequency[index]);
+	int index = m_sampleFrequencyCombo.GetCurSel();
+	testingDevicePara.SetSampleFrequency(m_vsampleFrequency[index]);
 
 	index = m_analysisFrequencyCombo.GetCurSel();
 	testingDevicePara.SetAnalysisFrequency(m_vanalysisFrequency[index]);
@@ -68,23 +69,23 @@ void CollectionParaPresetView::GetSelectedTestingDevice(TbTestingDevice &testing
 
 void CollectionParaPresetView::CollectionParaInfoInit(){
 	Result res;
-	res = m_dictionaryController.FindAllBySearchCondition(m_vcollectionFrequency, 0, "collectionfrequency");
+	res = m_dictionaryController.FindAllBySearchCondition(m_vsampleFrequency, 0, "samplefrequency");
 	if (!res.GetIsSuccess()){
 		AfxMessageBox("加载采集频率失败");
 	}
 	else{
-		for (int i = 0; i < m_vcollectionFrequency.size(); i++){
-			TbDictionary collection = m_vcollectionFrequency[i];
+		for (int i = 0; i < m_vsampleFrequency.size(); i++){
+			TbDictionary sample = m_vsampleFrequency[i];
 			Document doc;
-			doc.Parse(collection.GetDictValue());
+			doc.Parse(sample.GetDictValue());
 			const Value& title = doc["title"];
 
-			collection.SetDictValue(title.GetString());
+			sample.SetDictValue(title.GetString());
 			//TbDictionary collecionFrequency = m_vcollectionFrequency[i];
-			TbDictionary collecionFrequency = collection;
-			m_collectionFrequencyCombo.InsertString(i, collecionFrequency.GetDictValue());
+			TbDictionary sampleFrequency = sample;
+			m_sampleFrequencyCombo.InsertString(i, sampleFrequency.GetDictValue());
 		}
-		m_collectionFrequencyCombo.SetCurSel(0);
+		m_sampleFrequencyCombo.SetCurSel(0);
 	}
 
 	res = m_dictionaryController.FindAllBySearchCondition(m_vanalysisFrequency, 0, "analysisfrequency");
@@ -103,8 +104,8 @@ void CollectionParaPresetView::CollectionParaInfoInit(){
 			TbDictionary analysisFrequency = analysis;
 			m_analysisFrequencyCombo.InsertString(i, analysisFrequency.GetDictValue());
 
-			int index = m_collectionFrequencyCombo.GetCurSel();
-			TbDictionary collection = m_vcollectionFrequency[index];
+			int index = m_sampleFrequencyCombo.GetCurSel();
+			TbDictionary collection = m_vsampleFrequency[index];
 			Document collection_doc;
 			collection_doc.Parse(collection.GetDictValue());
 			const Value& collection_content = collection_doc["content"];
@@ -149,11 +150,11 @@ void CollectionParaPresetView::CollectionParaInfoInit(){
 
 }
 
-void CollectionParaPresetView::OnCbnSelchangeComboCollectionfrequency()
+void CollectionParaPresetView::OnCbnSelchangeComboSamplefrequency()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	int index = m_collectionFrequencyCombo.GetCurSel();
-	TbDictionary collection = m_vcollectionFrequency[index];
+	int index = m_sampleFrequencyCombo.GetCurSel();
+	TbDictionary collection = m_vsampleFrequency[index];
 	Document collection_doc;
 	collection_doc.Parse(collection.GetDictValue());
 	const Value& collection_content = collection_doc["content"];

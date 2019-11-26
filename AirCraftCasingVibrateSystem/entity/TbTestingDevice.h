@@ -30,7 +30,7 @@ protected:
 
 	int m_id;
 	CString m_testingDeviceIp;
-	TbDictionary m_collectionFrequency;
+	TbDictionary m_sampleFrequency;
 	TbDictionary m_analysisFrequency;
 	TbDictionary m_collectionMethod;
 	TbDictionary m_collectionPoint;
@@ -42,8 +42,8 @@ public:
 	int GetId(); 
 	void SetTestingDeviceIp(CString testingDeviceIp);
 	CString GetTestingDeviceIp();
-	TbDictionary  & GetCollectionFrequency();
-	void SetCollectionFrequency(TbDictionary collectionFrequency);
+	TbDictionary  & GetSampleFrequency();
+	void SetSampleFrequency(TbDictionary sampleFrequency);
 	TbDictionary  & GetAnalysisFrequency();
 	void SetAnalysisFrequency(TbDictionary analysisFrequency);
 	TbDictionary  & GetCollectionMethod();

@@ -55,9 +55,9 @@ bool TestingDeviceService::GetOneById(TbTestingDevice &searchEntity){
 		m_testingDeviceDao.GetTableFieldValues(searchEntity);
 		///查询TbTestingDevice的各个参数id对应的字典表的实体值
 		////查询采集频率对应id的字典对象
-		m_dictionaryDao.m_key->SetValue(searchEntity.GetCollectionFrequency().GetDictId());
+		m_dictionaryDao.m_key->SetValue(searchEntity.GetSampleFrequency().GetDictId());
 		m_dictionaryDao.SelectByKey();
-		m_dictionaryDao.GetTableFieldValues(searchEntity.GetCollectionFrequency());
+		m_dictionaryDao.GetTableFieldValues(searchEntity.GetSampleFrequency());
 		////查询采集点数对应的id的字典对象
 		m_dictionaryDao.m_key->SetValue(searchEntity.GetCollectionPoint().GetDictId());
 		m_dictionaryDao.SelectByKey();

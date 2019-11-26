@@ -84,7 +84,7 @@ protected:  // 控件条嵌入成员
 	map<int, DevConfParam> m_vdevConfParams;
 	ICollection<DeviceTreeNode>* m_devices;
 	AdvantechDaqController m_advantechDaqController;
-	Value m_collectionFrequency;
+	Value m_sampleFrequency;
 	Value m_analysisFrequency;
 	JsonUtil m_jsonUtil;
 	Value m_channelInfo;
@@ -119,7 +119,7 @@ protected:  // 控件条嵌入成员
 	***********************************************************************/
 	void SetCollectionStatusJsonValue();
 public:
-	int m_icollectionFrequency; ///采样频率
+	int m_isampleFrequency; ///采样频率
 
 	/**********************************************************************
 	功能描述： 初始化采集窗口，将所有窗口存到vector中

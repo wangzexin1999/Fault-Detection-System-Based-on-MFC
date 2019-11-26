@@ -39,8 +39,8 @@ void TbTestingDevice::SetTestingDeviceIp(CString testingdeviceIp) {
 
 
 
-TbDictionary  &  TbTestingDevice::GetCollectionFrequency(){
-	return m_collectionFrequency;
+TbDictionary  &  TbTestingDevice::GetSampleFrequency(){
+	return m_sampleFrequency;
 }
 TbDictionary  &  TbTestingDevice::GetAnalysisFrequency(){
 	return m_analysisFrequency;
@@ -52,8 +52,8 @@ TbDictionary  &  TbTestingDevice::GetCollectionPoint(){
 	return m_collectionPoint;
 }
 
-void TbTestingDevice::SetCollectionFrequency(TbDictionary collectionFrequency){
-	m_collectionFrequency = collectionFrequency;
+void TbTestingDevice::SetSampleFrequency(TbDictionary sampleFrequency){
+	m_sampleFrequency = sampleFrequency;
 }
 void TbTestingDevice::SetAnalysisFrequency(TbDictionary analysisFrequency){
 	m_analysisFrequency = analysisFrequency;

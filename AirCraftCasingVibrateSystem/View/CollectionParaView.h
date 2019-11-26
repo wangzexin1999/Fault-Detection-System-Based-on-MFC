@@ -37,13 +37,13 @@ public:
 
 protected:
 
-	vector<TbDictionary> m_vcollectionFrequency;
+	vector<TbDictionary> m_vsampleFrequency;
 	vector<TbDictionary> m_vanalysisFrequency; 
 	vector<TbDictionary> m_vcollectionMethod;
 	vector<TbDictionary> m_vcollectionPoint;
 
 	DictionaryController m_dictionaryController;
-	CComboBox m_collectionFrequencyCombo;
+	CComboBox m_sampleFrequencyCombo;
 	CComboBox m_collectionMethodCombo;
 	CComboBox m_analysisFrequencyCombo;
 	CComboBox m_collectionPointCombo;
@@ -62,8 +62,12 @@ protected:
 	//afx_msg void OnEnChangeEditCollectiontimes();
 	DECLARE_MESSAGE_MAP()
 
+
 public:
 	void RefreshView();
 	//afx_msg void OnCbnSelchangeComboCollectionPoints();
 	afx_msg void OnEnChangeEditCollectionTimes();
+
+private:
+	int analysisFrequencyCurSel = 0;
 };

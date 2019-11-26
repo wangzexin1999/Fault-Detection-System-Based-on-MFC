@@ -980,9 +980,6 @@
     <ClCompile Include="entity\TbTester.cpp">
       <Filter>源文件\entity</Filter>
     </ClCompile>
-    <ClCompile Include="entity\TbTestingDevice.cpp">
-      <Filter>源文件\dao</Filter>
-    </ClCompile>
     <ClCompile Include="dao\TbProductDao.cpp">
       <Filter>源文件\dao</Filter>
     </ClCompile>
@@ -1171,6 +1168,9 @@
     </ClCompile>
     <ClCompile Include="UUIDUtil.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="entity\TbTestingDevice.cpp">
+      <Filter>源文件\entity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

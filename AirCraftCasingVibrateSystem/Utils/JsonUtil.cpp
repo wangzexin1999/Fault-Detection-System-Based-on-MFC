@@ -60,9 +60,9 @@ void JsonUtil::ConvertTestingDevice2Value(TbTestingDevice testingDevice, Value &
 	testingDeviceIp.SetString(testingDevice.GetTestingDeviceIp(),m_document.GetAllocator());
 
 	Value sampleFrequency(kObjectType);
-	m_document.Parse(testingDevice.GetCollectionFrequency().GetDictValue());
+	m_document.Parse(testingDevice.GetSampleFrequency().GetDictValue());
 	sampleFrequency.CopyFrom(m_document,m_document.GetAllocator());
-	id.SetInt(testingDevice.GetCollectionFrequency().GetDictId());
+	id.SetInt(testingDevice.GetSampleFrequency().GetDictId());
 	sampleFrequency.AddMember("id",id, m_document.GetAllocator());
 
 	Value analysisFrequency;

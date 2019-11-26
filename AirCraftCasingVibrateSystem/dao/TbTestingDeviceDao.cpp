@@ -8,7 +8,7 @@ TbTestingDeviceDao::TbTestingDeviceDao()
 	m_key = &m_id;
 	SetVectorAndField("id", "int", m_id);
 	SetVectorAndField("testingdevice_ip", "CString", m_testingDeviceIp);
-	SetVectorAndField("collection_frequency", "int", m_collectionFrequency);
+	SetVectorAndField("sample_frequency", "int", m_sampleFrequency);
 	SetVectorAndField("analysis_frequency", "int", m_analysisFrequency);
 	SetVectorAndField("collection_method", "int", m_collectionMethod);
 	SetVectorAndField("collectionpoint", "int", m_collectionPoint);
@@ -21,7 +21,7 @@ TbTestingDeviceDao::TbTestingDeviceDao(const TbTestingDeviceDao &testingDevice){
 	m_key = &m_id;
 	SetVectorAndField("id", "int", m_id);
 	SetVectorAndField("testingdevice_ip", "CString", m_testingDeviceIp);
-	SetVectorAndField("collection_frequency", "int", m_collectionFrequency);
+	SetVectorAndField("sample_frequency", "int", m_sampleFrequency);
 	SetVectorAndField("analysis_frequency", "int", m_analysisFrequency);
 	SetVectorAndField("collection_method", "int", m_collectionMethod);
 	SetVectorAndField("collectionpoint", "int", m_collectionPoint);
@@ -67,7 +67,7 @@ void TbTestingDeviceDao::GetTableFieldValues(TbTestingDevice &testingDevice){
 	testingDevice.SetTestingDeviceIp(m_testingDeviceIp.m_strValue);
 	testingDevice.SetAnalysisFrequency(m_analysisFrequency.GetInt());
 	testingDevice.SetCollectionTimes(m_collectionTimes.GetInt());
-	testingDevice.GetCollectionFrequency().SetDictId(m_collectionFrequency.GetInt());
+	testingDevice.GetSampleFrequency().SetDictId(m_sampleFrequency.GetInt());
 	testingDevice.GetCollectionMethod().SetDictId(m_collectionMethod.GetInt());
 	testingDevice.GetCollectionPoint().SetDictId(m_collectionPoint.GetInt());
 }
@@ -76,7 +76,7 @@ void TbTestingDeviceDao::SetTableFieldValues(TbTestingDevice testingDevice){
 	m_testingDeviceIp.SetValue(testingDevice.GetTestingDeviceIp());
 	m_analysisFrequency.SetValue(testingDevice.GetAnalysisFrequency().GetDictId());
 	m_collectionTimes.SetValue(testingDevice.GetCollectionTimes());
-	m_collectionFrequency.SetValue(testingDevice.GetCollectionFrequency().GetDictId());
+	m_sampleFrequency.SetValue(testingDevice.GetSampleFrequency().GetDictId());
 	m_collectionMethod.SetValue(testingDevice.GetCollectionMethod().GetDictId());
 	m_collectionPoint.SetValue(testingDevice.GetCollectionPoint().GetDictId());
 }

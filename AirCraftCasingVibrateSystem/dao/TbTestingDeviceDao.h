@@ -17,7 +17,7 @@ public:
 public:
 	PDAttribute m_id;
 	PDAttribute m_testingDeviceIp;
-	PDAttribute m_collectionFrequency;
+	PDAttribute m_sampleFrequency;
 	PDAttribute m_analysisFrequency;
 	PDAttribute m_collectionMethod;
 	PDAttribute m_collectionPoint;

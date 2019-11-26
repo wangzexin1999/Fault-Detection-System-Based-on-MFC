@@ -664,7 +664,7 @@ void CMainFrame::OnButtonStartCapture()
 	}
 
 	///获取采集频率和采集点数
-	Result res = JsonUtil::GetValueFromJsonString(theApp.m_currentProject.GetTestingDevice().GetCollectionFrequency().GetDictValue(), "content", m_collectionFrequency);
+	Result res = JsonUtil::GetValueFromJsonString(theApp.m_currentProject.GetTestingDevice().GetSampleFrequency().GetDictValue(), "content", m_sampleFrequency);
 	if (!res.GetIsSuccess()){
 		AfxMessageBox(res.GetMessages());
 		return;
@@ -676,7 +676,7 @@ void CMainFrame::OnButtonStartCapture()
 	}
 
 
-	m_icollectionFrequency = m_collectionFrequency.GetInt();
+	m_isampleFrequency = m_sampleFrequency.GetInt();
 	int collectionPoint = atoi(theApp.m_currentProject.GetTestingDevice().GetCollectionPoint().GetDictValue());
 	///根据获取的采集卡的DeviceNumber创建响应的控制类
 	for (devConfParaIterator = m_vdevConfParams.begin(); devConfParaIterator != m_vdevConfParams.end(); devConfParaIterator++){
@@ -1361,7 +1361,7 @@ void CMainFrame::OnDataReadyEvent(void * sender, BfdAiEventArgs * args, void *us
 	///设置获取数据的数量并获取数据
 	int32 getDataCount = ((sectionLength * channelCount) < args->Count) ? (sectionLength * channelCount) : args->Count;
 	///计算下采样的倍数
-	int sampleTimes = clockConvertRate / uParam->m_icollectionFrequency;
+	int sampleTimes = clockConvertRate / uParam->m_isampleFrequency;
 	ErrorCode ret = wfAiCtrl->GetData(getDataCount, collectionDataIterator->second, 0, NULL, NULL, NULL, NULL);
 
 	if ((ret >= ErrorHandleNotValid) && (ret != Success))
@@ -1450,7 +1450,7 @@ void  CMainFrame::AutoSaveCollectionData(){
 	strcpy_s(signalInfoHeader.m_cStartChannel, theApp.m_currentProject.GetSensorVector()[0].GetChannelId());
 	strcpy_s(signalInfoHeader.m_cEndChannel, theApp.m_currentProject.GetSensorVector()[theApp.m_currentProject.GetSensorVector().size() - 1].GetChannelId());
 	signalInfoHeader.m_iChannelNums = theApp.m_currentProject.GetSensorVector().size();
-	signalInfoHeader.m_iCollectFre = m_collectionFrequency.GetInt();
+	signalInfoHeader.m_iCollectFre = m_sampleFrequency.GetInt();
 	signalInfoHeader.m_llSiganlSize = 0;
 	m_signalController.SaveCollectionDataHeadInfo(fileName, signalInfoHeader);
 

@@ -24,7 +24,7 @@ CollectionParaView::~CollectionParaView()
 
 void CollectionParaView::DoDataExchange(CDataExchange* pDX)
 {
-	DDX_Control(pDX, IDC_COMBO1, m_collectionFrequencyCombo);
+	DDX_Control(pDX, IDC_COMBO1, m_sampleFrequencyCombo);
 	DDX_Control(pDX, IDC_COMBO2, m_analysisFrequencyCombo);
 	DDX_Control(pDX, IDC_COMBO3, m_collectionMethodCombo);
 	DDX_Control(pDX, IDC_COMBO_COLLECTION_POINTS, m_collectionPointCombo);
@@ -52,8 +52,8 @@ BOOL CollectionParaView::OnInitDialog()
 
 
 void CollectionParaView::SaveTestingDevice(TbTestingDevice &testingDevice){
-	int index = m_collectionFrequencyCombo.GetCurSel();
-	testingDevice.SetCollectionFrequency(m_vcollectionFrequency[index]);
+	int index = m_sampleFrequencyCombo.GetCurSel();
+	testingDevice.SetSampleFrequency(m_vsampleFrequency[index]);
 
 	index = m_analysisFrequencyCombo.GetCurSel();
 	testingDevice.SetAnalysisFrequency(m_vanalysisFrequency[index]);
@@ -85,26 +85,26 @@ void CollectionParaView::CollectionParaInfoInit(){
 	TbTestingDevice testingDevice = theApp.m_currentProject.GetTestingDevice();
 	Result res;
 	int curSel = 0;
-	res = m_dictionaryController.FindAllBySearchCondition(m_vcollectionFrequency, 0, "collectionfrequency");
+	res = m_dictionaryController.FindAllBySearchCondition(m_vsampleFrequency, 0, "samplefrequency");
 	if (!res.GetIsSuccess()){
 		AfxMessageBox("加载采集频率失败");
 	}
 	else{
-		for (int i = 0; i < m_vcollectionFrequency.size(); i++){
+		for (int i = 0; i < m_vsampleFrequency.size(); i++){
 
-			TbDictionary collection = m_vcollectionFrequency[i];
+			TbDictionary sample = m_vsampleFrequency[i];
 			Document doc;
-			doc.Parse(collection.GetDictValue());
+			doc.Parse(sample.GetDictValue());
 			const Value& title = doc["title"];
-			collection.SetDictValue(title.GetString());
-			//TbDictionary collecionFrequency = m_vcollectionFrequency[i];
-			TbDictionary collecionFrequency = collection;
-			m_collectionFrequencyCombo.InsertString(i, collecionFrequency.GetDictValue());
-			if (testingDevice.GetCollectionFrequency().GetDictId() == collecionFrequency.GetDictId()){
+			sample.SetDictValue(title.GetString());
+			//TbDictionary collecionFrequency = m_vsampleFrequency[i];
+			TbDictionary sampleFrequency = sample;
+			m_sampleFrequencyCombo.InsertString(i, sampleFrequency.GetDictValue());
+			if (testingDevice.GetSampleFrequency().GetDictId() == sampleFrequency.GetDictId()){
 				curSel = i;
 			}
 		}
-		m_collectionFrequencyCombo.SetCurSel(curSel);
+		m_sampleFrequencyCombo.SetCurSel(curSel);
 	}
 
 	res = m_dictionaryController.FindAllBySearchCondition(m_vanalysisFrequency, 0, "analysisfrequency");
@@ -168,8 +168,8 @@ void CollectionParaView::CollectionParaInfoInit(){
 
 void CollectionParaView::RefreshView(){
 	///1.删除所有下拉框的选项，并清空
-	m_collectionFrequencyCombo.ResetContent();
-	m_vcollectionFrequency.clear();
+	m_sampleFrequencyCombo.ResetContent();
+	m_vsampleFrequency.clear();
 	m_collectionMethodCombo.ResetContent();
 	m_vcollectionMethod.clear();
 	m_analysisFrequencyCombo.ResetContent();
@@ -182,14 +182,15 @@ void CollectionParaView::RefreshView(){
 
 void CollectionParaView::OnCbnSelchangeCombo1()
 {
-	int index = m_collectionFrequencyCombo.GetCurSel();
-	Value collectionFre;
+	int index = m_sampleFrequencyCombo.GetCurSel();
+	Value sampleFre;
 	Value analysisFre;
-	m_jsonUtil.GetValueFromJsonString(m_vcollectionFrequency[index].GetDictValue(), "content", collectionFre);
+	m_jsonUtil.GetValueFromJsonString(m_vsampleFrequency[index].GetDictValue(), "content", sampleFre);
 	for (int i = 0; i < m_vanalysisFrequency.size(); i++){
 		m_jsonUtil.GetValueFromJsonString(m_vanalysisFrequency[i].GetDictValue(), "content", analysisFre);
-		if (analysisFre.GetDouble() == (collectionFre.GetDouble() / 2.56)){
+		if (analysisFre.GetDouble() == (sampleFre.GetDouble() / 2.56)){
 			m_analysisFrequencyCombo.SetCurSel(i);
+			analysisFrequencyCurSel = i;
 		}
 	}
 	SaveTestingDevice(theApp.m_currentProject.GetTestingDevice());
@@ -198,7 +199,20 @@ void CollectionParaView::OnCbnSelchangeCombo1()
 
 void CollectionParaView::OnCbnSelchangeCombo2()
 {
-	
+	int index_sample = m_sampleFrequencyCombo.GetCurSel();
+	int index_analysis = m_analysisFrequencyCombo.GetCurSel();
+	Value sampleFre;
+	Value analysisFre;
+	m_jsonUtil.GetValueFromJsonString(m_vsampleFrequency[index_sample].GetDictValue(), "content", sampleFre);
+	m_jsonUtil.GetValueFromJsonString(m_vanalysisFrequency[index_analysis].GetDictValue(), "content", analysisFre);
+	if (analysisFre.GetDouble() <= (sampleFre.GetDouble() / 2.56))
+	{
+		m_analysisFrequencyCombo.SetCurSel(index_analysis);
+	}
+	else
+	{
+		m_analysisFrequencyCombo.SetCurSel(analysisFrequencyCurSel);
+	}
 	SaveTestingDevice(theApp.m_currentProject.GetTestingDevice());
 }
 
