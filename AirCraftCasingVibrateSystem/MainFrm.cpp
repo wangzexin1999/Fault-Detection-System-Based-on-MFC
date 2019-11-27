@@ -665,6 +665,7 @@ void CMainFrame::OnButtonStartCapture()
 
 	///获取采集频率和采集点数
 	Result res = JsonUtil::GetValueFromJsonString(theApp.m_currentProject.GetTestingDevice().GetSampleFrequency().GetDictValue(), "content", m_sampleFrequency);
+	m_icollectionPoints = atoi(theApp.m_currentProject.GetTestingDevice().GetCollectionPoint().GetDictValue());
 	if (!res.GetIsSuccess()){
 		AfxMessageBox(res.GetMessages());
 		return;
@@ -674,10 +675,7 @@ void CMainFrame::OnButtonStartCapture()
 		AfxMessageBox(res.GetMessages());
 		return;
 	}
-
-
 	m_isampleFrequency = m_sampleFrequency.GetInt();
-	int collectionPoint = atoi(theApp.m_currentProject.GetTestingDevice().GetCollectionPoint().GetDictValue());
 	///根据获取的采集卡的DeviceNumber创建响应的控制类
 	for (devConfParaIterator = m_vdevConfParams.begin(); devConfParaIterator != m_vdevConfParams.end(); devConfParaIterator++){
 		///初始化采集数据的对象
@@ -685,7 +683,8 @@ void CMainFrame::OnButtonStartCapture()
 		///	给采集设备绑定准备事件
 		wfAiCtrl->addDataReadyHandler(OnDataReadyEvent, this);
 		devConfParaIterator->second.clockRatePerChan = 256000;//234375;
-		devConfParaIterator->second.sectionLength = 25600;//collectionPoint*devConfParaIterator->second.channelCount;//analysisFrequency.GetInt()*(234375 / collectionFrequency.GetInt()) * 2;
+		devConfParaIterator->second.sectionLength = m_icollectionPoints * 2 * (devConfParaIterator->second.clockRatePerChan / m_isampleFrequency);
+			//m_analysisFrequency.GetInt() * 2 * (devConfParaIterator->second.clockRatePerChan / m_isampleFrequency);//collectionPoint*devConfParaIterator->second.channelCount;//analysisFrequency.GetInt()*(234375 / collectionFrequency.GetInt()) * 2;
 		m_advantechDaqController.ConfigurateDevice(devConfParaIterator->second, wfAiCtrl);
 		//开启采集
 		wfAiCtrl->Start();
@@ -1381,7 +1380,7 @@ void CMainFrame::OnDataReadyEvent(void * sender, BfdAiEventArgs * args, void *us
 		}
 	}
 	//设置x坐标
-	for (int i = 0; i <= getDataCount / (channelCount*sampleTimes); i++){
+	for (int i = 0; i <= getDataCount / (channelCount*sampleTimes)/2; i++){
 		xData.push_back(i);
 	}
 	for (int channel = 0; channel < channelCount; channel++){

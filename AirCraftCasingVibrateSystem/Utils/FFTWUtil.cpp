@@ -42,7 +42,7 @@ bool FFTWUtil::FastFourierTransformation(int nCounts, double *din, fftw_complex 
 void FFTWUtil::FFTDataToXY(SmartFFTWComplexArray  & fftwOut, SmartArray<double> &yData, int pointCount){
 	fftw_complex * out = fftwOut.GeFFTWComplexArray();
 	yData.push_back(0);
-	for (int i = 1; i < pointCount; i++)
+	for (int i = 1; i <= pointCount/2; i++)
 	{
 		yData.push_back(2 * sqrt(out[i][0] * out[i][0] + out[i][1] * out[i][1]));
 		//yData.push_back( sqrt(out[i][0] * out[i][0] + out[i][1] * out[i][1]));

@@ -86,6 +86,7 @@ protected:  // 控件条嵌入成员
 	AdvantechDaqController m_advantechDaqController;
 	Value m_sampleFrequency;
 	Value m_analysisFrequency;
+	int m_icollectionPoints;
 	JsonUtil m_jsonUtil;
 	Value m_channelInfo;
 	Value m_collectionStatus;

@@ -54,7 +54,7 @@ BOOL ProjectSetView::OnInitDialog()
 	///得到用户选择的计划信息
 	vector<TbDictionary> selectedCollctionPlans;
 	m_baseProjectInfoView.GetSelectedCollectionPlan(selectedCollctionPlans);
-
+	m_project = theApp.m_currentProject;
 	m_baseProjectInfoView.GetProjectBaseInfo(m_project);
 	////创建基本的窗口信息
 
@@ -132,7 +132,6 @@ void ProjectSetView::OnBnClickedButtonNextstep()
 void ProjectSetView::OnBnClickedOk()
 {
 	
-	m_project = theApp.m_currentProject;
 
 
 

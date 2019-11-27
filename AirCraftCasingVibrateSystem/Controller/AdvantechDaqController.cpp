@@ -4,8 +4,8 @@
 
 AdvantechDaqController::AdvantechDaqController()
 {
-}
 
+}
 
 AdvantechDaqController::~AdvantechDaqController()
 {

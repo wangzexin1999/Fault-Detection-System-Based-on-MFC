@@ -121,7 +121,7 @@ void CAirCraftCasingVibrateSystemView::OnInitialUpdate()
 		//pSerie->SetNeedCalStatValue(true);
 	}
 	pDuChartCtrl->m_shuxing.m_bDrawStatValue = TRUE;
-	pDuChartCtrl->SetPanEnabled(false);/*设置控件右键不可拖动*/
+	//pDuChartCtrl->SetPanEnabled(false);/*设置控件右键不可拖动*/
 	pDuChartCtrl->EnableRefresh(true);
 	m_flag = true;
 	RefreshGraphAttri(); //加载图形属性
@@ -495,7 +495,15 @@ LRESULT CAirCraftCasingVibrateSystemView::OnRefreshChart(WPARAM wParam, LPARAM l
 	m_pLineSerie->ClearSerie();
 	m_pLineSerie->SetNeedCalStatValue(TRUE);
 	//TRACE("\n刷新采集窗口。。。。\n");
-	m_pLineSerie->AddPoints(m_echoSignal.GetXData().GetSmartArray(), m_echoSignal.GetYData().GetSmartArray(), m_echoSignal.GetXData().size()/2);
+	///获取分析频率
+	Result res = JsonUtil::GetValueFromJsonString(theApp.m_currentProject.GetTestingDevice().GetAnalysisFrequency().GetDictValue(), "content", m_analysisFrequency);
+	if (!res.GetIsSuccess()){return -1;}
+	double interval = (double)m_analysisFrequency.GetInt()/m_echoSignal.GetXData().size();
+	for (int i = 1; i < m_echoSignal.GetXData().size(); i++){
+		m_echoSignal.GetXData().GetSmartArray()[i] = interval*i;
+	}
+	m_pLineSerie->AddPoints(m_echoSignal.GetXData().GetSmartArray(), m_echoSignal.GetYData().GetSmartArray(), m_echoSignal.GetYData().size());
+	//CDuChartCtrlStaticFunction::AutoYScale(&m_chart, FALSE);
 	//this->m_chart.SetCursorPeak(TRUE);
 	return 0;
 }

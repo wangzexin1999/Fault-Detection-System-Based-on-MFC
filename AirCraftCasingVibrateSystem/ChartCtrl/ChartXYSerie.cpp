@@ -31,6 +31,8 @@ CChartXYSerie::~CChartXYSerie()
 {
 }
 
+
+
 void CChartXYSerie::AddPoint(double X, double Y)
 {
 	SChartXYPoint newPoint(X, Y);

@@ -60,8 +60,7 @@ private:
 	int m_realTimeSignalCaptureflag = true; // 采集实时数据时，第一次是push，接下来是赋值
 	int m_icountNumsReadDraw = 0; //采样数据截取时的索引
 	AdvantechDaqController m_advantechDaqController;
-
-
+	Value m_analysisFrequency;
 public:
 	ThreadSafeQueue<RealTimeSignal> m_realTimeSignal;  // 实时数据队列
 	vector<AcquiredSignal> m_sampleFromFileDataQueue;  // 采样队列从文件中获得
