@@ -362,6 +362,7 @@ public:
 	afx_msg void OnEditAnalyseFreMin();
 	afx_msg void OnEditAnalyseFreMax();
 	afx_msg void OnUpdateEditAnalyseFreMax(CCmdUI *pCmdUI);
+	afx_msg void OnUpdateIdrRibbonI(CCmdUI *pCmdUI);
 };
 
 
