@@ -96,6 +96,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_EDIT_ANALYSE_FRE_MIN, &CMainFrame::OnEditAnalyseFreMin)
 	ON_COMMAND(ID_EDIT_ANALYSE_FRE_MAX, &CMainFrame::OnEditAnalyseFreMax)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_ANALYSE_FRE_MAX, &CMainFrame::OnUpdateEditAnalyseFreMax)
+	ON_UPDATE_COMMAND_UI_RANGE(ID_BUTTON_START_CAPTURE, ID_BTN_STOP_SAMPLE, &CMainFrame::OnUpdateIdrRibbonI)
 END_MESSAGE_MAP()
 
 // CMainFrame 构造/析构
@@ -595,6 +596,7 @@ void CMainFrame::OnButtonStartCapture()
 		for (int i = 0; i < m_vwfAiCtrl.size();i++){
 			m_vwfAiCtrl[i]->Start();
 		}
+		theApp.m_icollectionStatus = 1;
 		return;
 	}
 	///如果当前状态为正在采集
@@ -842,6 +844,7 @@ void CMainFrame::OnBtnStartSmaple()
 	m_recordSignal.SetTesingDevice(theApp.m_currentProject.GetTestingDevice());
 	m_recordSignal.SetCollectionStatus(theApp.m_currentProject.GetCollectionStatus());
 	m_recordSignal.SetStartPos(m_outputStream.tellp());
+	theApp.m_isampleStatus = 1;
 }
 
 // 停止采样
@@ -860,6 +863,7 @@ void CMainFrame::OnBtnStopSample()
  	if (!res.GetIsSuccess()){
 		AfxMessageBox("采样数据保存失败");
 	}
+	theApp.m_isampleStatus = 0;
 }
 
 //工程单位
@@ -1609,4 +1613,42 @@ void CMainFrame::OnUpdateEditAnalyseFreMax(CCmdUI *pCmdUI)
 			}
 		}
 	}
+}
+void CMainFrame::OnUpdateIdrRibbonI(CCmdUI *pCmdUI)
+{
+	//BOOL enableTag = (BOOL)czDevs->czSelSect.size();
+	//pCmdUI->Enable(theApp.m_icollectionStatus == 1); //还能设置SetChecked等功能呢
+
+	if (pCmdUI->m_nID == ID_BUTTON_START_CAPTURE){
+		///1.如果当前控件是开始采集，如果此时不是正在采集，那么将按钮启用
+	pCmdUI->Enable(theApp.m_icollectionStatus != 1);
+	
+	}
+
+	if  (pCmdUI->m_nID == ID_BUTTON_SUSPEND_CAPTURE){
+		///2.如果当前控件是暂停采集，如果此时是正在采集，那么将按钮启用
+		pCmdUI->Enable(theApp.m_icollectionStatus == 1);
+	}
+	if (pCmdUI->m_nID == ID_BTN_STOP_CAPTURE){
+		///3.如果当前控件是停止采集，如果此时是正在采集，那么将按钮启用
+		pCmdUI->Enable(theApp.m_icollectionStatus == 1);
+	}
+
+	if (pCmdUI->m_nID == ID_BTN_START_SMAPLE){
+		///4.如果当前控件是开始采样，如果此时是正在采集，那么将按钮启用
+		if (theApp.m_icollectionStatus == 1&&theApp.m_isampleStatus!=1)
+		pCmdUI->Enable(true);
+		else
+			pCmdUI->Enable(false);
+		
+	}
+	if (pCmdUI->m_nID == ID_BTN_STOP_SAMPLE){
+		///5.如果当前控件是停止采样，如果此时是正在采样，那么将按钮启用
+		//pCmdUI->Enable(theApp.m_icollectionStatus == 1);
+		if (theApp.m_icollectionStatus == 1 && theApp.m_isampleStatus == 1)
+			pCmdUI->Enable(true);
+		else
+			pCmdUI->Enable(false);
+	}
+
 }
