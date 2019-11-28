@@ -14,7 +14,7 @@ SignalController::~SignalController()
 
 Result SignalController::FindAllRecordSignalBySearchCondition(TbRecordSignal searchEntity, vector<TbRecordSignal> &signalVector){
 	bool isSuccess = m_recordSignalService.FindAllRecordSignalBySearchCondition(searchEntity,signalVector);
-	if (isSuccess) return Result(true, "采样数据加载失败");
+	if (isSuccess) return Result(true, "采样数据加载成功");
 	return Result(false, "采样数据加载失败");
 }
 Result SignalController::SaveSampleSignal(TbRecordSignal m_recordSignal){
@@ -58,34 +58,18 @@ bool SignalController::SaveCollectionData2Binary(ofstream &outputStream, map<CSt
 	return false;
 }
 
-bool SignalController::GetCollectionData(ifstream &inputStream, long long llReadSize, vector<double>& vSignal, long long llStart, long long llend)
+bool SignalController::GetCollectionData(ifstream &inputStream, long long llfileSize, long long llStart, long long llcollectionPoints, vector<double>& vSignal)
 {
-	/*计算总的数*/
-	inputStream.seekg(sizeof(SignalInfoHeader), std::ios_base::end);
-	long long llFileSize = inputStream.tellg()/sizeof(double);
-	inputStream.seekg(sizeof(SignalInfoHeader));
-	if ((llFileSize - llStart) <= llReadSize)
+	///当前文件所剩字节数不够时，设置读取剩余字节
+	if ((llfileSize - llStart) < llcollectionPoints*sizeof(double)){ llcollectionPoints = (llfileSize - llStart) / sizeof(double); }
+	double* dpReadData = new double[llcollectionPoints];
+	inputStream.read((char*)dpReadData, llcollectionPoints*sizeof(double));
+	for (int i = 0; i < llcollectionPoints; i++)
 	{
-		double* dpReadData = new double[(llFileSize - llStart)];
-		inputStream.read((char*)dpReadData, (llFileSize - llStart)*sizeof(double));
-		for (int i = 0; i < (llFileSize-llStart); i++)
-		{
-			/*读不够size的部分*/
-			vSignal.push_back(dpReadData[i]);
-		}
-		delete[] dpReadData;
+		/*读不够size的部分*/
+		vSignal.push_back(dpReadData[i]);
 	}
-	else
-	{
-		double* dpReadData = new double[llReadSize];
-		inputStream.read((char*)dpReadData, llReadSize * sizeof(double));
-		for (int i = 0; i < llReadSize; i++)
-		{
-			/*readSize*/
-			vSignal.push_back(dpReadData[i]);
-		}
-		delete[] dpReadData;
-	}
+	delete[] dpReadData;
 	return false;
 }
 

@@ -65,7 +65,7 @@ BOOL ChannelParaPresetView::OnInitDialog()
 }
 void ChannelParaPresetView::GridCtrlInit()
 {
-	//c_measuringRange.resize(m_channelParaGridCtrl.GetRowCount());
+	//m_vmeasuringRange.resize(m_channelParaGridCtrl.GetRowCount());
 
 	int startChannelIndex = m_startChannelCombo.GetCurSel();
 	int endChannelIndex = m_endChannelCombo.GetCurSel();
@@ -87,7 +87,8 @@ void ChannelParaPresetView::GridCtrlInit()
 	
 	m_channelParaGridCtrl.SetSingleRowSelection(true);
 	//m_channelParaGridCtrl.OnGridClick();
-	c_measuringRange.resize(m_channelParaGridCtrl.GetRowCount()-1);
+	m_vmeasuringRange.clear();
+	m_vmeasuringRange.resize(m_channelParaGridCtrl.GetRowCount()-1);
 	for (int row = 0; row < m_channelParaGridCtrl.GetRowCount(); row++)
 	for (int col = 0; col < m_channelParaGridCtrl.GetColumnCount(); col++)
 	{
@@ -183,7 +184,7 @@ void ChannelParaPresetView::GridCtrlInit()
 			valueRangeIndex = 0;
 
 			//deviceNum = CommonUtil::CString2Int(CommonUtil::GetCStringVectorFromSplitCString(theApp.m_currentProject.GetSensorVector()[row - 1].GetChannelId(), "-")[0]);
-			deviceNum = CommonUtil::CString2Int(CommonUtil::GetCStringVectorFromSplitCString(m_vchannelId[row-1], "-")[0]);
+			deviceNum = CommonUtil::CString2Int(CommonUtil::GetCStringVectorFromSplitCString(m_channelParaGridCtrl.GetItemText(row, 1), "-")[0]);
 			m_advantechDaqController.GetValueRangeInformationByDeviceNum(deviceNum, c_valueRanges);
 			for (int i = 0; i < c_valueRanges->getCount(); i++){
 				ErrorCode error = AdxGetValueRangeInformation((c_valueRanges->getItem(i)), sizeof(c_vrgDescription), c_vrgDescription, &c_ranges, &c_u);
@@ -198,7 +199,7 @@ void ChannelParaPresetView::GridCtrlInit()
 				//	///记录上次选中的量程的索引
 				//	valueRangeIndex = i;
 				//}
-				c_measuringRange[row - 1].push_back((int)c_valueRanges->getItem(i));
+				m_vmeasuringRange[row - 1].push_back((int)c_valueRanges->getItem(i));
 			}
 
 
@@ -310,7 +311,7 @@ void ChannelParaPresetView::GetSelectedChannels(vector<TbSensor> & vsensors){
 					///拿到选择的量程范围
 					CGridCellCombo* pCellCombo = (CGridCellCombo*)m_channelParaGridCtrl.GetCell(row, col);
 					int index = pCellCombo->GetCurSel();
-					currentSensor.SetMileageRange(c_measuringRange[row - 1][index]);
+					currentSensor.SetMileageRange(m_vmeasuringRange[row - 1][index]);
 				}
 			}
 			vsensors.push_back(currentSensor);

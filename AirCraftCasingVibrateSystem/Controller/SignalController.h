@@ -135,7 +135,7 @@ public:
 	 修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	bool GetCollectionData(ifstream &inputStream, long long llReadSize, vector<double>& vSignal, long long llStart = 0, long long llend = 0);
+	bool GetCollectionData(ifstream &inputStream, long long llfileSize,long long llStart, long long llReadSize, vector<double>& vSignal);
 	/**********************************************************************
 	功能描述： 保存采样数据的二进制文件头部信息
 	输入参数：outputStream--输出流；signalInfoHeader--采集信号信息头

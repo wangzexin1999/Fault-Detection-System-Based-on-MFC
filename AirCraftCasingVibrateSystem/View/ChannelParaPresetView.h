@@ -31,7 +31,7 @@ protected:
 	AdvantechDaqController m_advantechDaqController;
 	CComboBox m_startChannelCombo;
 	CComboBox m_endChannelCombo;
-	vector<vector<int>>  c_measuringRange;
+	vector<vector<int>>  m_vmeasuringRange;
 	SensorParaController m_sensorParaController;
 	DECLARE_MESSAGE_MAP()
 	/**********************************************************************

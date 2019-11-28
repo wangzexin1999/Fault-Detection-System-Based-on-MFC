@@ -685,7 +685,7 @@ void CMainFrame::OnButtonStartCapture()
 		///	给采集设备绑定准备事件
 		wfAiCtrl->addDataReadyHandler(OnDataReadyEvent, this);
 		devConfParaIterator->second.clockRatePerChan = 256000;//234375;
-		devConfParaIterator->second.sectionLength = m_icollectionPoints * 2 * (devConfParaIterator->second.clockRatePerChan / m_isampleFrequency);
+		devConfParaIterator->second.sectionLength = m_icollectionPoints * 2.56 * (devConfParaIterator->second.clockRatePerChan / m_isampleFrequency);
 			//m_analysisFrequency.GetInt() * 2 * (devConfParaIterator->second.clockRatePerChan / m_isampleFrequency);//collectionPoint*devConfParaIterator->second.channelCount;//analysisFrequency.GetInt()*(234375 / collectionFrequency.GetInt()) * 2;
 		m_advantechDaqController.ConfigurateDevice(devConfParaIterator->second, wfAiCtrl);
 		//开启采集
@@ -786,12 +786,53 @@ void CMainFrame::OnBtnStartPlayback()
 	vector<TbSignal> vsignal;
 	signal.SetSignalId(m_recordSignal.GetSignalId());
 	m_signalController.FindAllSignalBySearchCondition(signal, vsignal);
-	m_inputStream = CFileUtil::GetIfstreamByFileName(vsignal[0].GetDataUrl());
-	//m_inputStream = CFileUtil::GetIfstreamByFileName("C:/collectionData/171-139-1-1574602220762.data");
+	//m_inputStream = CFileUtil::GetIfstreamByFileName(vsignal[0].GetDataUrl());
+	m_inputStream = CFileUtil::GetIfstreamByFileName("C:/collectionData/171-139-1-1574663727505.data");
+	theApp.m_iplaybackStatus = 1;
 	if (m_inputStream.good()){
 		///本地文件存在，直接读取本地文件
 		/////文件指针定位到开始采集的文件位置
-		m_inputStream.seekg(m_recordSignal.GetStartPos());
+		SignalInfoHeader signalInfoHeader;
+		m_inputStream.read((char*)&signalInfoHeader, sizeof(SignalInfoHeader));
+
+		m_recordSignal.SetEndPos(signalInfoHeader.m_llSiganlSize);
+		SmartArray<double> xData; ///x坐标
+		fftw_complex fftw;///单次傅立叶变换的输入
+		long long getDataSize;
+		///当前状态是正在回放或者暂停回放，且循环读取数据以显示
+		while (theApp.m_iplaybackStatus != 0 && m_inputStream.tellg() < m_recordSignal.GetEndPos()){
+			m_icollectionPoints = atoi(theApp.m_currentProject.GetTestingDevice().GetCollectionPoint().GetDictValue());
+			xData.clear();
+			for (int i = 0; i < m_icollectionPoints; i++){
+				//设置x坐标
+				xData.push_back(i);
+			}
+			vector<double> data;
+			m_signalController.GetCollectionData(m_inputStream, m_recordSignal.GetEndPos(), m_inputStream.tellg(), getDataSize, data);
+			getDataSize = m_icollectionPoints * 2 * signalInfoHeader.m_iChannelNums;
+			data;
+			//分割数据m_icollectionPoints
+			vector<SmartArray<double>> fftwInputArray(signalInfoHeader.m_iChannelNums);
+
+			for (int i = 0; i < getDataSize; i += signalInfoHeader.m_iChannelNums){
+				for (int channel = 0; channel < signalInfoHeader.m_iChannelNums; channel++){
+					fftwInputArray[i].push_back(data[i+channel]);
+				}
+			}
+			for (int channel = 0; channel < signalInfoHeader.m_iChannelNums; channel++){
+				SmartArray<double> yData; ///y坐标
+				//对传入的数据进行傅里叶变换处理
+				SmartFFTWComplexArray fftwOutput(fftwInputArray[channel].size());
+				FFTWUtil::FastFourierTransformation(fftwInputArray[channel].size(), fftwInputArray[channel].GetSmartArray(),
+					fftwOutput.GeFFTWComplexArray());
+				//将处理之后的傅里叶变换转换成XY坐标
+				FFTWUtil::FFTDataToXY(fftwOutput, yData, fftwInputArray[channel].size());
+				/////添加到回显数据队列中
+				theApp.m_vsignalCaptureView[channel]->SetEchoSignalData(EchoSignal(xData, yData));
+
+			}
+
+		}
 
 		AfxMessageBox("存在");
 	}
@@ -1384,7 +1425,7 @@ void CMainFrame::OnDataReadyEvent(void * sender, BfdAiEventArgs * args, void *us
 		}
 	}
 	//设置x坐标
-	for (int i = 0; i <= getDataCount / (channelCount*sampleTimes)/2; i++){
+	for (int i = 0; i < getDataCount / (channelCount*sampleTimes)/2.56; i++){
 		xData.push_back(i);
 	}
 	for (int channel = 0; channel < channelCount; channel++){

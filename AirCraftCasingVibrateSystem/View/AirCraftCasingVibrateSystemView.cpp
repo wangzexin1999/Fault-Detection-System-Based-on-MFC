@@ -499,9 +499,9 @@ LRESULT CAirCraftCasingVibrateSystemView::OnRefreshChart(WPARAM wParam, LPARAM l
 	Result res = JsonUtil::GetValueFromJsonString(theApp.m_currentProject.GetTestingDevice().GetAnalysisFrequency().GetDictValue(), "content", m_analysisFrequency);
 	if (!res.GetIsSuccess()){return -1;}
 	double interval = (double)m_analysisFrequency.GetInt()/m_echoSignal.GetXData().size();
-	for (int i = 1; i < m_echoSignal.GetXData().size(); i++){
+	for (int i = 1; i <= m_echoSignal.GetXData().size(); i++){
 		m_echoSignal.GetXData().GetSmartArray()[i] = interval*i;
-	}
+	} 
 	m_pLineSerie->AddPoints(m_echoSignal.GetXData().GetSmartArray(), m_echoSignal.GetYData().GetSmartArray(), m_echoSignal.GetYData().size());
 	//CDuChartCtrlStaticFunction::AutoYScale(&m_chart, FALSE);
 	//this->m_chart.SetCursorPeak(TRUE);

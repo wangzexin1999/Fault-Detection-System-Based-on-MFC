@@ -54,7 +54,8 @@ public:
 	int m_icollectionStatus = 0; ////采集状态 0 ：停止采集 1：开始采集 2：暂停采集 
 	int m_isampleStatus = 0;////采样状态 0 ：停止采样 1：开始采样
 	int m_signalEchoCount = 1000; //信号回显数量
-	///bool m_bIsAutoSaveCollectionData = true; ///是否自动保存采集数据
+	int m_iplaybackStatus = 0;//0 : 不回放 1：开始回放 2：:暂停回放
+
 	bool m_bisSave = false;//保存状态
 	CString m_collectionRotatingSpeed = "";
 	vector<SignalAcquisitionService> m_vSignalAcquisitionService; ////信号采集服务

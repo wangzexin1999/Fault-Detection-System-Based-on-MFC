@@ -72,6 +72,10 @@ void CChartLineSerieDu::AddPoints(double* pX, double* pY, unsigned Count)
 	m_pParentCtrl->Invalidate();
 }
 
+
+void CChartLineSerieDu::AddPoints(SChartXYPoint* pPoints, unsigned Count){
+}
+
 void CChartLineSerieDu::SetPoints(double* pX, double* pY, unsigned Count)
 {
 	if (Count <= 0 || pX == NULL || pY == NULL)
