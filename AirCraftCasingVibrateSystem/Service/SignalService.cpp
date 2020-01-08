@@ -19,6 +19,7 @@ bool  SignalService::GetAllSignalBySearchCondition(TbSignal searchEntity, vector
 	if (searchEntity.GetTestingDeviceId() != 0)  strSqlWhere += " and testingdevice_id ='" + CommonUtil::Int2CString(searchEntity.GetTestingDeviceId()) + "'";
 	/*if (searchEntity.GetStartTime() != "" && searchEntity.GetEndTime() == "") strSqlWhere += " and end_time >='" + searchEntity.GetStartTime() + "'";
 	if (searchEntity.GetEndTime() != "" && searchEntity.GetStartTime() == "") strSqlWhere += " and start_time <='" + searchEntity.GetEndTime() + "'";*/
+	if (searchEntity.GetSignalId() != "")  strSqlWhere += " and signal_id ='" + searchEntity.GetSignalId() + "'";
 	if (searchEntity.GetCollectionStatus() != "") strSqlWhere += " and collectionstatus ='" + searchEntity.GetCollectionStatus()+"'";
 	
 	vector<TbSignalDao> signalDaoVec;

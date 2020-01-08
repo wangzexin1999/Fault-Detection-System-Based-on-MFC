@@ -15,7 +15,6 @@ IMPLEMENT_DYNAMIC(CollectionParaView, CDialogEx)
 CollectionParaView::CollectionParaView(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CollectionParaView::IDD, pParent)
 {
-
 }
 
 CollectionParaView::~CollectionParaView()

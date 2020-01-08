@@ -31,7 +31,7 @@ bool RecordSignalService::FindAllRecordSignalBySearchCondition(TbRecordSignal se
 	if (searchEntity.GetEndTime() != "" && searchEntity.GetStartTime() == "") strSqlWhere += " and start_time <='" + searchEntity.GetEndTime() + "'";
 	vector<TbRecordSignalDao> recordSignalDaoVector;
 	bool isSuccess = m_recordSignalDao.SelectObjectsByCondition(recordSignalDaoVector, strSqlWhere);
-	if (isSuccess){
+	if (isSuccess==true){
 		for (auto signalDao : recordSignalDaoVector){
 			TbRecordSignal recordSignal;
 			signalDao.GetTableFieldValues(recordSignal);

@@ -9,14 +9,12 @@
 #include "TbProject.h"
 using namespace std;
 using namespace rapidjson;
-// CStateSetDialog 对话框
-
 class CStateSetDialog : public CDialogEx
 {
 	DECLARE_DYNAMIC(CStateSetDialog)
 
 public:
-	CStateSetDialog(CWnd* pParent = NULL);   // 标准构造函数
+	CStateSetDialog(CWnd* pParent = NULL);  
 	virtual ~CStateSetDialog();
 
 // 对话框数据

@@ -181,8 +181,10 @@ void CGeneralParaView::GridCtrlInit()
 			pCellCombo->SetStyle(CBS_DROPDOWN);
 			OptionsType.RemoveAll();
 			valueRangeIndex = 0;
+			if (theApp.m_currentProject.GetSensorVector().size() == 0)continue;
 			deviceNum = CommonUtil::CString2Int(CommonUtil::GetCStringVectorFromSplitCString(theApp.m_currentProject.GetSensorVector()[row - 1].GetChannelId(),"-")[0]);
-			m_advantechDaqController.GetValueRangeInformationByDeviceNum(deviceNum, g_valueRanges);
+ 			
+			/*m_advantechDaqController.GetValueRangeInformationByDeviceNum(deviceNum, g_valueRanges);
 			for (int i = 0; i < g_valueRanges->getCount(); i++){
 				ErrorCode error = AdxGetValueRangeInformation((g_valueRanges->getItem(i)), sizeof(vrgDescription), vrgDescription, &ranges, &u);
 				m_advantechDaqController.CheckError(error);
@@ -201,7 +203,7 @@ void CGeneralParaView::GridCtrlInit()
 			pCellCombo->SetOptions(OptionsType);
 			pCellCombo->SetCurSel(0);
 			///如果未选择量程，则默认量程是第一个
-			Item.strText = OptionsType[valueRangeIndex];
+			Item.strText = OptionsType[valueRangeIndex];*/
 			/*///设置对应采集窗口的量程
 			MathInterval yInterval;
 			yInterval.Type = m_measuringRange[row - 1][valueRangeIndex];

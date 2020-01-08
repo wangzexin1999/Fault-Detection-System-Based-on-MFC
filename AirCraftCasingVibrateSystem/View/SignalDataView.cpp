@@ -13,7 +13,7 @@ IMPLEMENT_DYNAMIC(CSignalDataView, CDialogEx)
 
 CSignalDataView::CSignalDataView(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CSignalDataView::IDD, pParent)
-{
+ {
 
 }
 
@@ -121,7 +121,7 @@ void CSignalDataView::GridCtrlInit(){
 		m_signalDataGridCtrl.SetItem(&Item);
 	}
 	///设置表格内容
-	for (int row = 1; row < m_signalDataGridCtrl.GetRowCount(); row++){
+	for (int row = 1; row <m_signalDataGridCtrl.GetRowCount(); row++){
 		////1.解析采集状态
 		Document doc;
 		doc.Parse(m_signalVector[row - 1].GetCollectionStatus());
@@ -223,11 +223,12 @@ void CSignalDataView::OnGridClick(NMHDR *pNotifyStruct, LRESULT * /*pResult*/)
 
 ////点击确定按钮
 void CSignalDataView::OnBnClickedOk()
-{
+ {
 
 	if (m_selectedSignal.GetId()==0){AfxMessageBox("请选择数据");return;}
 
 	if (MessageBox("是否打开数据", "确认打开数据？", MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL) return;
+
 	CDialogEx::OnOK();
 }
 

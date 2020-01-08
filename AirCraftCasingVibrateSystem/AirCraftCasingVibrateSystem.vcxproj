@@ -195,6 +195,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ChildRibbonPanel.h" />
     <ClInclude Include="entity\AcquiredSignal.h" />
     <ClInclude Include="Controller\AdvantechDaqController.h" />
     <ClInclude Include="AirCraftCasingVibrateSystem.h" />
@@ -405,6 +406,7 @@
     <ClInclude Include="Redis\win32fixes.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ChildRibbonPanel.cpp" />
     <ClCompile Include="entity\AcquiredSignal.cpp" />
     <ClCompile Include="Controller\AdvantechDaqController.cpp" />
     <ClCompile Include="AirCraftCasingVibrateSystem.cpp" />

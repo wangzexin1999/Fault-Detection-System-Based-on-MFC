@@ -18,7 +18,7 @@
 #include <map>
 #include "DuChartCtrlShuxing.h"
 #include "DuExport.h"
-
+#define ID_NEW_EDIT 4001
 class  CDuChartCtrl : public CChartCtrl
 {
 public:
@@ -118,7 +118,11 @@ protected:
 	afx_msg void OnPaint();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-	
+	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
+	afx_msg void OnEdit();
+	CEdit	p_MyEdit;
+
+	BOOL PreTranslateMessage(MSG* pMsg);
 protected:
 	//! Register the window class used for this control
 	bool RegisterWindowClass();

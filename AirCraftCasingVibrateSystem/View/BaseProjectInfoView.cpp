@@ -132,12 +132,15 @@ void BaseProjectInfoView::GridCtrlInit()
 	}
 }
 
+
+
 BOOL BaseProjectInfoView::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 	if (m_isEchoProjectData){
 		/// 回显项目名
 		m_projectNameEdit.SetWindowTextA(theApp.m_currentProject.GetProjectName());
+		SetWindowTextA("项目设置");
 	}
 	m_dictionaryController.FindAllBySearchCondition(m_vcollectionPlan, 0, "collectionplan");
 	Result res = m_productController.FindAllProduct(m_productVector);

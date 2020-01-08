@@ -717,6 +717,9 @@
     <ClInclude Include="UUIDUtil.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="ChildRibbonPanel.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AirCraftCasingVibrateSystem.cpp">
@@ -1171,6 +1174,9 @@
     </ClCompile>
     <ClCompile Include="entity\TbTestingDevice.cpp">
       <Filter>源文件\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="ChildRibbonPanel.cpp">
+      <Filter>头文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

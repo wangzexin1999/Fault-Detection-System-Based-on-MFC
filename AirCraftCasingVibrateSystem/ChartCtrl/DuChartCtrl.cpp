@@ -50,6 +50,9 @@ BEGIN_MESSAGE_MAP(CDuChartCtrl, CChartCtrl)
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
 	ON_WM_KEYDOWN()
+	ON_WM_KEYDOWN()
+	ON_WM_LBUTTONDBLCLK()
+	ON_EN_CHANGE(ID_NEW_EDIT, &CDuChartCtrl::OnEdit)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -1517,4 +1520,66 @@ void CDuChartCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		Invalidate();
 	CWnd::OnKeyDown(nChar, nRepCnt, nFlags);
 	//RefreshCtrl();
+}
+void  CDuChartCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
+{
+	CChartAxis * pxAxis = GetAxisDu(CChartCtrl::BottomAxis, 0);
+	CChartAxis * pyAxis = GetAxisDu(CChartCtrl::LeftAxis, 0);
+	if (point.x <= pxAxis->GetAxisLenght() + 80 && point.x >= pxAxis->GetAxisLenght() + 30 && point.y >= pyAxis->GetAxisLenght() + 5 && point.y >= pyAxis->GetAxisLenght() + 10)
+	{
+		CRect rect;
+		//CString str;
+		GetClientRect(&rect);
+		int perWidth = 60;
+		int perHeight = 25;
+		CRect(0, 0, perWidth, perHeight);
+		p_MyEdit.Create(WS_CHILD | WS_VISIBLE | SS_LEFTNOWORDWRAP, CRect(0, 0, perWidth, perHeight), this, ID_NEW_EDIT);
+		//CEdit *p_MyEdit;
+		//p_MyEdit = new CEdit();
+		//p_MyEdit->Create(WS_CHILD | WS_VISIBLE | SS_LEFTNOWORDWRAP, CRect(0, 0, perWidth, perHeight), this,NULL);
+		p_MyEdit.SetWindowPos(NULL, point.x - 15, point.y - 10, perWidth, perHeight, SWP_NOZORDER | SWP_NOSIZE);
+		CWnd* pWnd = GetDlgItem(ID_NEW_EDIT);
+		pWnd->SetFocus();
+
+	}
+}
+void CDuChartCtrl::OnEdit()
+{
+
+	CChartAxis * pxAxis = GetAxisDu(CChartCtrl::BottomAxis, 0);
+	CChartAxis * pyAxis = GetAxisDu(CChartCtrl::LeftAxis, 0);
+	CString str;
+	UpdateData(false);
+
+	p_MyEdit.GetWindowTextA(str);
+	double x_Max, x_Min;
+	pxAxis->GetMinMax(x_Min, x_Max);
+	if (str != "")
+	{
+		x_Max = atof(str.GetBuffer());
+	}
+	pxAxis->SetMinMax(x_Min, x_Max);
+}
+
+//重写虚函数PreTranslateMessage() 用于回车键确认
+BOOL CDuChartCtrl::PreTranslateMessage(MSG* pMsg)
+{
+	// TODO: Add your specialized code here and/or call the base class
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		if (pMsg->wParam == VK_RETURN)//回车键
+		{
+			p_MyEdit.DestroyWindow();
+			return TRUE;
+		}
+	}
+
+	if ((pMsg->message == WM_LBUTTONDOWN) || (pMsg->message == WM_LBUTTONUP))  {
+		if (GetFocus() != GetDlgItem(ID_NEW_EDIT))
+		{
+			p_MyEdit.DestroyWindow();
+			return TRUE;
+		}
+	}
+	return CChartCtrl::PreTranslateMessage(pMsg);
 }
