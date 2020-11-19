@@ -19,7 +19,7 @@ Modification:
 #pragma once
 #include "afxcmn.h"
 #include "GridCtrl_src/GridCtrl.h"
-#include "SensorParaController.h"
+#include "ChannelParaController.h"
 #include "NewCellTypes/GridCellCheck.h"
 #include "NewCellTypes/GridCellCombo.h"
 #include "DictionaryController.h"
@@ -49,7 +49,7 @@ protected:
 	vector<vector<int>>  m_measuringRange;
 
 	DECLARE_MESSAGE_MAP()
-	SensorParaController m_sensorParaController;
+	ChannelParaController m_channelParaController;
 public:
 	virtual BOOL OnInitDialog();
 	/**********************************************************************

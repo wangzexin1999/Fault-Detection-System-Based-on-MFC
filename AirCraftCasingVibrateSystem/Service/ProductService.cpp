@@ -18,8 +18,9 @@ bool ProductService::GetAllProductBySearchCondition(TbProduct searchProduct, vec
 	else{
 		if (searchProduct.GetProductName() != "") 
 				strSearchCondition += "and product_name like '%" + searchProduct.GetProductName()+"%'";
-		if (searchProduct.GetProductType() != "")
-			strSearchCondition += "and product_type like '%" + searchProduct.GetProductType() + "%'";
+//		if (searchProduct.GetProductType() != "")
+		if (searchProduct.GetProductType().GetId() != 0)
+			strSearchCondition += "and product_type like '%" + searchProduct.GetProductType().GetTypeName() + "%'";
 	}
 	vector<TbProductDao>  productDaoVec;
 	bool isSuccess = m_productDao.SelectObjectsByCondition(productDaoVec, strSearchCondition);

@@ -1,20 +1,6 @@
 /************************************************************************
-Copyright (C), 2018-2020. 哈尔滨理工大学人工智能实验室
 文件名称： FileController.h
 内容摘要： 文件操作，包括文件的读写，数据处理。对应的实现类文件为FileController.cpp。
-其它说明：飞机机匣振动检测系统
-当前版本： 1.0
-作 者： 刘望
-创建日期： 2019-06-21
-完成日期:
-History:
-1. Date:    2018-06-21         Author:刘望
-Modification:
-修改记录 1： // 修改历史记录，包括修改日期、修改者及修改内容
-修改日期：
-版 本 号：
-修 改 人：
-修改内容：
 ************************************************************************/
 #pragma once
 #include "Signal.h"
@@ -26,7 +12,7 @@ Modification:
 #include <string.h>
 #include <map>
 #include "ThreadSafeQueue.h"
-#include "TbSignal.h"
+#include "TbSumsignal.h"
 using namespace std;
 
 
@@ -175,7 +161,7 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	static bool SaveCollectionData2Binary(CString strPath, CString strFileName, TbSignal fileInfor, map<CString, ThreadSafeQueue<double>> & acquireSigna);
+	static bool SaveCollectionData2Binary(CString strPath, CString strFileName, TbSumsignal fileInfor, map<CString, ThreadSafeQueue<double>> & acquireSigna);
 	/**********************************************************************
 	功能描述： 得到指定文件的输出流
 	输入参数：strPath--文件路径；strFileName--文件名；acquireSigna--采集信号

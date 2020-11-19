@@ -1,11 +1,15 @@
 #include "stdafx.h"
 #include "TbProduct.h"
 
-
-TbProduct::TbProduct(int productId  , CString productName  , CString productType  ){
+TbProduct::TbProduct(int productId, CString productName){
 	m_productId = productId;
 	m_productName = productName;
-	m_productType = productType;
+}
+
+TbProduct::TbProduct(int productId, CString productName, TbProductType productType){
+	this->m_productId = productId;
+	this->m_productName = productName;
+	this->m_productType = productType;
 }
 
 bool TbProduct::operator == (TbProduct product)
@@ -15,14 +19,11 @@ bool TbProduct::operator == (TbProduct product)
 	if (m_productName != product.GetProductName()) tag = false;
 	if (m_productType != product.GetProductType())tag = false;
 	return tag;
-
 }
 
 bool TbProduct::operator != (TbProduct product){
 	return *this == product ? false : true;
 }
-
-
 
 TbProduct::~TbProduct()
 {
@@ -44,10 +45,10 @@ void TbProduct::SetProductName(CString productName) {
 	this->m_productName = productName;
 }
 
-CString TbProduct::GetProductType() {
-	return m_productType;
+TbProductType & TbProduct::GetProductType() {
+	return this->m_productType;
 }
 	
-void TbProduct::SetProductType(CString productType) {
+void TbProduct::SetProductType(TbProductType productType) {
 	this->m_productType = productType;
 }

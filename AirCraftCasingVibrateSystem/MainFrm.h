@@ -1,13 +1,4 @@
-// 这段 MFC 示例源代码演示如何使用 MFC Microsoft Office Fluent 用户界面 
-// (“Fluent UI”)。该示例仅供参考，
-// 用以补充《Microsoft 基础类参考》和 
-// MFC C++ 库软件随附的相关电子文档。  
-// 复制、使用或分发 Fluent UI 的许可条款是单独提供的。  
-// 若要了解有关 Fluent UI 许可计划的详细信息，请访问  
-// http://go.microsoft.com/fwlink/?LinkId=238214。
-//
-// 版权所有(C) Microsoft Corporation
-// 保留所有权利。
+
 
 // MainFrm.h : CMainFrame 类的接口
 #pragma once
@@ -17,16 +8,24 @@
 #include <vector>
 #include "GraphAttributeView.h"
 #include "StateSetDockPanelView.h"
-#include "SignalController.h"
+#include "SumsignalController.h"
 #include "CollectionPlanManageView.h"
 #include "ProjectSetView.h"
 #include "ProjectController.h"
 #include "SmartArray.h"
+#include "SignalController.h"
 #include "AdvantechDaqController.h"
 #include <map>
 #include "JsonUtil.h"
 #include "TbRecordSignal.h"
 #include "UUIDUtil.h"
+#include "TbSumsignal.h"
+#include "ChannelController.h"
+
+#include "TbSumsignalLabel.h"
+#include"SumsignalLabelController.h"
+#include "AlarmparaController.h"
+#include "TbAlarmpara.h"
 /////////////////////////////////////
 #include "include/Inc/bdaqctrl.h"
 #include "include/Inc/compatibility.h"
@@ -71,53 +70,58 @@ protected:  // 控件条嵌入成员
 	CMFCToolBar       m_wndContrlBar;
 	vector<WaveformAiCtrl *> m_vwfAiCtrl;
 	CGraphAttributeView m_graphAttributeView; // 图形属性界面
+	SumsignalController m_sumsignalController;
 	SignalController m_signalController;
 	ProjectController m_projectController;
 	CSystemParaView    m_systemParaView;
 	CChannelParaView    m_channelParaView;
 	CStateSetDockPanelView m_stateSetDockPanelView;
 	CDockablePane m_Panes[5];
-	vector<CString> m_vchannelIds;
+	vector<CString> m_vchannelCodes;
 	map<CString, CAirCraftCasingVibrateSystemView*> m_mpsignalCollectionView;
 	map<CString, ThreadSafeQueue<double>> m_mpcolllectioinDataQueue; ///采集的数据
 	map<int, DOUBLE *> m_mpcolllectioinData;
 	map<int, DevConfParam> m_vdevConfParams;
 	ICollection<DeviceTreeNode>* m_devices;
 	AdvantechDaqController m_advantechDaqController;
-	Value m_sampleFrequency;
-	Value m_analysisFrequency;
+	//Value m_sampleFrequency;
+	double m_sampleFrequency;
+	//Value m_analysisFrequency;
+	double m_analysisFrequency;
 	int m_icollectionPoints;
 	JsonUtil m_jsonUtil;
 	Value m_channelInfo;
 	Value m_collectionStatus;
 	Document m_doc;
 	TbRecordSignal m_recordSignal; // 采样数据
+	TbSumsignalLabel m_sumsignalLabel;
+	SumsignalLabelController m_sumsignalLabelController;
 	ofstream m_outputStream;
 	ifstream m_inputStream;
+	vector<ofstream>v_outputStream;
 	TbRecordSignal m_selectedRecordSignal;
 	bool m_bIsAnalyseFreMin = false;
 	bool m_bIsAnalyseFreMax = false;
 	int m_iAnalyseFreMax;
 	int m_iAnalyseFreMin;
+	ChannelController m_ChannelController;
+
+	SignalTestRecordController m_SignalTestRecordController;
+	vector<TbSignalTestRecord> m_vSignalTestRecord;
+	AlarmparaController m_AlarmparaController;
+	vector<TbAlarmpara> m_vAlarmpara;
 	/**********************************************************************
 	功能描述： 设置通道信息的json值
-	输入参数：
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
 	***********************************************************************/
 	void SetChannelInfoJsonValue();
+
+
+
 	/**********************************************************************
 	功能描述： 设置采集状态信息的json值
-	输入参数：
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
 	***********************************************************************/
+
+
 	void SetCollectionStatusJsonValue();
 public:
 
@@ -127,138 +131,98 @@ public:
 	/**********************************************************************
 	功能描述： 初始化采集窗口，将所有窗口存到vector中
 	输入参数：nWindowInitial--窗口初始数
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
 	***********************************************************************/
 	void InitCaptureViewVector();
+
+
 	/**********************************************************************
 	功能描述： 初始化采样数据回显View
 	输入参数：nWindowInitial--窗口初始数
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
 	***********************************************************************/
 	void InitializeSampleDataEchoView(int nWindowInitial);
+
+
+
 	/**********************************************************************
 	功能描述： 实时信号传输
-	输入参数：
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
 	***********************************************************************/
 	void CMainFrame::RealTimeSignal2Server();
+
+
+
 	/**********************************************************************
 	功能描述：新建文档
-	输入参数：nwinNums--新建文档的数目
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
 	***********************************************************************/
 	void NewDoc(int nwinNums);//
+
+
 
 	/**********************************************************************
 	功能描述：创建采集窗口
 	输入参数：传感器集合
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
 	***********************************************************************/
-	void CreateCaptureWindow(vector<TbSensor> vsensor);
+	void CreateCaptureWindow(vector<TbChannel> vchannel);
+
+
+
 	/**********************************************************************
 	功能描述： 窗口纵向平铺
-	输入参数：
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
 	***********************************************************************/
 	void WindowsVertical();
+
+
+
 	/**********************************************************************
 	功能描述： 窗口横向平铺
-	输入参数：
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
 	***********************************************************************/
 	void WindowsHorizontal();
+
+
+
 	/**********************************************************************
 	功能描述： 关闭所有窗口
-	输入参数：
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
 	***********************************************************************/
 	void CloseAllWindows();
+
+
+
+
 	/**********************************************************************
 	功能描述： 自定义的 根据项目刷新视图的事件
-	输入参数：
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
 	***********************************************************************/
 	afx_msg LRESULT OnRefreshViewByProject(WPARAM wParam, LPARAM lParam);
 
+
+
 	/**********************************************************************
 	功能描述： 自定义的 数据准备好的响应事件
-	输入参数：
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
 	***********************************************************************/
 	static void BDAQCALL OnDataReadyEvent(void * sender, BfdAiEventArgs * args, void *userParam);
 
 
+
 	/**********************************************************************
 	功能描述： 检查采集卡的错误信息
-	输入参数：
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
 	***********************************************************************/
 	void CheckError(ErrorCode error);
+
+
+
 	/**********************************************************************
 	功能描述： 开启线程自动保存采集数据的线程函数
-	输入参数：
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
 	***********************************************************************/
 	void OpenThread2SaveCollectionData();
+
+
+
+
 	/**********************************************************************
 	功能描述： 开启线程从本地读取数据
-	输入参数：
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
 	***********************************************************************/
 	void GetDataFromlocal();
 	void Pre_GetDataFromlocal();
+
+
 
 
 	/**********************************************************************
@@ -356,20 +320,13 @@ public:
 	afx_msg void OnUpdateViewSystemPara(CCmdUI* pCmdUI);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnBtnGraphAttribute();//图形属性
-	afx_msg void OnButton9();
+	//afx_msg void OnButton9();
 	afx_msg void OnCheckStaSet();
 	afx_msg void OnUpdateCheckStaSet(CCmdUI *pCmdUI);
 	afx_msg void OnClose();
 
 	/**********************************************************************
 	功能描述： 打开采集计划管理窗口的按钮
-	输入参数：
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期    版本号 修改人 修改内容
-	2019-10-07  1.0   马善涛  新创建
-	----------------------------------------------------------------------
 	***********************************************************************/
 	afx_msg void OnButtonOpenCollectionPlanManage();
 	afx_msg void OnButtonOpenProjectView();

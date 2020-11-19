@@ -4,7 +4,7 @@
 #include "afxdtctl.h"
 #include<vector>
 #include "TbRecordSignal.h"
-#include "SignalController.h"
+#include "SumsignalController.h"
 #include "Result.h"
 #include "DateUtil.h"
 #include "DictionaryController.h"
@@ -35,7 +35,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 	CComboBox m_dateSelectComboBox;
 	vector<TbRecordSignal> m_signalVector;
-	SignalController m_signalController;
+	SumsignalController m_sumsignalController;
 	TbRecordSignal m_selectedSignal;
 	DictionaryController m_dictionaryController;
 	vector<TbDictionary> m_vcollectionPlan;

@@ -17,9 +17,9 @@ TbRecordSignalDao::TbRecordSignalDao()
 	SetVectorAndField("product_id", "int", m_productId);
 	SetVectorAndField("signal_status", "char", m_signalStatus);
 	SetVectorAndField("project_id", "int", m_projectId);
-	SetVectorAndField("testingdevice_id", "int", m_testingDeviceId);
+	SetVectorAndField("collectionparas_id", "int", m_collectionparasId);
 	SetVectorAndField("collectionstatus", "CString", m_collectionStatus);
-	SetVectorAndField("sensorinfo", "CString", m_sensorInfo);
+	SetVectorAndField("channelinfo", "CString", m_channelInfo);
 	
 }
 TbRecordSignalDao::TbRecordSignalDao(const TbRecordSignalDao  & signal){
@@ -35,9 +35,9 @@ TbRecordSignalDao::TbRecordSignalDao(const TbRecordSignalDao  & signal){
 	SetVectorAndField("product_id", "int", m_productId);
 	SetVectorAndField("signal_status", "char", m_signalStatus);
 	SetVectorAndField("project_id", "int", m_projectId);
-	SetVectorAndField("testingdevice_id", "int", m_testingDeviceId);
+	SetVectorAndField("collectionparas_id", "int", m_collectionparasId);
 	SetVectorAndField("collectionstatus", "CString", m_collectionStatus);
-	SetVectorAndField("sensorinfo", "CString", m_sensorInfo);
+	SetVectorAndField("channelinfo", "CString", m_channelInfo);
 	operator = (signal);
 }
 
@@ -85,8 +85,8 @@ void TbRecordSignalDao::GetTableFieldValues(TbRecordSignal &signal){
 	signal.SetEndPos(m_endPos.GetLongLong());
 	signal.SetSignalType(m_signalType.m_strValue);
 	signal.GetProject().SetProjectId(m_projectId.GetInt());
-	signal.GetTestingDevice().SetId(m_testingDeviceId.GetInt());
-	signal.SetSensorInfo(m_sensorInfo.m_strValue);
+	signal.GetCollectionparas().SetId(m_collectionparasId.GetInt());
+	signal.SetChannelInfo(m_channelInfo.m_strValue);
 	signal.SetCollectionStatus(m_collectionStatus.m_strValue);
 }
 
@@ -101,7 +101,7 @@ void TbRecordSignalDao::SetTableFieldValues(TbRecordSignal signal){
 	m_startPos.SetValue(signal.GetStartPos());
 	m_endPos.SetValue(signal.GetEndPos());
 	m_productId.SetValue(signal.GetProduct().GetProductId());
-	m_testingDeviceId.SetValue(signal.GetTestingDevice().GetId());
+	m_collectionparasId.SetValue(signal.GetCollectionparas().GetId());
 	m_collectionStatus.SetValue(signal.GetCollectionStatus());
-	m_sensorInfo.SetValue(signal.GetSensorInfo());
+	m_channelInfo.SetValue(signal.GetChannelInfo());
 }

@@ -4,7 +4,7 @@
 #include "NewProjectView.h"
 #include "afxdialogex.h"
 #include "TbProject.h"
-#include "TbTester.h"
+#include "TbUser.h"
 #include "Result.h"
 #include "DateUtil.h"
 #include "TbDictionary.h"
@@ -44,10 +44,10 @@ END_MESSAGE_MAP()
 void CNewProjectView::OnBnClickedOk()
 {
 	// 得到当前检测设备的参数
-	m_collectionParaPresetView.GetSelectedTestingDevice(m_testingDevice);
+	m_collectionParaPresetView.GetSelectedCollectionparas(m_collectionparas);
 	// 得到所有的通道
-	m_vsensors.clear();
-	m_channelParaPresetView.GetSelectedChannels(m_vsensors);
+	m_vchannels.clear();
+	m_channelParaPresetView.GetSelectedChannels(m_vchannels);
 	
 	////封装采集计划参数
 	Document plansDoc;
@@ -99,12 +99,12 @@ void CNewProjectView::OnBnClickedOk()
 	m_project.SetCollectionStatus(result_default.c_str());
 
 	///封装project对象
-	TbTester tester = theApp.m_currentProject.GetTester();
-	m_project.SetTester(tester);
+	TbUser user = theApp.m_currentProject.GetUser();
+	m_project.SetUser(user);
 	m_project.SetProjectCreateTime(DateUtil::GetCurrentCStringTime());
 	m_project.SetProjectUpdateTime(DateUtil::GetCurrentCStringTime());
-	m_project.SetTestingDevice(m_testingDevice);
-	m_project.SetSensorVector(m_vsensors);
+	m_project.SetCollectionparas(m_collectionparas);
+	m_project.SetChannelVector(m_vchannels);
 	///保存项目数据
 	Result res = m_projectController.AddProject(m_project);
 

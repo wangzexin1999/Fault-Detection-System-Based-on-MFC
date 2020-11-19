@@ -24,9 +24,9 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
 
-	vector<TbDictionary> m_vsampleFrequency;
+	vector<TbDictionary> m_DsampleFrequency;
 	vector<TbDictionary> m_vcollectionMethod;
-	vector<TbDictionary> m_vanalysisFrequency;
+	vector<TbDictionary> m_DanalysisFrequency;
 	vector<TbDictionary> m_vcollectionPoint;
 
 	DictionaryController m_dictionaryController;
@@ -35,12 +35,12 @@ protected:
 	CComboBox m_collectionMethodCombo;
 	CComboBox m_analysisFrequencyCombo;
 	CComboBox m_collectionPointCombo;
-	CEdit m_collectionTimesEdit;
+	CEdit m_sampleBatchEdit;
 
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
 	void CollectionParaInfoInit();
-	void GetSelectedTestingDevice(TbTestingDevice &testingDevice);
+	void GetSelectedCollectionparas(TbCollectionparas &collectionparas);
 	afx_msg void OnCbnSelchangeComboSamplefrequency();
 };

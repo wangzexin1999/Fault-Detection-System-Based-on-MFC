@@ -1,8 +1,8 @@
 #pragma once
-#include "TbTester.h"
-#include"TbTestingDevice.h"
+#include "TbUser.h"
+#include"TbCollectionparas.h"
 #include "TbProduct.h"
-#include "TbSensor.h"
+#include "TbChannel.h"
 #include <vector>
 using namespace std;
 class TbProject
@@ -10,19 +10,19 @@ class TbProject
 public:
 
 	TbProject(int projectId = 0,CString  projectName = "",int projectStatus = 0);
-	TbProject(int projectId, CString  projectName, CString projectCreatetime, TbTester tester, TbTestingDevice  testingDevice, TbProduct  product);
+	TbProject(int projectId, CString  projectName, CString projectCreatetime, TbUser user, TbCollectionparas  collectionparas, TbProduct  product);
 	~TbProject();
 
 protected:
 
 	int m_projectId;
-	TbTester m_tester;
+	TbUser m_user;
 	CString  m_projectName;
 	CString m_projectCreatetime;
 	CString m_projectUpdatetime;
-	TbTestingDevice  m_testingDevice;
+	TbCollectionparas  m_collectionparas;
 	TbProduct m_product;
-	vector<TbSensor> m_sensorVector;
+	vector<TbChannel> m_channelVector;
 	int m_projectStatus;
 	CString m_collectionPlans;
 	CString m_collectionStatus;
@@ -30,21 +30,23 @@ protected:
 public:
 	void SetProjectId(int projectId);
 	void SetProjectName(CString projectName);
-	void SetTester(TbTester tester);
-	void SetTestingDevice(TbTestingDevice testingDevice);
-	TbTestingDevice & GetTestingDevice();
+	void SetUser(TbUser user);
+	void SetCollectionparas(TbCollectionparas collectionparas);
+	TbCollectionparas & GetCollectionparas();
 	TbProduct & GetProduct();
 	void SetProduct(TbProduct  product);
 	void SetProjectCreateTime(CString m_projectCreatetime);
 	void SetProjectUpdateTime(CString projectUpdatetime);
 
-	TbTester & GetTester();
+	TbUser & GetUser();
 	CString GetProjectCreateTime();
 	CString GetProjectUpdateTime();
 
 	CString GetProjectName();
-	vector<TbSensor> & GetSensorVector();
-	void SetSensorVector(vector<TbSensor> sensorParaVector);
+
+	vector<TbChannel> & GetChannelVector();
+	void SetChannelVector(vector<TbChannel> channelParaVector);
+
 	int GetProjectId();
 	void SetProjectStatus(int status);
 	int GetProjectStatus();

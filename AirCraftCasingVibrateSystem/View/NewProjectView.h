@@ -41,8 +41,8 @@ protected:
 	ChannelParaPresetView m_channelParaPresetView;
 	//CollectionPlanParaPresetView m_collectionPlanParaPresetView;
 	int m_newDialogIndex;
-	TbTestingDevice m_testingDevice;
-	vector<TbSensor> m_vsensors;
+	TbCollectionparas m_collectionparas;
+	vector<TbChannel> m_vchannels;
 	DECLARE_MESSAGE_MAP()
 	vector<CDialog*> m_pDialogVec;  //用来保存对话框对象指针
 	int  m_icurSelTabIndex;

@@ -1,14 +1,3 @@
-// 这段 MFC 示例源代码演示如何使用 MFC Microsoft Office Fluent 用户界面 
-// (“Fluent UI”)。该示例仅供参考，
-// 用以补充《Microsoft 基础类参考》和 
-// MFC C++ 库软件随附的相关电子文档。  
-// 复制、使用或分发 Fluent UI 的许可条款是单独提供的。  
-// 若要了解有关 Fluent UI 许可计划的详细信息，请访问  
-// http://go.microsoft.com/fwlink/?LinkId=238214。
-//
-// 版权所有(C) Microsoft Corporation
-// 保留所有权利。
-// AirCraftCasingVibrateSystem.cpp : 定义应用程序的类行为。
 
 #include "stdafx.h"
 #include "afxwinappex.h"
@@ -77,29 +66,34 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 		printf("connect error!\n");
 		//return 0;
 	}*/
+
+
 	// 创建远程服务器连接
-	m_cli = httplib::Client(_T(ServerHttpAddress), ServerHttpPort);
-	///设置mysql数据库信息
-	const char user[] = "root";         //username
-	const char pswd[] = "oxygen";         //password
-	const char host[] = "39.107.96.16";    //or"127.0.0.1" 39.107.96.162
-	const char table[] = "aircraftfaultdetectdb";        //database
-	unsigned int port = 3306;           //server port
-	/*连接远程数据库*/
-	theApp.PDsql.SetMysql(host, user, pswd, table);
-	theApp.PDsql.OpenSql();
+	//m_cli = httplib::Client(_T(ServerHttpAddress), ServerHttpPort);
+	/////设置mysql数据库信息
+	//const char user[] = "root";         //username
+	//const char pswd[] = "oxygen";         //password
+	//const char host[] = "39.107.96.16";    //or"127.0.0.1" 39.107.96.162
+	//const char table[] = "aircraftfaultdetectdb";        //database
+	//unsigned int port = 3306;           //server port
+	///*连接远程数据库*/
+	//theApp.PDsql.SetMysql(host, user, pswd, table);
+	//theApp.PDsql.OpenSql();
+
+
 	/*连接本地数据库*/
 	const char localUser[] = "root";         //local username
-	const char localPswd[] = "123456";         //local password
+	const char localPswd[] = "123456"; //local password
+	//const char localPswd[] = "1604011031";//local password
 	const char localHost[] = "127.0.0.1";    //local ip "127.0.0.1" 
-	const char localTable[] = "aircraftfaultdetectdb";        //local database
+	const char localTable[] = "aircraftfaultdetectdb15";        //local database
 	theApp.m_conPDLocalSql.SetMysql(localHost, localUser, localPswd, localTable);
 	theApp.m_conPDLocalSql.OpenSql();
 	/*如果连接不到服务器，则建立本地连接*/
-	if (theApp.PDsql.m_mysql.host == NULL)
-	{
+	/*if (theApp.PDsql.m_mysql.host == NULL)
+	{*/
 		theApp.PDsql = theApp.m_conPDLocalSql;
-	}
+	//}
 
 	//弹出登录窗口
 	CLoginView loginView;
@@ -197,7 +191,7 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	
 	///根据最近一次打开的项目的传感器数量，创建指定数量的采集窗口
 	CMainFrame*pFrame = (CMainFrame*)m_pMainWnd;
-	pFrame->CreateCaptureWindow(theApp.m_currentProject.GetSensorVector());
+	pFrame->CreateCaptureWindow(theApp.m_currentProject.GetChannelVector());
 	pFrame->MDITile(MDITILE_VERTICAL);//纵向平铺
 
 	// 调度在命令行中指定的命令。  如果
@@ -207,6 +201,24 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	// 主窗口已初始化，因此显示它并对其进行更新
 	pMainFrame->ShowWindow(m_nCmdShow);
 	pMainFrame->UpdateWindow();
+
+	CString m_strAlarm = "alarm";
+	LPTSTR lpPath = new char[MAX_PATH];
+	strcpy(lpPath, "..//IniAlarmSet.ini");
+	int length = 10;
+	LPSTR lpstrTemp = new char[length];
+
+	GetPrivateProfileString(m_strAlarm, "channelAlarm", "", lpstrTemp, length, lpPath);
+	m_isAlarm = CommonUtil::CString2Int(lpstrTemp);					       // 曲线颜色
+
+	GetPrivateProfileString(m_strAlarm, "alarmLimit", "", lpstrTemp, length, lpPath);
+	//m_editAlarmLimit.SetWindowTextA(lpstrTemp);
+	//m_alarmLimit = CommonUtil::CString2Int(lpstrTemp);
+	m_alarmLimit = atof(lpstrTemp);
+	delete[] lpPath;
+	delete[] lpstrTemp;
+
+
 	return TRUE;
 }
 
@@ -260,23 +272,23 @@ void CAirCraftCasingVibrateSystemApp::OnAppAbout()
 
 // CAirCraftCasingVibrateSystemApp 自定义加载/保存方法
 
-void CAirCraftCasingVibrateSystemApp::PreLoadState()
-{
-	/*BOOL bNameValid;
-	CString strName;
-	bNameValid = strName.LoadString(IDS_EDIT_MENU);
-	ASSERT(bNameValid);
-	GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EDIT);*/
-	//GetContextMenuManager()->AddMenu(_T("View右键"), IDR_MENU_RIGHT_KEY);
-}
+//void CAirCraftCasingVibrateSystemApp::PreLoadState()
+//{
+//	/*BOOL bNameValid;
+//	CString strName;
+//	bNameValid = strName.LoadString(IDS_EDIT_MENU);
+//	ASSERT(bNameValid);
+//	GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EDIT);*/
+//	//GetContextMenuManager()->AddMenu(_T("View右键"), IDR_MENU_RIGHT_KEY);
+//}
 
-void CAirCraftCasingVibrateSystemApp::LoadCustomState()
-{
-}
+//void CAirCraftCasingVibrateSystemApp::LoadCustomState()
+//{
+//}
 
-void CAirCraftCasingVibrateSystemApp::SaveCustomState()
-{
-}
+//void CAirCraftCasingVibrateSystemApp::SaveCustomState()
+//{
+//}
 
 // CAirCraftCasingVibrateSystemApp 消息处理程序
 

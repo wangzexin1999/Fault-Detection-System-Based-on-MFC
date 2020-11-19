@@ -1,7 +1,7 @@
 #pragma once
 #include "GridCtrl_src/GridCtrl.h"
-#include "TbTestingDevice.h"
-#include "TestingDeviceController.h"
+#include "TbCollectionparas.h"
+#include "CollectionparasController.h"
 #include <vector>
 #include "afxwin.h"
 using namespace std;
@@ -19,12 +19,12 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
-	CGridCtrl m_testingDeviceGridCtrl;
+	CGridCtrl m_collectionparasGridCtrl;
 	void GridCtrlInit();
-	vector<TbTestingDevice> m_vtestingDevice;
-	TestingDeviceController m_testingDeviceController;
-	CEdit m_testingDeviceNameEdit;
-	TbTestingDevice m_selectedTestingDevice;
+	vector<TbCollectionparas> m_vcollectionparas;
+	CollectionparasController m_collectionparasController;
+	CEdit m_collectionparasNameEdit;
+	TbCollectionparas m_selectedCollectionparas;
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();

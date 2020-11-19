@@ -1,7 +1,7 @@
 #pragma once
 #include "afxwin.h"
-#include "TbTester.h"
-#include "TesterController.h"
+#include "TbUser.h"
+#include "UserController.h"
 // CRegisterView ¶Ô»°¿ò
 
 class CRegisterView : public CDialogEx
@@ -21,7 +21,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
-	TesterController m_testerController;
+	UserController m_userController;
 public:
 	virtual BOOL OnInitDialog();
 	CEdit m_editRegisterLoginName;

@@ -29,7 +29,7 @@ void CollectionParaPresetView::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO_COLLECTIONMETHOD, m_collectionMethodCombo);
 	DDX_Control(pDX, IDC_COMBO_ANALYSISFREQUENCY, m_analysisFrequencyCombo);
 	DDX_Control(pDX, IDC_COMBO_COLLECTIONPOINT, m_collectionPointCombo);
-	DDX_Control(pDX, IDC_EDIT_COLLECTIONTIMES, m_collectionTimesEdit);
+	DDX_Control(pDX, IDC_EDIT_COLLECTIONTIMES, m_sampleBatchEdit);
 
 }
 
@@ -49,33 +49,42 @@ BOOL CollectionParaPresetView::OnInitDialog()
 	CollectionParaInfoInit();
 	return TRUE; 
 }
-void CollectionParaPresetView::GetSelectedTestingDevice(TbTestingDevice &testingDevicePara){
+void CollectionParaPresetView::GetSelectedCollectionparas(TbCollectionparas &collectionparasPara){
+
 	int index = m_sampleFrequencyCombo.GetCurSel();
-	testingDevicePara.SetSampleFrequency(m_vsampleFrequency[index]);
+	TbDictionary samplefrequency = m_DsampleFrequency[index];
+	Document samplefrequency_doc;
+	samplefrequency_doc.Parse(samplefrequency.GetDictValue());
+	const Value& samplefrequency_content = samplefrequency_doc["content"];
+	collectionparasPara.SetSampleFrequency(samplefrequency_doc["content"].GetDouble());
 
 	index = m_analysisFrequencyCombo.GetCurSel();
-	testingDevicePara.SetAnalysisFrequency(m_vanalysisFrequency[index]);
+	TbDictionary analysisfrequency = m_DanalysisFrequency[index];
+	Document analysisfrequency_doc;
+	analysisfrequency_doc.Parse(analysisfrequency.GetDictValue());
+	const Value& analysisfrequency_content = analysisfrequency_doc["content"];
+	collectionparasPara.SetAnalysisFrequency(analysisfrequency_doc["content"].GetDouble());
 
 	index = m_collectionPointCombo.GetCurSel(); 
-	testingDevicePara.SetCollectionPoint(m_vcollectionPoint[index]);
+	collectionparasPara.SetCollectionPoint(m_vcollectionPoint[index]);
 
 	index = m_collectionMethodCombo.GetCurSel();
-	testingDevicePara.SetCollectionMethod(m_vcollectionMethod[index]);
-	CString  collectionTimes;
+	collectionparasPara.SetCollectionMethod(m_vcollectionMethod[index]);
+	CString  sampleBatch;
 
-	m_collectionTimesEdit.GetWindowTextA(collectionTimes);
-	testingDevicePara.SetCollectionTimes(atoi(collectionTimes));
+	m_sampleBatchEdit.GetWindowTextA(sampleBatch);
+	collectionparasPara.SetSampleBatch(atoi(sampleBatch));
 }
 
 void CollectionParaPresetView::CollectionParaInfoInit(){
 	Result res;
-	res = m_dictionaryController.FindAllBySearchCondition(m_vsampleFrequency, 0, "samplefrequency");
+	res = m_dictionaryController.FindAllBySearchCondition(m_DsampleFrequency, 0, "samplefrequency");
 	if (!res.GetIsSuccess()){
 		AfxMessageBox("加载采集频率失败");
 	}
 	else{
-		for (int i = 0; i < m_vsampleFrequency.size(); i++){
-			TbDictionary sample = m_vsampleFrequency[i];
+		for (int i = 0; i < m_DsampleFrequency.size(); i++){
+			TbDictionary sample = m_DsampleFrequency[i];
 			Document doc;
 			doc.Parse(sample.GetDictValue());
 			const Value& title = doc["title"];
@@ -88,14 +97,14 @@ void CollectionParaPresetView::CollectionParaInfoInit(){
 		m_sampleFrequencyCombo.SetCurSel(0);
 	}
 
-	res = m_dictionaryController.FindAllBySearchCondition(m_vanalysisFrequency, 0, "analysisfrequency");
+	res = m_dictionaryController.FindAllBySearchCondition(m_DanalysisFrequency, 0, "analysisfrequency");
 	if (!res.GetIsSuccess()){
 		AfxMessageBox("加载分析频率失败");
 	}
 	else{
 		int cursel = 0;
-		for (int i = 0; i < m_vanalysisFrequency.size(); i++){
-			TbDictionary analysis = m_vanalysisFrequency[i];
+		for (int i = 0; i < m_DanalysisFrequency.size(); i++){
+			TbDictionary analysis = m_DanalysisFrequency[i];
 			Document doc;
 			doc.Parse(analysis.GetDictValue());
 			const Value& title = doc["title"];
@@ -105,7 +114,7 @@ void CollectionParaPresetView::CollectionParaInfoInit(){
 			m_analysisFrequencyCombo.InsertString(i, analysisFrequency.GetDictValue());
 
 			int index = m_sampleFrequencyCombo.GetCurSel();
-			TbDictionary collection = m_vsampleFrequency[index];
+			TbDictionary collection = m_DsampleFrequency[index];
 			Document collection_doc;
 			collection_doc.Parse(collection.GetDictValue());
 			const Value& collection_content = collection_doc["content"];
@@ -154,14 +163,14 @@ void CollectionParaPresetView::OnCbnSelchangeComboSamplefrequency()
 {
 	// TODO:  在此添加控件通知处理程序代码
 	int index = m_sampleFrequencyCombo.GetCurSel();
-	TbDictionary collection = m_vsampleFrequency[index];
+	TbDictionary collection = m_DsampleFrequency[index];
 	Document collection_doc;
 	collection_doc.Parse(collection.GetDictValue());
 	const Value& collection_content = collection_doc["content"];
 
 	int cursel = 0;
-	for (int i = 0; i < m_vanalysisFrequency.size(); i++){
-		TbDictionary analysis = m_vanalysisFrequency[i];
+	for (int i = 0; i < m_DanalysisFrequency.size(); i++){
+		TbDictionary analysis = m_DanalysisFrequency[i];
 		Document analysis_doc;
 		analysis_doc.Parse(analysis.GetDictValue());
 		const Value& analysis_content = analysis_doc["content"];

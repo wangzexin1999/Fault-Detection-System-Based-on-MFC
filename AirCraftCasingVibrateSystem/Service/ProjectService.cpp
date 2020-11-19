@@ -19,12 +19,12 @@ bool ProjectService::AddProject(TbProject & project){
 
 bool ProjectService::GetAllProjectBySearchCondition(TbProject project, CString startTime, CString endTime, vector<TbProject> &projectVector){
 	///1.设置项目的测试人员
-	m_projectDao.m_testerId.SetValue(project.GetTester().GetTesterId());
+	m_projectDao.m_userId.SetValue(project.GetUser().GetUserId());
 	vector<TbProjectDao>  selectedValueVector;
 	////2.查询测试人员的所有项目
 	//////2.1 封装sql查询条件
 	CString strSqlWhere = "1 = 1 ";
-	if (project.GetTester().GetTesterId() != 0) strSqlWhere += " and tester_id ='" + CommonUtil::Int2CString(project.GetTester().GetTesterId()) + "'";
+	if (project.GetUser().GetUserId() != 0) strSqlWhere += " and user_id ='" + CommonUtil::Int2CString(project.GetUser().GetUserId()) + "'";
 	if (project.GetProjectName() != "") strSqlWhere += " and project_name like '%" + project.GetProjectName() + "%'";
 	if (project.GetProduct().GetProductId() != 0) strSqlWhere += " and product_id =" + CommonUtil::Int2CString(project.GetProduct().GetProductId());
 	if (startTime != "") strSqlWhere += " and project_createtime >='" + startTime + "'";
@@ -43,7 +43,7 @@ bool ProjectService::GetAllProjectBySearchCondition(TbProject project, CString s
 
 bool  ProjectService::GetLastOpenProjectByUser(TbProject &project){
 	CString strSqlWhere = "1 = 1 ";
-	if (project.GetTester().GetTesterId() != 0) strSqlWhere += " and tester_id ='" + CommonUtil::Int2CString(project.GetTester().GetTesterId()) + "'";
+	if (project.GetUser().GetUserId() != 0) strSqlWhere += " and user_id ='" + CommonUtil::Int2CString(project.GetUser().GetUserId()) + "'";
 	strSqlWhere += "ORDER BY project_updatetime desc limit 0,1";
 	bool isSuccess = m_projectDao.SelectOneObjectByCondition(strSqlWhere);
 	if (m_projectDao.m_projectId.GetInt()!=0)	m_projectDao.GetTableFieldValues(project);

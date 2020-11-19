@@ -127,6 +127,9 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>libcurl_a_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -195,11 +198,45 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AlarmparaController.h" />
+    <ClInclude Include="AlarmparaService.h" />
     <ClInclude Include="ChildRibbonPanel.h" />
     <ClInclude Include="entity\AcquiredSignal.h" />
     <ClInclude Include="Controller\AdvantechDaqController.h" />
-    <ClInclude Include="AirCraftCasingVibrateSystem.h" />
+    <ClInclude Include="AirCraftCasingVibrateSystem.h">
+      <FileType>CppHeader</FileType>
+    </ClInclude>
     <ClInclude Include="AirCraftCasingVibrateSystemDoc.h" />
+    <ClInclude Include="SignalController.h" />
+    <ClInclude Include="SignalService.h" />
+    <ClInclude Include="SignalTestRecordController.h" />
+    <ClInclude Include="SignalTestRecordService.h" />
+    <ClInclude Include="SumsignalLabelController.h" />
+    <ClInclude Include="TbAlarmpara.h" />
+    <ClInclude Include="TbAlarmparaDao.h" />
+    <ClInclude Include="TbEquipment.h" />
+    <ClInclude Include="TbEquipmentDao.h" />
+    <ClInclude Include="TbLabel.h" />
+    <ClInclude Include="TbLabelDao.h" />
+    <ClInclude Include="TbPost.h" />
+    <ClInclude Include="TbPostDao.h" />
+    <ClInclude Include="TbProductType.h" />
+    <ClInclude Include="TbProductTypeDao.h" />
+    <ClInclude Include="TbSensor.h" />
+    <ClInclude Include="TbSensorDao.h" />
+    <ClInclude Include="TbSignal.h" />
+    <ClInclude Include="TbSignalDao.h" />
+    <ClInclude Include="TbSignalTestRecord.h" />
+    <ClInclude Include="TbSignalTestRecordDao.h" />
+    <ClInclude Include="TbSumsignalLabel.h" />
+    <ClInclude Include="TbSumsignalLabelDao.h" />
+    <ClInclude Include="SumsignalLabelService.h" />
+    <ClInclude Include="TbTestlocation.h" />
+    <ClInclude Include="TbTestlocationDao.h" />
+    <ClInclude Include="TbTeststand.h" />
+    <ClInclude Include="TbTeststandDao.h" />
+    <ClInclude Include="TbTeststate.h" />
+    <ClInclude Include="TbTeststateDao.h" />
     <ClInclude Include="UUIDUtil.h" />
     <ClInclude Include="View\AirCraftCasingVibrateSystemView.h" />
     <ClInclude Include="View\AlarmParaSetView.h" />
@@ -312,7 +349,7 @@
     <ClInclude Include="Service\RecordSignalService.h" />
     <ClInclude Include="Redis\redisUtil.h" />
     <ClInclude Include="View\RegisterView.h" />
-    <ClInclude Include="Controller\SensorController.h" />
+    <ClInclude Include="Controller\ChannelController.h" />
     <ClInclude Include="Utils\CherryTree.h" />
     <ClInclude Include="ChildFrm.h" />
     <ClInclude Include="Controller\ClassifierController.h" />
@@ -359,14 +396,14 @@
     <ClInclude Include="entity\Result.h" />
     <ClInclude Include="View\Picture\SelectView.h" />
     <ClInclude Include="Controller\SelfCheckController.h" />
-    <ClInclude Include="Controller\SensorParaController.h" />
-    <ClInclude Include="Service\SensorParaService.h" />
-    <ClInclude Include="Service\SensorService.h" />
+    <ClInclude Include="Controller\ChannelParaController.h" />
+    <ClInclude Include="Service\ChannelParaService.h" />
+    <ClInclude Include="Service\ChannelService.h" />
     <ClInclude Include="View\CollectionParaView.h" />
     <ClInclude Include="Service\SignalAcquisitionService.h" />
-    <ClInclude Include="Controller\SignalController.h" />
+    <ClInclude Include="Controller\SumsignalController.h" />
     <ClInclude Include="View\SignalDataView.h" />
-    <ClInclude Include="Service\SignalService.h" />
+    <ClInclude Include="Service\SumsignalService.h" />
     <ClInclude Include="View\SignalSaveView.h" />
     <ClInclude Include="View\SignalSelectView.h" />
     <ClInclude Include="entity\SmartArray.h" />
@@ -389,28 +426,60 @@
     <ClInclude Include="dao\TbProjectDao.h" />
     <ClInclude Include="entity\TbRecordSignal.h" />
     <ClInclude Include="dao\TbRecordSignalDao.h" />
-    <ClInclude Include="entity\TbSensor.h" />
-    <ClInclude Include="dao\TbSensorDao.h" />
-    <ClInclude Include="entity\TbSignal.h" />
-    <ClInclude Include="dao\TbSignalDao.h" />
-    <ClInclude Include="dao\TbTesterDao.h" />
-    <ClInclude Include="entity\TbTestingDevice.h" />
-    <ClInclude Include="dao\TbTestingDeviceDao.h" />
-    <ClInclude Include="entity\TbTester.h" />
-    <ClInclude Include="Controller\TesterController.h" />
-    <ClInclude Include="Service\TesterService.h" />
-    <ClInclude Include="Controller\TestingDeviceController.h" />
-    <ClInclude Include="Service\TestingDeviceService.h" />
+    <ClInclude Include="entity\TbChannel.h" />
+    <ClInclude Include="dao\TbChannelDao.h" />
+    <ClInclude Include="entity\TbSumsignal.h" />
+    <ClInclude Include="dao\TbSumsignalDao.h" />
+    <ClInclude Include="dao\TbUserDao.h" />
+    <ClInclude Include="entity\TbCollectionparas.h" />
+    <ClInclude Include="dao\TbCollectionparasDao.h" />
+    <ClInclude Include="entity\TbUser.h" />
+    <ClInclude Include="Controller\UserController.h" />
+    <ClInclude Include="Service\UserService.h" />
+    <ClInclude Include="Controller\CollectionparasController.h" />
+    <ClInclude Include="Service\CollectionparasService.h" />
     <ClInclude Include="Utils\ThreadSafeQueue.h" />
     <ClInclude Include="View\TriggerParaView.h" />
     <ClInclude Include="Redis\win32fixes.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AlarmparaController.cpp" />
+    <ClCompile Include="AlarmparaService.cpp" />
     <ClCompile Include="ChildRibbonPanel.cpp" />
     <ClCompile Include="entity\AcquiredSignal.cpp" />
     <ClCompile Include="Controller\AdvantechDaqController.cpp" />
     <ClCompile Include="AirCraftCasingVibrateSystem.cpp" />
     <ClCompile Include="AirCraftCasingVibrateSystemDoc.cpp" />
+    <ClCompile Include="SignalController.cpp" />
+    <ClCompile Include="SignalService.cpp" />
+    <ClCompile Include="SignalTestRecordController.cpp" />
+    <ClCompile Include="SignalTestRecordService.cpp" />
+    <ClCompile Include="SumsignalLabelController.cpp" />
+    <ClCompile Include="TbAlarmpara.cpp" />
+    <ClCompile Include="TbAlarmparaDao.cpp" />
+    <ClCompile Include="TbEquipment.cpp" />
+    <ClCompile Include="TbEquipmentDao.cpp" />
+    <ClCompile Include="TbLabel.cpp" />
+    <ClCompile Include="TbLabelDao.cpp" />
+    <ClCompile Include="TbPost.cpp" />
+    <ClCompile Include="TbPostDao.cpp" />
+    <ClCompile Include="TbProductType.cpp" />
+    <ClCompile Include="TbProductTypeDao.cpp" />
+    <ClCompile Include="TbSensor.cpp" />
+    <ClCompile Include="TbSensorDao.cpp" />
+    <ClCompile Include="TbSignal.cpp" />
+    <ClCompile Include="TbSignalDao.cpp" />
+    <ClCompile Include="TbSignalTestRecord.cpp" />
+    <ClCompile Include="TbSignalTestRecordDao.cpp" />
+    <ClCompile Include="TbSumsignalLabel.cpp" />
+    <ClCompile Include="TbSumsignalLabelDao.cpp" />
+    <ClCompile Include="SumsignalLabelService.cpp" />
+    <ClCompile Include="TbTestlocation.cpp" />
+    <ClCompile Include="TbTestlocationDao.cpp" />
+    <ClCompile Include="TbTeststand.cpp" />
+    <ClCompile Include="TbTeststandDao.cpp" />
+    <ClCompile Include="TbTeststate.cpp" />
+    <ClCompile Include="TbTeststateDao.cpp" />
     <ClCompile Include="UUIDUtil.cpp" />
     <ClCompile Include="View\AirCraftCasingVibrateSystemView.cpp" />
     <ClCompile Include="View\AlarmParaSetView.cpp" />
@@ -473,7 +542,7 @@
     <ClCompile Include="entity\RealTimeSignal.cpp" />
     <ClCompile Include="Service\RecordSignalService.cpp" />
     <ClCompile Include="View\RegisterView.cpp" />
-    <ClCompile Include="Controller\SensorController.cpp" />
+    <ClCompile Include="Controller\ChannelController.cpp" />
     <ClCompile Include="Utils\CherryTree.cpp" />
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="Controller\ClassifierController.cpp" />
@@ -516,14 +585,14 @@
     <ClCompile Include="entity\Result.cpp" />
     <ClCompile Include="View\Picture\SelectView.cpp" />
     <ClCompile Include="Controller\SelfCheckController.cpp" />
-    <ClCompile Include="Controller\SensorParaController.cpp" />
-    <ClCompile Include="Service\SensorParaService.cpp" />
-    <ClCompile Include="Service\SensorService.cpp" />
+    <ClCompile Include="Controller\ChannelParaController.cpp" />
+    <ClCompile Include="Service\ChannelParaService.cpp" />
+    <ClCompile Include="Service\ChannelService.cpp" />
     <ClCompile Include="View\CollectionParaView.cpp" />
     <ClCompile Include="Service\SignalAcquisitionService.cpp" />
-    <ClCompile Include="Controller\SignalController.cpp" />
+    <ClCompile Include="Controller\SumsignalController.cpp" />
     <ClCompile Include="View\SignalDataView.cpp" />
-    <ClCompile Include="Service\SignalService.cpp" />
+    <ClCompile Include="Service\SumsignalService.cpp" />
     <ClCompile Include="View\SignalSaveView.cpp" />
     <ClCompile Include="View\SignalSelectView.cpp" />
     <ClCompile Include="entity\SmartFFTWComplexArray.cpp" />
@@ -549,18 +618,18 @@
     <ClCompile Include="dao\TbProjectDao.cpp" />
     <ClCompile Include="entity\TbRecordSignal.cpp" />
     <ClCompile Include="dao\TbRecordSignalDao.cpp" />
-    <ClCompile Include="entity\TbSensor.cpp" />
-    <ClCompile Include="dao\TbSensorDao.cpp" />
-    <ClCompile Include="entity\TbSignal.cpp" />
-    <ClCompile Include="dao\TbSignalDao.cpp" />
-    <ClCompile Include="dao\TbTesterDao.cpp" />
-    <ClCompile Include="entity\TbTestingDevice.cpp" />
-    <ClCompile Include="dao\TbTestingDeviceDao.cpp" />
-    <ClCompile Include="entity\TbTester.cpp" />
-    <ClCompile Include="Controller\TesterController.cpp" />
-    <ClCompile Include="Service\TesterService.cpp" />
-    <ClCompile Include="Controller\TestingDeviceController.cpp" />
-    <ClCompile Include="Service\TestingDeviceService.cpp" />
+    <ClCompile Include="entity\TbChannel.cpp" />
+    <ClCompile Include="dao\TbChannelDao.cpp" />
+    <ClCompile Include="entity\TbSumsignal.cpp" />
+    <ClCompile Include="dao\TbSumsignalDao.cpp" />
+    <ClCompile Include="dao\TbUserDao.cpp" />
+    <ClCompile Include="entity\TbCollectionparas.cpp" />
+    <ClCompile Include="dao\TbCollectionparasDao.cpp" />
+    <ClCompile Include="entity\TbUser.cpp" />
+    <ClCompile Include="Controller\UserController.cpp" />
+    <ClCompile Include="Service\UserService.cpp" />
+    <ClCompile Include="Controller\CollectionparasController.cpp" />
+    <ClCompile Include="Service\CollectionparasService.cpp" />
     <ClCompile Include="View\TriggerParaView.cpp" />
     <ClCompile Include="Redis\win32fixes.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>

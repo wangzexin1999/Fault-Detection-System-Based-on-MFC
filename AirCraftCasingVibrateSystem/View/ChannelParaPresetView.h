@@ -6,7 +6,7 @@
 #include <vector>
 #include "afxwin.h"
 #include "AdvantechDaqController.h"
-#include "SensorParaController.h"
+#include "ChannelParaController.h"
 using namespace  std;
 // ChannelParaPresetView 对话框
 
@@ -24,7 +24,7 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 	CGridCtrl m_channelParaGridCtrl;
-	vector<CString> m_vchannelId;
+	vector<CString> m_vchannelCode;
 	DictionaryController m_dictionController; 
 	vector<TbDictionary> m_vwindowTypes;
 	vector<TbDictionary> m_vinputMethods;
@@ -32,7 +32,7 @@ protected:
 	CComboBox m_startChannelCombo;
 	CComboBox m_endChannelCombo;
 	vector<vector<int>>  m_vmeasuringRange;
-	SensorParaController m_sensorParaController;
+	ChannelParaController m_channelParaController;
 	DECLARE_MESSAGE_MAP()
 	/**********************************************************************
 	功能描述：初始化表格控件
@@ -101,6 +101,6 @@ protected:
 	afx_msg void OnCbnSelchangeComboStartChannel();
 	afx_msg void OnCbnSelchangeComboEndChannel();
 public:
-	void GetSelectedChannels(vector<TbSensor> & vsensors);
+	void GetSelectedChannels(vector<TbChannel> & vchannels);
 	bool GetGridCellCheck(int row, int col);
 };

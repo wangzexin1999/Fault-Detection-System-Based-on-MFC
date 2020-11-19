@@ -1,21 +1,21 @@
 #pragma once
 #include "TbProjectDao.h"
 #include "TbProject.h"
-#include "TbTester.h"
-#include "TbTestingDeviceDao.h"
+#include "TbUser.h"
+#include "TbCollectionparasDao.h"
 #include "TbProductDao.h"
 #include "CommonUtil.h"
-#include "TbTesterDao.h"
+#include "TbUserDao.h"
 class ProjectService
 {
 public:
 	ProjectService();
 	~ProjectService();
 protected:
-	TbTestingDeviceDao m_testingDeviceDao;
+	TbCollectionparasDao m_collectionparasDao;
 	TbProjectDao  m_projectDao;
 	TbProductDao m_productDao;
-	TbTesterDao m_testerDao;
+	TbUserDao m_userDao;
 public:
 	bool AddProject(TbProject & project);
 

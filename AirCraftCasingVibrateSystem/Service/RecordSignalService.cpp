@@ -19,7 +19,7 @@ bool RecordSignalService::FindAllRecordSignalBySearchCondition(TbRecordSignal se
 	CString strSqlWhere = "1 = 1 ";
 	if (searchEntity.GetProduct().GetProductId() != 0)	strSqlWhere += " and product_id ='" + CommonUtil::Int2CString(searchEntity.GetProduct().GetProductId()) + "'";
 	if (searchEntity.GetProject().GetProjectId() != 0)   strSqlWhere += " and project_id ='" + CommonUtil::Int2CString(searchEntity.GetProject().GetProjectId()) + "'";
-	if (searchEntity.GetTestingDevice().GetId() != 0)  strSqlWhere += " and testingdevice_id ='" + CommonUtil::Int2CString(searchEntity.GetTestingDevice().GetId()) + "'";
+	if (searchEntity.GetCollectionparas().GetId() != 0)  strSqlWhere += " and collectionparas_id ='" + CommonUtil::Int2CString(searchEntity.GetCollectionparas().GetId()) + "'";
 	if (searchEntity.GetCollectionStatus() != ""){
 		///拆开封装好的关键字字符串
 		vector<CString> keyWords = CommonUtil::GetCStringVectorFromSplitCString(searchEntity.GetCollectionStatus(), ",");
@@ -41,10 +41,10 @@ bool RecordSignalService::FindAllRecordSignalBySearchCondition(TbRecordSignal se
 			if (!isSuccess){ AfxMessageBox("产品加载失败"); }
 			else m_productDao.GetTableFieldValues(recordSignal.GetProduct());
 			///查询采集设备信息
-			m_testingDeviceDao.m_key->SetValue(recordSignal.GetTestingDevice().GetId());
-			isSuccess = m_testingDeviceDao.SelectByKey();
+			m_collectionparasDao.m_key->SetValue(recordSignal.GetCollectionparas().GetId());
+			isSuccess = m_collectionparasDao.SelectByKey();
 			if (!isSuccess){ AfxMessageBox("采集设备加载失败"); }
-			else m_testingDeviceDao.GetTableFieldValues(recordSignal.GetTestingDevice());
+			else m_collectionparasDao.GetTableFieldValues(recordSignal.GetCollectionparas());
 			///查询项目信息
 			m_projectDao.m_key->SetValue(recordSignal.GetProject().GetProjectId());
 			isSuccess = m_projectDao.SelectByKey();

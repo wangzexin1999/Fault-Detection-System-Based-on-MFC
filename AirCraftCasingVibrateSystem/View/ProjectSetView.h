@@ -22,7 +22,7 @@ protected:
 	ChannelParaPresetView m_channelParaPresetView;
 	int m_icurSelTabIndex;
 	int m_newDialogIndex;
-	vector<TbSensor> m_vsensors;
+	vector<TbChannel> m_vchannels;
 	TbProject m_project;
 	ProjectController m_projectController;
 	vector<CDialog*> m_pDialogVec;  //用来保存对话框对象指针

@@ -22,11 +22,11 @@ Result ProductController::FindAllProduct(vector<TbProduct> & productVec){
 }
 
 
-Result ProductController::DeleteByProductId(TbProduct testingDevice)
+Result ProductController::DeleteByProductId(TbProduct collectionparas)
 {
 
 
-	bool flag = m_productService.DeletProductByID(testingDevice);
+	bool flag = m_productService.DeletProductByID(collectionparas);
 	if (flag){
 		return Result(true, "产品加载成功");
 	}

@@ -67,6 +67,12 @@ void CChartLineSerieDu::AddPoints(double* pX, double* pY, unsigned Count)
 	if (m_bNeedCalStatValue)
 		CalSamplingStatValue(pY, Count);
 
+	//CDC* pDC = m_pParentCtrl->GetDC();
+	//Draw(pDC);
+	//m_pParentCtrl->Invalidate();
+}
+void CChartLineSerieDu::DrawDu()
+{
 	CDC* pDC = m_pParentCtrl->GetDC();
 	Draw(pDC);
 	m_pParentCtrl->Invalidate();
@@ -243,4 +249,12 @@ void CChartLineSerieDu::DrawAll(CDC *pDC)
 	pDC->SelectObject(pOldPen);
 	NewPen.DeleteObject();
 	ShadowPen.DeleteObject();
+}
+double CChartLineSerieDu::GetMax()
+{
+	return m_dStatMaxValue;
+}
+double CChartLineSerieDu::GetSum()
+{
+	return m_dStatSumValue;
 }

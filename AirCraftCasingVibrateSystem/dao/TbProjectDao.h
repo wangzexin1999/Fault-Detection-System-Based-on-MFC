@@ -11,11 +11,11 @@ public:
 public:
 
 	PDAttribute m_projectId;
-	PDAttribute m_testerId;
+	PDAttribute m_userId;
 	PDAttribute m_projectName;
 	PDAttribute m_projectCreatetime;
 	PDAttribute m_projectUpdatetime;
-	PDAttribute m_testingDeviceid;
+	PDAttribute m_collectionparasid;
 	PDAttribute m_productId;
 	PDAttribute m_projectStatus;
 	PDAttribute m_collectionPlans;

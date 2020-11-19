@@ -2,16 +2,16 @@
 #include "TbRecordSignal.h"
 
 
-TbRecordSignal::TbRecordSignal(CString signalId, CString startTime, CString endTime, CString signalType, char signalStatus, TbProject project, TbProduct product, TbTestingDevice testingDevice, CString collectionStatus, CString sensorInfo){
+TbRecordSignal::TbRecordSignal(CString signalId, CString startTime, CString endTime, CString signalType, char signalStatus, TbProject project, TbProduct product, TbCollectionparas collectionparas, CString collectionStatus, CString channelInfo){
 	SetCollectionStatus(collectionStatus);
 	SetStartTime(startTime);
 	SetEndTime(endTime);
 	SetProject(project);
 	SetProduct(product);
-	SetSensorInfo(sensorInfo);
+	SetChannelInfo(channelInfo);
 	SetSignalStatus(signalStatus);
 	SetSignalType(signalType);
-	SetTesingDevice(testingDevice);
+	SetCollectionparas(collectionparas);
 }
 
 TbRecordSignal::TbRecordSignal() :m_signalStatus(0), m_startPos(0), m_endPos(0){
@@ -86,11 +86,11 @@ TbProject & TbRecordSignal::GetProject(){
 	return this->m_project;
 }
 
-TbTestingDevice & TbRecordSignal::GetTestingDevice(){
-	return m_testingDevice;
+TbCollectionparas & TbRecordSignal::GetCollectionparas(){
+	return m_collectionparas;
 }
-void TbRecordSignal::SetTesingDevice(TbTestingDevice  testingDevice){
-	m_testingDevice = testingDevice;
+void TbRecordSignal::SetCollectionparas(TbCollectionparas  collectionparas){
+	m_collectionparas = collectionparas;
 }
 
 void TbRecordSignal::SetCollectionStatus(CString collectionStatus){
@@ -99,9 +99,9 @@ void TbRecordSignal::SetCollectionStatus(CString collectionStatus){
 CString TbRecordSignal::GetCollectionStatus(){
 	return this->m_collectionStatus;
 }
-void TbRecordSignal::SetSensorInfo(CString sensorInfo){
-	this->m_sensorInfo = sensorInfo;
+void TbRecordSignal::SetChannelInfo(CString channelInfo){
+	this->m_channelInfo = channelInfo;
 }
-CString TbRecordSignal::GetSensorInfo(){
-	return this->m_sensorInfo;
+CString TbRecordSignal::GetChannelInfo(){
+	return this->m_channelInfo;
 }

@@ -92,7 +92,11 @@ void CProductManageView::GridCtrlInit()
 		CString strText;
 		if (col == 0) strText = CommonUtil::Int2CString(row);
 		if (col == 1) strText = m_vTbProduct[row - 1].GetProductName();
-		if (col == 2) strText = m_vTbProduct[row - 1].GetProductType();
+		if (col == 2){
+			CString strText;
+
+			strText = m_vTbProduct[row - 1].GetProductType().GetTypeName();
+		}
 		Item.strText = strText;
 		m_productManageGridCtrl.SetItem(&Item);
 	}
@@ -160,7 +164,10 @@ void CProductManageView::OnBnClickedSaveProduct()
 		for (int col = 1; col < cols; col++){
 			CString itemText = m_productManageGridCtrl.GetItemText(row, col);
 			if (col == 1){ product.SetProductName(itemText); }
-			if (col == 2){ product.SetProductType(itemText); }
+			if (col == 2){
+				//product.SetProductType(itemText); 
+				product.SetProductType(1);
+			}
 		}
 		////如果修改了没保存
 		if (product.GetProductId() != 0 && product != m_vTbProduct[row - 1]){

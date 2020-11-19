@@ -131,7 +131,7 @@ void CSignalDataView::GridCtrlInit(){
 		const Value& collectionPlanPara = doc["planParaContent"];
 		////2.解析通道信息
 		int	channelCount = 0;
-		doc.Parse(m_signalVector[row - 1].GetSensorInfo());
+		doc.Parse(m_signalVector[row - 1].GetChannelInfo());
 		if (doc.HasParseError()){ continue; }
 		channelCount = doc["channelCount"].GetInt();
 		for (int col = 0; col < m_signalDataGridCtrl.GetColumnCount(); col++)
@@ -237,9 +237,9 @@ void CSignalDataView::OnBnClickedSearchButton()
 {
 	////清空数据集合
 	m_signalVector.clear();
-	m_searchSignalEntity.SetTesingDevice(theApp.m_currentProject.GetTestingDevice());
+	m_searchSignalEntity.SetCollectionparas(theApp.m_currentProject.GetCollectionparas());
 	m_searchSignalEntity.SetCollectionStatus(GetCollectionParaKeyWords());
-	Result	res = m_signalController.FindAllRecordSignalBySearchCondition(m_searchSignalEntity, m_signalVector);
+	Result	res = m_sumsignalController.FindAllRecordSignalBySearchCondition(m_searchSignalEntity, m_signalVector);
 	if (!res.GetIsSuccess()){
 		AfxMessageBox("数据文件检索失败");
 		return;
@@ -254,7 +254,7 @@ void CSignalDataView::OnCbnSelchangeComboProductName()
 	m_projectNameCombo.ResetContent();
 	TbProject searchProject;
 	searchProject.SetProduct(m_productVector[selectedProductIndex]);
-	searchProject.SetTester(theApp.m_currentProject.GetTester());
+	searchProject.SetUser(theApp.m_currentProject.GetUser());
 	////清空项目集合
 	m_projectVector.clear();
 	Result res = m_projectController.FindAllProjectBySearchCondition(searchProject, "", "", m_projectVector);

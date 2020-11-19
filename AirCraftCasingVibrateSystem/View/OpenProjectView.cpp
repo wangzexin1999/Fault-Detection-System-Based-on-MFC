@@ -85,7 +85,7 @@ void COpenProjectView::GridCtrlInit(){
 		if (col == 0) strText = CommonUtil::Int2CString(m_projectVector[row - 1].GetProjectId());
 		if (col == 1) strText = m_projectVector[row - 1].GetProjectName();
 		if (col == 2) strText = m_projectVector[row - 1].GetProjectCreateTime();
-		if (col == 3) strText = m_projectVector[row - 1].GetTestingDevice().GetTestingDeviceIp();
+		if (col == 3) strText = m_projectVector[row - 1].GetCollectionparas().GetEquipmentId();
 		if (col == 4) strText = m_projectVector[row - 1].GetProduct().GetProductName();
 		Item.strText=strText;
 		m_projectGrid.SetItem(&Item);  
@@ -108,9 +108,9 @@ BOOL COpenProjectView::OnInitDialog()
 	m_dateSelectComboBox.InsertString(5, "最近一年");
 	m_dateSelectComboBox.SetCurSel(0);
 
-	int testerId = theApp.m_currentProject.GetTester().GetTesterId();
+	int userId = theApp.m_currentProject.GetUser().GetUserId();
 	TbProject project;
-	project.GetTester().SetTesterId(testerId);
+	project.GetUser().SetUserId(userId);
 
 	Result res = m_projectController.FindAllProjectBySearchCondition(project, "", "", m_projectVector);
 	if (res.GetIsSuccess()){
@@ -156,9 +156,9 @@ void COpenProjectView::OnBnClickedSearchbutton()
 	////清空项目集合
 	m_projectVector.clear();
 
-	int testerId = theApp.m_currentProject.GetTester().GetTesterId();
+	int userId = theApp.m_currentProject.GetUser().GetUserId();
 	TbProject project;
-	project.GetTester().SetTesterId(testerId);
+	project.GetUser().SetUserId(userId);
 	project.SetProjectName(proSearchName);
 
 	Result res = m_projectController.FindAllProjectBySearchCondition(project, strStartTime, strEndTime, m_projectVector);

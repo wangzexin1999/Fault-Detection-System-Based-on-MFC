@@ -48,7 +48,7 @@ BOOL ChannelParaPresetView::OnInitDialog()
 	///查询所有的窗类型
 	Result res = m_dictionController.FindAllBySearchCondition(m_vwindowTypes, 0, "windowtype");
 	if (!res.GetIsSuccess()){
-		AfxMessageBox("床类型查询失败");
+		AfxMessageBox("窗类型查询失败");
 	}
 	res = m_dictionController.FindAllBySearchCondition(m_vinputMethods, 0, "inputmethod");
 	if (!res.GetIsSuccess()){
@@ -56,7 +56,7 @@ BOOL ChannelParaPresetView::OnInitDialog()
 	}
 
 	//把下面这行注释掉
-	m_advantechDaqController.GetChannels(m_vchannelId);
+	m_advantechDaqController.GetChannels(m_vchannelCode);
 
 	CDialogEx::OnInitDialog();
 	ChannelComboInit();
@@ -135,7 +135,7 @@ void ChannelParaPresetView::GridCtrlInit()
 		}
 		if (col == 1)
 		{
-			Item.strText = m_vchannelId[startChannelIndex++];
+			Item.strText = m_vchannelCode[startChannelIndex++];
 			m_channelParaGridCtrl.SetItemState(row, col, GVIS_READONLY);
 		}
 		if (col == 2) Item.strText = "通道" + CommonUtil::Int2CString(row);
@@ -282,28 +282,28 @@ void ChannelParaPresetView::OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResul
 
 
 
-void ChannelParaPresetView::GetSelectedChannels(vector<TbSensor> & vsensors){
+void ChannelParaPresetView::GetSelectedChannels(vector<TbChannel> & vchannels){
 	for (int row = 1; row < m_channelParaGridCtrl.GetRowCount(); row++){
 		if (!m_channelParaGridCtrl.GetCell(row, 0)->IsKindOf(RUNTIME_CLASS(CGridCellCheck)))
 			m_channelParaGridCtrl.SetCellType(row, 0, RUNTIME_CLASS(CGridCellCheck));
 		CGridCellCheck* pCell = (CGridCellCheck*)m_channelParaGridCtrl.GetCell(row, 0);
-		TbSensor currentSensor;
+		TbChannel currentChannel;
 		if (pCell->GetCheck()){
 			for (int col = 0; col < m_channelParaGridCtrl.GetColumnCount();col++){
-				if (col == 1)currentSensor.SetChannelId(m_channelParaGridCtrl.GetItemText(row, col));
-				if (col == 2) currentSensor.SetSensorDesc(m_channelParaGridCtrl.GetItemText(row,col));
+				if (col == 1)currentChannel.SetChannelCode(m_channelParaGridCtrl.GetItemText(row, col));
+				if (col == 2) currentChannel.SetChannelDesc(m_channelParaGridCtrl.GetItemText(row, col));
 				if (col == 3){
 					///拿到选择的窗类型
 					CGridCellCombo* pCellCombo = (CGridCellCombo*)m_channelParaGridCtrl.GetCell(row, col);
 					int index = pCellCombo->GetCurSel();
-					currentSensor.SetWindowType(m_vwindowTypes[index]);
+					currentChannel.SetWindowType(m_vwindowTypes[index]);
 				}
-				if (col == 4) currentSensor.SetSensitivity(atoi(m_channelParaGridCtrl.GetItemText(row, col)));
+				if (col == 4) currentChannel.SetSensitivity(atoi(m_channelParaGridCtrl.GetItemText(row, col)));
 				if (col == 5){
 					///拿到选择的窗类型
 					CGridCellCombo* pCellCombo = (CGridCellCombo*)m_channelParaGridCtrl.GetCell(row, col);
 					int index = pCellCombo->GetCurSel();
-					currentSensor.SetInputMethod(m_vinputMethods[index]); 
+					currentChannel.SetInputMethod(m_vinputMethods[index]);
 				}
 				if (col == 6)
 					//currentSensor.SetMileageRange(atoi(m_channelParaGridCtrl.GetItemText(row, col)));
@@ -311,10 +311,10 @@ void ChannelParaPresetView::GetSelectedChannels(vector<TbSensor> & vsensors){
 					///拿到选择的量程范围
 					CGridCellCombo* pCellCombo = (CGridCellCombo*)m_channelParaGridCtrl.GetCell(row, col);
 					int index = pCellCombo->GetCurSel();
-					currentSensor.SetMileageRange(m_vmeasuringRange[row - 1][index]);
+					currentChannel.SetMileageRange(m_vmeasuringRange[row - 1][index]);
 				}
 			}
-			vsensors.push_back(currentSensor);
+			vchannels.push_back(currentChannel);
 		}
 	}
 }
@@ -332,10 +332,10 @@ void ChannelParaPresetView::OnCbnSelchangeComboEndChannel()
 void ChannelParaPresetView::ChannelComboInit(){
 	m_startChannelCombo.ResetContent();
 	m_endChannelCombo.ResetContent();
-	for (int i = 0; i < m_vchannelId.size();i++){
-		m_startChannelCombo.InsertString(i, m_vchannelId[i]);
-		m_endChannelCombo.InsertString(i, m_vchannelId[i]);
+	for (int i = 0; i < m_vchannelCode.size(); i++){
+		m_startChannelCombo.InsertString(i, m_vchannelCode[i]);
+		m_endChannelCombo.InsertString(i, m_vchannelCode[i]);
 	}
 	m_startChannelCombo.SetCurSel(0);
-	m_endChannelCombo.SetCurSel(m_vchannelId.size() - 1);
+	m_endChannelCombo.SetCurSel(m_vchannelCode.size() - 1);
 }

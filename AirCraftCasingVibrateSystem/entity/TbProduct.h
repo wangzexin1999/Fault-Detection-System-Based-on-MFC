@@ -1,8 +1,11 @@
 #pragma once
+#include"TbProductType.h"
 class TbProduct
 {
 public:
-	TbProduct(int productId = 0, CString productName = "", CString productType = "");
+	//TbProduct(int productId = 0, CString productName = "", CString productType = "");
+	TbProduct(int productId = 0, CString productName = "");
+	TbProduct(int productId, CString productName, TbProductType productType);
 	~TbProduct();
 	
 	bool operator == (TbProduct product);
@@ -11,14 +14,17 @@ public:
 
 	int m_productId;
 	CString m_productName;
-	CString m_productType;
+	TbProductType m_productType;
 
 	int GetProductId();
 	void SetProductId(int productId);
 	CString GetProductName();
 	void SetProductName(CString productName);
-	void SetProductType(CString productType);
-	CString GetProductType();
+
+
+	void SetProductType(TbProductType productType);
+	//CString GetProductType();
+	TbProductType & GetProductType();
 
 };
 

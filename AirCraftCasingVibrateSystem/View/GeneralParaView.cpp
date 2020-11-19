@@ -49,43 +49,43 @@ void CGeneralParaView::OnGridEndEdit(NMHDR *pNotifyStruct, LRESULT* pResult)
 	
 	///获取指定行的数据，同步到全局项目对象
 	for (int col = 1; col < m_generalParaGridCtrl.GetColumnCount(); col++){
-		if (col == 2) theApp.m_currentProject.GetSensorVector()[pItem->iRow - 1].SetSensorDesc(m_generalParaGridCtrl.GetItemText(pItem->iRow, col));
+		if (col == 2) theApp.m_currentProject.GetChannelVector()[pItem->iRow - 1].SetChannelDesc(m_generalParaGridCtrl.GetItemText(pItem->iRow, col));
 		if (col == 3){
 			///拿到选择的窗类型
 			CGridCellCombo* pCellCombo = (CGridCellCombo*)m_generalParaGridCtrl.GetCell(pItem->iRow, col);
 			index = pCellCombo->GetCurSel();
 			if (index < 0) continue;
-			theApp.m_currentProject.GetSensorVector()[pItem->iRow - 1].SetWindowType(m_vwindowTypes[index]);
+			theApp.m_currentProject.GetChannelVector()[pItem->iRow - 1].SetWindowType(m_vwindowTypes[index]);
 		}
 		if (col == 4) 
-			theApp.m_currentProject.GetSensorVector()[pItem->iRow - 1].SetSensitivity(atoi(m_generalParaGridCtrl.GetItemText(pItem->iRow, col)));
+			theApp.m_currentProject.GetChannelVector()[pItem->iRow - 1].SetSensitivity(atoi(m_generalParaGridCtrl.GetItemText(pItem->iRow, col)));
 		if (col == 5){
 			///拿到选择的窗类型
 			CGridCellCombo* pCellCombo = (CGridCellCombo*)m_generalParaGridCtrl.GetCell(pItem->iRow, col);
 			index = pCellCombo->GetCurSel();
 			if (index < 0) continue;
-			theApp.m_currentProject.GetSensorVector()[pItem->iRow - 1].SetInputMethod(m_vinputMethods[index]);
+			theApp.m_currentProject.GetChannelVector()[pItem->iRow - 1].SetInputMethod(m_vinputMethods[index]);
 		}
 		if (col == 6){
 			///拿到选择的量程范围
 			CGridCellCombo* pCellCombo = (CGridCellCombo*)m_generalParaGridCtrl.GetCell(pItem->iRow, col);
 			index = pCellCombo->GetCurSel();
 			if (index < 0) continue;
-			theApp.m_currentProject.GetSensorVector()[pItem->iRow - 1].SetMileageRange(m_measuringRange[pItem->iRow - 1][index]);
+			theApp.m_currentProject.GetChannelVector()[pItem->iRow - 1].SetMileageRange(m_measuringRange[pItem->iRow - 1][index]);
 		}
 			
 	}
 	///根据选择的量程范围获取量程的最大值和最小值
 	MathInterval yInterval;
-	yInterval.Type = theApp.m_currentProject.GetSensorVector()[pItem->iRow - 1].GetMileageRange();
+	yInterval.Type = theApp.m_currentProject.GetChannelVector()[pItem->iRow - 1].GetMileageRange();
 	m_advantechDaqController.GetValueRangeInformationByVrgType(yInterval);
 	theApp.m_vsignalCaptureView[pItem->iRow - 1]->SetChartXYCoordinateLen(0,-1,yInterval.Min, yInterval.Max);
 	///刷新窗口显示的传感器
-	theApp.m_vsignalCaptureView[pItem->iRow - 1]->SetSensor(theApp.m_currentProject.GetSensorVector()[pItem->iRow - 1]);
+	theApp.m_vsignalCaptureView[pItem->iRow - 1]->SetChannel(theApp.m_currentProject.GetChannelVector()[pItem->iRow - 1]);
 	///更新数据库，交给周书航了
 
-	SensorController m_SensorController;
-	Result res = m_SensorController.UpdateSensor(theApp.m_currentProject.GetSensorVector()[pItem->iRow - 1]);
+	ChannelController m_ChannelController;
+	Result res = m_ChannelController.UpdateChannel(theApp.m_currentProject.GetChannelVector()[pItem->iRow - 1]);
 	if (!res.GetIsSuccess()){
 		AfxMessageBox(res.GetMessages());
 	}
@@ -98,10 +98,10 @@ void CGeneralParaView::OnGridEndEdit(NMHDR *pNotifyStruct, LRESULT* pResult)
 void CGeneralParaView::GridCtrlInit()
 {
 	//初始化足够数量的采集卡对象数据
-	m_measuringRange.resize(theApp.m_currentProject.GetSensorVector().size());
+	m_measuringRange.resize(theApp.m_currentProject.GetChannelVector().size());
 	m_generalParaGridCtrl.SetEditable(false);
 	m_generalParaGridCtrl.SetTextBkColor(RGB(0xFF, 0xFF, 0xE0));//黄色背景
-	m_generalParaGridCtrl.SetRowCount(theApp.m_currentProject.GetSensorVector().size() + 1); //初始为n行
+	m_generalParaGridCtrl.SetRowCount(theApp.m_currentProject.GetChannelVector().size() + 1); //初始为n行
 	m_generalParaGridCtrl.SetColumnCount(7); //初始化为7列
 	m_generalParaGridCtrl.SetFixedRowCount(1); //表头为一行
 	m_generalParaGridCtrl.SetRowResize(TRUE); ///自动设置行和列的大小
@@ -144,12 +144,12 @@ void CGeneralParaView::GridCtrlInit()
 		CString strText;
 		if (col == 0)
 		{
-			Item.strText = theApp.m_currentProject.GetSensorVector()[row - 1].GetChannelId();
+			Item.strText = theApp.m_currentProject.GetChannelVector()[row - 1].GetChannelCode();
 			m_generalParaGridCtrl.SetItemState(row, col, GVIS_READONLY);
 		}
-		if (col == 1) Item.strText = theApp.m_currentProject.GetSensorVector()[row - 1].GetSensorStatus().GetDictValue();
+		if (col == 1) Item.strText = theApp.m_currentProject.GetChannelVector()[row - 1].GetChannelStatus().GetDictValue();
 		if (col == 2) 
-			Item.strText = theApp.m_currentProject.GetSensorVector()[row - 1].GetSensorDesc();
+			Item.strText = theApp.m_currentProject.GetChannelVector()[row - 1].GetChannelDesc();
 		if (col == 3) {
 			m_generalParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCombo));
 			CGridCellCombo* pCellCombo = (CGridCellCombo*)m_generalParaGridCtrl.GetCell(row, col);
@@ -160,9 +160,9 @@ void CGeneralParaView::GridCtrlInit()
 			}
 			pCellCombo->SetOptions(OptionsType);
 			pCellCombo->SetCurSel(0);
-			Item.strText = theApp.m_currentProject.GetSensorVector()[row - 1].GetWindowType().GetDictValue();
+			Item.strText = theApp.m_currentProject.GetChannelVector()[row - 1].GetWindowType().GetDictValue();
 		}
-		if (col == 4) Item.strText = CommonUtil::DoubleOrFloat2CString(theApp.m_currentProject.GetSensorVector()[row - 1].GetSensitivity());
+		if (col == 4) Item.strText = CommonUtil::DoubleOrFloat2CString(theApp.m_currentProject.GetChannelVector()[row - 1].GetSensitivity());
 		if (col == 5) {
 			m_generalParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCombo));
 			CGridCellCombo* pCellCombo = (CGridCellCombo*)m_generalParaGridCtrl.GetCell(row, col);
@@ -173,7 +173,7 @@ void CGeneralParaView::GridCtrlInit()
 			}
 			pCellCombo->SetOptions(OptionsType);
 			pCellCombo->SetCurSel(0);
-			Item.strText = theApp.m_currentProject.GetSensorVector()[row - 1].GetInputMethod().GetDictValue();
+			Item.strText = theApp.m_currentProject.GetChannelVector()[row - 1].GetInputMethod().GetDictValue();
 		}
 		if (col == 6){
 			m_generalParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCombo));
@@ -181,9 +181,9 @@ void CGeneralParaView::GridCtrlInit()
 			pCellCombo->SetStyle(CBS_DROPDOWN);
 			OptionsType.RemoveAll();
 			valueRangeIndex = 0;
-			if (theApp.m_currentProject.GetSensorVector().size() == 0)continue;
-			deviceNum = CommonUtil::CString2Int(CommonUtil::GetCStringVectorFromSplitCString(theApp.m_currentProject.GetSensorVector()[row - 1].GetChannelId(),"-")[0]);
- 			
+			if (theApp.m_currentProject.GetChannelVector().size() == 0)continue;
+			// = CommonUtil::CString2Int(CommonUtil::GetCStringVectorFromSplitCString(theApp.m_currentProject.GetChannelVector()[row - 1].GetChannelCode(), "-")[0]);
+			Item.strText = "";
 			/*m_advantechDaqController.GetValueRangeInformationByDeviceNum(deviceNum, g_valueRanges);
 			for (int i = 0; i < g_valueRanges->getCount(); i++){
 				ErrorCode error = AdxGetValueRangeInformation((g_valueRanges->getItem(i)), sizeof(vrgDescription), vrgDescription, &ranges, &u);
@@ -209,6 +209,7 @@ void CGeneralParaView::GridCtrlInit()
 			yInterval.Type = m_measuringRange[row - 1][valueRangeIndex];
 			m_advantechDaqController.GetValueRangeInformationByVrgType(yInterval);
 			theApp.m_vsignalCaptureView[row - 1]->ConfigurateChart(yInterval.Min, yInterval.Max);*/
+
 		}
 		m_generalParaGridCtrl.SetItem(&Item);
 	}

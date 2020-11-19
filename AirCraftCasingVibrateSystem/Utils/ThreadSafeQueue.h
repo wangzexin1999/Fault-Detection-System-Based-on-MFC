@@ -7,6 +7,11 @@
 template<typename T>
 class ThreadSafeQueue
 {
+private:
+	std::queue<T> data_queue;
+	std::mutex mut;
+	std::condition_variable cond;
+
 public:
 	ThreadSafeQueue() {}
 	ThreadSafeQueue(const ThreadSafeQueue &safeQuene) {
@@ -69,8 +74,5 @@ public:
 		return data_queue.empty();
 	}
 
-private:
-	std::queue<T> data_queue;
-	std::mutex mut;
-	std::condition_variable cond;
+
 };

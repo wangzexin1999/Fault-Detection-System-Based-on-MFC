@@ -6,7 +6,8 @@
 #include "LoginView.h"
 #include "afxdialogex.h"
 #include "TbDictionaryDao.h"
-#include "TbTester.h"
+#include "TbUser.h"
+#include "RegisterView.h"
 // CLoginView 对话框
 
 IMPLEMENT_DYNAMIC(CLoginView, CDialogEx)
@@ -50,15 +51,15 @@ void CLoginView::OnBnClickedOk()
 	loginName = "mst";
 	passWord = "123456";
 
-	TbTester tester;
-	tester.SetLoginName(loginName);
-	tester.SetPassWord(passWord);
-	Result reslut = m_TbTesterControler.LoginCheck(tester);
+	TbUser user;
+	user.SetLoginName(loginName);
+	user.SetPassWord(passWord);
+	Result reslut = m_TbUserControler.LoginCheck(user);
 	if (!reslut.GetIsSuccess()){
 		AfxMessageBox(reslut.GetMessages());
 	}
 	else{
-		theApp.m_currentProject.SetTester(tester);
+		theApp.m_currentProject.SetUser(user);
 		CDialogEx::OnOK();
 	}
 }
@@ -75,6 +76,8 @@ void CLoginView::OnClose()
 void CLoginView::OnBnClickedButtonLoginviewRegister()
 {
 	// TODO:  在此添加控件通知处理程序代码
+	CDialogEx::OnCancel();
 	CRegisterView registerView;
 	registerView.DoModal();
+
 }

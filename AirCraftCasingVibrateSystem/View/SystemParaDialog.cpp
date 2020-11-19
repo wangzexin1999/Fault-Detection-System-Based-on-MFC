@@ -46,7 +46,7 @@ BOOL CSystemParaDialog::OnInitDialog()
 	m_tabSystemPara.InsertItem(0, _T("采集参数"));
 	m_tabSystemPara.InsertItem(1, _T("设备参数"));
 	//创建两个对话框  
-	m_sensorPara.Create(IDD_DIALOG_SERSOR_PARA, &m_tabSystemPara);
+	m_channelPara.Create(IDD_DIALOG_SERSOR_PARA, &m_tabSystemPara);
 	m_devicePara.Create(IDD_DIALOG_DEVICE_PARA, &m_tabSystemPara);
 	//设定在Tab内显示的范围  
 	CRect tabRect;
@@ -56,13 +56,13 @@ BOOL CSystemParaDialog::OnInitDialog()
 	tabRect.top += 22;
 	tabRect.bottom -= 1;
 	//m_tabSystemPara.MoveWindow(tabRect);
-	m_sensorPara.MoveWindow(&tabRect);
+	m_channelPara.MoveWindow(&tabRect);
 	m_devicePara.MoveWindow(&tabRect);
 	//把对话框对象指针保存起来
-	pDialog[0] = &m_sensorPara;
+	pDialog[0] = &m_channelPara;
 	pDialog[1] = &m_devicePara;
 	//显示初始页面  
-	m_sensorPara.ShowWindow(SW_SHOW);
+	m_channelPara.ShowWindow(SW_SHOW);
 	m_devicePara.ShowWindow(SW_HIDE);
 	m_CurSelTab = 0;
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -92,5 +92,5 @@ void CSystemParaDialog::OnTcnSelchangeTabSystemPara(NMHDR *pNMHDR, LRESULT *pRes
 	*pResult = 0;
 }
 void CSystemParaDialog::RefreshView(){
-	m_sensorPara.RefreshView(); 
+	m_channelPara.RefreshView();
 }

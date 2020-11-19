@@ -7,11 +7,11 @@ TbProjectDao::TbProjectDao()
 	this->m_strTableName = "tb_project";
 	m_key = &m_projectId;;
 	SetVectorAndField("project_id", "int", m_projectId);
-	SetVectorAndField("tester_id", "int", m_testerId);
+	SetVectorAndField("user_id", "int", m_userId);
 	SetVectorAndField("project_name", "CString", m_projectName);
 	SetVectorAndField("project_createtime", "CString", m_projectCreatetime);
 	SetVectorAndField("project_updatetime", "CString", m_projectUpdatetime);
-	SetVectorAndField("testingdevice_id", "int", m_testingDeviceid);
+	SetVectorAndField("collectionparas_id", "int", m_collectionparasid);
 	SetVectorAndField("product_id", "int", m_productId);
 	SetVectorAndField("project_status", "int", m_projectStatus);
 	SetVectorAndField("collection_plan", "CString", m_collectionPlans);
@@ -28,11 +28,11 @@ TbProjectDao::TbProjectDao(const TbProjectDao &project){
 	this->m_strTableName = "tb_project";
 	m_key = &m_projectId;
 	SetVectorAndField("project_id", "int", m_projectId);
-	SetVectorAndField("tester_id", "int", m_testerId);
+	SetVectorAndField("user_id", "int", m_userId);
 	SetVectorAndField("project_name", "CString", m_projectName);
 	SetVectorAndField("project_createtime", "CString", m_projectCreatetime);
 	SetVectorAndField("project_updatetime", "CString", m_projectUpdatetime);
-	SetVectorAndField("testingdevice_id", "int", m_testingDeviceid);
+	SetVectorAndField("collectionparas_id", "int", m_collectionparasid);
 	SetVectorAndField("product_id", "int", m_productId);
 	SetVectorAndField("project_status", "int", m_projectStatus);
 	SetVectorAndField("collection_plan", "CString", m_collectionPlans);
@@ -77,8 +77,8 @@ void TbProjectDao::SetTableFieldValues(TbProject project){
 	this->m_projectCreatetime.SetValue(project.GetProjectCreateTime());
 	this->m_projectUpdatetime.SetValue(project.GetProjectUpdateTime());
 	this->m_projectName.SetValue(project.GetProjectName());
-	this->m_testerId.SetValue(project.GetTester().GetTesterId());
-	this->m_testingDeviceid.SetValue(project.GetTestingDevice().GetId());
+	this->m_userId.SetValue(project.GetUser().GetUserId());
+	this->m_collectionparasid.SetValue(project.GetCollectionparas().GetId());
 	this->m_projectStatus.SetValue(project.GetProjectStatus());
 	this->m_collectionPlans.m_strValue = project.GetCollectionPlans();
 	this->m_collectionStatus.m_strValue = project.GetCollectionStatus();
@@ -90,9 +90,9 @@ void TbProjectDao::GetTableFieldValues(TbProject &project){
 	project.SetProjectUpdateTime(m_projectUpdatetime.m_strValue);
 	project.SetProjectName(m_projectName.m_strValue);
 	project.SetProjectStatus(m_projectStatus.GetInt());
-	project.GetTester().SetTesterId(m_testerId.GetInt());
+	project.GetUser().SetUserId(m_userId.GetInt());
 	project.GetProduct().SetProductId(m_productId.GetInt());
-	project.GetTestingDevice().SetId(m_testingDeviceid.GetInt());
+	project.GetCollectionparas().SetId(m_collectionparasid.GetInt());
 	project.SetCollectionPlans(m_collectionPlans.m_strValue);
 	project.SetCollectionStatus(m_collectionStatus.m_strValue);
 }

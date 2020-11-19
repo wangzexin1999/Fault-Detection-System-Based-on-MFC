@@ -420,21 +420,6 @@
     <ClInclude Include="Controller\SelfCheckController.h">
       <Filter>头文件\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="Controller\SensorController.h">
-      <Filter>头文件\Controller</Filter>
-    </ClInclude>
-    <ClInclude Include="Controller\SensorParaController.h">
-      <Filter>头文件\Controller</Filter>
-    </ClInclude>
-    <ClInclude Include="Controller\SignalController.h">
-      <Filter>头文件\Controller</Filter>
-    </ClInclude>
-    <ClInclude Include="Controller\TesterController.h">
-      <Filter>头文件\Controller</Filter>
-    </ClInclude>
-    <ClInclude Include="Controller\TestingDeviceController.h">
-      <Filter>头文件\Controller</Filter>
-    </ClInclude>
     <ClInclude Include="dao\basedao\PDAttribute.h">
       <Filter>头文件\dao\basedao</Filter>
     </ClInclude>
@@ -451,18 +436,6 @@
       <Filter>头文件\dao</Filter>
     </ClInclude>
     <ClInclude Include="dao\TbRecordSignalDao.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
-    <ClInclude Include="dao\TbSensorDao.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
-    <ClInclude Include="dao\TbSignalDao.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
-    <ClInclude Include="dao\TbTesterDao.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
-    <ClInclude Include="dao\TbTestingDeviceDao.h">
       <Filter>头文件\dao</Filter>
     </ClInclude>
     <ClInclude Include="entity\AcquiredSignal.h">
@@ -498,18 +471,6 @@
     <ClInclude Include="entity\TbProject.h">
       <Filter>头文件\entity</Filter>
     </ClInclude>
-    <ClInclude Include="entity\TbSensor.h">
-      <Filter>头文件\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\TbSignal.h">
-      <Filter>头文件\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\TbTester.h">
-      <Filter>头文件\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\TbTestingDevice.h">
-      <Filter>头文件\entity</Filter>
-    </ClInclude>
     <ClInclude Include="dao\TbProductDao.h">
       <Filter>头文件\dao</Filter>
     </ClInclude>
@@ -528,22 +489,7 @@
     <ClInclude Include="Service\ProjectService.h">
       <Filter>头文件\Service</Filter>
     </ClInclude>
-    <ClInclude Include="Service\SensorParaService.h">
-      <Filter>头文件\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="Service\SensorService.h">
-      <Filter>头文件\Service</Filter>
-    </ClInclude>
     <ClInclude Include="Service\SignalAcquisitionService.h">
-      <Filter>头文件\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="Service\SignalService.h">
-      <Filter>头文件\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="Service\TesterService.h">
-      <Filter>头文件\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="Service\TestingDeviceService.h">
       <Filter>头文件\Service</Filter>
     </ClInclude>
     <ClInclude Include="Utils\CherryTree.h">
@@ -720,6 +666,156 @@
     <ClInclude Include="ChildRibbonPanel.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="entity\TbUser.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="dao\TbUserDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\UserService.h">
+      <Filter>头文件\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\UserController.h">
+      <Filter>头文件\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="TbPost.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="TbPostDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="TbEquipment.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="TbEquipmentDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="entity\TbCollectionparas.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="dao\TbCollectionparasDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\CollectionparasService.h">
+      <Filter>头文件\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\CollectionparasController.h">
+      <Filter>头文件\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="TbProductTypeDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="TbProductType.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="entity\TbChannel.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="dao\TbChannelDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\ChannelController.h">
+      <Filter>头文件\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\ChannelParaController.h">
+      <Filter>头文件\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\ChannelParaService.h">
+      <Filter>头文件\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\ChannelService.h">
+      <Filter>头文件\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="TbSensor.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="TbSensorDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="TbTestlocation.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="TbTeststand.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="TbTeststate.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="TbTestlocationDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="TbTeststandDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="TbTeststateDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="TbLabel.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="TbLabelDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="dao\TbSumsignalDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="entity\TbSumsignal.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\SumsignalController.h">
+      <Filter>头文件\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\SumsignalService.h">
+      <Filter>头文件\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="TbAlarmpara.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="TbAlarmparaDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="TbSignalDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="TbSignal.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="SignalController.h">
+      <Filter>头文件\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="SignalService.h">
+      <Filter>头文件\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="TbSignalTestRecordDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="TbSignalTestRecord.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="TbSumsignalLabelDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="TbSumsignalLabel.h">
+      <Filter>头文件\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="SumsignalLabelService.h">
+      <Filter>头文件\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="SumsignalLabelController.h">
+      <Filter>头文件\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="SignalTestRecordService.h">
+      <Filter>头文件\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="SignalTestRecordController.h">
+      <Filter>头文件\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="AlarmparaService.h">
+      <Filter>头文件\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="AlarmparaController.h">
+      <Filter>头文件\Controller</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AirCraftCasingVibrateSystem.cpp">
@@ -893,28 +989,10 @@
     <ClCompile Include="Controller\GraphAttributeController.cpp">
       <Filter>源文件\Controller</Filter>
     </ClCompile>
-    <ClCompile Include="Controller\ProductController.cpp">
-      <Filter>源文件\View</Filter>
-    </ClCompile>
     <ClCompile Include="Controller\ProjectController.cpp">
       <Filter>源文件\Controller</Filter>
     </ClCompile>
     <ClCompile Include="Controller\SelfCheckController.cpp">
-      <Filter>源文件\Controller</Filter>
-    </ClCompile>
-    <ClCompile Include="Controller\SensorController.cpp">
-      <Filter>源文件\Controller</Filter>
-    </ClCompile>
-    <ClCompile Include="Controller\SensorParaController.cpp">
-      <Filter>源文件\Controller</Filter>
-    </ClCompile>
-    <ClCompile Include="Controller\SignalController.cpp">
-      <Filter>源文件\Controller</Filter>
-    </ClCompile>
-    <ClCompile Include="Controller\TesterController.cpp">
-      <Filter>源文件\Controller</Filter>
-    </ClCompile>
-    <ClCompile Include="Controller\TestingDeviceController.cpp">
       <Filter>源文件\Controller</Filter>
     </ClCompile>
     <ClCompile Include="dao\basedao\PDAttribute.cpp">
@@ -933,18 +1011,6 @@
       <Filter>源文件\dao</Filter>
     </ClCompile>
     <ClCompile Include="dao\TbRecordSignalDao.cpp">
-      <Filter>源文件\dao</Filter>
-    </ClCompile>
-    <ClCompile Include="dao\TbSensorDao.cpp">
-      <Filter>源文件\dao</Filter>
-    </ClCompile>
-    <ClCompile Include="dao\TbSignalDao.cpp">
-      <Filter>源文件\dao</Filter>
-    </ClCompile>
-    <ClCompile Include="dao\TbTesterDao.cpp">
-      <Filter>源文件\dao</Filter>
-    </ClCompile>
-    <ClCompile Include="dao\TbTestingDeviceDao.cpp">
       <Filter>源文件\dao</Filter>
     </ClCompile>
     <ClCompile Include="entity\AcquiredSignal.cpp">
@@ -974,15 +1040,6 @@
     <ClCompile Include="entity\TbProject.cpp">
       <Filter>源文件\entity</Filter>
     </ClCompile>
-    <ClCompile Include="entity\TbSensor.cpp">
-      <Filter>源文件\entity</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\TbSignal.cpp">
-      <Filter>源文件\entity</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\TbTester.cpp">
-      <Filter>源文件\entity</Filter>
-    </ClCompile>
     <ClCompile Include="dao\TbProductDao.cpp">
       <Filter>源文件\dao</Filter>
     </ClCompile>
@@ -998,22 +1055,7 @@
     <ClCompile Include="Service\ProjectService.cpp">
       <Filter>源文件\Service</Filter>
     </ClCompile>
-    <ClCompile Include="Service\SensorParaService.cpp">
-      <Filter>源文件\Service</Filter>
-    </ClCompile>
-    <ClCompile Include="Service\SensorService.cpp">
-      <Filter>源文件\Service</Filter>
-    </ClCompile>
     <ClCompile Include="Service\SignalAcquisitionService.cpp">
-      <Filter>源文件\Service</Filter>
-    </ClCompile>
-    <ClCompile Include="Service\SignalService.cpp">
-      <Filter>源文件\Service</Filter>
-    </ClCompile>
-    <ClCompile Include="Service\TesterService.cpp">
-      <Filter>源文件\Service</Filter>
-    </ClCompile>
-    <ClCompile Include="Service\TestingDeviceService.cpp">
       <Filter>源文件\Service</Filter>
     </ClCompile>
     <ClCompile Include="Utils\CherryTree.cpp">
@@ -1172,11 +1214,161 @@
     <ClCompile Include="UUIDUtil.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="entity\TbTestingDevice.cpp">
-      <Filter>源文件\entity</Filter>
-    </ClCompile>
     <ClCompile Include="ChildRibbonPanel.cpp">
       <Filter>头文件</Filter>
+    </ClCompile>
+    <ClCompile Include="entity\TbUser.cpp">
+      <Filter>源文件\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="dao\TbUserDao.cpp">
+      <Filter>源文件\dao</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\UserService.cpp">
+      <Filter>源文件\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\UserController.cpp">
+      <Filter>源文件\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="TbPost.cpp">
+      <Filter>源文件\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="TbPostDao.cpp">
+      <Filter>源文件\dao</Filter>
+    </ClCompile>
+    <ClCompile Include="TbEquipment.cpp">
+      <Filter>源文件\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="TbEquipmentDao.cpp">
+      <Filter>源文件\dao</Filter>
+    </ClCompile>
+    <ClCompile Include="entity\TbCollectionparas.cpp">
+      <Filter>源文件\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="dao\TbCollectionparasDao.cpp">
+      <Filter>源文件\dao</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\CollectionparasService.cpp">
+      <Filter>源文件\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\CollectionparasController.cpp">
+      <Filter>源文件\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="TbProductType.cpp">
+      <Filter>源文件\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="TbProductTypeDao.cpp">
+      <Filter>源文件\dao</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\ProductController.cpp">
+      <Filter>源文件\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\ChannelController.cpp">
+      <Filter>源文件\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\ChannelParaController.cpp">
+      <Filter>源文件\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="dao\TbChannelDao.cpp">
+      <Filter>源文件\dao</Filter>
+    </ClCompile>
+    <ClCompile Include="entity\TbChannel.cpp">
+      <Filter>源文件\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\ChannelParaService.cpp">
+      <Filter>源文件\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\ChannelService.cpp">
+      <Filter>源文件\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="TbSensor.cpp">
+      <Filter>源文件\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="TbSensorDao.cpp">
+      <Filter>源文件\dao</Filter>
+    </ClCompile>
+    <ClCompile Include="TbTestlocation.cpp">
+      <Filter>源文件\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="TbTeststand.cpp">
+      <Filter>源文件\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="TbTeststate.cpp">
+      <Filter>源文件\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="TbTestlocationDao.cpp">
+      <Filter>源文件\dao</Filter>
+    </ClCompile>
+    <ClCompile Include="TbTeststandDao.cpp">
+      <Filter>源文件\dao</Filter>
+    </ClCompile>
+    <ClCompile Include="TbTeststateDao.cpp">
+      <Filter>源文件\dao</Filter>
+    </ClCompile>
+    <ClCompile Include="TbLabelDao.cpp">
+      <Filter>源文件\dao</Filter>
+    </ClCompile>
+    <ClCompile Include="TbLabel.cpp">
+      <Filter>源文件\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="dao\TbSumsignalDao.cpp">
+      <Filter>源文件\dao</Filter>
+    </ClCompile>
+    <ClCompile Include="entity\TbSumsignal.cpp">
+      <Filter>源文件\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller\SumsignalController.cpp">
+      <Filter>源文件\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\SumsignalService.cpp">
+      <Filter>源文件\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="TbAlarmpara.cpp">
+      <Filter>源文件\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="TbAlarmparaDao.cpp">
+      <Filter>源文件\dao</Filter>
+    </ClCompile>
+    <ClCompile Include="TbSignalDao.cpp">
+      <Filter>源文件\dao</Filter>
+    </ClCompile>
+    <ClCompile Include="TbSignal.cpp">
+      <Filter>源文件\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="SignalService.cpp">
+      <Filter>源文件\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="SignalController.cpp">
+      <Filter>源文件\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="TbSignalTestRecordDao.cpp">
+      <Filter>源文件\dao</Filter>
+    </ClCompile>
+    <ClCompile Include="TbSignalTestRecord.cpp">
+      <Filter>源文件\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="TbSumsignalLabelDao.cpp">
+      <Filter>源文件\dao</Filter>
+    </ClCompile>
+    <ClCompile Include="TbSumsignalLabel.cpp">
+      <Filter>源文件\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="SumsignalLabelService.cpp">
+      <Filter>源文件\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="SumsignalLabelController.cpp">
+      <Filter>源文件\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="SignalTestRecordService.cpp">
+      <Filter>源文件\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="SignalTestRecordController.cpp">
+      <Filter>源文件\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="AlarmparaService.cpp">
+      <Filter>源文件\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="AlarmparaController.cpp">
+      <Filter>源文件\Controller</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

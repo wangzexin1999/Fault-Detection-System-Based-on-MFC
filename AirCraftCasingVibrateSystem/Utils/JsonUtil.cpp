@@ -18,61 +18,61 @@ Result JsonUtil::GetValueFromJsonString(CString jsonString, CString key, Value &
 	return Result(true,"成功解析json");
 }
 
-Result JsonUtil::ConvertSensor2Value(TbSensor sensor, Value & value){
+Result JsonUtil::ConvertChannel2Value(TbChannel channel, Value & value){
 	Value root(kObjectType);
-	Value channelId;
+	Value channelCode;
 	Value channelDesc;
-	Value testingDeviceId;
+	Value collectionparasId;
 	//Value sensorStatus;
 	Value  mileageRange;
-	channelId.SetString(sensor.GetChannelId(), m_document.GetAllocator());
-	channelDesc.SetString(sensor.GetSensorDesc(), m_document.GetAllocator());
-	testingDeviceId.SetInt(sensor.GetTestingdeviceId());
-	mileageRange.SetInt(sensor.GetMileageRange());
+	channelCode.SetString(channel.GetChannelCode(), m_document.GetAllocator());
+	channelDesc.SetString(channel.GetChannelDesc(), m_document.GetAllocator());
+	collectionparasId.SetInt(channel.GetCollectionparasId());
+	mileageRange.SetInt(channel.GetMileageRange());
 
-	root.AddMember("channelId", channelId, m_document.GetAllocator());
+	root.AddMember("channelCode", channelCode, m_document.GetAllocator());
 	root.AddMember("channelDesc", channelDesc, m_document.GetAllocator());
-	root.AddMember("testingDeviceId", testingDeviceId, m_document.GetAllocator());
+	root.AddMember("collectionparasId", collectionparasId, m_document.GetAllocator());
 	root.AddMember("mileageRange", mileageRange, m_document.GetAllocator());
 	value = move(root);
 	return Result(true, "成功解析json");
 }
-void JsonUtil::ConvertValue2Sensor(Value & value, TbSensor & sensor){
-	Value::ConstMemberIterator itr = value.FindMember("channelId");
+void JsonUtil::ConvertValue2Channel(Value & value, TbChannel & channel){
+	Value::ConstMemberIterator itr = value.FindMember("channelCode");
 	if (itr != value.MemberEnd()) 
-			sensor.SetChannelId(itr->value.GetString());
+		channel.SetChannelCode(itr->value.GetString());
 	itr = value.FindMember("channelDesc");
 	if (itr != value.MemberEnd()) 
-			sensor.SetSensorDesc(itr->value.GetString());
-	itr = value.FindMember("testingDeviceId");
+		channel.SetChannelDesc(itr->value.GetString());
+	itr = value.FindMember("collectionparasId");
 	if (itr != value.MemberEnd())	
-		sensor.SetTestingdeviceId(itr->value.GetInt());
+		channel.SetCollectionparasId(itr->value.GetInt());
 	itr = value.FindMember("mileageRange");
 	if (itr != value.MemberEnd())
-		sensor.SetMileageRange(itr->value.GetInt());
+		channel.SetMileageRange(itr->value.GetInt());
 }
 
 
-void JsonUtil::ConvertTestingDevice2Value(TbTestingDevice testingDevice, Value & value){
+void JsonUtil::ConvertCollectionparas2Value(TbCollectionparas collectionparas, Value & value){
 	Value id;
 	Value root(kObjectType);
-	Value testingDeviceIp;
-	testingDeviceIp.SetString(testingDevice.GetTestingDeviceIp(),m_document.GetAllocator());
+	Value equipmentId;
+	equipmentId.SetString(collectionparas.GetEquipmentId(), m_document.GetAllocator());
 
-	Value sampleFrequency(kObjectType);
-	m_document.Parse(testingDevice.GetSampleFrequency().GetDictValue());
-	sampleFrequency.CopyFrom(m_document,m_document.GetAllocator());
-	id.SetInt(testingDevice.GetSampleFrequency().GetDictId());
-	sampleFrequency.AddMember("id",id, m_document.GetAllocator());
+	//Value sampleFrequency(kObjectType);
+	//m_document.Parse(collectionparas.GetSampleFrequency().GetDictValue());
+	//sampleFrequency.CopyFrom(m_document,m_document.GetAllocator());
+	//id.SetInt(collectionparas.GetSampleFrequency().GetDictId());
+	//sampleFrequency.AddMember("id",id, m_document.GetAllocator());
 
-	Value analysisFrequency;
-	m_document.Parse(testingDevice.GetAnalysisFrequency().GetDictValue());
-	analysisFrequency.CopyFrom(m_document, m_document.GetAllocator());
-	id.SetInt(testingDevice.GetAnalysisFrequency().GetDictId());
-	analysisFrequency.AddMember("id", id, m_document.GetAllocator());
+	//Value analysisFrequency;
+	//m_document.Parse(collectionparas.GetAnalysisFrequency().GetDictValue());
+	//analysisFrequency.CopyFrom(m_document, m_document.GetAllocator());
+	//id.SetInt(collectionparas.GetAnalysisFrequency().GetDictId());
+	//analysisFrequency.AddMember("id", id, m_document.GetAllocator());
 
-	root.AddMember("sampleFrequency", sampleFrequency, m_document.GetAllocator());
-	root.AddMember("analysisFrequency", analysisFrequency, m_document.GetAllocator());
+	//root.AddMember("sampleFrequency", sampleFrequency, m_document.GetAllocator());
+	//root.AddMember("analysisFrequency", analysisFrequency, m_document.GetAllocator());
 	value = move(root);
 
 }

@@ -1,9 +1,9 @@
 #pragma once
 #include "afxcmn.h"
 #include "CherryTree.h"
-#include "SensorController.h"
+#include "ChannelController.h"
 #include <vector>
-#include "TbSensor.h"
+#include "TbChannel.h"
 using namespace std;
 class CSignalSelectView : public CDialogEx
 {
@@ -18,10 +18,10 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
-	SensorController m_sensorController;
-	vector<TbSensor>  m_sensorVector;
-	TbSensor m_selectedSensor;
-	TbSensor m_tempSelectedSensor;
+	ChannelController m_channelController;
+	vector<TbChannel>  m_channelVector;
+	TbChannel m_selectedChannel;
+	TbChannel m_tempSelectedChannel;
 	/**********************************************************************
 	功能描述： 初始化传感器选择的树控件
 	输入参数：
@@ -31,13 +31,13 @@ protected:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	void InitSensorSelectTree();
-	void InitSensorSelectedTree();
+	void InitChannelSelectTree();
+	void InitChannelSelectedTree();
 	DECLARE_MESSAGE_MAP()
 public:
 	CCherryTree m_treeSignalSelect;
 	CCherryTree m_treeSignalSelected;
-	TbSensor & GetSelectedSensor();
+	TbChannel & GetSelectedChannel();
 	virtual BOOL OnInitDialog();
 	afx_msg void OnNMDblclkTreeSelectChannel(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnNMDblclkTreeSelectedChannel(NMHDR *pNMHDR, LRESULT *pResult);
@@ -51,7 +51,7 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	void SetSensor(TbSensor sensor);
+	void SetChannel(TbChannel channel);
 	/**********************************************************************
 	功能描述：得到采集窗口选择的传感器
 	输入参数：
@@ -61,5 +61,5 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	void GetSensor(TbSensor & sensor);
+	void GetChannel(TbChannel & channel);
 };

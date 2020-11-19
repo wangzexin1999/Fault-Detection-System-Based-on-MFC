@@ -18,7 +18,7 @@ Modification:
 ************************************************************************/
 #pragma once
 #include "GridCtrl_src/GridCtrl.h"
-#include "SensorParaController.h"
+#include "ChannelParaController.h"
 
 // CGeometricParaView 对话框
 
@@ -36,7 +36,7 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 	CGridCtrl m_geometricParaGridCtrl;
-	SensorParaController m_sensorParaController;
+	ChannelParaController m_channelParaController;
 	DECLARE_MESSAGE_MAP()
 	virtual BOOL OnInitDialog();
 public:

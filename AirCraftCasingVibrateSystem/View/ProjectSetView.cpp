@@ -137,8 +137,8 @@ void ProjectSetView::OnBnClickedOk()
 
 
 	// 得到所有的通道
-	m_vsensors.clear();
-	m_channelParaPresetView.GetSelectedChannels(m_vsensors);
+	m_vchannels.clear();
+	m_channelParaPresetView.GetSelectedChannels(m_vchannels);
 
 	////封装采集计划参数
 	Document plansDoc;
@@ -167,7 +167,7 @@ void ProjectSetView::OnBnClickedOk()
 	m_project.SetCollectionPlans(result.c_str());
 	///封装project对象
 	m_project.SetProjectUpdateTime(DateUtil::GetCurrentCStringTime());
-	m_project.SetSensorVector(m_vsensors);
+	m_project.SetChannelVector(m_vchannels);
 	///更新项目数据
 	Result res = m_projectController.Update(m_project);
 	if (!res.GetIsSuccess()){

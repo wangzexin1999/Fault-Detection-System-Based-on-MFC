@@ -1528,15 +1528,11 @@ void  CDuChartCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 	if (point.x <= pxAxis->GetAxisLenght() + 80 && point.x >= pxAxis->GetAxisLenght() + 30 && point.y >= pyAxis->GetAxisLenght() + 5 && point.y >= pyAxis->GetAxisLenght() + 10)
 	{
 		CRect rect;
-		//CString str;
 		GetClientRect(&rect);
 		int perWidth = 60;
 		int perHeight = 25;
 		CRect(0, 0, perWidth, perHeight);
 		p_MyEdit.Create(WS_CHILD | WS_VISIBLE | SS_LEFTNOWORDWRAP, CRect(0, 0, perWidth, perHeight), this, ID_NEW_EDIT);
-		//CEdit *p_MyEdit;
-		//p_MyEdit = new CEdit();
-		//p_MyEdit->Create(WS_CHILD | WS_VISIBLE | SS_LEFTNOWORDWRAP, CRect(0, 0, perWidth, perHeight), this,NULL);
 		p_MyEdit.SetWindowPos(NULL, point.x - 15, point.y - 10, perWidth, perHeight, SWP_NOZORDER | SWP_NOSIZE);
 		CWnd* pWnd = GetDlgItem(ID_NEW_EDIT);
 		pWnd->SetFocus();

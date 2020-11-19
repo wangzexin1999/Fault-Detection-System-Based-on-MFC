@@ -9,12 +9,12 @@ TbProject::TbProject(int projectId, CString  projectName, int projectStatus)
 	m_projectStatus = projectStatus;
 }
 
-TbProject::TbProject(int projectId, CString  projectName, CString projectCreatetime, TbTester tester, TbTestingDevice  testingDevice, TbProduct  product){
+TbProject::TbProject(int projectId, CString  projectName, CString projectCreatetime, TbUser user, TbCollectionparas collectionparas, TbProduct  product){
 	this->m_projectId = projectId;
-	this->m_tester = tester;
+	this->m_user = user;
 	this->m_projectName = projectName;
 	this->m_projectCreatetime = projectCreatetime;
-	this->m_testingDevice = testingDevice;
+	this->m_collectionparas = collectionparas;
 	this->m_product = product;
 }
 
@@ -35,16 +35,16 @@ void TbProject::SetProjectName(CString projectName){
 
 	this->m_projectName = projectName;
 }
-void TbProject::SetTester(TbTester tester){
-	this->m_tester = tester;
+void TbProject::SetUser(TbUser user){
+	this->m_user = user;
 }
 
-void TbProject::SetTestingDevice(TbTestingDevice testingDevice){
-	this->m_testingDevice = testingDevice;
+void TbProject::SetCollectionparas(TbCollectionparas collectionparas){
+	this->m_collectionparas = collectionparas;
 }
 
-TbTester & TbProject::GetTester(){
-	return this->m_tester;
+TbUser & TbProject::GetUser(){
+	return this->m_user;
 }
 
 void TbProject::SetProjectCreateTime(CString m_projectCreatetime){
@@ -53,8 +53,8 @@ void TbProject::SetProjectCreateTime(CString m_projectCreatetime){
 void TbProject::SetProjectUpdateTime(CString projectUpdatetime){
 	this->m_projectUpdatetime = projectUpdatetime; 
 }
-TbTestingDevice & TbProject::GetTestingDevice(){
-	return this->m_testingDevice;
+TbCollectionparas & TbProject::GetCollectionparas(){
+	return this->m_collectionparas;
 }
 
 TbProduct & TbProject::GetProduct(){
@@ -69,12 +69,12 @@ CString TbProject::GetProjectName(){
 	return this->m_projectName;
 }
 
-vector<TbSensor> & TbProject::GetSensorVector(){
-	return this->m_sensorVector;
+vector<TbChannel> & TbProject::GetChannelVector(){
+	return this->m_channelVector;
 }
 
-void TbProject::SetSensorVector(vector<TbSensor> sensorVector){
-	this->m_sensorVector = sensorVector;
+void TbProject::SetChannelVector(vector<TbChannel> channelVector){
+	this->m_channelVector = channelVector;
 }
 int TbProject::GetProjectId(){
 	return this->m_projectId;

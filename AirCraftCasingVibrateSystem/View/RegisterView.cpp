@@ -55,17 +55,17 @@ BOOL CRegisterView::OnInitDialog()
 void CRegisterView::OnBnClickedRegister()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	TbTester tester;
+	TbUser user;
 	CString str,str2;
 	m_editRegisterLoginName.GetWindowTextA(str);
 	// 登录名不能为空
-	tester.SetLoginName(str);
+	user.SetLoginName(str);
 	// 设置邮箱
 	m_editRegidterPost.GetWindowTextA(str);
-	tester.SetTesterPost(str);
+	user.SetPost(str);
 	// 设置电话
 	m_editRegisterTell.GetWindowTextA(str);
-	tester.SetTesterTelephone(str);
+	user.SetTelephone(str);
 	// 设置密码
 	m_editRegisterPSW.GetWindowTextA(str);
 	m_editRegisterQPSW.GetWindowTextA(str2);
@@ -74,21 +74,19 @@ void CRegisterView::OnBnClickedRegister()
 		AfxMessageBox("两次密码不一致");
 		return;
 	}
-	tester.SetPassWord(str);
+	user.SetPassWord(str);
 	// 设置姓名
 	m_editRegisterName.GetWindowTextA(str);
-	tester.SetTesterName(str);
-	tester.SetTesterStatus(0);
+	user.SetName(str);
+	//tester.SetStatus(0);
 	//设置状态
-	Result result = m_testerController.AddTester(tester);
+	Result result = m_userController.AddUser(user);
 	if (!result.GetIsSuccess()){
 		AfxMessageBox(result.GetMessages());
 	}
 	else{
-		AfxMessageBox("请联系管理员批准！！");
+		AfxMessageBox("注册成功");
 		CDialogEx::OnOK();
+		//exit(0);
 	}
-
-
-
 }
