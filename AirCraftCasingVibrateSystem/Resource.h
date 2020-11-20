@@ -94,6 +94,7 @@
 #define IDD_DIALOG_REGISTER             379
 #define IDD_DIALOG_COLLECTIONPLANMANAGE 382
 #define IDD_DIALOG_PROJECTSET           383
+#define IDD_DIALOG_COM                  384
 #define IDC_TAB1                        1000
 #define IDC_LIST_GENERAL_PARA           1001
 #define IDC_COMBO1                      1002
@@ -271,6 +272,7 @@
 #define IDC_COMBO_START_CHANNEL         1182
 #define IDC_COMBO_END_CHANNEL           1183
 #define IDC_EDIT_COLLECTION_TIMES       1185
+#define IDC_DHTESTHARDWARE1             1186
 #define ID_WRITE_PASTEASHYPERLINK       32770
 #define ID_CHECK2                       32771
 #define ID_COMBO2                       32772
@@ -348,9 +350,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        384
+#define _APS_NEXT_RESOURCE_VALUE        386
 #define _APS_NEXT_COMMAND_VALUE         32851
-#define _APS_NEXT_CONTROL_VALUE         1186
+#define _APS_NEXT_CONTROL_VALUE         1187
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

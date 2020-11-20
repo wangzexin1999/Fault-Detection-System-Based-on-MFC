@@ -1,0 +1,35 @@
+<DHTest>
+  <AutoFreqModel>
+    <ParamInfo>
+      <TemplateIndex>0</TemplateIndex>
+      <Shiyanbianhao>
+      </Shiyanbianhao>
+      <Yangpinxinghao>
+      </Yangpinxinghao>
+      <Jianyanbiaozhun>
+      </Jianyanbiaozhun>
+      <Yangpinmingcheng>
+      </Yangpinmingcheng>
+      <Taiwei>
+      </Taiwei>
+      <Yunxingfangshi>0</Yunxingfangshi>
+      <Weituodanwei>
+      </Weituodanwei>
+      <StartTime>
+      </StartTime>
+      <EndTime>
+      </EndTime>
+    </ParamInfo>
+    <AutoFreqParamInfo>
+      <StartFreq>20</StartFreq>
+      <EndFreq>100</EndFreq>
+      <Step>1</Step>
+      <ChangeInterval>30</ChangeInterval>
+      <StableTIme>120</StableTIme>
+      <DataTime>30</DataTime>
+      <AlarmRange>0.5</AlarmRange>
+      <TachoSpeed>6000</TachoSpeed>
+      <Famen>600</Famen>
+    </AutoFreqParamInfo>
+  </AutoFreqModel>
+</DHTest>

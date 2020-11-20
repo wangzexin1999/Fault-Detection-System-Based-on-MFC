@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DHTest>
+	<!--测量-->
+	<Module type ="MeasureModule" id ="MeasureModuleAnalysis">
+		<!--参数管理-->
+		<menu id ="ParamModuleAnalysis" analysis="1">
+			<toolbar>
+				<Control id="NewParamFunc" switch="MeasureModule|ChnSetupModuleAnalysis|AnalogParamModuleAnalysis"/>
+			</toolbar>
+			<toolbar>
+				<Control id="SaveParamFunc"/>
+				<Control id="SaveToParamFunc"/>
+			</toolbar>
+			<toolbar>
+        <Control id="LoadSecondAmpParamFunc"/>
+				<Control id="LoadParamFunc" switch="MeasureModule|ChnSetupModuleAnalysis|AnalogParamModuleAnalysis"/>
+				<Control id="RenameParamFunc"/>
+				<Control id="DelParamFunc"/>
+			</toolbar>
+			<toolbar>
+				<Control id="CopyParamFunc"/>
+				<Control id="CutParamFunc"/>
+				<Control id="PasteParamFunc"/>
+			</toolbar>
+		</menu>
+		<!--通道设置-->
+		<menu id ="ChnSetupModuleAnalysis" analysis ="0">
+			<toolbar>
+				<Control id="SaveParamFunc"/>
+				<Control id="SaveToParamFunc"/>
+			</toolbar>
+			<toolbar>
+				<Control id="AnalogParamModuleAnalysis" UserControl ="1"/>
+				<Control id="TachoParamModuleAnalysis" UserControl ="1"/>
+      </toolbar>
+		</menu>
+		<menu id ="MeasureModuleAnalysis" analysis ="0">
+			<toolbar>
+				<Control id="MeasureStoreFunc"/>
+				<Control id="MeasurePauseFunc"/>
+				<Control id="MeasureRebackDataFunc"/>
+				<Control id="MeasureContinueFunc"/>
+				<Control id="MeasureStopFunc"/>
+				<Control id="MeasureShiBoFunc"/>
+				<Control id="MeasureBalanceZero"/>
+			</toolbar>
+      <toolbar>
+        <Control id="ChartGroupbuttonAnalysis" chartMenu="SouthWest5701_chart.xml" type="Chart"/>
+      </toolbar>
+			<toolbar>
+				<Control id="RunInfoFunc"/>
+			</toolbar>
+		</menu>
+	</Module>
+  
+  <!--切换定义-->
+	<Switch>
+		<SwitchItem id="SwitchMeasurePath" path="MeasureModule|MeasureModuleAnalysis"></SwitchItem>
+		<SwitchItem id="SwitchAnalysisPath" path="AnalysisModule|AnalysisModuleAnalysis"></SwitchItem>
+    <SwitchItem id="SwitchChnAnalogPath" path="MeasureModule|ChnSetupModuleAnalysis|AnalogParamModuleAnalysis"></SwitchItem>
+	</Switch>
+</DHTest>

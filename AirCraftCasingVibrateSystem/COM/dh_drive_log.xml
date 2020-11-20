@@ -1,0 +1,14 @@
+<config>
+	<log>
+	  <!--0:TRACE 1:DEBUG 2:INFO 3:WARNING 4:ERROR 5:FATAL-->
+	  <level>1</level>
+    <!--log flush level, on this level, log will fush to file-->
+    <flush_level>2</flush_level>
+	  <!--maxinum of single log file lenth(Byte)-->
+	  <log_size>5242880</log_size>
+	  <!--maxinum of log file number-->
+	  <log_number>1000</log_number>
+	  <!--log format-->
+	  <format>[%Y-%m-%d %H:%M:%S.%e %z] [%t] [%l] %v</format>
+  </log>
+</config>

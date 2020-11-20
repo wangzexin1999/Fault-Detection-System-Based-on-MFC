@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<DHTest>
+  <MeasureModule>
+    <Chart>
+      <Control id="ChatRecordModuleAnalysis" hidden="0"/>
+      <Control id="ChatXYRecordModuleAnalysis" hidden="0"/>
+      <Control id="ChatFFTModuleAnalysis" hidden="0"/>
+      <Control id="Chat2DModuleAnalysis" hidden="0"/>
+      <Control id="ChatModalModuleAnalysis" hidden="0"/>
+    </Chart>
+  </MeasureModule>
+</DHTest>

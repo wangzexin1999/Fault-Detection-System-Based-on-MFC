@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+  <package>
+    <!--DH5970-->
+    <type>3</type>
+	<server_type>3</server_type>
+    <enable>true</enable>
+    <signature>43605</signature>
+    <head_length>8</head_length>
+    <body_length offset="6"  length="12"/>
+    <crc_length>0</crc_length>
+  </package>
+
+  <package>
+    <!--DH5973-->
+      <type>4</type>
+	  <server_type>4</server_type>
+      <enable>true</enable>
+      <signature>43605</signature>
+      <head_length>20</head_length>
+      <body_length offset="16"  length="32"/>
+      <crc_length>0</crc_length>
+  </package>
+  
+  <package>
+    <!--DH5971-->
+      <type>14</type>
+	  <server_type>14</server_type>
+      <enable>true</enable>
+      <signature>43605</signature>
+      <head_length>8</head_length>
+      <body_length offset="6"  length="12"/>
+      <crc_length>0</crc_length>
+  </package>
+
+  <package>
+    <!--DH5977-->
+	  <type>6</type>
+	  <server_type>6</server_type>
+    <enable>true</enable>
+		<signature>43605</signature>
+		<head_length>8</head_length>
+    <body_length offset="6"  length="12"/>
+    <crc_length>1</crc_length>
+	</package>
+
+
+  <package>
+    <!--DH5978-->
+		<type>10</type>
+		<server_type>10</server_type>
+    <enable>true</enable>
+		<signature>43605</signature>
+		<head_length>8</head_length>
+    <body_length offset="6"  length="16"/>
+    <crc_length>4</crc_length>
+    </package>
+
+  <package>
+    <!--DH5972N-->
+		<type>12</type>
+		<server_type>12</server_type>
+    <enable>true</enable>
+		<signature>43605</signature>
+		<head_length>20</head_length>
+    <body_length offset="16"  length="32"/>
+    <crc_length>0</crc_length>
+  </package>
+
+  <package>
+      <!--DH5609-->
+      <type>13</type>
+	  <server_type>13</server_type>
+      <enable>true</enable>
+      <signature>43605</signature>
+      <head_length>8</head_length>
+     <body_length offset="6"  length="16"/>
+      <crc_length>4</crc_length>
+    </package>
+
+  <package>
+    <!--DH5986-->
+      <type>16</type>
+      <server_type>16</server_type>
+      <enable>true</enable>
+      <signature>43605</signature>
+      <head_length>8</head_length>
+      <body_length offset="6"  length="12"/>
+      <crc_length>0</crc_length>
+  </package>
+  
+   <package>
+    <!--HUMS-->
+      <type>15</type>
+      <server_type>250</server_type>
+      <enable>false</enable>
+      <udp_enable>true</udp_enable>
+      <signature>43605</signature>
+      <head_length>8</head_length>
+      <body_length offset="6"  length="12"/>
+      <crc_length>0</crc_length>
+  </package>
+
+  <package>
+      <!--opc client-->
+      <type>100</type>
+      <enable>true</enable>
+      <signature>21930</signature>
+      <head_length>8</head_length>
+      <body_length offset="4"  length="32"/>
+      <crc_length>0</crc_length>
+    </package>
+</config>

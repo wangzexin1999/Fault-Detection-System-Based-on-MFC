@@ -29,6 +29,7 @@
 /////////////////////////////////////
 #include "include/Inc/bdaqctrl.h"
 #include "include/Inc/compatibility.h"
+#include "DlgCom.h"
 using namespace Automation::BDaq;
 using namespace std;
 /////////////////////////////////////
@@ -59,6 +60,10 @@ public:
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
+
+private:
+	class CDHTestHardWare *m_pHardWare;
+	class CDlgCom * m_pComDialog;
 
 protected:  // 控件条嵌入成员
 

@@ -603,10 +603,18 @@ void CMainFrame::OnButtonImportSysPara()
 }
 
 
-
 //开始采集
 void CMainFrame::OnButtonStartCapture()
 {
+	m_pComDialog = new CDlgCom();
+	m_pComDialog->Create(IDD_DIALOG_COM, this);
+	m_pComDialog->ShowWindow(SW_HIDE);
+
+	m_pHardWare = &m_pComDialog->m_DHHardWare;
+	long nResultValue = 0;
+	std::string strPath = "D:\\work\\1-dhmonitor\\bin\\debug\\Config\\";
+	m_pHardWare->Init(LPCTSTR(strPath.c_str()), LPCTSTR("chinese"), &nResultValue);
+
 	////将暂停采集、结束采集、结束采样、开始采样置灰
 	//m_pMenu->EnableMenuItem(ID_BUTTON_SUSPEND_CAPTURE, MF_BYCOMMAND | MF_GRAYED);
 	// 设置底部坐标轴为自动.

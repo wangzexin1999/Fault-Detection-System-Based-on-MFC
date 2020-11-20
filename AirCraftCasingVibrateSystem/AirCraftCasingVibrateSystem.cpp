@@ -13,6 +13,7 @@
 #include "ProjectController.h"
 #include "TbProject.h"
 #include "DateUtil.h"
+#include "CDHTestHardWare.h"
 #ifdef _DEBUGE	
 #define new DEBUG_NEW
 #endif

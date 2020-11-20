@@ -207,7 +207,9 @@
   <ItemGroup>
     <ClInclude Include="AlarmparaController.h" />
     <ClInclude Include="AlarmparaService.h" />
+    <ClInclude Include="CDHTestHardWare.h" />
     <ClInclude Include="ChildRibbonPanel.h" />
+    <ClInclude Include="DlgCom.h" />
     <ClInclude Include="entity\AcquiredSignal.h" />
     <ClInclude Include="Controller\AdvantechDaqController.h" />
     <ClInclude Include="AirCraftCasingVibrateSystem.h">
@@ -449,7 +451,9 @@
   <ItemGroup>
     <ClCompile Include="AlarmparaController.cpp" />
     <ClCompile Include="AlarmparaService.cpp" />
+    <ClCompile Include="CDHTestHardWare.cpp" />
     <ClCompile Include="ChildRibbonPanel.cpp" />
+    <ClCompile Include="DlgCom.cpp" />
     <ClCompile Include="entity\AcquiredSignal.cpp" />
     <ClCompile Include="Controller\AdvantechDaqController.cpp" />
     <ClCompile Include="AirCraftCasingVibrateSystem.cpp" />
@@ -691,7 +695,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties RESOURCE_FILE="AirCraftCasingVibrateSystem.rc" />
+      <UserProperties RESOURCE_FILE="AirCraftCasingVibrateSystem.rc" _x007B_BE2DDC3D-230E-4A6A-9502-30D3AF268705_x007D_="CDHTestHardWare" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

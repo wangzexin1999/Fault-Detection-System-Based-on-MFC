@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<config>
+  <module>
+	<enable>false</enable>
+	<type>3</type>
+	<name>drv_dh5970.dll</name>
+    <server type="3">
+		<tcp ip="192.168.10.57" port="6001"/>
+    </server>
+  </module>
+
+  <module>
+	<enable>false</enable>
+    <type>4</type>
+	<name>drv_dh5973.dll</name>
+    <server type="4">
+		<tcp ip="192.168.10.57" port="5973"/>
+	</server>
+  </module>
+  
+  <module>
+	<enable>false</enable>
+    <type>14</type>
+	<name>drv_dh5971.dll</name>
+    <server type="14">
+		<tcp ip="192.168.10.57" port="5971"/>
+	  </server>
+  </module>
+
+  <module>
+	<enable>false</enable>
+    <type>6</type>
+    <name>drv_dh5977.dll</name>
+    <server type="6">
+		<tcp ip="192.168.10.57" port="6000"/>
+    </server>
+	</module>
+
+  <module>
+	<enable>false</enable>
+	<type>10</type>
+	<name>drv_dh5978.dll</name>
+    <server type="10">
+		<tcp ip="192.168.10.57" port="5978"/>
+    </server>
+  </module>
+
+  <module>
+	<enable>true</enable>
+    <type>12</type>
+    <name>drv_dh5972.dll</name>
+    <server type="12">
+		<tcp ip="192.168.0.145" port="6003"/>
+    </server>
+  </module>
+
+  <module>
+	<enable>false</enable>	  
+    <type>13</type>
+    <name>drv_dh5609.dll</name>
+    <server type="13">
+		<tcp ip="192.168.10.57" port="5609"/>
+    </server>
+  </module>
+
+  <module>
+	<enable>false</enable>
+    <type>100</type>
+    <name>drv_dhopcclient.dll</name>
+    <server type="100">
+		<tcp ip="192.168.10.57" port="19000"/>
+	</server>
+  </module> 
+  
+  <module>
+    <!--hums-->
+	 <enable>false</enable>
+    <type>15</type>
+	<name>hums.dll</name>
+    <server type="250">
+		<tcp ip="192.168.10.57" port="5921"/>
+		<udp ip="192.168.10.57" port="5920"/>
+		</server>
+  </module>
+  
+   <module>
+    <!--DH5986-->
+	<enable>false</enable>
+    <type>16</type>
+	<name>drv_dh5986.dll</name>
+    <server type="16">	
+		<tcp ip="192.168.10.57" port="5986"/>
+	</server>
+  </module>
+
+  
+</config>
+

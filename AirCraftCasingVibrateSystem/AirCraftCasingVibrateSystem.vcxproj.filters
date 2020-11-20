@@ -804,6 +804,12 @@
     <ClInclude Include="AlarmparaController.h">
       <Filter>头文件\Controller</Filter>
     </ClInclude>
+    <ClInclude Include="CDHTestHardWare.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgCom.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AirCraftCasingVibrateSystem.cpp">
@@ -1354,6 +1360,12 @@
     </ClCompile>
     <ClCompile Include="UUIDUtil.cpp">
       <Filter>源文件\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="CDHTestHardWare.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgCom.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
