@@ -29,7 +29,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
-    <UseOfMfc>Dynamic</UseOfMfc>
+    <UseOfMfc>Static</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -60,6 +60,7 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="PropertyFFTW.props" />
+    <Import Project="mysql.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -79,6 +80,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <LibraryPath>lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -96,12 +99,16 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>false</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Program Files\MySQL\MySQL Server 5.7\include;Redis;Controller;dao\basedao;View\Picture;dao;Utils;FFT;Service;entity;View;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libcurl_a_debug.lib;libfftw3-3-32.lib;libfftw3f-3-32.lib;libfftw3l-3-32.lib;libmysql-32.lib</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -299,7 +306,6 @@
     <ClInclude Include="Service\DictionaryService.h" />
     <ClInclude Include="entity\EchoSignal.h" />
     <ClInclude Include="Utils\FFTWUtil.h" />
-    <ClInclude Include="Redis\hiredis.h" />
     <ClInclude Include="include\rapidjson\allocators.h" />
     <ClInclude Include="include\rapidjson\cursorstreamwrapper.h" />
     <ClInclude Include="include\rapidjson\document.h" />
@@ -347,7 +353,6 @@
     <ClInclude Include="View\ProjectSetView.h" />
     <ClInclude Include="entity\RealTimeSignal.h" />
     <ClInclude Include="Service\RecordSignalService.h" />
-    <ClInclude Include="Redis\redisUtil.h" />
     <ClInclude Include="View\RegisterView.h" />
     <ClInclude Include="Controller\ChannelController.h" />
     <ClInclude Include="Utils\CherryTree.h" />
@@ -440,7 +445,6 @@
     <ClInclude Include="Service\CollectionparasService.h" />
     <ClInclude Include="Utils\ThreadSafeQueue.h" />
     <ClInclude Include="View\TriggerParaView.h" />
-    <ClInclude Include="Redis\win32fixes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AlarmparaController.cpp" />
@@ -550,7 +554,9 @@
     <ClCompile Include="Utils\CommonUtil.cpp" />
     <ClCompile Include="Utils\ConfigurationUtil.cpp" />
     <ClCompile Include="View\Picture\CoordinateView.cpp" />
-    <ClCompile Include="Utils\DateUtil.cpp" />
+    <ClCompile Include="Utils\DateUtil.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
     <ClCompile Include="View\DetectDeviceManageView.cpp" />
     <ClCompile Include="View\ProductManageView.cpp" />
     <ClCompile Include="Service\ProductService.cpp" />
@@ -590,7 +596,9 @@
     <ClCompile Include="Service\ChannelService.cpp" />
     <ClCompile Include="View\CollectionParaView.cpp" />
     <ClCompile Include="Service\SignalAcquisitionService.cpp" />
-    <ClCompile Include="Controller\SumsignalController.cpp" />
+    <ClCompile Include="Controller\SumsignalController.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
     <ClCompile Include="View\SignalDataView.cpp" />
     <ClCompile Include="Service\SumsignalService.cpp" />
     <ClCompile Include="View\SignalSaveView.cpp" />
@@ -631,9 +639,6 @@
     <ClCompile Include="Controller\CollectionparasController.cpp" />
     <ClCompile Include="Service\CollectionparasService.cpp" />
     <ClCompile Include="View\TriggerParaView.cpp" />
-    <ClCompile Include="Redis\win32fixes.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AirCraftCasingVibrateSystem.rc" />

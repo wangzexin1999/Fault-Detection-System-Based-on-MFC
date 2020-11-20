@@ -67,7 +67,6 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 		//return 0;
 	}*/
 
-
 	// 创建远程服务器连接
 	//m_cli = httplib::Client(_T(ServerHttpAddress), ServerHttpPort);
 	/////设置mysql数据库信息
@@ -178,9 +177,6 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 		return FALSE;
 	}
 	m_pMainWnd = pMainFrame;
-
-
-	
 
 	// 分析标准 shell 命令、DDE、打开文件操作的命令行
 	CCommandLineInfo cmdInfo;

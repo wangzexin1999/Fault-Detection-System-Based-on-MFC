@@ -55,9 +55,6 @@
     <Filter Include="头文件\entity">
       <UniqueIdentifier>{65b8e1e7-4a7d-473b-b531-f1f382895c0b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Redis">
-      <UniqueIdentifier>{0a6ada75-d743-4bad-b35a-41f254ae866d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="NewCellTypes">
       <UniqueIdentifier>{2a3d2024-2a8a-45c7-9c40-511f78656046}</UniqueIdentifier>
     </Filter>
@@ -518,15 +515,6 @@
     </ClInclude>
     <ClInclude Include="Utils\ThreadSafeQueue.h">
       <Filter>头文件\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Redis\hiredis.h">
-      <Filter>Redis</Filter>
-    </ClInclude>
-    <ClInclude Include="Redis\redisUtil.h">
-      <Filter>Redis</Filter>
-    </ClInclude>
-    <ClInclude Include="Redis\win32fixes.h">
-      <Filter>Redis</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>头文件</Filter>
@@ -1079,9 +1067,6 @@
     <ClCompile Include="Utils\MyGridCtrl.cpp">
       <Filter>源文件\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Redis\win32fixes.c">
-      <Filter>Redis</Filter>
-    </ClCompile>
     <ClCompile Include="Controller\AdvantechDaqController.cpp">
       <Filter>源文件\Controller</Filter>
     </ClCompile>
@@ -1210,9 +1195,6 @@
     </ClCompile>
     <ClCompile Include="View\TriggerParaView.cpp">
       <Filter>源文件\View</Filter>
-    </ClCompile>
-    <ClCompile Include="UUIDUtil.cpp">
-      <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ChildRibbonPanel.cpp">
       <Filter>头文件</Filter>
@@ -1369,6 +1351,9 @@
     </ClCompile>
     <ClCompile Include="AlarmparaController.cpp">
       <Filter>源文件\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="UUIDUtil.cpp">
+      <Filter>源文件\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
