@@ -606,6 +606,9 @@ void CMainFrame::OnButtonImportSysPara()
 //开始采集
 void CMainFrame::OnButtonStartCapture()
 {
+
+
+
 	m_pComDialog = new CDlgCom();
 	m_pComDialog->Create(IDD_DIALOG_COM, this);
 	m_pComDialog->ShowWindow(SW_HIDE);
@@ -691,9 +694,6 @@ void CMainFrame::OnButtonStartCapture()
 		m_mpcolllectioinDataQueue.insert(pair<CString, ThreadSafeQueue<double>>
 			(CommonUtil::Int2CString(deviceNum) + "-" + CommonUtil::Int2CString(channelNum), ThreadSafeQueue<double>()));
 
-
-
-
 		TbSignalTestRecord signalTestRecord;
 		TbAlarmpara alarmpara;
 		signalTestRecord.SetFrequency((double)theApp.m_currentProject.GetCollectionparas().GetSampleFrequency());
@@ -735,7 +735,6 @@ void CMainFrame::OnButtonStartCapture()
 		wfAiCtrl->Start();
 		m_vwfAiCtrl.push_back(wfAiCtrl);
 
-
 		//CAirCraftCasingVibrateSystemView *Record;
 		//Record = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
 		theApp.m_vsignalCaptureView[0]->GetPeak();
@@ -744,11 +743,6 @@ void CMainFrame::OnButtonStartCapture()
 			m_vSignalTestRecord[devConfParaIterator->first].SetPeakValue(theApp.m_vsignalCaptureView[devConfParaIterator->first]->GetPeak());
 		}
 		//theApp.m_vsignalCaptureView[devConfParaIterator->first]->GetPeak();
-
-
-
-
-
 
 		///创建设备与采集缓冲区的map映射关系
 		m_mpcolllectioinData.insert(pair<int, DOUBLE *>
@@ -1506,7 +1500,6 @@ void CMainFrame::OnDataReadyEvent(void * sender, BfdAiEventArgs * args, void *us
 			fftwOutput.GeFFTWComplexArray());
 		//将处理之后的傅里叶变换转换成XY坐标
 		FFTWUtil::FFTDataToXY(fftwOutput, yData, fftwInputArray[channel].size());
-		/////添加到回显数据队列中
 		vsignalCollectViewIterator[channel]->second->SetEchoSignalData(EchoSignal(xData, yData));
 
 
@@ -1514,7 +1507,7 @@ void CMainFrame::OnDataReadyEvent(void * sender, BfdAiEventArgs * args, void *us
 		CAirCraftCasingVibrateSystemView * xParam = (CAirCraftCasingVibrateSystemView *)userParam;
 		double x = xParam->GetPeak();
 		double z = xParam->GetGross();
-		if (xParam->GetPeak() > theApp.m_vsignalCaptureView[channel]->GetPeak())
+		if (xParam->GetPeak() > theApp.m_vsignalCaptureView[channel]->GetPeak())//m_vsignalCaptureView采集窗口的集合
 		{
 			//uParam->m_vSignalTestRecord[channel].SetPeakValue(xParam->GetPeak());
 			//uParam->m_vSignalTestRecord[channel].SetPeakValue(1);
