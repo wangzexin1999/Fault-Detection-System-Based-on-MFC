@@ -98,11 +98,15 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 END_MESSAGE_MAP()
 
 // CMainFrame 构造/析构
+
+CString strTextTemp = "";
+int tempCount = 0;
 extern TCHAR const * WCHAR_TO_TCHAR(WCHAR const * in, TCHAR * out);
 CMainFrame::CMainFrame()
 {
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_WINDOWS_7);
 	this->m_bAutoMenuEnable = false;
+	
 	m_pComDialog = new CDlgCom();
 	m_pComDialog->Create(IDD_DIALOG_COM, this);
 	m_pComDialog->ShowWindow(SW_HIDE);
@@ -110,13 +114,366 @@ CMainFrame::CMainFrame()
 	m_pHardWare = &m_pComDialog->m_DHHardWare;
 
 	long nResultValue = 0;
-	std::string strPath = "D:\\work\\1-dhmonitor\\bin\\debug\\Config\\";
-	m_pHardWare->Init(LPCTSTR(strPath.c_str()), LPCTSTR("chinese"), &nResultValue);
+	//std::string strPath = "D:\\work\\1-dhmonitor\\bin\\debug\\Config\\";
+	//m_pHardWare->Init(LPCTSTR(strPath.c_str()), LPCTSTR("chinese"), &nResultValue);
 	m_pHardWare->PrepareInit(1);//设置3817J仪器类型 	
+	m_bOneMacBuffer = false;
+	if (!InitInterface())
+	{
+		AfxMessageBox(LPCTSTR("初始化接口失败!"));
+		return;
+	}
+
+	// TODO: 在此添加控件通知处理程序代码
+	//建立连接
+	long lReturnValue;
+	m_pHardWare->ReConnectAllMac(&lReturnValue);//连接在DeviceInfo.ini文件的IP的仪器。
+	if (!IsConnectMachine())
+	{
+		SetWindowText("仪器未连接!");
+		AfxMessageBox(LPCTSTR("仪器未连接!"));
+		return;
+	}
+	CString str("");
+	GetAllGroupChannel(str);
+	//InitChannelCombo();//绑定通道列表1-1,1-2<------------------
+	GetSampleFreqList();//绑定采样频率表10,20,1000m_listFreq
+	GetSampleParam();
+	//InitFrepCombo();////初始化采样频率选择列表10,20,1000,上两个是为这个绑定做准备的
+	//InitSampleClock();//绑定时钟 1.内部时钟2.外部时钟
+	//除通道信息外获取所有参数
+	RefreshAllParam();//<------------------
+	for (int i = 0; i < m_vecGroupChannel.size(); i++)
+	{
+		CString cstr;
+		cstr.Format("%d号机 ", m_vecGroupChannel[i].m_GroupID + 1);
+		str += cstr;
+	}
+	str += " 已连接";
+	//SetWindowText(str);
+	//m_Btnjs.EnableWindow(FALSE);
+	//m_Btnxh.EnableWindow(FALSE);
+	//return ;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
 CMainFrame::~CMainFrame(){
 
+}
+//初始化仪器控制接口
+long CMainFrame::InitInterface()
+{
+	TCHAR cPath[MAX_PATH];
+	GetModuleFileName(NULL, cPath, MAX_PATH);
+	CString  strPath = ".\\COM";
+	//strPath = strPath.Left(strPath.ReverseFind('\\'));
+
+	strPath += "\\config\\";
+	CString strCfgpath = strPath + "HardWareCfg.ini";
+
+	m_nInterface = GetPrivateProfileInt("SystemParameter", "InterfaceType", 4, strCfgpath);
+	m_nInstrumentType = GetPrivateProfileInt("SystemParameter", "InstrumentType", 27, strCfgpath);
+
+	m_bOneMacBuffer = GetPrivateProfileInt("SystemParameter", "OneMacBuffer", 0, strCfgpath);
+	long lReturnValue;
+	//初始化仪器控制接口
+	m_pHardWare->Init(LPCTSTR(strPath), LPCTSTR("chinese"), &lReturnValue);
+	return lReturnValue;
+}
+//检查仪器是否连接
+long CMainFrame::IsConnectMachine()
+{
+	long lReturnValue;
+	m_pHardWare->IsConnectMachine(&lReturnValue);
+	return lReturnValue;
+
+}
+//获取所有通道组信息
+void CMainFrame::GetAllGroupChannel(CString & strChannel)
+{
+	ClearAllGroupChannel();
+	int i = 0, j = 0;
+	long nGroupCount;
+	m_pHardWare->GetChannelGroupCount(&nGroupCount);
+
+	long nGroupChannelID, nChannelFirst, nChannelNumber, nDataType;
+	string strMachineIP;
+	long lReturnValue = 0;
+	stuGroupChannel stuGroupChannel;
+	for (i = 0; i < nGroupCount; i++)
+	{
+		BSTR *strValue = new BSTR();
+
+		// 获取通道组信息
+		m_pHardWare->GetChannelGroup(i, &nGroupChannelID, strValue, &lReturnValue);//strValue<->strMachineIP
+		char *pTempData = _com_util::ConvertBSTRToString(*strValue);
+		strMachineIP = pTempData;//仪器IP
+		delete pTempData;
+		stuGroupChannel.m_GroupID = nGroupChannelID;
+		stuGroupChannel.m_strMachineIP = strMachineIP;
+
+		// 获取某台仪器的起始通道ID
+		m_pHardWare->GetChannelFirstID(nGroupChannelID, strMachineIP.data(), &nChannelFirst);
+		stuGroupChannel.m_nChannelFirst = nChannelFirst;
+
+		// 获取某台仪器的总的通道数
+		m_pHardWare->GetChannelCount(nGroupChannelID, strMachineIP.data(), &nChannelNumber);
+		stuGroupChannel.m_nChannelNumber = nChannelNumber;
+
+		// 获取某台仪器的数据类型
+		m_pHardWare->GetChannelGroupDataType(nGroupChannelID, strMachineIP.data(), &nDataType);
+		stuGroupChannel.m_nDataType = nDataType;
+
+		m_vecGroupChannel.push_back(stuGroupChannel);
+		delete strValue;
+
+		stuHardChannel HardChannel;
+		// 通道信息
+		for (j = 0; j < nChannelNumber; j++)
+		{
+			//long nChannelID = nChannelFirst + j;
+			long nChannelID;
+			long bOnLine = 0;
+			long nMeasureType = 0;
+			m_pHardWare->GetChannelIDFromIndex(nGroupChannelID, strMachineIP.data(), j, &nChannelID);
+			m_pHardWare->IsChannelOnLine(nGroupChannelID, strMachineIP.data(), nChannelID, &bOnLine);
+			m_pHardWare->GetChannelMeasureType(nGroupChannelID, strMachineIP.data(), nChannelID, &nMeasureType);//获取通道测量类型
+			HardChannel.m_nChannelGroupID = nGroupChannelID;
+			HardChannel.m_nChannelID = nChannelID;
+			HardChannel.m_nMeasureType = nMeasureType;
+			if (j > 0 && nChannelID == 0)
+			{
+				HardChannel.m_bOnlineFlag = 0;
+			}
+			else
+			{
+				HardChannel.m_bOnlineFlag = bOnLine;
+			}
+			memcpy(HardChannel.m_strMachineIP, strMachineIP.data(), 32);
+			if (strChannel != "")
+			{
+				BSTR *strValue = new BSTR();
+				m_pHardWare->GetParamValue(nGroupChannelID, strMachineIP.data(), HardChannel.m_nChannelStyle, HardChannel.m_nChannelID, HardChannel.m_nCellID, SHOW_CHANNEL_MEASURETYPE, strValue);
+				char *pTmpData = _com_util::ConvertBSTRToString(*strValue);
+				string strCurValue = pTmpData;
+				delete pTmpData;
+				delete strValue;
+				if (strcmp(strCurValue.data(), strChannel) == 0)
+				{
+					m_vecHardChannel.push_back(HardChannel);
+				}
+			}
+			else
+			{
+				m_vecHardChannel.push_back(HardChannel);
+			}
+		}
+	}
+
+
+}
+//释放内存
+void CMainFrame::ClearAllGroupChannel()
+{
+	m_vecGroupChannel.clear();
+	m_vecHardChannel.clear();
+}
+//获取仪器采样频率列表     m_listFreq
+//nSampleMode – 采样方式 1—瞬态  2—连续
+//strFreqList – 可选频率索引（获取的频率索引 10 | 20 | 50 | 100 | 500 | 1000 | 5000 | 10000），每个可选频率使用” | ”分隔开。
+void CMainFrame::GetSampleFreqList()
+{
+	BSTR *strList = new BSTR();
+	//获取采样频率可选项
+	m_pHardWare->GetSampleFreqList(2, strList);
+	char *pTemData = _com_util::ConvertBSTRToString(*strList);
+	string strFrepList = pTemData;
+	delete pTemData;
+	int nFreqCount = BreakString(strFrepList, m_listFreq, string("|"));
+
+	delete strList;
+}
+//获取当前采样参数
+long CMainFrame::GetSampleParam()
+{
+	float fltSampleFreq;
+	long nSampleMode, nTrigMode, nBlockSize, nDelayCount, nClockMode;
+
+	//获取采样参数
+	m_pHardWare->GetSampleFreq(&fltSampleFreq);
+	m_pHardWare->GetSampleMode(&nSampleMode);
+	m_pHardWare->GetSampleTrigMode(&nTrigMode);
+	m_pHardWare->GetTrigBlockCount(&nBlockSize);
+	m_pHardWare->GetTrigDelayCount(&nDelayCount);
+	m_pHardWare->GetSampleClockMode(&nClockMode);
+
+	m_SampleParam.m_fltSampleFrequency = fltSampleFreq;
+	m_SampleParam.m_nSampleMode = nSampleMode;
+	m_SampleParam.m_nSampleTrigMode = nTrigMode;
+	m_SampleParam.m_nSampleBlockSize = nBlockSize;
+	m_SampleParam.m_nSampleDelayPoints = nDelayCount;
+	m_SampleParam.m_nSampleClkMode = nClockMode;
+	return 1;
+}
+//除通道信息外获取所有参数
+void CMainFrame::RefreshAllParam(){
+	GetParamSelectValue();//获取通道测量类型
+	int nCurSel = 0;//m_ComboChannel.GetCurSel();//获取当前通道列表
+	if (nCurSel < 0)
+		return;
+
+	CString strText="1-1";
+	//m_ComboChannel.GetLBText(nCurSel, strText);
+
+	CString strGroupID = strText.Left(strText.ReverseFind('-'));
+	long lGroupID = atol(strGroupID);
+	lGroupID -= 1;
+	CString strChannelID = strText.Mid(strText.ReverseFind('-') + 1);
+	long lChannelID = atol(strChannelID);
+	lChannelID -= 1;
+
+	string strMachineIP = GetMachineIP(int(lGroupID));
+
+	ChannelParam ChanParam;
+	GetChannelParam(int(lChannelID), ChanParam);
+
+	InitMeasureType(lGroupID, strMachineIP.data(), ChanParam.ChannelStyle, ChanParam.ChannelID, ChanParam.CellID);
+}
+//初始化通道测点类型
+void CMainFrame::InitMeasureType(long GroupChannelID, LPCTSTR strMachineIP, long ChannelStyle, long ChannelID, long CellID)
+{
+	//m_ComboMeasureType.ResetContent();
+
+	BSTR *strValue = new BSTR();
+	//获取参数值
+	m_pHardWare->GetParamValue(GroupChannelID, strMachineIP, ChannelStyle, ChannelID, CellID, SHOW_CHANNEL_MEASURETYPE, strValue);
+	char *pTmpData = _com_util::ConvertBSTRToString(*strValue);
+	string strCurValue = pTmpData;
+	delete pTmpData;
+
+	int nCount = 0;
+	int nSel = -1;
+
+	/*for (list<string>::iterator it = m_listChannelMeasure.begin(); it != m_listChannelMeasure.end(); it++)
+	{
+		string strText = *it;
+		m_ComboMeasureType.AddString(strText.data());
+		if (strcmp(strCurValue.data(), strText.data()) == 0)
+		{
+			nSel = nCount;
+		}
+		nCount++;
+	}
+	if (nSel >= 0)
+	{
+		m_ComboMeasureType.SetCurSel(nSel);
+	}*/
+
+	delete strValue;
+
+}
+//获取通道参数
+void CMainFrame::GetChannelParam(int nID, ChannelParam &ChanParam)
+{
+	for (int i = 0; i < m_vecHardChannel.size(); i++)
+	{
+		int nChannelID = m_vecHardChannel[i].m_nChannelID;
+		if (nChannelID == nID)
+		{
+			ChanParam.ChannelStyle = m_vecHardChannel[i].m_nChannelStyle;
+			ChanParam.ChannelID = nChannelID;
+			ChanParam.CellID = m_vecHardChannel[i].m_nCellID;
+		}
+	}
+}
+//获取仪器ID
+string CMainFrame::GetMachineIP(int nID)
+{
+	string strMachineIP;
+	for (int i = 0; i < m_vecHardChannel.size(); i++)
+	{
+		int nGroupID = m_vecHardChannel[i].m_nChannelGroupID;
+		if (nGroupID == nID)
+		{
+			strMachineIP = m_vecHardChannel[i].m_strMachineIP;
+		}
+	}
+	return strMachineIP;
+}
+//初始化通道测量类型
+void CMainFrame::GetParamSelectValue()
+{
+	CString strText;
+	int nCurSel = 0;//m_ComboChannel.GetCurSel();
+	if (nCurSel < 0)
+		return;
+	strText = "1-1";
+	//m_ComboChannel.GetLBText(nCurSel, strText);
+	CString strGroupID = strText.Left(strText.ReverseFind('-'));
+	long lGroupID = atol(strGroupID);
+	lGroupID -= 1;
+	CString strChannelID = strText.Mid(strText.ReverseFind('-') + 1);
+	long lChannelID = atol(strChannelID);
+	lChannelID -= 1;
+
+	string strMachineIP = GetMachineIP(int(lGroupID));
+
+	ChannelParam ChanParam;
+	GetChannelParam(int(lChannelID), ChanParam);
+
+	BSTR *strSelectValue = new BSTR();
+
+	//获取参数可选项列表
+	m_pHardWare->GetParamSelectValue(lGroupID, strMachineIP.data(), ChanParam.ChannelStyle, ChanParam.ChannelID, ChanParam.CellID, SHOW_CHANNEL_MEASURETYPE, strSelectValue);
+	char *pTempData = _com_util::ConvertBSTRToString(*strSelectValue);
+	string strMeasureTypeSelect = pTempData;
+	int nMeasureTypeCount = BreakString(strMeasureTypeSelect, m_listChannelMeasure, string("|"));
+	delete pTempData;
+
+	delete strSelectValue;
+}
+//将字符串进行分解。strSeprator中的任何一个字符都作为分隔符。返回分节得到的字符串数目
+int CMainFrame::BreakString(const string& strSrc, list<string>& lstDest, const string& strSeprator)
+{
+	//清空列表
+	lstDest.clear();
+	//个数
+	int iCount = 0;
+
+	if (strSeprator.length() == 0)
+	{
+		lstDest.push_back(strSrc);
+		iCount = 1;
+		return iCount;
+	}
+
+	//查找的位置
+	std::string::size_type iPos = 0;
+	while (iPos < strSrc.length())
+	{
+		std::string::size_type iNewPos = strSrc.find_first_of(strSeprator, iPos);
+		//当前字符即分隔符
+		if (iNewPos == iPos)
+		{
+			iPos++;
+		}
+		//没找到分隔符
+		else if (iNewPos == std::string::npos)
+		{
+			lstDest.push_back(strSrc.substr(iPos, strSrc.length() - iPos));
+			iCount++;
+			iPos = strSrc.length();
+		}
+		//其它
+		else
+		{
+			lstDest.push_back(strSrc.substr(iPos, iNewPos - iPos));
+			iCount++;
+			iPos = iNewPos;
+			iPos++;
+		}
+	}
+
+	return iCount;
 }
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -616,149 +973,269 @@ void CMainFrame::OnButtonImportSysPara()
 //开始采集
 void CMainFrame::OnButtonStartCapture()
 {
-
-
-
-	
-
-	////将暂停采集、结束采集、结束采样、开始采样置灰
-	//m_pMenu->EnableMenuItem(ID_BUTTON_SUSPEND_CAPTURE, MF_BYCOMMAND | MF_GRAYED);
-	// 设置底部坐标轴为自动.
-	///如果此时是暂停采集状态，则启动采集事件
-	if (theApp.m_icollectionStatus == 2){
-		for (int i = 0; i < m_vwfAiCtrl.size(); i++){
-			m_vwfAiCtrl[i]->Start();
-		}
-		theApp.m_icollectionStatus = 1;
+	long lIsSampling;
+	//是否正在采集数据
+	m_pHardWare->IsSampling(&lIsSampling);
+	if (lIsSampling)
+	{
+		AfxMessageBox(LPCTSTR("仪器采样中，请先停止采样!"));
 		return;
 	}
-	///如果当前状态为正在采集
-	if (theApp.m_icollectionStatus == 1) return;
-
-	///判断当前是否打开了项目
-	if (theApp.m_currentProject.GetProjectId() <= 0){
-		AfxMessageBox("请先打开或者新建项目");
-		return;
+	//设置取数块大小 小于等于500Hz按采样频率，1000Hz往上1024的整数倍；
+	float fltSampleFrequency = m_SampleParam.m_fltSampleFrequency;
+	if (fltSampleFrequency > 500)
+	{
+		fltSampleFrequency = (fltSampleFrequency / 1000) * 1024;
 	}
-	///判断当前是否正在保存数据
-	if (theApp.m_bisSave){
-		AfxMessageBox("正在保存数据，请稍候进行采集");
-		return;
+	long lReturnValue;
+	//防止内存不够取不到数
+	if (m_vecHardChannel.size()*sizeof(float)*fltSampleFrequency <= 1024 * 1024)
+		m_pHardWare->SetGetDataCountEveryTime(fltSampleFrequency, &lReturnValue);
+
+	long lSample;
+	//启动采样
+	m_pHardWare->StartSample(LPCTSTR("DH3817F"), 0, 1024, &lSample);
+
+
+	//启动取数线程
+	//当HardWareCfg.ini中配置了 OneMacBuffer = 1 时，只能使用 GetOneMacChnDataEx或GetOneMacChnData。
+	m_bThread = true;
+
+	if (m_bOneMacBuffer)
+	{
+		m_pGetDataThread = AfxBeginThread(GetOneMacDataThread, this, THREAD_PRIORITY_NORMAL);
 	}
-
-	///设置当前状态为正在采集状态
-	theApp.m_icollectionStatus = 1;
-	///初始化采集数据缓冲区
-	m_mpcolllectioinDataQueue.clear();
-	m_vdevConfParams.clear();
-	///清空映射关系
-	m_mpcolllectioinData.clear();
-	m_mpsignalCollectionView.clear();
-	m_vchannelCodes.clear();
-	//// 初始化采集窗口集合
-	InitCaptureViewVector();
-
-	///根据采集窗口获取所有窗口的通道号和采集卡的DeviceNumber
-	int deviceNum;
-	int channelNum;
-	TbChannel channel;
-	vector<CString> splitChannelCode;
-	///封装采集通道的信息的dom树
-	SetChannelInfoJsonValue();
-	SetCollectionStatusJsonValue();
-	map<int, DevConfParam>::iterator devConfParaIterator;
-	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
-		theApp.m_vsignalCaptureView[i]->GetChannel(channel);
-		splitChannelCode = CommonUtil::GetCStringVectorFromSplitCString(channel.GetChannelCode(), "-");
-		deviceNum = CommonUtil::CString2Int(splitChannelCode[0]);
-		channelNum = CommonUtil::CString2Int(splitChannelCode[1]);
-		devConfParaIterator = m_vdevConfParams.find(deviceNum);//找到key为deviceNum的迭代器
-		if (devConfParaIterator == m_vdevConfParams.end()){
-			///找不到设备号对应的设备配置参数,插入一条设备参数信息
-			DevConfParam devConfPara;
-			devConfPara.deviceNumber = deviceNum;
-			devConfPara.channelStart = 0;
-			devConfPara.channelCount = 0;
-			m_vdevConfParams.insert(pair<int, DevConfParam>(deviceNum, devConfPara));
-			devConfParaIterator = m_vdevConfParams.find(deviceNum);
-		}
-		///配置设备参数 通道个数 设备号 量程 等等
-		devConfParaIterator->second.channelCount++;
-		devConfParaIterator->second.deviceNumber = deviceNum;
-		devConfParaIterator->second.vrgTypes.push_back(channel.GetMileageRange());
-		///记录所有的通道号
-		m_vchannelCodes.push_back(CommonUtil::Int2CString(deviceNum) + "-" + CommonUtil::Int2CString(channelNum));
-		///如果是初始化的状态，也即修改默认开始通道0为第一次循环出的开始通道
-		if (devConfParaIterator->second.channelStart == 0 && devConfParaIterator->second.channelCount == 1){ devConfParaIterator->second.channelStart = channelNum; }
-		///创建窗口与通道之间的关系映射map
-		m_mpsignalCollectionView.insert(pair<CString, CAirCraftCasingVibrateSystemView*>
-			(CommonUtil::Int2CString(deviceNum) + "-" + CommonUtil::Int2CString(channelNum), theApp.m_vsignalCaptureView[i]));
-		///创建通道与保存数据之间的关系映射map
-		m_mpcolllectioinDataQueue.insert(pair<CString, ThreadSafeQueue<double>>
-			(CommonUtil::Int2CString(deviceNum) + "-" + CommonUtil::Int2CString(channelNum), ThreadSafeQueue<double>()));
-
-		TbSignalTestRecord signalTestRecord;
-		TbAlarmpara alarmpara;
-		signalTestRecord.SetFrequency((double)theApp.m_currentProject.GetCollectionparas().GetSampleFrequency());
-		//signalTestRecord.SetPeakValue(-1);
-		m_vSignalTestRecord.push_back(signalTestRecord);
-		alarmpara.SetStatus(0);
-		alarmpara.SetFrequency((double)theApp.m_currentProject.GetCollectionparas().GetSampleFrequency());
-		m_vAlarmpara.push_back(alarmpara);
+	else
+	{
+		m_pGetDataThread = AfxBeginThread(GetDataThread, this, THREAD_PRIORITY_NORMAL);
 
 	}
-
-	///获取采集频率和采集点数
-	//Result res = JsonUtil::GetValueFromJsonString(theApp.m_currentProject.GetCollectionparas().GetSampleFrequency().GetDictValue(), "content", m_sampleFrequency);
-
-	m_icollectionPoints = atoi(theApp.m_currentProject.GetCollectionparas().GetCollectionPoint().GetDictValue());
-	//if (!res.GetIsSuccess()){
-	//	AfxMessageBox(res.GetMessages());
-	//	return;
-	//}
-	//Result res = JsonUtil::GetValueFromJsonString(theApp.m_currentProject.GetCollectionparas().GetAnalysisFrequency().GetDictValue(), "content", m_analysisFrequency);
-	//if (!res.GetIsSuccess()){
-	//	AfxMessageBox(res.GetMessages());
-	//	return;
-	//}
-	//m_isampleFrequency = m_sampleFrequency.GetInt();
-	m_isampleFrequency = theApp.m_currentProject.GetCollectionparas().GetSampleFrequency();
-	m_analysisFrequency = theApp.m_currentProject.GetCollectionparas().GetAnalysisFrequency();
-	///根据获取的采集卡的DeviceNumber创建响应的控制类
-	for (devConfParaIterator = m_vdevConfParams.begin(); devConfParaIterator != m_vdevConfParams.end(); devConfParaIterator++){
-		///初始化采集数据的对象
-		WaveformAiCtrl *  wfAiCtrl = WaveformAiCtrl::Create();
-		///	给采集设备绑定准备事件
-		wfAiCtrl->addDataReadyHandler(OnDataReadyEvent, this);
-		devConfParaIterator->second.clockRatePerChan = 256000;//234375;
-		devConfParaIterator->second.sectionLength = m_icollectionPoints * 2.56 * (devConfParaIterator->second.clockRatePerChan / m_isampleFrequency);
-		//m_analysisFrequency.GetInt() * 2 * (devConfParaIterator->second.clockRatePerChan / m_isampleFrequency);//collectionPoint*devConfParaIterator->second.channelCount;//analysisFrequency.GetInt()*(234375 / collectionFrequency.GetInt()) * 2;
-		m_advantechDaqController.ConfigurateDevice(devConfParaIterator->second, wfAiCtrl);
-		//开启采集
-		wfAiCtrl->Start();
-		m_vwfAiCtrl.push_back(wfAiCtrl);
-
-		//CAirCraftCasingVibrateSystemView *Record;
-		//Record = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
-		theApp.m_vsignalCaptureView[0]->GetPeak();
-		if (theApp.m_vsignalCaptureView[devConfParaIterator->first]->GetPeak() > m_vSignalTestRecord[devConfParaIterator->first].GetPeakValue())
-		{
-			m_vSignalTestRecord[devConfParaIterator->first].SetPeakValue(theApp.m_vsignalCaptureView[devConfParaIterator->first]->GetPeak());
-		}
-		//theApp.m_vsignalCaptureView[devConfParaIterator->first]->GetPeak();
-
-		///创建设备与采集缓冲区的map映射关系
-		m_mpcolllectioinData.insert(pair<int, DOUBLE *>
-			(devConfParaIterator->second.deviceNumber, new DOUBLE[devConfParaIterator->second.sectionLength * devConfParaIterator->second.channelCount]));
-	
-	}
-
-	///开启线程保存数据
-	OpenThread2SaveCollectionData();
-	//实时数据传输
-	SetTimer(99, 1000, NULL);
 
 }
+// 取数线程
+/*接口说明：获取采样数据（数据类型float）
+参数说明：
+nBufferSize – bufferPoint对应内存的字节大小
+bufferPoint –存储通道数据的内存地址
+输出：
+bufferPoint –仪器采集到的数据
+nTotalDataPos –单个通道已采集的总数据量（不含本次接收数据量）
+nReceiveCount–每通道数据量
+nChnCount – 通道数
+returnValue –返回值 - 1 –内存地址不足, 0 –未获取到数据, 1 –获取到数据
+获取的数据的排列如下：
+1号机							2号机
+000………..000111…………111…………000……..…000111…………..111
+1通道所有数  2通道所有数			1通道所有数  2通道所有数
+获取的数据按机号从小到大排列*/
+UINT CMainFrame::GetDataThread(LPVOID pParam)
+{
+	CMainFrame *pTest = (CMainFrame *)pParam;
+	CString strChannel;
+	int nSelGroupID, nSelChanID;
+	strTextTemp = "";
+	tempCount = 0;
+	long nBufferSize = 1024 * 1024;		// 1Mb内存 防止内存不够获取不到数据
+	float *BufferPoint = new float[nBufferSize];
+
+	while (pTest->m_bThread)
+	{
+		long nTotalDataPos, nReceiveCount, nChnCount, lReturnValue;
+		pTest->m_pHardWare->GetAllChnData(nBufferSize, (long)BufferPoint, &nTotalDataPos, &nReceiveCount, &nChnCount, &lReturnValue);
+		if (nReceiveCount <= 0)
+		{
+			Sleep(10);
+			continue;
+		}
+
+		float *pfltData = new float[nReceiveCount];
+		float *pValue = (float*)BufferPoint;
+		if (pTest->m_bThread)
+			//pTest->m_ComboChannel.GetLBText(pTest->m_ComboChannel.GetCurSel(), strChannel);
+			strChannel = "1-1";
+		nSelGroupID = atoi(strChannel.Left(strChannel.ReverseFind('-'))) - 1;
+		nSelChanID = atoi(strChannel.Mid(strChannel.ReverseFind('-') + 1)) - 1;
+		int nIndex = -1;
+		for (int i = 0; i < pTest->m_vecGroupChannel.size(); i++)
+		{
+			if (pTest->m_vecGroupChannel[i].m_GroupID == nSelGroupID)
+			{
+				nIndex = i;
+			}
+		}
+		if (nIndex == -1)
+			break;
+		stuGroupChannel GroupChannel = pTest->m_vecGroupChannel[nIndex];
+		long bOnLine = 0;
+		pTest->m_pHardWare->IsChannelOnLine(GroupChannel.m_GroupID, GroupChannel.m_strMachineIP.c_str(), nSelChanID, &bOnLine);
+		if (bOnLine)
+		{
+			//获取当前通道pos
+			long nSeekPos;
+			pTest->m_pHardWare->GetDataIndex(GroupChannel.m_GroupID, GroupChannel.m_strMachineIP.c_str(), nSelChanID, &nSeekPos, &lReturnValue);
+			for (int k = 0; k < nReceiveCount; k++)
+			{
+				pfltData[k] = pValue[nSeekPos*nReceiveCount + k];
+			}
+
+			if (pTest->m_hWnd != NULL)
+				pTest->OnShowSampleData((WPARAM)nReceiveCount, (LPARAM)pfltData);
+
+			//test
+			//strTextTemp.Format("TotalDataPos:%d\tReceiveCount%d\t  %.3f ",nTotalDataPos,nReceiveCount,pfltData[0]);
+			//pTest->m_List.AddString(strTextTemp);
+			//int nCount = pTest->m_List.GetCount();
+			//if (nCount >1000)
+			//	pTest->m_List.ResetContent();
+			//else
+			//	pTest->m_List.SetCurSel(nCount-1);
+		}
+		else
+			//pTest->m_List.AddString("通道不在线");
+
+		delete[] pfltData;
+		Sleep(10);
+	}
+	delete[] BufferPoint;
+	return 0;
+}
+void CMainFrame::OnShowSampleData(WPARAM wParam, LPARAM lParam)
+{
+	//int nCount = m_List.GetCount();
+	//if (nCount > 1000)
+	//m_List.ResetContent();
+
+	int nDataCount = (int)wParam;
+	float *pfltData = (float *)lParam;
+	//Double strData ;
+	SmartArray<double> xData; ///x坐标
+	fftw_complex fftw;///单次傅立叶变换的输入
+	int channel = 0;
+	vector<SmartArray<double>> fftwInputArray(1);//channelCount
+	//取数少于10直接全部显示
+	//if (nDataCount <= 10)
+	//{
+	for (int i = 0; i < nDataCount; i++)
+	{
+		//strData.Format("%.3f   ", pfltData[i]);
+		fftwInputArray[0].push_back(pfltData[i]);
+		//strTextTemp += strData;
+		//channel++;
+	}
+	//m_List.AddString(strTextTemp);
+	//int nCount = m_List.GetCount();
+	//m_List.SetCurSel(nCount - 1);
+	strTextTemp = "";
+	//}
+	//else
+	//{
+	//	for (int i = 0; i < nDataCount; i++)
+	//{
+	//if ((tempCount + i) % 10 == 0 && i != 0)
+	//{
+	//m_List.AddString(strTextTemp);
+	//int nCount = m_List.GetCount();
+	//m_List.SetCurSel(nCount - 1);
+	//strTextTemp = "";
+	//}
+	//strData.Format("%.3f   ", pfltData[i]);
+	//strTextTemp += strData;
+	//}
+	//}
+	tempCount += nDataCount;
+
+
+	///获取所有的窗口的迭代器指针
+	vector<map<CString, CAirCraftCasingVibrateSystemView*>::iterator> vsignalCollectViewIterator;
+	map<CString, CAirCraftCasingVibrateSystemView*>::iterator signalCollectViewIterator;
+
+
+	//设置x坐标
+	for (int i = 0; i < nDataCount /  2.56; i++){
+		xData.push_back(i);
+	}
+	//for (int channel = 0; channel < 4; channel++){
+		SmartArray<double> yData; ///y坐标
+		//对传入的数据进行傅里叶变换处理
+		SmartFFTWComplexArray fftwOutput(fftwInputArray[0].size());
+		FFTWUtil::FastFourierTransformation(fftwInputArray[0].size(), fftwInputArray[0].GetSmartArray(),
+			fftwOutput.GeFFTWComplexArray());
+		//将处理之后的傅里叶变换转换成XY坐标
+		int a = fftwInputArray[0].size();
+		FFTWUtil::FFTDataToXY(fftwOutput, yData, fftwInputArray[0].size());
+		theApp.m_vsignalCaptureView[0]->SetEchoSignalData(EchoSignal(xData, yData));
+
+	//}
+}
+
+UINT CMainFrame::GetOneMacDataThread(LPVOID pParam)
+{
+	CMainFrame *pTest = (CMainFrame *)pParam;
+	CString strChannel;
+	int nSelGroupID, nSelChanID;
+	strTextTemp = "";
+	tempCount = 0;
+	long nBufferSize = 1024 * 1024;		// 1Mb内存 防止内存不够获取不到数据
+	float *BufferPoint = new float[nBufferSize];
+
+	if (pTest->m_bThread)
+		//pTest->m_ComboChannel.GetLBText(pTest->m_ComboChannel.GetCurSel(), strChannel);
+	    strChannel = "1-1";
+	nSelGroupID = atoi(strChannel.Left(strChannel.ReverseFind('-'))) - 1;
+	nSelChanID = atoi(strChannel.Mid(strChannel.ReverseFind('-') + 1)) - 1;
+	int nIndex = -1;
+	for (int i = 0; i < pTest->m_vecGroupChannel.size(); i++)
+	{
+		if (pTest->m_vecGroupChannel[i].m_GroupID == nSelGroupID)
+		{
+			nIndex = i;
+		}
+	}
+	if (nIndex == -1)
+	{
+		//pTest->m_List.AddString("仪器不存在！");
+		return 0;
+	}
+
+	while (pTest->m_bThread)
+	{
+		long nTotalDataPos, nReceiveCount, nChnCount, lReturnValue;
+		//pTest->m_pHardWare->GetOneMacChnDataEx(nSelGroupID, nBufferSize, (long)BufferPoint, &nTotalDataPos, &nReceiveCount, &nChnCount, &lReturnValue);
+		if (nReceiveCount <= 0)
+		{
+			Sleep(10);
+			continue;
+		}
+
+		float *pfltData = new float[nReceiveCount];
+		float *pValue = (float*)BufferPoint;
+
+		stuGroupChannel GroupChannel = pTest->m_vecGroupChannel[nIndex];
+		long bOnLine = 0;
+		pTest->m_pHardWare->IsChannelOnLine(GroupChannel.m_GroupID, GroupChannel.m_strMachineIP.c_str(), nSelChanID, &bOnLine);
+		if (bOnLine)
+		{
+			//获取当前通道pos
+			//11112222333
+			for (int k = 0; k < nReceiveCount; k++)
+			{
+				pfltData[k] = pValue[nSelChanID*nReceiveCount + k];
+			}
+
+			if (pTest->m_hWnd != NULL)
+				pTest->OnShowSampleData((WPARAM)nReceiveCount, (LPARAM)pfltData);
+		}
+		else
+			//pTest->m_List.AddString("通道不在线");
+
+		delete[] pfltData;
+		Sleep(10);
+	}
+	delete[] BufferPoint;
+	return 0;
+}
+
+
 void CMainFrame::SetChannelInfoJsonValue(){
 	m_channelInfo.SetObject();
 	m_channelInfo.RemoveAllMembers();

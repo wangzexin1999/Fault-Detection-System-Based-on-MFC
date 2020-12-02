@@ -52,9 +52,6 @@
     <Filter Include="ChartCtrl">
       <UniqueIdentifier>{f8e3ad54-7e20-456e-a532-837227df9190}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\entity">
-      <UniqueIdentifier>{65b8e1e7-4a7d-473b-b531-f1f382895c0b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="NewCellTypes">
       <UniqueIdentifier>{2a3d2024-2a8a-45c7-9c40-511f78656046}</UniqueIdentifier>
     </Filter>
@@ -84,6 +81,9 @@
     </Filter>
     <Filter Include="头文件\dao\basedao">
       <UniqueIdentifier>{83d46d13-d3f5-429e-9494-9d14535b0e82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\dao\entity">
+      <UniqueIdentifier>{65b8e1e7-4a7d-473b-b531-f1f382895c0b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -436,37 +436,37 @@
       <Filter>头文件\dao</Filter>
     </ClInclude>
     <ClInclude Include="entity\AcquiredSignal.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="entity\DataStructure.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="entity\EchoSignal.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="entity\RealTimeSignal.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="entity\Result.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="entity\SmartArray.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="entity\SmartFFTWComplexArray.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="entity\TbCollectionPlan.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="entity\TbDictionary.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="entity\TbProduct.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="entity\TbProject.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="dao\TbProductDao.h">
       <Filter>头文件\dao</Filter>
@@ -535,7 +535,7 @@
       <Filter>头文件\Service</Filter>
     </ClInclude>
     <ClInclude Include="entity\TbRecordSignal.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="View\Picture\ColorView.h">
       <Filter>头文件\View\图形属性</Filter>
@@ -655,7 +655,7 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="entity\TbUser.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="dao\TbUserDao.h">
       <Filter>头文件\dao</Filter>
@@ -667,19 +667,19 @@
       <Filter>头文件\Controller</Filter>
     </ClInclude>
     <ClInclude Include="TbPost.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="TbPostDao.h">
       <Filter>头文件\dao</Filter>
     </ClInclude>
     <ClInclude Include="TbEquipment.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="TbEquipmentDao.h">
       <Filter>头文件\dao</Filter>
     </ClInclude>
     <ClInclude Include="entity\TbCollectionparas.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="dao\TbCollectionparasDao.h">
       <Filter>头文件\dao</Filter>
@@ -694,10 +694,10 @@
       <Filter>头文件\dao</Filter>
     </ClInclude>
     <ClInclude Include="TbProductType.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="entity\TbChannel.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="dao\TbChannelDao.h">
       <Filter>头文件\dao</Filter>
@@ -715,19 +715,19 @@
       <Filter>头文件\Service</Filter>
     </ClInclude>
     <ClInclude Include="TbSensor.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="TbSensorDao.h">
       <Filter>头文件\dao</Filter>
     </ClInclude>
     <ClInclude Include="TbTestlocation.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="TbTeststand.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="TbTeststate.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="TbTestlocationDao.h">
       <Filter>头文件\dao</Filter>
@@ -739,7 +739,7 @@
       <Filter>头文件\dao</Filter>
     </ClInclude>
     <ClInclude Include="TbLabel.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="TbLabelDao.h">
       <Filter>头文件\dao</Filter>
@@ -748,7 +748,7 @@
       <Filter>头文件\dao</Filter>
     </ClInclude>
     <ClInclude Include="entity\TbSumsignal.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="Controller\SumsignalController.h">
       <Filter>头文件\Controller</Filter>
@@ -757,7 +757,7 @@
       <Filter>头文件\Service</Filter>
     </ClInclude>
     <ClInclude Include="TbAlarmpara.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="TbAlarmparaDao.h">
       <Filter>头文件\dao</Filter>
@@ -766,7 +766,7 @@
       <Filter>头文件\dao</Filter>
     </ClInclude>
     <ClInclude Include="TbSignal.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="SignalController.h">
       <Filter>头文件\Controller</Filter>
@@ -778,13 +778,13 @@
       <Filter>头文件\dao</Filter>
     </ClInclude>
     <ClInclude Include="TbSignalTestRecord.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="TbSumsignalLabelDao.h">
       <Filter>头文件\dao</Filter>
     </ClInclude>
     <ClInclude Include="TbSumsignalLabel.h">
-      <Filter>头文件\entity</Filter>
+      <Filter>头文件\dao\entity</Filter>
     </ClInclude>
     <ClInclude Include="SumsignalLabelService.h">
       <Filter>头文件\Service</Filter>
@@ -808,6 +808,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="DlgCom.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1365,6 +1368,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="DlgCom.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Common.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -30,13 +30,15 @@
 #include "include/Inc/bdaqctrl.h"
 #include "include/Inc/compatibility.h"
 #include "DlgCom.h"
+//////////////////////////////
+#include "Common.h"
 using namespace Automation::BDaq;
 using namespace std;
 /////////////////////////////////////
 
 ///刷新页面的自定义消息映射
 #define  WM_REFRESHVIEW_BY_PROJECT (WM_USER+100)
-
+const int SHOW_CHANNEL_MEASURETYPE = 4; /// 通道测量类型
 class CMainFrame : public CMDIFrameWndEx
 {
 	DECLARE_DYNAMIC(CMainFrame)
@@ -66,7 +68,24 @@ private:
 	class CDlgCom * m_pComDialog;
 
 protected:  // 控件条嵌入成员
-
+	list<string> m_listFreq;
+	list<string> m_listChannelMeasure;
+	stuSampleParam m_SampleParam;
+	// 采样线程句柄
+	CWinThread	*m_pGetDataThread;
+	bool m_bThread;
+	//初始化仪器控制接口
+	long InitInterface();
+	//是否连接上仪器
+	long IsConnectMachine();
+	//取数线程
+	static UINT GetDataThread(LPVOID pParam);
+	//单台仪器数据
+	static UINT GetOneMacDataThread(LPVOID pParam);
+	//显示数据
+	void OnShowSampleData(WPARAM wParam, LPARAM lParam);
+	//初始化通道测点类型
+	void InitMeasureType(long GroupChannelID, LPCTSTR strMachineIP, long ChannelStyle, long ChannelID, long CellID);
 	CMFCRibbonBar     m_wndRibbonBar;
 	CMFCRibbonApplicationButton m_MainButton;
 	CMFCToolBarImages m_PanelImages;
@@ -129,7 +148,34 @@ protected:  // 控件条嵌入成员
 
 	void SetCollectionStatusJsonValue();
 public:
-
+	//liuxiu
+	struct ChannelParam
+	{
+		int ChannelStyle;
+		int ChannelID;
+		int CellID;
+	};
+	bool m_bOneMacBuffer;
+	int m_nInterface;
+	int m_nInstrumentType;
+	vector<stuHardChannel> m_vecHardChannel;			//通道信息
+	vector<stuGroupChannel> m_vecGroupChannel;			//通道组信息
+	//获得通道信息
+	void GetChannelParam(int nID, ChannelParam &ChanParam);
+	//获取所有仪器通道
+	void GetAllGroupChannel(CString & strChannel);
+	//清空所有仪器通道
+	void ClearAllGroupChannel();
+	//获取仪器采样频率列表
+	void GetSampleFreqList();
+	//获得采样参数
+	long GetSampleParam();
+	//刷新所有参数
+	void RefreshAllParam();
+	//获得目的参数信息
+	void GetParamSelectValue();
+	string GetMachineIP(int nGroupID);
+	int BreakString(const string& strSrc, list<string>& lstDest, const string& strSeprator);
 
 	int m_isampleFrequency; ///采样频率
 

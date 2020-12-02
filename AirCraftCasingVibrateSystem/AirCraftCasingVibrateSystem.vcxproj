@@ -209,6 +209,7 @@
     <ClInclude Include="AlarmparaService.h" />
     <ClInclude Include="CDHTestHardWare.h" />
     <ClInclude Include="ChildRibbonPanel.h" />
+    <ClInclude Include="Common.h" />
     <ClInclude Include="DlgCom.h" />
     <ClInclude Include="entity\AcquiredSignal.h" />
     <ClInclude Include="Controller\AdvantechDaqController.h" />
@@ -453,6 +454,7 @@
     <ClCompile Include="AlarmparaService.cpp" />
     <ClCompile Include="CDHTestHardWare.cpp" />
     <ClCompile Include="ChildRibbonPanel.cpp" />
+    <ClCompile Include="Common.cpp" />
     <ClCompile Include="DlgCom.cpp" />
     <ClCompile Include="entity\AcquiredSignal.cpp" />
     <ClCompile Include="Controller\AdvantechDaqController.cpp" />
