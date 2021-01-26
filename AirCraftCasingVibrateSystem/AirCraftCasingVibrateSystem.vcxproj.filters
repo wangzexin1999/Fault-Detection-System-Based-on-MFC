@@ -522,9 +522,6 @@
     <ClInclude Include="Controller\Constant.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Controller\AdvantechDaqController.h">
-      <Filter>头文件\Controller</Filter>
-    </ClInclude>
     <ClInclude Include="Controller\CollectionPlanController.h">
       <Filter>头文件\Controller</Filter>
     </ClInclude>
@@ -750,9 +747,6 @@
     <ClInclude Include="entity\TbSumsignal.h">
       <Filter>头文件\dao\entity</Filter>
     </ClInclude>
-    <ClInclude Include="Controller\SumsignalController.h">
-      <Filter>头文件\Controller</Filter>
-    </ClInclude>
     <ClInclude Include="Service\SumsignalService.h">
       <Filter>头文件\Service</Filter>
     </ClInclude>
@@ -811,6 +805,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Common.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DHTestHardWareController.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstDefine.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Channel.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1076,9 +1079,6 @@
     <ClCompile Include="Utils\MyGridCtrl.cpp">
       <Filter>源文件\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Controller\AdvantechDaqController.cpp">
-      <Filter>源文件\Controller</Filter>
-    </ClCompile>
     <ClCompile Include="Controller\CollectionPlanController.cpp">
       <Filter>源文件\Controller</Filter>
     </ClCompile>
@@ -1307,9 +1307,6 @@
     <ClCompile Include="entity\TbSumsignal.cpp">
       <Filter>源文件\entity</Filter>
     </ClCompile>
-    <ClCompile Include="Controller\SumsignalController.cpp">
-      <Filter>源文件\Controller</Filter>
-    </ClCompile>
     <ClCompile Include="Service\SumsignalService.cpp">
       <Filter>源文件\Service</Filter>
     </ClCompile>
@@ -1346,9 +1343,6 @@
     <ClCompile Include="SumsignalLabelService.cpp">
       <Filter>源文件\Service</Filter>
     </ClCompile>
-    <ClCompile Include="SumsignalLabelController.cpp">
-      <Filter>源文件\Controller</Filter>
-    </ClCompile>
     <ClCompile Include="SignalTestRecordService.cpp">
       <Filter>源文件\Service</Filter>
     </ClCompile>
@@ -1371,6 +1365,18 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Common.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DHTestHardWareController.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstDefine.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Channel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SumsignalLabelController.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

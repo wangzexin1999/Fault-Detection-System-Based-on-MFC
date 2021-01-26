@@ -6,19 +6,27 @@
 #include"TbSensor.h"
 #include"TbEquipment.h"
 #include"TbTestlocation.h"
+#include <utility>
+#include <list>
 #pragma once
 class TbChannel
 {
 
 private:
 
-	int m_id;
-	CString m_channelCode;
-	int m_collectionparasId;
-	TbSensor m_sensor;
+	int m_id;//通道ID
+	CString m_channelCode;//通道编号
+	TbSensor m_sensor;//对应传感器
 
+	std::pair<int,CString> m_fullvalue;//满度量程
+	std::pair<int, CString> m_upFreq;//上限频率
+	std::pair<int, CString> m_inputMode;//输入方式
+	float m_sensitivity;//灵敏度
+	std::pair<int, CString> m_elcpressure;//电压测量范围
+	std::pair<int, CString> m_messureType;//测量类型
+	
 	TbDictionary m_channelStatus;
-	TbDictionary m_messureType;
+	int m_collectionparasId;
 	CString m_channelDesc;
 	TbDictionary m_windowType;
 	float m_triggerMagnitude;
@@ -28,17 +36,11 @@ private:
 	TbDictionary m_coordinateSystemDirection;
 	char m_isReference;
 	TbDictionary m_engineeringUnits;
-	float  m_sensitivity;
-	int m_mileageRange;
 	TbDictionary m_integralType;
 	TbDictionary m_integralUnits;
-	TbDictionary m_inputMethod;
 	char m_antiAliasingFiltering;
-	float m_maxFrequency;
-
-
-
-
+	int m_projectId;
+	
 
 public:
 	TbChannel(int channelCode = 0);
@@ -48,13 +50,46 @@ public:
 	int GetId();
 	void SetChannelCode(CString channel);
 	CString GetChannelCode();
+
+	//灵敏度
+	float GetSensitivity();
+	void SetSensitivity(float sensitivity);
+	//满度量程
+	std::pair<int, CString> GetFullValue();
+	void SetFullValue(std::pair<int, CString> fullvalue);
+
+	//输入方式
+	std::pair<int, CString>  GetInputMode();
+	void SetInputMode(std::pair<int, CString> inputMethod);
+
+	//上限频率
+	std::pair<int, CString> GetUpFreq();
+	void SetUpFreq(std::pair<int, CString> maxFrequency);
+
+	//电压测量范围
+	std::pair<int, CString> GetElcPressure();
+	void SetElcPressure(std::pair<int, CString> elcPressure);
+
+	//项目编号
+	int GetProjectId();
+	void SetProjectId(int projectId);
+
+
+	//测量类型
+	std::pair<int, CString> & GetMessureType();
+	void SetMessureType(std::pair<int, CString> messureType);
+
+
+	char GetAntiAliasingFiltering();
+	void SetAntiAliasingFiltering(char antiAliasingFiltering);
+	TbDictionary & GetIntegralType();
+	void SetIntegralType(TbDictionary integralType);
+	TbDictionary & GetIntegralUnits();
+	void SetIntegralUnits(TbDictionary integralUnits);
 	CString GetChannels();
-	int GetCollectionparasId();
-	void SetCollectionparasId(int collectionparasId);
 	TbDictionary & GetChannelStatus();
 	void SetChannelStatus(TbDictionary ChannelStatus);
-	TbDictionary & GetMessureType();
-	void SetMessureType(TbDictionary messureType);
+	
 	CString GetChannelDesc();
 	void SetChannelDesc(CString channelDesc);
 	TbDictionary & GetWindowType();
@@ -73,20 +108,8 @@ public:
 	void SetIsReference(char isReference);
 	TbDictionary & GetEngineeringUnits();
 	void SetEngineeringUnits(TbDictionary engineeringUnits);
-	float GetSensitivity();
-	void SetSensitivity(float sensitivity);
-	int GetMileageRange();
-	void SetMileageRange(int mileageRange);
-	TbDictionary & GetIntegralType();
-	void SetIntegralType(TbDictionary integralType);
-	TbDictionary & GetIntegralUnits();
-	void SetIntegralUnits(TbDictionary integralUnits);
-	TbDictionary & GetInputMethod();
-	void SetInputMethod(TbDictionary inputMethod);
-	char GetAntiAliasingFiltering();
-	void SetAntiAliasingFiltering(char antiAliasingFiltering);
-	float GetMaxFrequency();
-	void SetMaxFrequency(float maxFrequency);
+
+	
 
 
 	void SetSensor(TbSensor sensor);

@@ -39,6 +39,7 @@ protected:
 	BaseProjectInfoView m_baseProjectInfoView;
 	CollectionParaPresetView m_collectionParaPresetView;
 	ChannelParaPresetView m_channelParaPresetView;
+
 	//CollectionPlanParaPresetView m_collectionPlanParaPresetView;
 	int m_newDialogIndex;
 	TbCollectionparas m_collectionparas;

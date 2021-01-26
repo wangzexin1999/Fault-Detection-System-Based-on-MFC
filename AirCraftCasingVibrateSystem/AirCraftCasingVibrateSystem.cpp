@@ -83,7 +83,7 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 
 	/*连接本地数据库*/
 	const char localUser[] = "root";         //local username
-	const char localPswd[] = "123456"; //local password
+	const char localPswd[] = "oxygen3.14"; //local password
 	//const char localPswd[] = "1604011031";//local password
 	const char localHost[] = "127.0.0.1";    //local ip "127.0.0.1" 
 	const char localTable[] = "aircraftfaultdetectdb15";        //local database
@@ -94,20 +94,12 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	{*/
 		theApp.PDsql = theApp.m_conPDLocalSql;
 	//}
-
+	
 	//弹出登录窗口
 	CLoginView loginView;
 	// 如果点击取消了，程序停止
 	if (loginView.DoModal() == CancelLogin)	{return FALSE;}
-
-	// 根据当前登录用户，加载用户最后一次使用的项目
-	ProjectController projectController;
-
-	projectController.FindLastOpenProjectByUser(theApp.m_currentProject);
-	if (theApp.m_currentProject.GetProjectId() != 0){
-		theApp.m_currentProject.SetProjectUpdateTime(DateUtil::GetCurrentCStringTime());
-		projectController.Update(theApp.m_currentProject);
-	}
+	
 
 	// 从文件中读取数据->内存（模拟数据）
 	CFileUtil fileUtil;
@@ -131,9 +123,7 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	}
 
 	AfxEnableControlContainer();
-
 	EnableTaskbarInteraction(FALSE);
-
 	// 使用 RichEdit 控件需要  AfxInitRichEdit2()	
 	// AfxInitRichEdit2();
 
@@ -171,6 +161,16 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 
 	// 创建主 MDI 框架窗口
 	CMainFrame* pMainFrame = new CMainFrame();
+	// 如果设备不在线，就退出程序
+	if (!deviceIsOnline) return FALSE;
+	// 根据当前登录用户，加载用户最后一次使用的项目
+	ProjectController projectController;
+
+	projectController.FindLastOpenProjectByUser(theApp.m_currentProject);
+	if (theApp.m_currentProject.GetProjectId() != 0){
+		theApp.m_currentProject.SetProjectUpdateTime(DateUtil::GetCurrentCStringTime());
+		projectController.Update(theApp.m_currentProject);
+	}
 
 	if (!pMainFrame || !pMainFrame->LoadFrame(IDR_MAINFRAME))
 	{

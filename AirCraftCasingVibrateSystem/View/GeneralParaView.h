@@ -24,10 +24,15 @@ Modification:
 #include "NewCellTypes/GridCellCombo.h"
 #include "DictionaryController.h"
 #include <vector>
-#include "AdvantechDaqController.h"
+#include "CDHTestHardWare.h"
+#include "TbProject.h"
 using namespace  std;
 // CGeneralParaView 对话框
-
+// CMyDialog 对话框
+//const int theApp.SHOW_CHANNEL_FULLVALUE_ = 5; 	/// 满度量程1
+//const int theApp.SHOW_CHANNEL_SENSECOEF_ = 6; 	/// 传感器灵敏度1
+//const int SHOW_CHANNEL_UPFREQ_ = 10; 	/// 上限频率1
+//const int SHOW_CHANNEL_ACQ_INPUTMODE_ = 12; 	/// 输入方式1
 class CGeneralParaView : public CDialogEx
 {
 	DECLARE_DYNAMIC(CGeneralParaView)
@@ -35,7 +40,9 @@ class CGeneralParaView : public CDialogEx
 public:
 	CGeneralParaView(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CGeneralParaView();
-
+	void GetParamSelectValue(string strMachineIP);
+	CString m_strSenseCoef;
+	int BreakString(const string& strSrc, list<string>& lstDest, const string& strSeprator);
 	// 对话框数据
 	enum { IDD = IDD_DIALOG_GENERAL_PARA };
 protected:
@@ -45,9 +52,10 @@ protected:
 	DictionaryController m_dictionController;
 	vector<TbDictionary> m_vwindowTypes;  // 窗类型
 	vector<TbDictionary> m_vinputMethods; // 输入方式
-	AdvantechDaqController m_advantechDaqController; // 硬件控制类
-	vector<vector<int>>  m_measuringRange;
-
+	list<string> m_listFullValue;
+	list<string> m_listUpFreq;
+	list<string> m_elcpressure;
+	list<string> m_listInputMode;
 	DECLARE_MESSAGE_MAP()
 	ChannelParaController m_channelParaController;
 public:

@@ -7,6 +7,7 @@
 #include "TbSumsignal.h"
 #include "TbSignalDao.h"
 #include "TbSignal.h"
+#include "TbSumsignal.h"
 #include "TbChannel.h"
 #include "TbChannelDao.h"
 #include "CommonUtil.h"
@@ -23,7 +24,7 @@ public:
 protected:
 	TbChannelDao m_channelParaDao;
 	//TbProductDao m_productDao;
-	TbSignalDao m_SignalDao;
+	
 	//TbSumsignalDao m_SumsignalDao;
 	static HANDLE m_hMsqlMutex;
 public:
@@ -44,7 +45,11 @@ public:
 	功能描述：保存信号数据
 	输入参数：封装好的signal对象，需要保存的信号队列
 	***********************************************************************/
-	bool AddSignal(TbSignal saveSignal);
+	bool SaveSignal(TbSignal saveSignal);
+
+	bool saveSumSignal(TbSumsignal sumSignal);
+
+	bool updateSumSignal(TbSumsignal sumSignal);
 
 };
 

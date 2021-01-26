@@ -95,8 +95,8 @@ void CNewProjectView::OnBnClickedOk()
 	std::string result = buffer.GetString();
 	std::string result_default = buffer_default.GetString();
 	///给项目对象设置采集
-	m_project.SetCollectionPlans(result.c_str());
-	m_project.SetCollectionStatus(result_default.c_str());
+	//m_project.SetCollectionPlans(result.c_str());
+	//m_project.SetCollectionStatus(result_default.c_str());
 
 	///封装project对象
 	TbUser user = theApp.m_currentProject.GetUser();

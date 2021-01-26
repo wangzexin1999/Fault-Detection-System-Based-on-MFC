@@ -49,7 +49,7 @@ Result CChannelService::AddCollectData(TbSumsignal &sumsignal, ThreadSafeQueue<A
 
 	//2.拼装文件名 项目id_测试设备id_传感器id_产品id_时间戳
 	CString fileName = CommonUtil::Int2CString(sumsignal.GetProjectId()) + "-"
-		+ CommonUtil::Int2CString(sumsignal.GetCollectionparasId())
+		//+ CommonUtil::Int2CString(sumsignal.GetCollectionparasId())
 		//+ "-" + signal.GetChannels() + "-" + CommonUtil::Int2CString(signal.GetProductId())
 		+ "-" + DateUtil::GetTimeStampCString()
 		+ ".csv";
@@ -119,9 +119,10 @@ Result CChannelService::AddCollectData(TbSumsignal &sumsignal, ThreadSafeQueue<A
 	return res;
 }
 
-bool  CChannelService::GetAllChannelByCollectionparasId(int collectionparasId, vector<TbChannel>& channelVector){
+bool  CChannelService::GetALLSensorByProjectId(int projectId, vector<TbChannel>& channelVector){
+	///2.根据项目编号查询
 	vector<TbChannelDao> channelDaoVec;
-	bool isSuccess = m_channelDao.SelectObjectsByCondition(channelDaoVec, "collectionparas_id='" + CommonUtil::Int2CString(collectionparasId) + "'");
+	bool isSuccess = m_channelDao.SelectObjectsByCondition(channelDaoVec, "project_id='" + CommonUtil::Int2CString(projectId) + "'");
 	if (isSuccess){
 		///查询成功之后
 		for (auto channelDao : channelDaoVec){
@@ -156,11 +157,8 @@ bool CChannelService::GetALLChannelByCollectionparasId(int collectionparasId, st
 			dictionaryDao.SelectByObject(channelPara.GetEngineeringUnits());
 			dictionaryDao.SelectByObject(channelPara.GetIntegralType());
 			dictionaryDao.SelectByObject(channelPara.GetIntegralUnits());
-			dictionaryDao.SelectByObject(channelPara.GetInputMethod());
+			//dictionaryDao.SelectByObject(channelPara.GetInputMode());
 			dictionaryDao.SelectByObject(channelPara.GetChannelStatus());
-			dictionaryDao.SelectByObject(channelPara.GetChannelStatus());
-			dictionaryDao.SelectByObject(channelPara.GetMessureType());
-
 			////存入到传感器参数集合
 			vchannelPara.push_back(channelPara);
 		}
@@ -181,8 +179,8 @@ bool CChannelService::Delete(TbChannel channel){
 		strSqlWhere += " and id ='" + CommonUtil::Int2CString(channel.GetId()) + "'";
 	if (channel.GetChannelCode() != "")
 		strSqlWhere += " and channel_code ='" + channel.GetChannelCode() + "'";
-	if (channel.GetCollectionparasId() != 0)
-		strSqlWhere += " and collectionparas_id ='" + CommonUtil::Int2CString(channel.GetCollectionparasId()) + "'";
+	if (channel.GetProjectId() != 0)
+		strSqlWhere += " and project_id ='" + CommonUtil::Int2CString(channel.GetProjectId()) + "'";
 	return m_channelDao.DeleteByCondition(strSqlWhere);
 }
 bool CChannelService::Update(TbChannel channel){

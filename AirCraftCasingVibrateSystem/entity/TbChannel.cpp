@@ -4,13 +4,11 @@
 
 TbChannel::TbChannel(int id){
 	m_id = id; 
-	SetCollectionparasId(0);
 	SetSensitivity(0);
 	SetTriggerMagnitude(0);
 	SetIsReference(0);
 	SetPointNum(0);
 	SetAntiAliasingFiltering(0);
-	SetMaxFrequency(0);
 }
 
 
@@ -24,12 +22,6 @@ int TbChannel::GetId(){
 	return m_id;
 }
 
-int TbChannel::GetCollectionparasId() {
-	return m_collectionparasId;
-}
-void TbChannel::SetCollectionparasId(int collectionparasId) {
-	this->m_collectionparasId = collectionparasId;
-}
 CString TbChannel::GetChannelCode() {
 	return m_channelCode;
 }
@@ -43,18 +35,14 @@ TbDictionary & TbChannel::GetChannelStatus() {
 void TbChannel::SetChannelStatus(TbDictionary channelStatus) {
 	this->m_channelStatus = channelStatus;
 }
-TbDictionary & TbChannel::GetMessureType() {
-	return m_messureType;
-}
-void TbChannel::SetMessureType(TbDictionary messureType) {
-	this->m_messureType = messureType;
-}
+
 CString TbChannel::GetChannelDesc() {
 	return m_channelDesc;
 }
 void TbChannel::SetChannelDesc(CString channelDesc) {
 	this->m_channelDesc = channelDesc;
 }
+
 TbDictionary & TbChannel::GetWindowType() {
 	return m_windowType;
 }
@@ -103,18 +91,21 @@ TbDictionary & TbChannel::GetEngineeringUnits() {
 void TbChannel::SetEngineeringUnits(TbDictionary engineeringUnits) {
 	this->m_engineeringUnits = engineeringUnits;
 }
+//灵敏度
 float TbChannel::GetSensitivity() {
 	return m_sensitivity;
 }
 void TbChannel::SetSensitivity(float sensitivity) {
 	this->m_sensitivity = sensitivity;
 }
-int TbChannel::GetMileageRange() {
-	return m_mileageRange;
+//满度量程
+std::pair<int, CString> TbChannel::GetFullValue() {
+	return m_fullvalue;
 }
-void TbChannel::SetMileageRange(int mileageRange) {
-	this->m_mileageRange = mileageRange;
+void TbChannel::SetFullValue(std::pair<int, CString> fullvalue) {
+	this->m_fullvalue = fullvalue;
 }
+
 TbDictionary & TbChannel::GetIntegralType() {
 	return m_integralType;
 }
@@ -127,11 +118,18 @@ TbDictionary & TbChannel::GetIntegralUnits() {
 void TbChannel::SetIntegralUnits(TbDictionary integralUnits) {
 	this->m_integralUnits = integralUnits;
 }
-TbDictionary & TbChannel::GetInputMethod() {
-	return m_inputMethod;
+//TbDictionary & TbChannel::GetInputMode() {
+//	return m_inputMode;
+//}
+//void TbChannel::SetInputMode(TbDictionary inputMethod) {
+//	this->m_inputMode = inputMethod;
+//}
+//输入方式更改类型
+std::pair<int, CString>  TbChannel::GetInputMode() {
+	return m_inputMode;
 }
-void TbChannel::SetInputMethod(TbDictionary inputMethod) {
-	this->m_inputMethod = inputMethod;
+void TbChannel::SetInputMode(std::pair<int, CString> inputMethod) {
+	this->m_inputMode = inputMethod;
 }
 char TbChannel::GetAntiAliasingFiltering() {
 	return m_antiAliasingFiltering;
@@ -139,11 +137,12 @@ char TbChannel::GetAntiAliasingFiltering() {
 void TbChannel::SetAntiAliasingFiltering(char antiAliasingFiltering) {
 	this->m_antiAliasingFiltering = antiAliasingFiltering;
 }
-float TbChannel::GetMaxFrequency() {
-	return m_maxFrequency;
+//上限频率
+std::pair<int, CString> TbChannel::GetUpFreq() {
+	return m_upFreq;
 }
-void TbChannel::SetMaxFrequency(float maxFrequency) {
-	this->m_maxFrequency = maxFrequency;
+void TbChannel::SetUpFreq(std::pair<int, CString> maxFrequency) {
+	this->m_upFreq = maxFrequency;
 }
 
 
@@ -152,4 +151,26 @@ TbSensor & TbChannel::GetSensor() {
 }
 void TbChannel::SetSensor(TbSensor sensor) {
 	this->m_sensor = sensor;
+}
+
+std::pair<int, CString> TbChannel::GetElcPressure() {
+	return m_elcpressure;
+}
+
+void TbChannel::SetElcPressure(std::pair<int, CString> elcPressure) {
+	this->m_elcpressure = elcPressure;
+}
+
+int TbChannel::GetProjectId(){
+	return m_projectId;
+}
+void TbChannel::SetProjectId(int projectId){
+	m_projectId = projectId;
+}
+
+std::pair<int, CString> & TbChannel::GetMessureType(){
+	return m_messureType;
+}
+void TbChannel::SetMessureType(std::pair<int, CString> messureType){
+	m_messureType = messureType;
 }

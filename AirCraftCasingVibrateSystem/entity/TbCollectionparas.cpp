@@ -8,7 +8,7 @@ TbCollectionparas::TbCollectionparas(){
 	m_dataBlocks= 0;
 	m_delayBlocks = 0;
 	m_triggerTimes = 0;
-	m_equipmentId = "1";
+	m_equipmentId = 1;
 }
 
 bool TbCollectionparas::operator == (TbCollectionparas collectionparas){
@@ -33,46 +33,34 @@ int TbCollectionparas::GetId(){
 	return m_id;
 }
 
-CString TbCollectionparas::GetEquipmentId() {
+int TbCollectionparas::GetEquipmentId() {
 	return m_equipmentId;
 }
 
-void TbCollectionparas::SetEquipmentId(CString equipmentId) {
+void TbCollectionparas::SetEquipmentId(int equipmentId) {
 	this->m_equipmentId = equipmentId;
 }
 
-
-
-double TbCollectionparas::GetSampleFrequency(){
+std::pair<int, int> TbCollectionparas::GetSampleFrequency(){
 	return m_sampleFrequency;
 }
-double TbCollectionparas::GetAnalysisFrequency(){
-	return m_analysisFrequency;
-}
+
 TbDictionary  &  TbCollectionparas::GetCollectionMethod(){
 	return m_collectionMethod;
 }
+
 TbDictionary  &  TbCollectionparas::GetTriggerMethod(){
 	return m_triggerMethod;
 }
-TbDictionary  &  TbCollectionparas::GetCollectionPoint(){
-	return m_collectionPoint;
-}
 
-void TbCollectionparas::SetSampleFrequency(double sampleFrequency){
+void TbCollectionparas::SetSampleFrequency(std::pair<int, int> sampleFrequency){
 	m_sampleFrequency = sampleFrequency;
-}
-void TbCollectionparas::SetAnalysisFrequency(double analysisFrequency){
-	m_analysisFrequency = analysisFrequency;
 }
 void TbCollectionparas::SetCollectionMethod(TbDictionary collectionMethod){
 	m_collectionMethod = collectionMethod;
 }
 void TbCollectionparas::SetTriggerMethod(TbDictionary triggerMethod){
 	m_triggerMethod = triggerMethod;
-}
-void TbCollectionparas::SetCollectionPoint(TbDictionary collectionPoint){
-	m_collectionPoint = collectionPoint;
 }
 
 int TbCollectionparas::GetSampleBatch() {
@@ -106,4 +94,11 @@ int TbCollectionparas::GetTriggerTimes() {
 
 void TbCollectionparas::SetTriggerTimes(int triggerTimes) {
 	this->m_triggerTimes = triggerTimes;
+}
+
+void TbCollectionparas::SetLine(int line){
+	this->line = line;
+}
+int TbCollectionparas::GetLine(){
+	return line;
 }

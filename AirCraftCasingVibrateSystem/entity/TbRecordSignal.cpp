@@ -2,19 +2,19 @@
 #include "TbRecordSignal.h"
 
 
-TbRecordSignal::TbRecordSignal(CString signalId, CString startTime, CString endTime, CString signalType, char signalStatus, TbProject project, TbProduct product, TbCollectionparas collectionparas, CString collectionStatus, CString channelInfo){
+TbRecordSignal::TbRecordSignal(CString signalId, CString startTime, CString endTime, CString signalType, char SignalLabel, TbProject project, TbProduct product, TbCollectionparas collectionparas, CString collectionStatus, CString channelInfo){
 	SetCollectionStatus(collectionStatus);
 	SetStartTime(startTime);
 	SetEndTime(endTime);
 	SetProject(project);
 	SetProduct(product);
 	SetChannelInfo(channelInfo);
-	SetSignalStatus(signalStatus);
+	SetSignalLabel(SignalLabel);
 	SetSignalType(signalType);
 	SetCollectionparas(collectionparas);
 }
 
-TbRecordSignal::TbRecordSignal() :m_signalStatus(0), m_startPos(0), m_endPos(0){
+TbRecordSignal::TbRecordSignal() :m_SignalLabel(0), m_startPos(0), m_endPos(0){
 
 }
 
@@ -73,11 +73,11 @@ TbProduct & TbRecordSignal::GetProduct() {
 void TbRecordSignal::SetProduct(TbProduct product) {
 	this->m_product = product;
 }
-char TbRecordSignal::GetSignalStatus() {
-	return m_signalStatus;
+char TbRecordSignal::GetSignalLabel() {
+	return m_SignalLabel;
 }
-void TbRecordSignal::SetSignalStatus(char signal_status) {
-	this->m_signalStatus = signal_status;
+void TbRecordSignal::SetSignalLabel(char signal_status) {
+	this->m_SignalLabel = signal_status;
 }
 void TbRecordSignal::SetProject(TbProject project){
 	this->m_project = project;

@@ -1,4 +1,4 @@
-
+#pragma once
 #include <string>
 using namespace std;
 #include <atlstr.h>

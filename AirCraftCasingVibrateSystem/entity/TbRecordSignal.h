@@ -14,7 +14,7 @@ class TbRecordSignal
 {
 public:
 
-	TbRecordSignal(CString signalId, CString startTime, CString endTime, CString signalType, char signalStatus, TbProject project, TbProduct product, TbCollectionparas collectionparas, CString collectionStatus, CString channelInfo);
+	TbRecordSignal(CString signalId, CString startTime, CString endTime, CString signalType, char SignalLabel, TbProject project, TbProduct product, TbCollectionparas collectionparas, CString collectionStatus, CString channelInfo);
 	TbRecordSignal();
 	~TbRecordSignal();
 
@@ -27,7 +27,7 @@ private:
 	long long m_endPos;
 	CString m_signalType;
 	TbProduct m_product;
-	char m_signalStatus;
+	char m_SignalLabel;
 	TbProject m_project;
 	TbCollectionparas m_collectionparas;
 	CString m_collectionStatus;
@@ -54,8 +54,8 @@ public:
 	void SetSignalType(CString signalType);
 	TbProduct & GetProduct();
 	void SetProduct(TbProduct product);
-	char GetSignalStatus();
-	void SetSignalStatus(char signal_status);
+	char GetSignalLabel();
+	void SetSignalLabel(char signal_status);
 	void SetProject(TbProject project);
 	TbProject & GetProject();
 	TbCollectionparas & GetCollectionparas();

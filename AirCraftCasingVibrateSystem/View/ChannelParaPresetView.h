@@ -5,8 +5,14 @@
 #include "DictionaryController.h"
 #include <vector>
 #include "afxwin.h"
-#include "AdvantechDaqController.h"
+#include "DHTestHardWareController.h"
 #include "ChannelParaController.h"
+#include "CDHTestHardWare.h"
+#include <utility>
+
+// CMyDialog 对话框
+
+//#include "MainFrm.h" 
 using namespace  std;
 // ChannelParaPresetView 对话框
 
@@ -17,18 +23,37 @@ class ChannelParaPresetView : public CDialogEx
 public:
 	ChannelParaPresetView(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~ChannelParaPresetView();
-
-// 对话框数据
+	void GetParamSelectValue(string strMachineIP);
+	int BreakString(const string& strSrc, vector<string>& vecDest, const string& strSeprator);
+	CString m_strSenseCoef;
+	
+// 对话框数据+
 	enum { IDD =IDD_DIALOG_CHANNEL_PARA_SELECT_AND_SET };
-
+private:
+	//class CDHTestHardWare *m_pHardWare;
+	//class CDlgCom * m_pComDialog;
+	//class CMainFrame *m_pMain;
+	
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 	CGridCtrl m_channelParaGridCtrl;
 	vector<CString> m_vchannelCode;
 	DictionaryController m_dictionController; 
+
+	/*vector<TbDictionary> m_listFullValue;
+	vector<TbDictionary> m_listUpFreq;
+	vector<TbDictionary> m_listInputMode;*/
+
 	vector<TbDictionary> m_vwindowTypes;
 	vector<TbDictionary> m_vinputMethods;
-	AdvantechDaqController m_advantechDaqController;
+	DHTestHardWareController m_dhTestHardWareController;
+	//
+	vector<TbDictionary> m_ComboFullValue;
+	vector<TbDictionary> m_ComboUpFreq;
+	vector<TbDictionary> m_ComboInputMode;
+	vector<TbDictionary> m_ComboelcValue;
+
+
 	CComboBox m_startChannelCombo;
 	CComboBox m_endChannelCombo;
 	vector<vector<int>>  m_vmeasuringRange;

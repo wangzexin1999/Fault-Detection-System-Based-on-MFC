@@ -10,14 +10,10 @@ TbSumsignalDao::TbSumsignalDao()
 	SetVectorAndField("signal_id", "CString", m_sumsignalId);
 	SetVectorAndField("start_time", "CString", m_startTime);
 	SetVectorAndField("end_time", "CString",m_endTime);
-	SetVectorAndField("signal_type", "CString", m_sumsignalType);
+	SetVectorAndField("signal_label", "int", m_sumsignalLabel);
 	SetVectorAndField("product_id", "int", m_productId);
-	SetVectorAndField("signal_status", "char", m_sumsignalStatus);
+	SetVectorAndField("signal_status", "char", m_sumSignalLabel);
 	SetVectorAndField("data_url", "CString", m_dataUrl);
-	SetVectorAndField("project_id", "int", m_projectId);
-	SetVectorAndField("collectionparas_id", "int", m_collectionparasId);
-	SetVectorAndField("collectionstatus", "CString", m_collectionStatus);
-	SetVectorAndField("channelinfo", "CString", m_channelInfo);
 }
 
 TbSumsignalDao::TbSumsignalDao(const TbSumsignalDao & sumsignal){
@@ -27,14 +23,10 @@ TbSumsignalDao::TbSumsignalDao(const TbSumsignalDao & sumsignal){
 	SetVectorAndField("signal_id", "CString", m_sumsignalId);
 	SetVectorAndField("start_time", "CString", m_startTime);
 	SetVectorAndField("end_time", "CString", m_endTime);
-	SetVectorAndField("signal_type", "CString", m_sumsignalType);
+	SetVectorAndField("signal_label", "int", m_sumsignalLabel);
 	SetVectorAndField("product_id", "int", m_productId);
-	SetVectorAndField("signal_status", "char", m_sumsignalStatus);
+	SetVectorAndField("signal_status", "char", m_sumSignalLabel);
 	SetVectorAndField("data_url", "CString", m_dataUrl);
-	SetVectorAndField("project_id", "int", m_projectId);
-	SetVectorAndField("collectionparas_id", "int", m_collectionparasId);
-	SetVectorAndField("collectionstatus", "CString", m_collectionStatus);
-	SetVectorAndField("channelinfo", "CString", m_channelInfo);
 	operator = (sumsignal);
 }
 
@@ -74,28 +66,19 @@ bool TbSumsignalDao::SelectObjectsByCondition(vector<TbSumsignalDao> &selectedVa
 }
 void TbSumsignalDao::GetTableFieldValues(TbSumsignal &sumsignal){
 	sumsignal.SetSumsignalId(m_sumsignalId.m_strValue);
-	sumsignal.SetSumsignalStatus(m_sumsignalStatus.GetInt());
+	sumsignal.SetSumSignalLabel(m_sumSignalLabel.GetInt());
 	sumsignal.SetDataUrl(m_dataUrl.m_strValue);
 	sumsignal.SetProductId(m_productId.GetInt());
 	sumsignal.SetStartTime(m_startTime.m_strValue);
 	sumsignal.SetEndTime(m_endTime.m_strValue);
-	sumsignal.SetSumsignalType(m_sumsignalType.m_strValue);
-	sumsignal.SetProjectId(m_projectId.GetInt());
-	sumsignal.SetCollectionparasId(m_collectionparasId.GetInt());
-	sumsignal.SetCollectionStatus(m_collectionStatus.m_strValue);
-	sumsignal.SetChannelInfo(m_channelInfo.m_strValue);
+	sumsignal.SetSumsignalType(m_sumsignalLabel.m_strValue);
 }
 
 void TbSumsignalDao::SetTableFieldValues(TbSumsignal sumsignal){
-	m_projectId.SetValue(sumsignal.GetProjectId());
 	m_sumsignalId.SetValue(sumsignal.GetSumsignalId());
-	m_sumsignalStatus.SetValue(sumsignal.GetSumsignalStatus());
-	m_sumsignalType.SetValue(sumsignal.GetSumsignalType());
+	m_sumSignalLabel.SetValue(sumsignal.GetSumSignalLabel());
 	m_startTime.SetValue(sumsignal.GetStartTime());
 	m_endTime.SetValue(sumsignal.GetEndTime());
 	m_dataUrl.SetValue(sumsignal.GetDataUrl());
 	m_productId.SetValue(sumsignal.GetProductId());
-	m_collectionparasId.SetValue(sumsignal.GetCollectionparasId());
-	m_collectionStatus.SetValue(sumsignal.GetCollectionStatus());
-	m_channelInfo.SetValue(sumsignal.GetChannelInfo());
 }

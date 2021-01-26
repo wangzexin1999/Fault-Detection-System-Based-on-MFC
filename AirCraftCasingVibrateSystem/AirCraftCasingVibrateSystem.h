@@ -9,7 +9,7 @@
 
 #define SERSOR_NUM  4         //传感器个数
 #include "resource.h"       // 主符号
-
+#include <iostream>
 #include "NetConService.h"
 #include "ChannelService.h"
 #include <vector>
@@ -21,6 +21,8 @@
 #include "AirCraftCasingVibrateSystemView.h"
 #include "redisUtil.h"
 #include "httplib.h"
+#include "Common.h"
+#include <list>
 using namespace std;
 
 
@@ -35,7 +37,15 @@ public:
 
 	bool m_isAlarm;//是否报警
 	double m_alarmLimit;//报警上限
-
+	const int SHOW_CHANNEL_USE = 3; 	/// 通道使用标志
+	const int SHOW_CHANNEL_MEASURETYPE = 4; /// 通道测量类型1
+	const int SHOW_CHANNEL_FULLVALUE = 5; 	/// 满度量程1
+	const int SHOW_CHANNEL_SENSECOEF = 6; 	/// 传感器灵敏度1
+	const int SHOW_CHANNEL_UPFREQ = 10; 	/// 上限频率1
+	const int SHOW_CHANNEL_DOWNFREQ = 11; 	/// 下限频率1
+	const int SHOW_CHANNEL_ACQ_INPUTMODE = 12; 	/// 输入方式1
+	const int SHOW_CHANNEL_ANTIFILTER = 14; 	/// 抗混滤波器
+	const int SHOW_ELC_PRESSURE = 90;        ///电压测量范围1
 
 	CNetConService  m_con;  // 网络通信连接
 	bool m_bcon = false;  // 判断网络通信是否连接成功
@@ -44,8 +54,21 @@ public:
 	/// 用户
 	TbProject m_currentProject;
 	int m_chartCtrlIndex = 10000;/*画图控件ID*/
-	int m_icollectSignalsStoreCount = 100000; ///采集信号的存储数量。 
-	int m_icollectionStatus = 0; ////采集状态 0 ：停止采集 1：开始采集 2：暂停采集 
+	int m_icollectSignalsStoreCount = 10000; ///采集信号的存储数量。 
+
+
+	int m_icollectionState = 0; ////采集状态 0 ：停止采集 1：开始采集 2：暂停采集  以后用枚举来做
+
+	vector<string> m_listFullValue;
+	vector<string> m_listUpFreq;
+	vector<string> m_elcpressure;
+	vector<string> m_listInputMode;
+	vector<string> m_listMessaueType;
+	vector<int> m_listSampleFreq;
+
+	stuHardChannel m_curstuHardChannel;
+
+
 	int m_isampleStatus = 0;////采样状态 0 ：停止采样 1：开始采样
 	int m_signalEchoCount = 1000; //信号回显数量
 	int m_iplaybackStatus = 0;//0 : 不回放 1：开始回放 2：:暂停回放
@@ -60,6 +83,13 @@ public:
 
 	std::vector<CAirCraftCasingVibrateSystemView *> m_vsignalCaptureView;///采集窗口的集合
 
+	vector<stuHardChannel> m_vecHardChannel;			//通道信息
+
+	vector<stuGroupChannel> m_vecGroupChannel;			//通道组信息
+
+	bool deviceIsOnline = true;
+
+	float FFTRATE = 2.56;
 // 重写
 public:
 	virtual BOOL InitInstance();
@@ -71,7 +101,7 @@ public:
 	//virtual void PreLoadState();
 	//virtual void LoadCustomState();
 	//virtual void SaveCustomState();
-
+	class CDHTestHardWare *m_pHardWare;
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()
 };

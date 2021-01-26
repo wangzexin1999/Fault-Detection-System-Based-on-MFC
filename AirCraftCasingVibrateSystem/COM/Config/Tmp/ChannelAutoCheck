@@ -1,0 +1,26 @@
+<AutoCheck>
+  <Instrument InterfaceType="7" InstrumentType="121" IP="192.168.0.97" ChannelGroupID="0">
+    <Channel>
+      <MachineIP>192.168.0.97</MachineIP>
+      <ChannelType>1600</ChannelType>
+    </Channel>
+    <Channel>
+      <ChannelID>1</ChannelID>
+      <MachineIP>192.168.0.97</MachineIP>
+      <ChnID>1</ChnID>
+      <ChannelType>1600</ChannelType>
+    </Channel>
+    <Channel>
+      <ChannelID>2</ChannelID>
+      <MachineIP>192.168.0.97</MachineIP>
+      <ChnID>2</ChnID>
+      <ChannelType>1600</ChannelType>
+    </Channel>
+    <Channel>
+      <ChannelID>3</ChannelID>
+      <MachineIP>192.168.0.97</MachineIP>
+      <ChnID>3</ChnID>
+      <ChannelType>1600</ChannelType>
+    </Channel>
+  </Instrument>
+</AutoCheck>

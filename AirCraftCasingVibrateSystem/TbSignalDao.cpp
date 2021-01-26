@@ -4,10 +4,10 @@ TbSignalDao::TbSignalDao()
 {
 	this->m_strTableName = "tb_signal";
 	m_key = &m_signalId;
-	SetVectorAndField("signal_id", "int", m_signalId);
+	SetVectorAndField("signal_id", "CString", m_signalId);
 	SetVectorAndField("channel_id", "int", m_channelId);
 	SetVectorAndField("sumsignal_id ", "CString", m_sumsignalId);
-	SetVectorAndField("signal_status", "int", m_signalStatus);
+	SetVectorAndField("signal_status", "int", m_SignalLabel);
 	SetVectorAndField("data_url", "CString", m_dataUrl);
 	//SetVectorAndField("sum_signal_id", "CString", m_sumSignalId);
 }
@@ -15,10 +15,10 @@ TbSignalDao::TbSignalDao(const TbSignalDao &signal)
 {
 	this->m_strTableName = "tb_signal";
 	m_key = &m_signalId;
-	SetVectorAndField("signal_id", "int", m_signalId);
+	SetVectorAndField("signal_id", "CString", m_signalId);
 	SetVectorAndField("channel_id", "int", m_channelId);
 	SetVectorAndField("sumsignal_id ", "CString", m_sumsignalId);
-	SetVectorAndField("signal_status", "int", m_signalStatus);
+	SetVectorAndField("signal_status", "int", m_SignalLabel);
 	SetVectorAndField("data_url", "CString", m_dataUrl);
 	//SetVectorAndField("sum_signal_id", "CString", m_sumSignalId);
 	operator = (signal);
@@ -33,16 +33,16 @@ void TbSignalDao::SetTableFieldValues(TbSignal signal)
 	this->m_signalId.SetValue(signal.GetSignalId());
 	this->m_channelId.SetValue(signal.GetChannel().GetId());
 	this->m_sumsignalId.SetValue(signal.GetSumsignal().GetSumsignalId());
-	this->m_signalStatus.SetValue(signal.GetSignalStatus());
+	this->m_SignalLabel.SetValue(signal.GetSignalLabel());
 	this->m_dataUrl.SetValue(signal.GetDataUrl());
 	//this->m_sumsignalId.SetValue(signal.GetSumSignal().GetSumsignalId());
 }
 void TbSignalDao::GetTableFieldValues(TbSignal &signal)
 {
-	signal.SetSignalId(m_signalId.GetInt());
+	signal.SetSignalId(m_signalId.m_strValue);
 	signal.GetChannel().SetId(m_channelId.GetInt());
 	signal.GetSumsignal().SetSumsignalId(m_sumsignalId.m_strValue);
-	signal.SetSignalStatus(m_signalStatus.GetInt());
+	signal.SetSignalLabel(m_SignalLabel.GetInt());
 	signal.SetDataUrl(m_dataUrl.m_strValue);
 	//signal.GetSumSignal().SetSumsignalId(m_sumSignalId.m_strValue);
 }

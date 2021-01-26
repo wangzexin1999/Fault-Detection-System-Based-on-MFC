@@ -18,15 +18,14 @@ public:
 	PDAttribute m_id;
 	PDAttribute m_equipmentId;
 	PDAttribute m_sampleFrequency;
-	PDAttribute m_analysisFrequency;
 	PDAttribute m_collectionMethod;
 	PDAttribute m_triggerMethod;
-	PDAttribute m_collectionPoint;
 	PDAttribute m_sampleBatch;
 
 	PDAttribute m_dataBlocks;
 	PDAttribute m_delayBlocks;
 	PDAttribute m_triggerTimes;
+	PDAttribute m_line;
 
 };
 

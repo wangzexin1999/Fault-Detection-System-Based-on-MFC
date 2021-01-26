@@ -49,24 +49,14 @@ BOOL CollectionParaPresetView::OnInitDialog()
 	CollectionParaInfoInit();
 	return TRUE; 
 }
-void CollectionParaPresetView::GetSelectedCollectionparas(TbCollectionparas &collectionparasPara){
 
+void CollectionParaPresetView::GetSelectedCollectionparas(TbCollectionparas &collectionparasPara){
 	int index = m_sampleFrequencyCombo.GetCurSel();
 	TbDictionary samplefrequency = m_DsampleFrequency[index];
 	Document samplefrequency_doc;
 	samplefrequency_doc.Parse(samplefrequency.GetDictValue());
 	const Value& samplefrequency_content = samplefrequency_doc["content"];
-	collectionparasPara.SetSampleFrequency(samplefrequency_doc["content"].GetDouble());
-
-	index = m_analysisFrequencyCombo.GetCurSel();
-	TbDictionary analysisfrequency = m_DanalysisFrequency[index];
-	Document analysisfrequency_doc;
-	analysisfrequency_doc.Parse(analysisfrequency.GetDictValue());
-	const Value& analysisfrequency_content = analysisfrequency_doc["content"];
-	collectionparasPara.SetAnalysisFrequency(analysisfrequency_doc["content"].GetDouble());
-
-	index = m_collectionPointCombo.GetCurSel(); 
-	collectionparasPara.SetCollectionPoint(m_vcollectionPoint[index]);
+	//collectionparasPara.SetSampleFrequency(samplefrequency_doc["content"].GetDouble());
 
 	index = m_collectionMethodCombo.GetCurSel();
 	collectionparasPara.SetCollectionMethod(m_vcollectionMethod[index]);
@@ -120,7 +110,7 @@ void CollectionParaPresetView::CollectionParaInfoInit(){
 			const Value& collection_content = collection_doc["content"];
 
 
-			if (doc["content"].GetDouble() == (collection_doc["content"].GetDouble() / 2.56))
+			if (doc["content"].GetDouble() == (collection_doc["content"].GetDouble() / theApp.FFTRATE))
 			{
 				//m_analysisFrequencyCombo.SetCurSel(i);
 				cursel = i;
@@ -174,7 +164,7 @@ void CollectionParaPresetView::OnCbnSelchangeComboSamplefrequency()
 		Document analysis_doc;
 		analysis_doc.Parse(analysis.GetDictValue());
 		const Value& analysis_content = analysis_doc["content"];
-		if (analysis_doc["content"].GetDouble() == (collection_doc["content"].GetDouble() / 2.56))
+		if (analysis_doc["content"].GetDouble() == (collection_doc["content"].GetDouble() / theApp.FFTRATE))
 		{
 			cursel = i;
 		}

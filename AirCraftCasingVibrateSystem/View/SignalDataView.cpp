@@ -239,12 +239,12 @@ void CSignalDataView::OnBnClickedSearchButton()
 	m_signalVector.clear();
 	m_searchSignalEntity.SetCollectionparas(theApp.m_currentProject.GetCollectionparas());
 	m_searchSignalEntity.SetCollectionStatus(GetCollectionParaKeyWords());
-	Result	res = m_sumsignalController.FindAllRecordSignalBySearchCondition(m_searchSignalEntity, m_signalVector);
-	if (!res.GetIsSuccess()){
-		AfxMessageBox("数据文件检索失败");
-		return;
-	}
-	GridCtrlInit();
+	////Result	res = m_sumsignalController.FindAllRecordSignalBySearchCondition(m_searchSignalEntity, m_signalVector);
+	//if (!res.GetIsSuccess()){
+	//	AfxMessageBox("数据文件检索失败");
+	//	return;
+	//}
+	//GridCtrlInit();
 }
 
 

@@ -55,10 +55,10 @@ void BaseProjectInfoView::GridCtrlInit()
 
 	Document echoCollectionPlanDoc;
 	Document::AllocatorType & echoCollectionPlanAllocator = echoCollectionPlanDoc.GetAllocator();
-	if (m_isEchoProjectData){
+	/*if (m_isEchoProjectData){
 		///如果要回显项目的采集计划
 		echoCollectionPlanDoc.Parse(theApp.m_currentProject.GetCollectionPlans());
-	}
+	}*/
 	
 	for (int row = 0; row < m_projectPlanGridCtrl.GetRowCount(); row++){
 		CString planName;

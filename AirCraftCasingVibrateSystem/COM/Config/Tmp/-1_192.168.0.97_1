@@ -1,0 +1,84 @@
+[ChannelID0]
+ACQSubVersion = 1
+FullVltParaCode1 = 1.058052
+FullVltParaCode2 = 1.058362
+FullVltParaCode3 = 1.057489
+FullVltParaCode4 = 1.057187
+FullVltParaCode5 = 1.070078
+FullVltParaCode6 = 1.069159
+FullVltParaCode7 = 1.066780
+FullVltParaCode8 = 1.066826
+FullVltParaCode9 = 1.065814
+FullVltParaCode10 = 1.065557
+FullVltParaCode11 = 1.000000
+FullVltParaCode12 = 1.000000
+FullVltParaCode13 = 1.076848
+ACQType = 1187
+SSampleRate = 0
+VerifyFlag = 1
+[AmpliferID0]
+AMPType = 0
+AmpVersion = 0
+[ChannelID1]
+ACQSubVersion = 1
+FullVltParaCode1 = 1.058102
+FullVltParaCode2 = 1.058236
+FullVltParaCode3 = 1.057718
+FullVltParaCode4 = 1.057233
+FullVltParaCode5 = 1.069966
+FullVltParaCode6 = 1.069384
+FullVltParaCode7 = 1.066769
+FullVltParaCode8 = 1.066598
+FullVltParaCode9 = 1.065899
+FullVltParaCode10 = 1.065663
+FullVltParaCode11 = 1.000000
+FullVltParaCode12 = 1.000000
+FullVltParaCode13 = 1.077173
+ACQType = 1187
+SSampleRate = 0
+VerifyFlag = 1
+[AmpliferID1]
+AMPType = 0
+AmpVersion = 0
+[ChannelID2]
+ACQSubVersion = 1
+FullVltParaCode1 = 1.051790
+FullVltParaCode2 = 1.051881
+FullVltParaCode3 = 1.051234
+FullVltParaCode4 = 1.050869
+FullVltParaCode5 = 1.063523
+FullVltParaCode6 = 1.062835
+FullVltParaCode7 = 1.060743
+FullVltParaCode8 = 1.060547
+FullVltParaCode9 = 1.059743
+FullVltParaCode10 = 1.059467
+FullVltParaCode11 = 1.000000
+FullVltParaCode12 = 1.000000
+FullVltParaCode13 = 1.071034
+ACQType = 1187
+SSampleRate = 0
+VerifyFlag = 1
+[AmpliferID2]
+AMPType = 0
+AmpVersion = 0
+[ChannelID3]
+ACQSubVersion = 1
+FullVltParaCode1 = 1.056291
+FullVltParaCode2 = 1.056399
+FullVltParaCode3 = 1.055984
+FullVltParaCode4 = 1.055427
+FullVltParaCode5 = 1.068089
+FullVltParaCode6 = 1.067657
+FullVltParaCode7 = 1.065451
+FullVltParaCode8 = 1.065280
+FullVltParaCode9 = 1.064708
+FullVltParaCode10 = 1.064415
+FullVltParaCode11 = 1.000000
+FullVltParaCode12 = 1.000000
+FullVltParaCode13 = 1.075924
+ACQType = 1187
+SSampleRate = 0
+VerifyFlag = 1
+[AmpliferID3]
+AMPType = 0
+AmpVersion = 0

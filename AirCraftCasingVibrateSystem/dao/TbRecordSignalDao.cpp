@@ -15,7 +15,7 @@ TbRecordSignalDao::TbRecordSignalDao()
 	SetVectorAndField("end_pos", "longlong", m_endPos);
 	SetVectorAndField("signal_type", "CString", m_signalType);
 	SetVectorAndField("product_id", "int", m_productId);
-	SetVectorAndField("signal_status", "char", m_signalStatus);
+	SetVectorAndField("signal_status", "char", m_SignalLabel);
 	SetVectorAndField("project_id", "int", m_projectId);
 	SetVectorAndField("collectionparas_id", "int", m_collectionparasId);
 	SetVectorAndField("collectionstatus", "CString", m_collectionStatus);
@@ -33,7 +33,7 @@ TbRecordSignalDao::TbRecordSignalDao(const TbRecordSignalDao  & signal){
 	SetVectorAndField("end_pos", "longlong", m_endPos);
 	SetVectorAndField("signal_type", "CString", m_signalType);
 	SetVectorAndField("product_id", "int", m_productId);
-	SetVectorAndField("signal_status", "char", m_signalStatus);
+	SetVectorAndField("signal_status", "char", m_SignalLabel);
 	SetVectorAndField("project_id", "int", m_projectId);
 	SetVectorAndField("collectionparas_id", "int", m_collectionparasId);
 	SetVectorAndField("collectionstatus", "CString", m_collectionStatus);
@@ -77,7 +77,7 @@ bool TbRecordSignalDao::SelectObjectsByCondition(vector<TbRecordSignalDao> &sele
 void TbRecordSignalDao::GetTableFieldValues(TbRecordSignal &signal){
 	signal.SetId(m_id.GetInt());
 	signal.SetSignalId(m_signalId.m_strValue);
-	signal.SetSignalStatus(m_signalStatus.GetInt());
+	signal.SetSignalLabel(m_SignalLabel.GetInt());
 	signal.GetProduct().SetProductId(m_productId.GetInt());
 	signal.SetStartTime(m_startTime.m_strValue);
 	signal.SetEndTime(m_endTime.m_strValue);
@@ -94,7 +94,7 @@ void TbRecordSignalDao::SetTableFieldValues(TbRecordSignal signal){
 	m_id.SetValue(signal.GetId());
 	m_signalId.SetValue(signal.GetSignalId());
 	m_projectId.SetValue(signal.GetProject().GetProjectId());
-	m_signalStatus.SetValue(signal.GetSignalStatus());
+	m_SignalLabel.SetValue(signal.GetSignalLabel());
 	m_signalType.SetValue(signal.GetSignalType());
 	m_startTime.SetValue(signal.GetStartTime());
 	m_endTime.SetValue(signal.GetEndTime());

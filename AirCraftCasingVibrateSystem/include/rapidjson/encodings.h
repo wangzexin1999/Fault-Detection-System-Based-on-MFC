@@ -276,7 +276,7 @@ struct UTF16 {
     static void Encode(OutputStream& os, unsigned codepoint) {
         RAPIDJSON_STATIC_ASSERT(sizeof(typename OutputStream::Ch) >= 2);
         if (codepoint <= 0xFFFF) {
-            RAPIDJSON_ASSERT(codepoint < 0xD800 || codepoint > 0xDFFF); // Code point itself cannot be surrogate pair 
+            RAPIDJSON_ASSERT(codepoint < 0xD800 || codepoint > 0xDFFF); // Code point itself cannot be surrogate std::pair 
             os.Put(static_cast<typename OutputStream::Ch>(codepoint));
         }
         else {
@@ -292,7 +292,7 @@ struct UTF16 {
     static void EncodeUnsafe(OutputStream& os, unsigned codepoint) {
         RAPIDJSON_STATIC_ASSERT(sizeof(typename OutputStream::Ch) >= 2);
         if (codepoint <= 0xFFFF) {
-            RAPIDJSON_ASSERT(codepoint < 0xD800 || codepoint > 0xDFFF); // Code point itself cannot be surrogate pair 
+            RAPIDJSON_ASSERT(codepoint < 0xD800 || codepoint > 0xDFFF); // Code point itself cannot be surrogate std::pair 
             PutUnsafe(os, static_cast<typename OutputStream::Ch>(codepoint));
         }
         else {

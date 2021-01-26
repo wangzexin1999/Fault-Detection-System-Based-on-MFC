@@ -148,14 +148,14 @@ void  CStateSetDialog::ComboBoxInit(){
 
 void CStateSetDialog::RefreshView(){
 	///1.解析项目表记录的json数据
-	if (theApp.m_currentProject.GetCollectionPlans() == "") return;
-	m_collectionPlanDoc.Parse(theApp.m_currentProject.GetCollectionPlans());
+	//if (theApp.m_currentProject.GetCollectionPlans() == "") return;
+	//m_collectionPlanDoc.Parse(theApp.m_currentProject.GetCollectionPlans());
 	if (m_collectionPlanDoc.HasParseError()){
 		//AfxMessageBox("采集计划加载失败");
 		return;
 	}
-	if (theApp.m_currentProject.GetCollectionStatus() == "") return;
-	m_collectionPlanStatus.Parse(theApp.m_currentProject.GetCollectionStatus());
+	/*if (theApp.m_currentProject.GetCollectionStatus() == "") return;
+	m_collectionPlanStatus.Parse(theApp.m_currentProject.GetCollectionStatus());*/
 	if (m_collectionPlanStatus.HasParseError()){
 		//AfxMessageBox("采集计划加载失败");
 		return;
@@ -259,7 +259,7 @@ void CStateSetDialog::OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResult){
 	Writer<StringBuffer> writer(buffer);
 	status.Accept(writer);
 	std::string result = buffer.GetString();
-	m_project.SetCollectionStatus(result.c_str());
+	//m_project.SetCollectionStatus(result.c_str());
 	Result res = m_projectController.Update(m_project);
 	if (!res.GetIsSuccess()){
 		AfxMessageBox(res.GetMessages());

@@ -21,11 +21,8 @@ bool CFileUtil::OpenFile(CString &sFilePath,  CString sRootPath)
 	}
 	m_sRootPath = strFolderPath;
 	sFilePath = strFolderPath;
-
 	return true;
-
 }
-
 
 template<class T>
 int length(T& arr)

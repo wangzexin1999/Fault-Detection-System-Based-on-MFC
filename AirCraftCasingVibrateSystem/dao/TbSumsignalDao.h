@@ -12,15 +12,10 @@ public:
 	PDAttribute m_sumsignalId;
 	PDAttribute m_startTime;
 	PDAttribute m_endTime;
-	PDAttribute m_sumsignalType;
+	PDAttribute m_sumsignalLabel;
 	PDAttribute m_productId;
-	PDAttribute m_sumsignalStatus;
+	PDAttribute m_sumSignalLabel;
 	PDAttribute m_dataUrl;
-	PDAttribute m_projectId;
-	PDAttribute m_collectionparasId;
-	PDAttribute m_collectionStatus;
-	PDAttribute m_channelInfo;
-
 	
 	bool SelectObjectsByCondition(vector<TbSumsignalDao> &selectedValueVector, CString strSqlQueryWhere = "");
 	bool SelectObjectsByCondition(vector<TbSumsignalDao> &selectedValueVector, int iStartNumber, int iRecordCount, CString strSqlQueryWhere = "");

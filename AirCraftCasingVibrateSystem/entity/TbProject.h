@@ -24,8 +24,6 @@ protected:
 	TbProduct m_product;
 	vector<TbChannel> m_channelVector;
 	int m_projectStatus;
-	CString m_collectionPlans;
-	CString m_collectionStatus;
 
 public:
 	void SetProjectId(int projectId);
@@ -51,10 +49,5 @@ public:
 	void SetProjectStatus(int status);
 	int GetProjectStatus();
 
-	void SetCollectionPlans(CString collectionPlans);
-	CString GetCollectionPlans();
-
-	void SetCollectionStatus(CString collectionStatus);
-	CString GetCollectionStatus();
 };
 

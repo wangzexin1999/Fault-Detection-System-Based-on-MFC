@@ -11,7 +11,6 @@
 #include "resource.h"
 #include "SignalSelectView.h"
 #include "ChannelController.h"
-#include "AdvantechDaqController.h"
 #include "TbChannel.h"
 #include "SmartFFTWComplexArray.h"
 #include "SmartArray.h"
@@ -23,7 +22,7 @@
 #include "DictionaryController.h"
 #include "SignalTestRecordController.h"
 #include "TbSignalTestRecord.h"
-
+#include "DHTestHardWareController.h"
 #define WM_USER_REFRESH_CHART WM_USER + 1024
 
 class CAirCraftCasingVibrateSystemView : public CFormView
@@ -34,31 +33,32 @@ protected: // 仅从序列化创建
 	//CAirCraftCasingVibrateSystemView();
 	DECLARE_DYNCREATE(CAirCraftCasingVibrateSystemView)
 private:
-
+	DHTestHardWareController m_dhtestHardWareController;
 	CDuChartCtrl m_chart; // 画图控件
 	CChartLineSerieDu *m_pLineSerie; // 线
 	int m_flag = false;  // 调整控件大小标志
-	EchoSignal m_echoSignal;
+
 	CSignalSelectView  m_signalSelectView;   //信号选择界面
 
 	ChannelController m_channelController; ///传感器控制类
 
 	ThreadSafeQueue<EchoSignal>  m_echoSignalQueue; // 回显信号队列
+
+	EchoSignal m_echoSignal;
+
 	int m_icurrentWindowNumber;  // 窗口
-	ThreadSafeQueue<AcquiredSignal> m_collectionDataQueue;  //采集队列
+
 	int m_iSampleDataEchoTimerNum;  //采样数据回显窗口
+
 	static int m_iwindowCount;//窗口数量
 	int m_realTimeSignalCaptureflag = true; // 采集实时数据时，第一次是push，接下来是赋值
 	int m_icountNumsReadDraw = 0; //采样数据截取时的索引
-	AdvantechDaqController m_advantechDaqController;
 	//Value m_analysisFrequency;
-	double m_analysisFrequency;
-
-
 	SignalTestRecordController m_signalTestRecordController;
 	TbSignalTestRecord m_signalTestRecord;
 	double m_peak;
 	double m_gross;
+
 public:
 	ThreadSafeQueue<RealTimeSignal> m_realTimeSignal;  // 实时数据队列
 	vector<AcquiredSignal> m_sampleFromFileDataQueue;  // 采样队列从文件中获得
@@ -67,7 +67,6 @@ public:
 	void SetPeak(double peak);
 	double GetGross();
 	void SetGross(double gross);
-
 
 public:
 	enum{ IDD = IDD_AIRCRAFTCASINGVIBRATESYSTEM_FORM };
@@ -79,17 +78,24 @@ public:
 public:
 
 	/**********************************************************************
-	功能描述： 刷新窗口
+	功能描述： 开启线程刷新窗口
 	***********************************************************************/
-	void RefershView();
-
+	void openThread2RefershView();
 
 	/**********************************************************************
-	功能描述： 保存采集数据
+	功能描述： 开启线程刷新窗口
 	***********************************************************************/
-	void SaveCollectionData(ThreadSafeQueue<AcquiredSignal> acquireSignalQueue);
+	void openTimer2RefershView();
 
+	/**********************************************************************
+	功能描述： 开启线程刷新窗口
+	***********************************************************************/
+	void killTimer2RefershView();
 
+	/**********************************************************************
+	功能描述： 刷新窗口的线程函数
+	***********************************************************************/
+	void RefershView();
 	
 	/**********************************************************************
 	功能描述： 得到view中的ChartCtrl控件
@@ -143,79 +149,44 @@ public:
 	 功能描述： 获得回显数据的定时器
 	***********************************************************************/
 	int GetSampleDataEchoTimerNum();
-
-
-
-
-
-
-
 	/**********************************************************************
 	 功能描述： 开始回显
 	***********************************************************************/
 	void StartSampleEncho();
-
-
-
-
-
-
-
 	/**********************************************************************
 	 功能描述： 停止采样回放
 	***********************************************************************/
 	void StopSampleEncho();
-
-
-
-
-
 	/**********************************************************************
 	 功能描述： 采样数据的截取
 	 输入参数：dXData--x数据；dYData--y数据；nNums--截取的个数
 	 其它说明：从文件中读取采样数据后，放到vector里面，回显时从vector截取一部分回显
 	***********************************************************************/
 	void SplitVector(SmartArray<double> &dXData, SmartArray<double> &dYData,int nNums);
-
-
-
-
-
-
 	/**********************************************************************
 	功能描述：设置采集窗口的通道
 	其它说明：设置采集窗口的传感器
 	***********************************************************************/
 	void SetChannel(TbChannel channel);
-
-
-
 	/**********************************************************************
 	功能描述：得到采集窗口对应的通道
 	其它说明：设置采集窗口的传感器
 	----------------------------------------------------------------------
 	***********************************************************************/
 	void GetChannel(TbChannel &channel);
-
-
-
-
-
 	/**********************************************************************
 	功能描述：添加回显数据
 	其它说明：设置采集窗口的传感器
 	***********************************************************************/
 	void SetEchoSignalData(EchoSignal &channel);
 
-
-
-
+	int echoStartTime = 0;
 	/**********************************************************************
 	功能描述：刷新图标的响应事件
 	***********************************************************************/
 	afx_msg LRESULT OnRefreshChart(WPARAM wParam, LPARAM lParam);
 
-
+	int showStartTime = 0;
 
 // 重写
 public:
@@ -255,6 +226,7 @@ public:
 	void OnBtnNoCorror();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 
+	int a = 1;
 
 	/**********************************************************************
 	功能描述：设置xy坐标的最小值和最大值

@@ -19,7 +19,7 @@ private:
 	CString m_endTime;
 	CString m_sumsignalType;
 	int m_productId;
-	char m_sumsignalStatus;
+	char m_sumSignalLabel;
 	CString m_dataUrl;
 	int  m_projectId;
 	int m_collectionparasId;
@@ -41,14 +41,14 @@ public:
 	void SetSumsignalType(CString sumsignalType);
 	int   GetProductId();
 	void SetProductId(int productId);
-	char GetSumsignalStatus();
-	void SetSumsignalStatus(char sumsignalStatus);
+	char GetSumSignalLabel();
+	void SetSumSignalLabel(char sumSignalLabel);
 	CString GetDataUrl();
 	void SetDataUrl(CString data_url);
 	void SetProjectId(int projectId);
 	int   GetProjectId();
-	int  GetCollectionparasId();
-	void SetCollectionparasId(int  collectionparasId);
+	/*int  GetCollectionparasId();
+	void SetCollectionparasId(int  collectionparasId);*/
 	void SetCollectionStatus(CString para);
 	CString GetCollectionStatus();
 	CString GetChannelInfo();

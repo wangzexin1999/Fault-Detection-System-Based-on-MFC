@@ -27,8 +27,9 @@ Result JsonUtil::ConvertChannel2Value(TbChannel channel, Value & value){
 	Value  mileageRange;
 	channelCode.SetString(channel.GetChannelCode(), m_document.GetAllocator());
 	channelDesc.SetString(channel.GetChannelDesc(), m_document.GetAllocator());
-	collectionparasId.SetInt(channel.GetCollectionparasId());
-	mileageRange.SetInt(channel.GetMileageRange());
+	//collectionparasId.SetInt(channel.GetCollectionparasId());
+	///丢弃！！
+	//mileageRange.SetInt(channel.GetFullValue());
 
 	root.AddMember("channelCode", channelCode, m_document.GetAllocator());
 	root.AddMember("channelDesc", channelDesc, m_document.GetAllocator());
@@ -37,6 +38,7 @@ Result JsonUtil::ConvertChannel2Value(TbChannel channel, Value & value){
 	value = move(root);
 	return Result(true, "成功解析json");
 }
+//这个类可以放弃了！！！！！！！！
 void JsonUtil::ConvertValue2Channel(Value & value, TbChannel & channel){
 	Value::ConstMemberIterator itr = value.FindMember("channelCode");
 	if (itr != value.MemberEnd()) 
@@ -45,11 +47,11 @@ void JsonUtil::ConvertValue2Channel(Value & value, TbChannel & channel){
 	if (itr != value.MemberEnd()) 
 		channel.SetChannelDesc(itr->value.GetString());
 	itr = value.FindMember("collectionparasId");
-	if (itr != value.MemberEnd())	
-		channel.SetCollectionparasId(itr->value.GetInt());
+	//if (itr != value.MemberEnd())	
+	//	channel.SetCollectionparasId(itr->value.GetInt());
 	itr = value.FindMember("mileageRange");
-	if (itr != value.MemberEnd())
-		channel.SetMileageRange(itr->value.GetInt());
+	//if (itr != value.MemberEnd())
+	//	channel.SetFullValue(itr->value.GetInt());
 }
 
 
@@ -57,7 +59,7 @@ void JsonUtil::ConvertCollectionparas2Value(TbCollectionparas collectionparas, V
 	Value id;
 	Value root(kObjectType);
 	Value equipmentId;
-	equipmentId.SetString(collectionparas.GetEquipmentId(), m_document.GetAllocator());
+	//equipmentId.SetString(collectionparas.GetEquipmentId(), m_document.GetAllocator());
 
 	//Value sampleFrequency(kObjectType);
 	//m_document.Parse(collectionparas.GetSampleFrequency().GetDictValue());

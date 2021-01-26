@@ -56,7 +56,7 @@ class GenericValue;
 template <typename Encoding, typename Allocator, typename StackAllocator>
 class GenericDocument;
 
-//! Name-value pair in a JSON object value.
+//! Name-value std::pair in a JSON object value.
 /*!
     This class was internal to GenericValue. It used to be a inner struct.
     But a compiler (IBM XL C/C++ for AIX) have reported to have problem with that so it moved as a namespace scope struct.
@@ -577,7 +577,7 @@ template <bool, typename> class GenericObject;
 template <typename Encoding, typename Allocator = MemoryPoolAllocator<> > 
 class GenericValue {
 public:
-    //! Name-value pair in an object.
+    //! Name-value std::pair in an object.
     typedef GenericMember<Encoding, Allocator> Member;
     typedef Encoding EncodingType;                  //!< Encoding type from template parameter.
     typedef Allocator AllocatorType;                //!< Allocator type from template parameter.
@@ -1274,7 +1274,7 @@ public:
     ConstMemberIterator FindMember(const std::basic_string<Ch>& name) const { return FindMember(GenericValue(StringRef(name))); }
 #endif
 
-    //! Add a member (name-value pair) to the object.
+    //! Add a member (name-value std::pair) to the object.
     /*! \param name A string value as name of member.
         \param value Value of any type.
         \param allocator    Allocator for reallocating memory. It must be the same one as used before. Commonly use GenericDocument::GetAllocator().
@@ -1298,7 +1298,7 @@ public:
         return *this;
     }
 
-    //! Add a constant string value as member (name-value pair) to the object.
+    //! Add a constant string value as member (name-value std::pair) to the object.
     /*! \param name A string value as name of member.
         \param value constant string reference as value of member.
         \param allocator    Allocator for reallocating memory. It must be the same one as used before. Commonly use GenericDocument::GetAllocator().
@@ -1313,7 +1313,7 @@ public:
     }
 
 #if RAPIDJSON_HAS_STDSTRING
-    //! Add a string object as member (name-value pair) to the object.
+    //! Add a string object as member (name-value std::pair) to the object.
     /*! \param name A string value as name of member.
         \param value constant string reference as value of member.
         \param allocator    Allocator for reallocating memory. It must be the same one as used before. Commonly use GenericDocument::GetAllocator().
@@ -1328,7 +1328,7 @@ public:
     }
 #endif
 
-    //! Add any primitive value as member (name-value pair) to the object.
+    //! Add any primitive value as member (name-value std::pair) to the object.
     /*! \tparam T Either \ref Type, \c int, \c unsigned, \c int64_t, \c uint64_t
         \param name A string value as name of member.
         \param value Value of primitive type \c T as value of member
@@ -1369,7 +1369,7 @@ public:
 #endif // RAPIDJSON_HAS_CXX11_RVALUE_REFS
 
 
-    //! Add a member (name-value pair) to the object.
+    //! Add a member (name-value std::pair) to the object.
     /*! \param name A constant string reference as name of member.
         \param value Value of any type.
         \param allocator    Allocator for reallocating memory. It must be the same one as used before. Commonly use GenericDocument::GetAllocator().
@@ -1384,7 +1384,7 @@ public:
         return AddMember(n, value, allocator);
     }
 
-    //! Add a constant string value as member (name-value pair) to the object.
+    //! Add a constant string value as member (name-value std::pair) to the object.
     /*! \param name A constant string reference as name of member.
         \param value constant string reference as value of member.
         \param allocator    Allocator for reallocating memory. It must be the same one as used before. Commonly use GenericDocument::GetAllocator().
@@ -1398,7 +1398,7 @@ public:
         return AddMember(name, v, allocator);
     }
 
-    //! Add any primitive value as member (name-value pair) to the object.
+    //! Add any primitive value as member (name-value std::pair) to the object.
     /*! \tparam T Either \ref Type, \c int, \c unsigned, \c int64_t, \c uint64_t
         \param name A constant string reference as name of member.
         \param value Value of primitive type \c T as value of member

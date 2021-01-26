@@ -9,18 +9,63 @@
 #include "RecordSignalService.h"
 #include "ThreadSafeQueue.h"
 #include "AcquiredSignal.h"
+#include "TbSumsignal.h"
 #include <fstream>
 #include <map>
 using namespace std;
 
+struct SignalFileHeader{
+	/*信号ID*/
+	char m_signalId[50];
+	/*通道Id*/
+	int m_iChannelId;
+	/*通道Code*/
+	char m_cChannelCode[10];
+	/*采样频率*/
+	int m_iSampleFre = 0;
+	/*传感器ID*/
+	int m_isensorId = 0;
+	/*测量类型*/
+	char m_cmessureType[20];
+	/*满度量程*/
+	int m_ifullvalue;
+	/*上限频率*/
+	char m_cupFreq[20];
+	/*输入方式*/
+	char m_cinputMode[20];
+	/*灵敏度*/
+	float m_fsensitivity;
+	/*电压测量范围*/
+	int m_ielcpressure; 
+};
 
-
+//struct SignalInfoHeader{
+//
+//	/*通道代码*/
+//	char m_cChannelCode[20];
+//
+//	/*检测设备的ip*/
+//	char m_cMachineIp[20];
+//
+//	/*通道代码*/
+//	char m_cChannelCode[20];
+//
+//	/*信号ID*/
+//	int m_iSignalId = 0;
+//
+//	/*采集频率*/
+//	int m_iCollectFre = 0;
+//	/*采集计划参数*/
+//	char  m_cCollectPlanPara[500];
+//	/*信号大小*/
+//	long long m_llSiganlSize = 0;
+//};
 
 class SignalController
 {
 
 private:
-	SignalService m_SignalService;
+	SignalService m_signalService;
 	ProjectService m_projectService;
 	RecordSignalService m_recordSignalService;
 	ProductService m_productService;
@@ -84,7 +129,7 @@ public:
 	功能描述： 保存采样数据的二进制文件头部信息
 	输入参数：outputStream--输出流；signalInfoHeader--采集信号信息头
 	***********************************************************************/
-	//void SaveCollectionDataHeadInfo(CString fileName, SignalInfoHeader  signalInfoHeader);
+	void SaveSignalFileHeader(CString fileName, SignalFileHeader  signalInfoHeader);
 
 	/**********************************************************************
 	功能描述：获得采集数据的二进制文件头部信息
@@ -95,8 +140,16 @@ public:
 	//bool GetCollectionDataHeadInfo(CString fileName, SignalInfoHeader& signalInfoHeader);
 
 
+	Result saveSumSignal(TbSumsignal sumSignal);
 
-	//bool SaveCollectionData2BinaryNEW(vector<ofstream>&voutputStream, map<CString, ThreadSafeQueue<double>> & acquireSignal);
+	Result saveSignal( TbSignal sumSignal);
 
+	Result updateSumSignal(TbSumsignal sumSignal);
+
+	/**********************************************************************
+	功能描述： 保存采样数据为二进制文件
+	输入参数：outputStream--输出流；acquireSigna--采集信号
+	***********************************************************************/
+	Result SaveCollectionData2Binary(ofstream &outputStream, ThreadSafeQueue<double> & acquireSignal);
 };
 

@@ -411,7 +411,7 @@ protected:
                 }
                 else {
                     RAPIDJSON_ASSERT(codepoint >= 0x010000 && codepoint <= 0x10FFFF);
-                    // Surrogate pair
+                    // Surrogate std::pair
                     unsigned s = codepoint - 0x010000;
                     unsigned lead = (s >> 10) + 0xD800;
                     unsigned trail = (s & 0x3FF) + 0xDC00;

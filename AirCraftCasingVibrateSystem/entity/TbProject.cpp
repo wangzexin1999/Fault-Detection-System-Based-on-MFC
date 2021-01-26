@@ -39,9 +39,7 @@ void TbProject::SetUser(TbUser user){
 	this->m_user = user;
 }
 
-void TbProject::SetCollectionparas(TbCollectionparas collectionparas){
-	this->m_collectionparas = collectionparas;
-}
+
 
 TbUser & TbProject::GetUser(){
 	return this->m_user;
@@ -55,6 +53,10 @@ void TbProject::SetProjectUpdateTime(CString projectUpdatetime){
 }
 TbCollectionparas & TbProject::GetCollectionparas(){
 	return this->m_collectionparas;
+}
+
+void TbProject::SetCollectionparas(TbCollectionparas collectionparas){
+	m_collectionparas = collectionparas;
 }
 
 TbProduct & TbProject::GetProduct(){
@@ -86,19 +88,6 @@ void TbProject::SetProjectStatus(int status){
 
 int TbProject::GetProjectStatus(){
 	return m_projectStatus;
-}
-void TbProject::SetCollectionPlans(CString collectionPlans){
-	m_collectionPlans = collectionPlans;
-}
-CString TbProject::GetCollectionPlans(){
-	return m_collectionPlans;
-}
-
-void TbProject::SetCollectionStatus(CString collectionStatus){
-	m_collectionStatus = collectionStatus;
-}
-CString TbProject::GetCollectionStatus(){
-	return m_collectionStatus;
 }
 
 CString TbProject::GetProjectUpdateTime(){

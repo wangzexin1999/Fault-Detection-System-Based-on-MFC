@@ -16,7 +16,7 @@ bool  SumsignalService::GetAllSignalBySearchCondition(TbSumsignal searchEntity, 
 	CString strSqlWhere = "1 = 1 ";
 	if (searchEntity.GetProductId() != 0)	strSqlWhere += " and product_id ='" + CommonUtil::Int2CString(searchEntity.GetProductId()) + "'";
 	if (searchEntity.GetProjectId() != 0)   strSqlWhere += " and project_id ='" + CommonUtil::Int2CString(searchEntity.GetProjectId()) + "'";
-	if (searchEntity.GetCollectionparasId() != 0)  strSqlWhere += " and collectionparas_id ='" + CommonUtil::Int2CString(searchEntity.GetCollectionparasId()) + "'";
+	//if (searchEntity.GetCollectionparasId() != 0)  strSqlWhere += " and collectionparas_id ='" + CommonUtil::Int2CString(searchEntity.GetCollectionparasId()) + "'";
 	/*if (searchEntity.GetStartTime() != "" && searchEntity.GetEndTime() == "") strSqlWhere += " and end_time >='" + searchEntity.GetStartTime() + "'";
 	if (searchEntity.GetEndTime() != "" && searchEntity.GetStartTime() == "") strSqlWhere += " and start_time <='" + searchEntity.GetEndTime() + "'";*/
 	if (searchEntity.GetSumsignalId() != "")  strSqlWhere += " and signal_id ='" + searchEntity.GetSumsignalId() + "'";
@@ -40,7 +40,7 @@ bool SumsignalService::AddSignalData(map<CString, ThreadSafeQueue<double>> & acq
 	//CString escapePath = "C:\\\\collectionData\\\\";
 	//2.拼装 文件名 项目id_测试设备id_产品id_时间戳
 	CString fileName = CommonUtil::Int2CString(saveSumsignal.GetProjectId()) + "-"
-		+ CommonUtil::Int2CString(saveSumsignal.GetCollectionparasId())
+		//+ CommonUtil::Int2CString(saveSumsignal.GetCollectionparasId())
 		+ "-" + DateUtil::GetTimeStampCString()
 		+ ".csv";
 	//调用FileUtil保存文件，保存成功返回采集的结束时间

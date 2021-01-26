@@ -8,21 +8,22 @@ using namespace std;
 class TbSignal
 {
 public:
+
 	TbSignal();
-	TbSignal(int signalId, TbChannel channel, TbSumsignal sumsignalId, int signalStatus, CString dataUrl);
+	TbSignal(CString signalId, TbChannel channel, TbSumsignal sumsignalId, int SignalLabel, CString dataUrl);
 	~TbSignal();
+
 private:
-	int m_signalId;
+	CString m_signalId;
 	TbChannel m_channel;
 	TbSumsignal m_sumsignalId;
-	int m_signalStatus;
+	int m_signalLabel;
 	CString m_dataUrl;
-	//TbSumsignal m_sumSignal;
 	//vector<TbSignalTestRecord> m_signalTestRecordVector;
 public:
 
-	int GetSignalId();
-	void SetSignalId(int signalId);
+	CString GetSignalId();
+	void SetSignalId(CString signalId);
 
 	TbChannel & GetChannel();
 	void SetChannel(TbChannel channel);
@@ -30,8 +31,8 @@ public:
 	TbSumsignal & GetSumsignal();
 	void SetSumsignal(TbSumsignal sumsignal);
 
-	int GetSignalStatus();
-	void SetSignalStatus(int signalStatus);
+	int GetSignalLabel();
+	void SetSignalLabel(int SignalLabel);
 
 	CString GetDataUrl();
 	void SetDataUrl(CString dataUrl);

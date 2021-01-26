@@ -391,6 +391,7 @@ bool PDDatabase::DBInsert(int &iGetFirstId, bool bIsInsertKeyId)
 			m_strSqlQuery += m_allFieldsVector[iField]->m_strSqlField + ",";
 		}
 	}
+	
 	m_strSqlQuery = m_strSqlQuery.Left(m_strSqlQuery.GetLength() - 1);//É¾³ý×îºóµÄ¶ººÅ
 	m_strSqlQuery += ") VALUES ";
 	m_strSqlQuery += "(";

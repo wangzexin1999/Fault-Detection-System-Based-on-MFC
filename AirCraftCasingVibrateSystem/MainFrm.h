@@ -8,13 +8,11 @@
 #include <vector>
 #include "GraphAttributeView.h"
 #include "StateSetDockPanelView.h"
-#include "SumsignalController.h"
 #include "CollectionPlanManageView.h"
 #include "ProjectSetView.h"
 #include "ProjectController.h"
 #include "SmartArray.h"
 #include "SignalController.h"
-#include "AdvantechDaqController.h"
 #include <map>
 #include "JsonUtil.h"
 #include "TbRecordSignal.h"
@@ -32,13 +30,15 @@
 #include "DlgCom.h"
 //////////////////////////////
 #include "Common.h"
+#include "DHTestHardWareController.h"
+
 using namespace Automation::BDaq;
 using namespace std;
 /////////////////////////////////////
 
 ///刷新页面的自定义消息映射
 #define  WM_REFRESHVIEW_BY_PROJECT (WM_USER+100)
-const int SHOW_CHANNEL_MEASURETYPE = 4; /// 通道测量类型
+//const int SHOW_CHANNEL_MEASURETYPE = 4; /// 通道测量类型
 class CMainFrame : public CMDIFrameWndEx
 {
 	DECLARE_DYNAMIC(CMainFrame)
@@ -64,13 +64,13 @@ public:
 #endif
 
 private:
-	class CDHTestHardWare *m_pHardWare;
+	
 	class CDlgCom * m_pComDialog;
 
 protected:  // 控件条嵌入成员
-	list<string> m_listFreq;
+	list<string> m_listSampleFreq;
 	list<string> m_listChannelMeasure;
-	stuSampleParam m_SampleParam;
+	//stuSampleParam m_SampleParam;
 	// 采样线程句柄
 	CWinThread	*m_pGetDataThread;
 	bool m_bThread;
@@ -94,20 +94,27 @@ protected:  // 控件条嵌入成员
 	CMFCToolBar       m_wndContrlBar;
 	vector<WaveformAiCtrl *> m_vwfAiCtrl;
 	CGraphAttributeView m_graphAttributeView; // 图形属性界面
-	SumsignalController m_sumsignalController;
+
 	SignalController m_signalController;
+
+	std::mutex saveSignalMutex;
+
 	ProjectController m_projectController;
 	CSystemParaView    m_systemParaView;
 	CChannelParaView    m_channelParaView;
 	CStateSetDockPanelView m_stateSetDockPanelView;
 	CDockablePane m_Panes[5];
-	vector<CString> m_vchannelCodes;
+
+	DHTestHardWareController m_dhTestHardWareController;
+
 	map<CString, CAirCraftCasingVibrateSystemView*> m_mpsignalCollectionView;
+
+
 	map<CString, ThreadSafeQueue<double>> m_mpcolllectioinDataQueue; ///采集的数据
+
+
 	map<int, DOUBLE *> m_mpcolllectioinData;
-	map<int, DevConfParam> m_vdevConfParams;
 	ICollection<DeviceTreeNode>* m_devices;
-	AdvantechDaqController m_advantechDaqController;
 	//Value m_sampleFrequency;
 	double m_sampleFrequency;
 	//Value m_analysisFrequency;
@@ -120,7 +127,7 @@ protected:  // 控件条嵌入成员
 	TbRecordSignal m_recordSignal; // 采样数据
 	TbSumsignalLabel m_sumsignalLabel;
 	SumsignalLabelController m_sumsignalLabelController;
-	ofstream m_outputStream;
+	
 	ifstream m_inputStream;
 	vector<ofstream>v_outputStream;
 	TbRecordSignal m_selectedRecordSignal;
@@ -134,18 +141,16 @@ protected:  // 控件条嵌入成员
 	vector<TbSignalTestRecord> m_vSignalTestRecord;
 	AlarmparaController m_AlarmparaController;
 	vector<TbAlarmpara> m_vAlarmpara;
+
+	vector<CString> m_vchannelCodes;
+
 	/**********************************************************************
 	功能描述： 设置通道信息的json值
 	***********************************************************************/
 	void SetChannelInfoJsonValue();
-
-
-
 	/**********************************************************************
 	功能描述： 设置采集状态信息的json值
 	***********************************************************************/
-
-
 	void SetCollectionStatusJsonValue();
 public:
 	//liuxiu
@@ -158,18 +163,11 @@ public:
 	bool m_bOneMacBuffer;
 	int m_nInterface;
 	int m_nInstrumentType;
-	vector<stuHardChannel> m_vecHardChannel;			//通道信息
-	vector<stuGroupChannel> m_vecGroupChannel;			//通道组信息
+	
 	//获得通道信息
 	void GetChannelParam(int nID, ChannelParam &ChanParam);
-	//获取所有仪器通道
-	void GetAllGroupChannel(CString & strChannel);
 	//清空所有仪器通道
 	void ClearAllGroupChannel();
-	//获取仪器采样频率列表
-	void GetSampleFreqList();
-	//获得采样参数
-	long GetSampleParam();
 	//刷新所有参数
 	void RefreshAllParam();
 	//获得目的参数信息
@@ -244,14 +242,6 @@ public:
 	afx_msg LRESULT OnRefreshViewByProject(WPARAM wParam, LPARAM lParam);
 
 
-
-	/**********************************************************************
-	功能描述： 自定义的 数据准备好的响应事件
-	***********************************************************************/
-	static void BDAQCALL OnDataReadyEvent(void * sender, BfdAiEventArgs * args, void *userParam);
-
-
-
 	/**********************************************************************
 	功能描述： 检查采集卡的错误信息
 	***********************************************************************/
@@ -265,27 +255,17 @@ public:
 	void OpenThread2SaveCollectionData();
 
 
-
-
+	/**********************************************************************
+	功能描述： 开启线程自动保存采集数据的线程函数
+	***********************************************************************/
+	void SaveSumCollectionData();
+	
 	/**********************************************************************
 	功能描述： 开启线程从本地读取数据
 	***********************************************************************/
 	void GetDataFromlocal();
 	void Pre_GetDataFromlocal();
 
-
-
-
-	/**********************************************************************
-	功能描述： 自动保存采集数据的线程函数
-	输入参数：
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
-	***********************************************************************/
-	void AutoSaveCollectionData();
 	/**********************************************************************
 	功能描述： 保存采集数据
 	输入参数：
@@ -295,7 +275,7 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	void SaveCollectionData(map<CString, ThreadSafeQueue<double>> & acquireSignal);
+	void SaveCollectionData(CString signalCode, TbSignal signal);
 
 	/**********************************************************************
 	功能描述： 保存采集数据

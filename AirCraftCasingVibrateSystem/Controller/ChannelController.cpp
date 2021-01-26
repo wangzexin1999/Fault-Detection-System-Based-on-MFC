@@ -21,16 +21,16 @@ Result ChannelController::SaveCollectionData(CString channelCode, ThreadSafeQueu
 	TbSumsignal signal;
 	signal.SetProjectId(theApp.m_currentProject.GetProjectId());
 	signal.SetProductId(theApp.m_currentProject.GetProduct().GetProductId());
-	signal.SetCollectionparasId(theApp.m_currentProject.GetCollectionparas().GetId());
+	//signal.SetCollectionparasId(theApp.m_currentProject.GetCollectionparas().GetId());
 	//signal.SetChannels(sensorId);
 	//signal.SetCollectionStatus(theApp.m_jsonCollectionStatusPara);
 	Result res = m_channelService.AddCollectData(signal, collectionData);
 	return res;
 }
 
-Result ChannelController::FindAllChannelByCollectionparasId(int collectionparasId, vector<TbChannel> & channelVector){
+Result ChannelController::FindAllChannelByProjectId(int projectId, vector<TbChannel> & channelVector){
 	channelVector.clear();
-	bool isSuccess = m_channelService.GetAllChannelByCollectionparasId(collectionparasId, channelVector);
+	bool isSuccess = m_channelService.GetALLSensorByProjectId(projectId, channelVector);
 	if (isSuccess){
 		return Result(true,"加载传感器数据成功");
 	}
@@ -39,7 +39,7 @@ Result ChannelController::FindAllChannelByCollectionparasId(int collectionparasI
 Result ChannelController::UpdateChannel(TbChannel channel){
 	bool isSuccess = m_channelService.Update(channel);
 	if (isSuccess){
-		return Result(true, "添加成功");
+		return Result(true, "更新成功");
 	}
-	return Result(false, "添加失败");
+	return Result(false, "更新失败");
 }

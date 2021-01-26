@@ -62,7 +62,7 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	Result FindAllChannelByCollectionparasId(int collectionparasId, vector<TbChannel> & channelVector);
+	Result FindAllChannelByProjectId(int projectId, vector<TbChannel> & channelVector);
 	/**********************************************************************
 	功能描述： 更新检测设备
 	输入参数： 检测设备

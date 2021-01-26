@@ -127,12 +127,12 @@ void CAirCraftCasingVibrateSystemView::OnInitialUpdate()
 	RefreshGraphAttri(); //加载图形属性
 }
 
-void CAirCraftCasingVibrateSystemView::OnTimer(UINT_PTR nIDEvent){
-	if (m_iSampleDataEchoTimerNum == nIDEvent)
-	{
-		SampleDataEcho();  //采样数据回显
-	}
-}
+//void CAirCraftCasingVibrateSystemView::OnTimer(UINT_PTR nIDEvent){
+//	if (m_iSampleDataEchoTimerNum == nIDEvent)
+//	{
+//		SampleDataEcho();  //采样数据回显
+//	}
+//}
 
 void CAirCraftCasingVibrateSystemView::SetChartXYCoordinateLen(double xmin, double xmax, double ymin, double ymax){
 	///坐标值存在默认参数-1，如果使用默认参数的话，默认的设置为采集窗口绑定的传感器的参数取值
@@ -141,24 +141,15 @@ void CAirCraftCasingVibrateSystemView::SetChartXYCoordinateLen(double xmin, doub
 	if (xmax == -1){
 		///xmax如果使用默认参数,那么就将x的最大值设置为采集频率
 		xmax = 0;
-		//res = JsonUtil::GetValueFromJsonString(theApp.m_currentProject.GetCollectionparas().GetAnalysisFrequency().GetDictValue(), "content", temp);
-		//if (res.GetIsSuccess()){
-		//	xmax = temp.GetFloat();
-		//}
-		if (theApp.m_currentProject.GetCollectionparas().GetAnalysisFrequency() != 0)
+		if (theApp.m_currentProject.GetCollectionparas().GetLine() > 0)
 		{
-			xmax = theApp.m_currentProject.GetCollectionparas().GetAnalysisFrequency();
+			xmax = theApp.m_currentProject.GetCollectionparas().GetLine();
 		}
 	}
 	if (ymax==-1||ymin==-1){
 		///量程的最大和最小值默认设置为当前采集窗口绑定的传感器的量程
-		MathInterval yInterval;
-		TbChannel currentChannel;
-		m_signalSelectView.GetChannel(currentChannel);
-		yInterval.Type = currentChannel.GetMileageRange();
-		m_advantechDaqController.GetValueRangeInformationByVrgType(yInterval);
-		ymin = yInterval.Min;
-		ymax = yInterval.Max;
+		ymin = -100;
+		ymax = 100;
 	}
 	///设置x坐标的长度
 	CChartAxis * pxAxis = m_chart.GetAxisDu(CChartCtrl::BottomAxis, 0);
@@ -180,11 +171,50 @@ void CAirCraftCasingVibrateSystemView::SetChartXYCoordinateLen(double xmin, doub
 	pLeftAxis->SetTickIncrement(true, 3);*/
 }
 
-////保存采集数据
-void CAirCraftCasingVibrateSystemView::SaveCollectionData(ThreadSafeQueue<AcquiredSignal> acquireSignalQueue){
-	m_channelController.SaveCollectionData(m_signalSelectView.GetSelectedChannel().GetChannelCode(), acquireSignalQueue);
+void CAirCraftCasingVibrateSystemView::openThread2RefershView(){
+	thread t(&CAirCraftCasingVibrateSystemView::RefershView, this);
+	t.detach();
 }
 
+void CAirCraftCasingVibrateSystemView::openTimer2RefershView(){
+	SetTimer(88, 1, NULL);
+}
+
+void CAirCraftCasingVibrateSystemView::killTimer2RefershView(){
+	KillTimer(88);
+}
+
+void CAirCraftCasingVibrateSystemView::RefershView(){
+	while (theApp.m_icollectionState){
+		if (theApp.m_icollectionState == 2){
+			//暂停状态就卡在这
+			Sleep(10);
+			continue;
+		}
+		while (m_echoSignalQueue.size() > 0){
+			TRACE("\n发送消息：队列长度:%d\n", m_echoSignalQueue.size());
+			SendMessage(WM_USER_REFRESH_CHART);
+			Sleep(100);
+		}
+	}
+	//点完停止采集之后，还有数据需要保存！！！
+	while (m_echoSignalQueue.size() > 0){
+		SendMessage(WM_USER_REFRESH_CHART);
+	}
+}
+
+void CAirCraftCasingVibrateSystemView::OnTimer(UINT_PTR nIDEvent)
+{
+	switch (nIDEvent){
+		case 88:{
+			OnRefreshChart(NULL,NULL);
+			//SendMessage(WM_USER_REFRESH_CHART);
+			break;
+		}
+		default:
+			break;
+	}
+}
 CDuChartCtrl & CAirCraftCasingVibrateSystemView::GetChartCtrl(){
 	return m_chart;
 }
@@ -309,10 +339,8 @@ void CAirCraftCasingVibrateSystemView::OnBtnPeakValue()
 // 自动刻度
 void CAirCraftCasingVibrateSystemView::OnBtnAutoScale()
 {
-	//CAirCraftCasingVibrateSystemView *view;
-	//view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
 	CDuChartCtrlStaticFunction::AutoXScale(&this->m_chart,FALSE);
-	//CDuChartCtrlStaticFunction::AutoYScale(&view->m_chart, FALSE);
+	CDuChartCtrlStaticFunction::AutoYScale(&this->m_chart, FALSE);
 }
 
 // 默认刻度
@@ -320,7 +348,7 @@ void CAirCraftCasingVibrateSystemView::OnBtnSelfScale()
 {
 	CChartStandardAxisDu * leftAxis = (CChartStandardAxisDu*)this->m_chart.GetAxisDu(CChartCtrl::LeftAxis, 0);
 	CChartStandardAxisDu * bottomAxis = (CChartStandardAxisDu*)this->m_chart.GetAxisDu(CChartCtrl::BottomAxis, 0);
-	bottomAxis->SetMinMax(0, 1000);//设置下刻度
+	bottomAxis->SetMinMax(-500, 500);//设置下刻度
 	bottomAxis->SetTickIncrement(false, 100);
 
 	leftAxis->SetMinMax(-0.1, 0.1);
@@ -332,8 +360,6 @@ void CAirCraftCasingVibrateSystemView::OnBtnNoCorror()
 {
 	CDuChartCtrlStaticFunction::SetCursorNone(&this->m_chart);
 }
-
-
 
 void CAirCraftCasingVibrateSystemView::RefreshGraphAttri()
 {
@@ -399,10 +425,7 @@ void CAirCraftCasingVibrateSystemView::RefreshGraphAttri()
 	m_chart.m_shuxing.m_bDrawStatRms = graphAttributeView.m_selectView.m_bEffectiveValue;
 	//刷新
 	m_chart.RefreshCtrl();
-
-
 }
-
 
 void CAirCraftCasingVibrateSystemView::SampleDataEcho()
 {
@@ -430,7 +453,6 @@ void CAirCraftCasingVibrateSystemView::SampleDataEcho()
 	m_pLineSerie->AddPoints(dXData.GetSmartArray(), yData.GetSmartArray(), dXData.size() / 2);
 }
 
-
 void CAirCraftCasingVibrateSystemView::SetSampleDataEchoTimerNum(int nSampleDataEchoTimerNums)
 {
 	m_iSampleDataEchoTimerNum = nSampleDataEchoTimerNums;
@@ -444,7 +466,6 @@ int CAirCraftCasingVibrateSystemView::GetSampleDataEchoTimerNum()
 
 void CAirCraftCasingVibrateSystemView::StartSampleEncho()
 {
-
 	SetTimer(m_iSampleDataEchoTimerNum, 100, 0);
 }
 
@@ -480,60 +501,62 @@ void CAirCraftCasingVibrateSystemView::SplitVector(SmartArray<double> &dXData, S
 	}
 }
 
+///设置窗口对应的通道对象
 void  CAirCraftCasingVibrateSystemView::SetChannel(TbChannel channel){
-	m_signalSelectView.SetChannel(channel);
+	///设置通道参数
+	m_dhtestHardWareController.SetChannelParam(theApp.m_pHardWare, theApp.m_vecHardChannel, channel);
+	m_signalSelectView.SetChannel(channel); ///取消设置通道参数
 	GetDocument()->SetTitle(channel.GetChannelDesc());
-	SetChartXYCoordinateLen();
+	SetChartXYCoordinateLen(0, theApp.m_currentProject.GetCollectionparas().GetSampleFrequency().second / theApp.FFTRATE);
 }
 void  CAirCraftCasingVibrateSystemView::GetChannel(TbChannel & channel){
 	m_signalSelectView.GetChannel(channel);
 }
 
 void  CAirCraftCasingVibrateSystemView::SetEchoSignalData(EchoSignal &echoSignal){
-	m_echoSignal = echoSignal;
-	SendMessage(WM_USER_REFRESH_CHART);
+	m_echoSignalQueue.push(echoSignal);
+	TRACE("\n队列长度:%d，生成一次数据耗时:%d\n", m_echoSignalQueue.size(), GetTickCount() - echoStartTime);
+	echoStartTime = GetTickCount();
 }
 
-LRESULT CAirCraftCasingVibrateSystemView::OnRefreshChart(WPARAM wParam, LPARAM lParam)
-{
+LRESULT CAirCraftCasingVibrateSystemView::OnRefreshChart(WPARAM wParam, LPARAM lParam){
+	int ltime = GetTickCount();
+
+	if (m_echoSignalQueue.empty()){
+		return 0;
+	}
 	m_pLineSerie->ClearSerie();
 	m_pLineSerie->SetNeedCalStatValue(TRUE);
-	//TRACE("\n刷新采集窗口。。。。\n");
-	///获取分析频率
-	//Result res = JsonUtil::GetValueFromJsonString(theApp.m_currentProject.GetCollectionparas().GetAnalysisFrequency().GetDictValue(), "content", m_analysisFrequency);
-	//if (!res.GetIsSuccess()){return -1;}
-	m_analysisFrequency = theApp.m_currentProject.GetCollectionparas().GetAnalysisFrequency();
-	double interval = m_analysisFrequency/m_echoSignal.GetXData().size();
-	for (int i = 1; i <= m_echoSignal.GetXData().size(); i++){
-		m_echoSignal.GetXData().GetSmartArray()[i] = interval*i;
-	} 
-	m_pLineSerie->AddPoints(m_echoSignal.GetXData().GetSmartArray(), m_echoSignal.GetYData().GetSmartArray(), m_echoSignal.GetYData().size());
-	if (theApp.m_isAlarm == 1){
-		if (m_pLineSerie->GetMax() >= theApp.m_alarmLimit)
-		{
-			COLORREF colorrrefRGB = RGB(120, 250, 110);
-			m_chart.GetSerieFromIndexDu(0)->SetColor(colorrrefRGB);
-		}
-		else
-		{
-			CGraphAttributeView graphAttributeView;
-			//graphAttributeView.m_fontView.InitAttri();
-			graphAttributeView.m_colorView.InitAttri();
-			//graphAttributeView.m_selectView.InitAttri2();
-			m_chart.GetSerieFromIndexDu(0)->SetColor(graphAttributeView.m_colorView.m_colSerie[0]);
-		}
-	}
+	EchoSignal echoSignal = *m_echoSignalQueue.wait_and_pop();
+	
+	m_pLineSerie->AddPoints(echoSignal.GetXData().GetSmartArray(), echoSignal.GetYData().GetSmartArray(), echoSignal.GetYData().size());
+
+	//if (theApp.m_isAlarm == 1){
+	//	if (m_pLineSerie->GetMax() >= theApp.m_alarmLimit)
+	//	{
+	//		COLORREF colorrrefRGB = RGB(120, 250, 110);
+	//		m_chart.GetSerieFromIndexDu(0)->SetColor(colorrrefRGB);
+	//	}
+	//	else
+	//	{
+	//		CGraphAttributeView graphAttributeView;
+	//		//graphAttributeView.m_fontView.InitAttri();
+	//		graphAttributeView.m_colorView.InitAttri();
+	//		//graphAttributeView.m_selectView.InitAttri2();
+	//		m_chart.GetSerieFromIndexDu(0)->SetColor(graphAttributeView.m_colorView.m_colSerie[0]);
+	//	}
+	//}
 	//CDuChartCtrlStaticFunction::AutoYScale(&m_chart, FALSE);
 	//this->m_chart.SetCursorPeak(TRUE);
 
 	SetPeak(m_pLineSerie->GetMax());
 	SetGross(m_pLineSerie->GetSum());
-	
-
 	m_pLineSerie->DrawDu();
-
-
+	//UpdateWindow();
+	TRACE("\n显示一次需要耗时：%d\n", GetTickCount() - showStartTime);
+	TRACE("\n刷新一次页面需要耗时：%d\n", GetTickCount() - ltime);
 	
+	showStartTime = GetTickCount();
 	return 0;
 }
 double CAirCraftCasingVibrateSystemView::GetPeak()

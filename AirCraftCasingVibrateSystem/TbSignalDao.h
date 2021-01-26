@@ -14,7 +14,7 @@ public:
 	PDAttribute m_signalId;
 	PDAttribute m_channelId;
 	PDAttribute m_sumsignalId;
-	PDAttribute m_signalStatus;
+	PDAttribute m_SignalLabel;
 	PDAttribute m_dataUrl;
 	//PDAttribute m_sumSignalId;
 

@@ -5,6 +5,7 @@
 #include "CollectionPlanParaPresetView.h"
 #include "ProjectController.h"
 #include "afxcmn.h"
+#include "DHTestHardWareController.h"
 
 class ProjectSetView : public CDialogEx
 {
@@ -20,6 +21,8 @@ public:
 protected:
 	BaseProjectInfoView m_baseProjectInfoView;
 	ChannelParaPresetView m_channelParaPresetView;
+
+	DHTestHardWareController m_dhTestHardWareController;
 	int m_icurSelTabIndex;
 	int m_newDialogIndex;
 	vector<TbChannel> m_vchannels;

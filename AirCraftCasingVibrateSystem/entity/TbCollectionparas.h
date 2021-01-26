@@ -3,6 +3,8 @@
 内容摘要： 检测设备数据库表对应的实体对象。对应的实现类文件为TbCollectionparas.cpp。
 ************************************************************************/
 #include "TbDictionary.h"
+#include <iostream>
+#include <utility>
 #pragma once
 class TbCollectionparas
 {
@@ -15,24 +17,27 @@ public:
 protected:
 
 	int m_id;
-	CString m_equipmentId;
-	double m_sampleFrequency;
-	double m_analysisFrequency;
+	int m_equipmentId;
+	std::pair<int, int> m_sampleFrequency;
 	TbDictionary m_collectionMethod;
 	TbDictionary m_triggerMethod;
-	TbDictionary m_collectionPoint;
 	int m_dataBlocks;
 	int m_delayBlocks;
 	int m_triggerTimes;
-
+	int line;//谱线数
 	int m_sampleBatch;
 
 public:
 	
 	void SetId(int id);
 	int GetId(); 
-	void SetEquipmentId(CString equipmentId);
-	CString GetEquipmentId();
+	void SetEquipmentId(int equipmentId);
+	int GetEquipmentId();
+
+
+	void SetLine(int line);
+	int GetLine();
+
 	//TbDictionary  & GetSampleFrequency();
 	//void SetSampleFrequency(TbDictionary sampleFrequency);
 	//TbDictionary  & GetAnalysisFrequency();
@@ -43,17 +48,13 @@ public:
 	//void SetCollectionPoint(TbDictionary collectionPoint);
 
 
-	double GetSampleFrequency();
-	void SetSampleFrequency(double sampleFrequency);
-	double GetAnalysisFrequency();
-	void SetAnalysisFrequency(double analysisFrequency);
+	std::pair<int, int> GetSampleFrequency();
+	void SetSampleFrequency(std::pair<int, int> sampleFrequency);
 	TbDictionary  & GetCollectionMethod();
 	void SetCollectionMethod(TbDictionary collectionMethod);
 
 	TbDictionary  & GetTriggerMethod();
 	void SetTriggerMethod(TbDictionary triggerMethod);
-	TbDictionary  & GetCollectionPoint();
-	void SetCollectionPoint(TbDictionary collectionPoint);
 	int GetSampleBatch();
 	void SetSampleBatch(int sampleBatch);
 

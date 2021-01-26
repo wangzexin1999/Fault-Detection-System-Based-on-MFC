@@ -208,11 +208,13 @@
     <ClInclude Include="AlarmparaController.h" />
     <ClInclude Include="AlarmparaService.h" />
     <ClInclude Include="CDHTestHardWare.h" />
+    <ClInclude Include="Channel.h" />
     <ClInclude Include="ChildRibbonPanel.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="ConstDefine.h" />
+    <ClInclude Include="DHTestHardWareController.h" />
     <ClInclude Include="DlgCom.h" />
     <ClInclude Include="entity\AcquiredSignal.h" />
-    <ClInclude Include="Controller\AdvantechDaqController.h" />
     <ClInclude Include="AirCraftCasingVibrateSystem.h">
       <FileType>CppHeader</FileType>
     </ClInclude>
@@ -409,7 +411,6 @@
     <ClInclude Include="Service\ChannelService.h" />
     <ClInclude Include="View\CollectionParaView.h" />
     <ClInclude Include="Service\SignalAcquisitionService.h" />
-    <ClInclude Include="Controller\SumsignalController.h" />
     <ClInclude Include="View\SignalDataView.h" />
     <ClInclude Include="Service\SumsignalService.h" />
     <ClInclude Include="View\SignalSaveView.h" />
@@ -453,11 +454,13 @@
     <ClCompile Include="AlarmparaController.cpp" />
     <ClCompile Include="AlarmparaService.cpp" />
     <ClCompile Include="CDHTestHardWare.cpp" />
+    <ClCompile Include="Channel.cpp" />
     <ClCompile Include="ChildRibbonPanel.cpp" />
     <ClCompile Include="Common.cpp" />
+    <ClCompile Include="ConstDefine.cpp" />
+    <ClCompile Include="DHTestHardWareController.cpp" />
     <ClCompile Include="DlgCom.cpp" />
     <ClCompile Include="entity\AcquiredSignal.cpp" />
-    <ClCompile Include="Controller\AdvantechDaqController.cpp" />
     <ClCompile Include="AirCraftCasingVibrateSystem.cpp" />
     <ClCompile Include="AirCraftCasingVibrateSystemDoc.cpp" />
     <ClCompile Include="SignalController.cpp" />
@@ -602,9 +605,6 @@
     <ClCompile Include="Service\ChannelService.cpp" />
     <ClCompile Include="View\CollectionParaView.cpp" />
     <ClCompile Include="Service\SignalAcquisitionService.cpp" />
-    <ClCompile Include="Controller\SumsignalController.cpp">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ClCompile>
     <ClCompile Include="View\SignalDataView.cpp" />
     <ClCompile Include="Service\SumsignalService.cpp" />
     <ClCompile Include="View\SignalSaveView.cpp" />

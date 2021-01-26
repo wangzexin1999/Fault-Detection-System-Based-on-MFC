@@ -26,10 +26,9 @@ bool ChannelParaService::GetALLChannelParaByCollectionparasId(int collectionpara
 			dictionaryDao.SelectByObject(channelPara.GetEngineeringUnits());
 			dictionaryDao.SelectByObject(channelPara.GetIntegralType());
 			dictionaryDao.SelectByObject(channelPara.GetIntegralUnits());
-			dictionaryDao.SelectByObject(channelPara.GetInputMethod());
+			//dictionaryDao.SelectByObject(channelPara.GetInputMode());
 			dictionaryDao.SelectByObject(channelPara.GetChannelStatus());
 			dictionaryDao.SelectByObject(channelPara.GetChannelStatus());
-			dictionaryDao.SelectByObject(channelPara.GetMessureType());
 
 			////存入到传感器参数集合
 			vchannelPara.push_back(channelPara);

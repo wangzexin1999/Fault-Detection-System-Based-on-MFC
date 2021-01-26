@@ -6,7 +6,7 @@ TbSumsignal::TbSumsignal(CString sumsignalId)
 {
 
 	m_productId = 0;
-	m_sumsignalStatus = 0;
+	m_sumSignalLabel = 0;
 	m_projectId = 0;
 	m_collectionparasId = 0;
 }
@@ -36,11 +36,11 @@ int TbSumsignal::GetProductId() {
 void TbSumsignal::SetProductId(int productId) {
 	this->m_productId = productId;
 }
-char TbSumsignal::GetSumsignalStatus() {
-	return m_sumsignalStatus;
+char TbSumsignal::GetSumSignalLabel() {
+	return m_sumSignalLabel;
 }
-void TbSumsignal::SetSumsignalStatus(char sumsignalStatus) {
-	this->m_sumsignalStatus = sumsignalStatus;
+void TbSumsignal::SetSumSignalLabel(char sumSignalLabel) {
+	this->m_sumSignalLabel = sumSignalLabel;
 }
 CString TbSumsignal::GetDataUrl() {
 	return m_dataUrl;
@@ -54,21 +54,13 @@ void TbSumsignal::SetProjectId(int projectId){
 int   TbSumsignal::GetProjectId(){
 	return this->m_projectId;
 }
-int   TbSumsignal::GetCollectionparasId(){
-	return m_collectionparasId;
-}
-void TbSumsignal::SetCollectionparasId(int  collectionparasId){
-	m_collectionparasId = collectionparasId;
-}
+
 void TbSumsignal::SetCollectionStatus(CString para){
 	m_collectionStatus = para;
 }
 CString TbSumsignal::GetCollectionStatus(){
 	return m_collectionStatus;
 }
-
-
-
 
 CString TbSumsignal::GetStartTime(){
 	return m_startTime;

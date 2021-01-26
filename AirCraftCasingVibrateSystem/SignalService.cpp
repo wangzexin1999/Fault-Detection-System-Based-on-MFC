@@ -23,6 +23,7 @@ bool  SignalService::GetAllSignalBySearchCondition(TbSignal searchEntity, vector
 	//if (searchEntity.GetSumsignalId() != "")  strSqlWhere += " and signal_id ='" + searchEntity.GetSumsignalId() + "'";
 	if (searchEntity.GetSumsignal().GetSumsignalId() != "") strSqlWhere += " and sumsignal_id ='" + searchEntity.GetSumsignal().GetSumsignalId() + "'";
 	vector<TbSignalDao> signalDaoVec;
+	TbSignalDao m_SignalDao;
 	bool isSuccess = m_SignalDao.SelectObjectsByCondition(signalDaoVec,strSqlWhere);
 	if (isSuccess){
 		for (auto signalDao : signalDaoVec){
@@ -57,8 +58,23 @@ bool  SignalService::GetAllSignalBySearchCondition(TbSignal searchEntity, vector
 //	return isSuccess;
 //}
 
-bool SignalService::AddSignal(TbSignal saveSignal){
+bool SignalService::SaveSignal(TbSignal saveSignal){
+	TbSignalDao m_SignalDao;
 	m_SignalDao.SetTableFieldValues(saveSignal);
 	bool isSuccess = m_SignalDao.Insert();
+	return isSuccess;
+}
+
+bool SignalService::saveSumSignal(TbSumsignal sumSignal){
+	TbSumsignalDao sumSignalDao;
+	 sumSignalDao.SetTableFieldValues(sumSignal);
+	 bool isSuccess = sumSignalDao.Insert(true);
+	 return isSuccess;
+}
+
+bool SignalService::updateSumSignal(TbSumsignal sumSignal){
+	TbSumsignalDao sumSignalDao;
+	sumSignalDao.SetTableFieldValues(sumSignal);
+	bool isSuccess = sumSignalDao.UpdateByKey();
 	return isSuccess;
 }

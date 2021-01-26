@@ -11,6 +11,7 @@
 #include "TbChannel.h"
 #include "TbDictionaryDao.h"
 #include "TbRecordSignal.h"
+#include "TbCollectionparasDao.h"
 //#include "TbTestingDevice.h"
 class CChannelService
 {
@@ -61,7 +62,7 @@ public:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	bool GetAllChannelByCollectionparasId(int collectionparasId, vector<TbChannel> & channelVector);
+	bool GetALLSensorByProjectId(int projectId, vector<TbChannel> & channelVector);
 	/**********************************************************************
 	功能描述：根据项目id得到所有的传感器参数
 	输入参数：
@@ -112,6 +113,6 @@ private:
 	TbSumsignalDao m_sumsignalDao;
 	TbRecordSignalDao m_recordSignalDao;
 	TbChannelDao m_channelDao;
-	
+	TbCollectionparasDao m_collectionParasDao;
 };
 

@@ -18,7 +18,7 @@ public:
 	PDAttribute m_endPos;
 	PDAttribute m_signalType;
 	PDAttribute m_productId;
-	PDAttribute m_signalStatus;
+	PDAttribute m_SignalLabel;
 	PDAttribute m_projectId;
 	PDAttribute m_collectionparasId;
 	PDAttribute m_collectionStatus;

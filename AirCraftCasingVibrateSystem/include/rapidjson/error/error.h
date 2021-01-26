@@ -76,7 +76,7 @@ enum ParseErrorCode {
     kParseErrorArrayMissCommaOrSquareBracket,   //!< Missing a comma or ']' after an array element.
 
     kParseErrorStringUnicodeEscapeInvalidHex,   //!< Incorrect hex digit after \\u escape in string.
-    kParseErrorStringUnicodeSurrogateInvalid,   //!< The surrogate pair in string is invalid.
+    kParseErrorStringUnicodeSurrogateInvalid,   //!< The surrogate std::pair in string is invalid.
     kParseErrorStringEscapeInvalid,             //!< Invalid escape character in string.
     kParseErrorStringMissQuotationMark,         //!< Missing a closing quotation mark in string.
     kParseErrorStringInvalidEncoding,           //!< Invalid encoding in string.

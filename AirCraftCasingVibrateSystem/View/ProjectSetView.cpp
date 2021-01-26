@@ -27,7 +27,6 @@ void ProjectSetView::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TAB_PROJECT_NAVIGATION, m_projectNavigationTab);
 }
 
-
 BEGIN_MESSAGE_MAP(ProjectSetView, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_LASTSTEP, &ProjectSetView::OnBnClickedButtonLaststep)
 	ON_BN_CLICKED(IDC_BUTTON_NEXTSTEP, &ProjectSetView::OnBnClickedButtonNextstep)
@@ -36,9 +35,7 @@ BEGIN_MESSAGE_MAP(ProjectSetView, CDialogEx)
 	ON_NOTIFY(TCN_SELCHANGE, IDC_TAB_PROJECT_NAVIGATION, &ProjectSetView::OnTcnSelchangeTabProjectNavigation)
 END_MESSAGE_MAP()
 
-
 // ProjectSetView 消息处理程序
-
 
 BOOL ProjectSetView::OnInitDialog()
 {
@@ -132,10 +129,6 @@ void ProjectSetView::OnBnClickedButtonNextstep()
 void ProjectSetView::OnBnClickedOk()
 {
 	
-
-
-
-
 	// 得到所有的通道
 	m_vchannels.clear();
 	m_channelParaPresetView.GetSelectedChannels(m_vchannels);
@@ -164,7 +157,7 @@ void ProjectSetView::OnBnClickedOk()
 	root.Accept(writer);
 	std::string result = buffer.GetString();
 	///给项目对象设置采集
-	m_project.SetCollectionPlans(result.c_str());
+	//m_project.SetCollectionPlans(result.c_str());
 	///封装project对象
 	m_project.SetProjectUpdateTime(DateUtil::GetCurrentCStringTime());
 	m_project.SetChannelVector(m_vchannels);
