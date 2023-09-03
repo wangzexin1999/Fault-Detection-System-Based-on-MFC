@@ -45,13 +45,13 @@ Result ProjectController::FindAllProjectBySearchCondition(TbProject project, CSt
 	if (!flag)return Result(false, "项目加载失败");
 
 	for (int i = 0; i < projectVector.size();i++){
-		////查询项目的采集设备
+		// 查询项目的采集设备
 		flag = m_collectionparasService.GetOneById(projectVector[i].GetCollectionparas());
 		if (!flag)return Result(false, "采集设备加载失败");
-		////查询项目的所有传感器
+		// 查询项目的所有传感器
 		flag = m_channelService.GetALLSensorByProjectId(projectVector[i].GetProjectId(), projectVector[i].GetChannelVector());
 		if (!flag)return Result(false, "通道加载失败");
-		////查询项目对应的产品信息
+		//  查询项目对应的产品信息
 		flag = m_productService.GetProductByID(projectVector[i].GetProduct());
 		if (!flag)return Result(false, "产品加载失败");
 		////查询用户信息
@@ -70,27 +70,27 @@ Result ProjectController::FindLastOpenProjectByUser(TbProject &project){
 	flag = m_collectionparasService.GetOneById(project.GetCollectionparas());
 	if (!flag)return Result(false, "采集设备加载失败");
 	////查询项目的所有传感器
-	//flag = m_sensorService.GetALLSensorByProjectId(project.GetProjectId(), project.GetSensorVector());
 	flag = m_channelService.GetALLSensorByProjectId(project.GetProjectId(), project.GetChannelVector());
-	if (!flag)return Result(false, "传感器加载失败");
+	if (!flag)return Result(false, "传感器加载失败");//
 	////查询项目对应的产品信息
-	flag = m_productService.GetProductByID(project.GetProduct());
+	flag = m_productService.GetProductByID(project.GetProduct());//
 	if (!flag)return Result(false, "产品加载失败");
 	////查询用户信息
 	flag = m_userService.getOneById(project.GetUser());
 	return Result(true, "项目加载成功");
 }
 
+Result  ProjectController::UpdateTime(TbProject project){
+	bool flag = m_projectService.Update(project);
+	if (!flag) return Result(false, "项目更新失败");
+	return Result(false, "项目更新成功");
+}
+
 Result ProjectController::Update(TbProject project){
 	//1. 首先更新项目的基本信息表
 	bool flag = m_projectService.Update(project);
 	if (!flag) return Result(false, "项目更新失败");
-	//2. 删除项目对应的所有传感器
-	//TbChannel condition;
-	//condition.SetProjectId(project.GetProjectId());
-	//flag = m_channelService.Delete(condition);
-	//if (!flag) return Result(false, "项目传感器更新失败");
-	//3. 保存所有的传感器对象
+	//3. 更新通道对象
 	for (int i = 0; i < project.GetChannelVector().size(); i++){
 		project.GetChannelVector()[i].SetProjectId(project.GetProjectId());
 		flag = m_channelService.Update(project.GetChannelVector()[i]);

@@ -7,11 +7,10 @@ TbSignal::TbSignal()
 	//m_signalLabel = 0;
 	//m_dataUrl = "";
 }
-TbSignal::TbSignal(CString signalId, TbChannel channel, TbSumsignal sumsignal, int signalLabel, CString dataUrl)
+TbSignal::TbSignal(CString signalId, TbChannel channel, CString sumsignalId, int signalLabel, CString dataUrl)
 {
 	SetSignalId(signalId);
 	SetChannel(channel);
-	SetSumsignal(sumsignal);
 	SetSignalLabel(signalLabel);
 	SetDataUrl(dataUrl);
 	//SetSumSignal(sumSignal);
@@ -38,14 +37,14 @@ void TbSignal::SetChannel(TbChannel channel)
 	this->m_channel = channel;
 }
 
-TbSumsignal & TbSignal::GetSumsignal()
-{
-	return m_sumsignalId;
-}
-void TbSignal::SetSumsignal(TbSumsignal sumsignal)
-{
-	this->m_sumsignalId = sumsignal;
-}
+//TbSumsignal & TbSignal::GetSumsignal()
+//{
+//	return m_sumsignalId;
+//}
+//void TbSignal::SetSumsignal(TbSumsignal sumsignal)
+//{
+//	this->m_sumsignalId = sumsignal;
+//}
 
 int TbSignal::GetSignalLabel()
 {
@@ -64,7 +63,12 @@ void TbSignal::SetDataUrl(CString dataUrl)
 {
 	this->m_dataUrl = dataUrl;
 }
-
+CString TbSignal::GetSumSignalId(){
+	return m_sumsignalId;
+}
+void TbSignal::SetSumSignalId(CString signalId){
+	m_sumsignalId = signalId;
+}
 
 //TbSumsignal & TbSignal::GetSumSignal()
 //{

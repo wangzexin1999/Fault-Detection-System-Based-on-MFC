@@ -5,7 +5,6 @@ TbTestlocationDao::TbTestlocationDao()
 	this->m_strTableName = "tb_testlocation";
 	m_key = &m_locationId;
 	SetVectorAndField("location_id", "int", m_locationId);
-	SetVectorAndField("product_id", "int", m_productId);
 	SetVectorAndField("location_name", "CString", m_locationName);
 	SetVectorAndField("product_type_id", "int", m_productTypeId);
 }
@@ -14,7 +13,6 @@ TbTestlocationDao::TbTestlocationDao(const TbTestlocationDao &testlocation)
 	this->m_strTableName = "tb_testlocation";
 	m_key = &m_locationId;
 	SetVectorAndField("location_id", "int", m_locationId);
-	SetVectorAndField("product_id", "int", m_productId);
 	SetVectorAndField("location_name", "CString", m_locationName);
 	SetVectorAndField("product_type_id", "int", m_productTypeId);
 	operator = (testlocation);
@@ -27,14 +25,12 @@ TbTestlocationDao::~TbTestlocationDao()
 void TbTestlocationDao::SetTableFieldValues(TbTestlocation testlocation)
 {
 	this->m_locationId.SetValue(testlocation.GetLocationId());
-	this->m_productId.SetValue(testlocation.GetProduct().GetProductId());
 	this->m_locationName.SetValue(testlocation.GetLocationName());
 	this->m_productTypeId.SetValue(testlocation.GetProductTypeId());
 }
 void TbTestlocationDao::GetTableFieldValues(TbTestlocation &testlocation)
 {
 	testlocation.SetLocationId(m_locationId.GetInt());
-	testlocation.GetProduct().SetProductId(m_productId.GetInt());
 	testlocation.SetLocationName(m_locationName.m_strValue);
 	testlocation.SetProductTypeId(m_productTypeId.GetInt());
 }

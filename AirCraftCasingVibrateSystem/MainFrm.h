@@ -2,6 +2,7 @@
 
 // MainFrm.h : CMainFrame 类的接口
 #pragma once
+#include "stdafx.h"
 #include "SystemParaView.h"
 #include "ChannelParaView.h"
 #include "AirCraftCasingVibrateSystemView.h"
@@ -15,7 +16,7 @@
 #include "SignalController.h"
 #include <map>
 #include "JsonUtil.h"
-#include "TbRecordSignal.h"
+#include "TbSumsignal.h"
 #include "UUIDUtil.h"
 #include "TbSumsignal.h"
 #include "ChannelController.h"
@@ -31,6 +32,8 @@
 //////////////////////////////
 #include "Common.h"
 #include "DHTestHardWareController.h"
+#include "RedisDataProcess.h"
+
 
 using namespace Automation::BDaq;
 using namespace std;
@@ -74,7 +77,7 @@ protected:  // 控件条嵌入成员
 	// 采样线程句柄
 	CWinThread	*m_pGetDataThread;
 	bool m_bThread;
-	//初始化仪器控制接口
+	//初始化仪器控制接口	
 	long InitInterface();
 	//是否连接上仪器
 	long IsConnectMachine();
@@ -82,6 +85,8 @@ protected:  // 控件条嵌入成员
 	static UINT GetDataThread(LPVOID pParam);
 	//单台仪器数据
 	static UINT GetOneMacDataThread(LPVOID pParam);
+	//redis取结果线程
+	static UINT GetResultFromRedisThread(LPVOID pParam);
 	//显示数据
 	void OnShowSampleData(WPARAM wParam, LPARAM lParam);
 	//初始化通道测点类型
@@ -98,6 +103,10 @@ protected:  // 控件条嵌入成员
 	SignalController m_signalController;
 
 	std::mutex saveSignalMutex;
+	//liuxiu
+	ChannelParaPresetView m_channelParaPresetView;
+	vector<TbChannel> m_vchannels;
+	TbProject m_project;
 
 	ProjectController m_projectController;
 	CSystemParaView    m_systemParaView;
@@ -112,6 +121,13 @@ protected:  // 控件条嵌入成员
 
 	map<CString, ThreadSafeQueue<double>> m_mpcolllectioinDataQueue; ///采集的数据
 
+	map<CString, ThreadSafeQueue<double>> m_redisCollectionDataQueue;//放到redis采集数据
+
+	map<CString, ThreadSafeQueue<CString>> m_modelPredictResult;	//存储模型结果
+	
+	TbSumsignal m_sumSignal;
+
+	//RedisDataProcess *m_redisProcess;//redis取数对象
 
 	map<int, DOUBLE *> m_mpcolllectioinData;
 	ICollection<DeviceTreeNode>* m_devices;
@@ -120,17 +136,16 @@ protected:  // 控件条嵌入成员
 	//Value m_analysisFrequency;
 	double m_analysisFrequency;
 	int m_icollectionPoints;
-	JsonUtil m_jsonUtil;
+	JsonUtil *m_jsonUtil;
 	Value m_channelInfo;
 	Value m_collectionStatus;
 	Document m_doc;
-	TbRecordSignal m_recordSignal; // 采样数据
+	TbSumsignal m_recordSignal; // 采样数据
 	TbSumsignalLabel m_sumsignalLabel;
 	SumsignalLabelController m_sumsignalLabelController;
-	
-	ifstream m_inputStream;
+	bool m_blocalSignalExist = false;
 	vector<ofstream>v_outputStream;
-	TbRecordSignal m_selectedRecordSignal;
+	TbSumsignal m_selectedSumSignal;
 	bool m_bIsAnalyseFreMin = false;
 	bool m_bIsAnalyseFreMax = false;
 	int m_iAnalyseFreMax;
@@ -143,6 +158,9 @@ protected:  // 控件条嵌入成员
 	vector<TbAlarmpara> m_vAlarmpara;
 
 	vector<CString> m_vchannelCodes;
+
+	
+
 
 	/**********************************************************************
 	功能描述： 设置通道信息的json值
@@ -164,6 +182,7 @@ public:
 	int m_nInterface;
 	int m_nInstrumentType;
 	
+	RedisDataProcess *m_redisProcess = new RedisDataProcess();
 	//获得通道信息
 	void GetChannelParam(int nID, ChannelParam &ChanParam);
 	//清空所有仪器通道
@@ -210,7 +229,7 @@ public:
 	功能描述：创建采集窗口
 	输入参数：传感器集合
 	***********************************************************************/
-	void CreateCaptureWindow(vector<TbChannel> vchannel);
+	void CreateCaptureWindow(vector<TbChannel> &vchannel);
 
 
 
@@ -263,7 +282,7 @@ public:
 	/**********************************************************************
 	功能描述： 开启线程从本地读取数据
 	***********************************************************************/
-	void GetDataFromlocal();
+	void GetDataFromlocal(TbSignal &signal, CAirCraftCasingVibrateSystemView *view);
 	void Pre_GetDataFromlocal();
 
 	/**********************************************************************
@@ -298,6 +317,57 @@ public:
 	***********************************************************************/
 	void GetChannels(vector<CString> & channels);
 
+	/**********************************************************************
+	功能描述：redis连接
+	***********************************************************************/
+	void RedisHandel();
+
+	/**********************************************************************
+	功能描述：向redis中key为redisCollectionData的队列中存数
+	***********************************************************************/
+	void RedisSetCollectionData(CString channelCode, CString jsonData);
+
+	/**********************************************************************
+	功能描述：从redis队列中取出模型预测结果
+	***********************************************************************/
+	CString RedisGetPredictedResult(CString channelCode);
+
+	/**********************************************************************
+	功能描述： Redis开启线程自动保存采集数据的线程函数
+	***********************************************************************/
+	void OpenThread2RedisSaveData();
+
+	/**********************************************************************
+	功能描述： Redis保存数据线程函数
+	***********************************************************************/
+	void SaveRedisSumCollectionData();
+
+	/**********************************************************************
+	功能描述： Redis保存数据线程函数-inside
+	***********************************************************************/
+	void SaveRedisCollectionData(CString signalCode);
+
+	/**********************************************************************
+	功能描述： 删除redis数据库中内容，初始化数据库
+	***********************************************************************/
+	void InitRedisDatabase();
+
+	/**********************************************************************
+	功能描述： 从redis中读取模型的预测结果的线程
+	***********************************************************************/
+	void OpenThreadReadPredictResult();
+
+	/**********************************************************************
+	功能描述： Redis读取模型预测结果
+	***********************************************************************/
+	void ReadPredictResult();
+
+	/**********************************************************************
+	功能描述： Redis读取模型预测结果-inside
+	***********************************************************************/
+	void ReadEveryPredictResult(CString signalCode);
+
+	void AcquireResult();
 
 	afx_msg LRESULT OnStatusInf(WPARAM wParam, LPARAM lParam); // 自定义状态信息改变消息
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

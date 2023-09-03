@@ -57,51 +57,56 @@ long DHTestHardWareController::ModifyParamAndSendCodeSecond(CDHTestHardWare *pHa
 void DHTestHardWareController::GetAllGroupChannel(CDHTestHardWare *pHardWare, vector<stuGroupChannel> &vecGroupChannel, vector<stuHardChannel> &vecHardChannel, CString strChannel)
 {
 	int i = 0, j = 0;
-	long nGroupCount;
-	pHardWare->GetChannelGroupCount(&nGroupCount);
+	long nGroupCount =1;
+	//pHardWare->GetChannelGroupCount(&nGroupCount);
 
 	long nGroupChannelID, nChannelFirst, nChannelNumber, nDataType;
 	string strMachineIP;
 	long lReturnValue = 0;
 	stuGroupChannel stuGroupChannel;
+	nGroupChannelID = 0;
 	for (i = 0; i < nGroupCount; i++)
 	{
-		BSTR *strValue = new BSTR();
+		//BSTR *strValue = new BSTR();
 
 		// 获取通道组信息
-		pHardWare->GetChannelGroup(i, &nGroupChannelID, strValue, &lReturnValue);//strValue<->strMachineIP
-		char *pTempData = _com_util::ConvertBSTRToString(*strValue);
-		strMachineIP = pTempData;//仪器IP
-		delete pTempData;
+		//pHardWare->GetChannelGroup(i, &nGroupChannelID, strValue, &lReturnValue);//strValue<->strMachineIP
+		//char *pTempData = _com_util::ConvertBSTRToString(*strValue);
+		//strMachineIP = pTempData;//仪器IP
+		//delete pTempData;
+		strMachineIP = "";
 		stuGroupChannel.m_GroupID = nGroupChannelID;
 		stuGroupChannel.m_strMachineIP = strMachineIP;
 
 		// 获取某台仪器的起始通道ID
-		pHardWare->GetChannelFirstID(nGroupChannelID, strMachineIP.data(), &nChannelFirst);
+		//pHardWare->GetChannelFirstID(nGroupChannelID, strMachineIP.data(), &nChannelFirst);
+		nChannelFirst = 0;
 		stuGroupChannel.m_nChannelFirst = nChannelFirst;
 
 		// 获取某台仪器的总的通道数
-		pHardWare->GetChannelCount(nGroupChannelID, strMachineIP.data(), &nChannelNumber);
+		//pHardWare->GetChannelCount(nGroupChannelID, strMachineIP.data(), &nChannelNumber);
+		nChannelNumber = 4;
 		stuGroupChannel.m_nChannelNumber = nChannelNumber;
 
 		// 获取某台仪器的数据类型
-		pHardWare->GetChannelGroupDataType(nGroupChannelID, strMachineIP.data(), &nDataType);
+		//pHardWare->GetChannelGroupDataType(nGroupChannelID, strMachineIP.data(), &nDataType);
+		nDataType = 2;
 		stuGroupChannel.m_nDataType = nDataType;
 
 		vecGroupChannel.push_back(stuGroupChannel);
-		delete strValue;
+		//delete strValue;
 
 		stuHardChannel HardChannel;
 		// 通道信息
 		for (j = 0; j < nChannelNumber; j++)
 		{
-			//long nChannelID = nChannelFirst + j;
-			long nChannelID;
-			long bOnLine = 0;
+			long nChannelID = nChannelFirst + j;
+			//long nChannelID;
+			long bOnLine = 1;
 			long nMeasureType = 0;
-			pHardWare->GetChannelIDFromIndex(nGroupChannelID, strMachineIP.data(), j, &nChannelID);
-			pHardWare->IsChannelOnLine(nGroupChannelID, strMachineIP.data(), nChannelID, &bOnLine);
-			pHardWare->GetChannelMeasureType(nGroupChannelID, strMachineIP.data(), nChannelID, &nMeasureType);//获取通道测量类型
+			//pHardWare->GetChannelIDFromIndex(nGroupChannelID, strMachineIP.data(), j, &nChannelID);
+			//pHardWare->IsChannelOnLine(nGroupChannelID, strMachineIP.data(), nChannelID, &bOnLine);
+			//pHardWare->GetChannelMeasureType(nGroupChannelID, strMachineIP.data(), nChannelID, &nMeasureType);//获取通道测量类型
 			HardChannel.m_nChannelGroupID = nGroupChannelID;
 			HardChannel.m_nChannelID = nChannelID;
 			HardChannel.m_nMeasureType = nMeasureType;
@@ -344,21 +349,30 @@ int DHTestHardWareController::BreakString(const string& strSrc, vector<string>& 
 }
 
 void DHTestHardWareController::GetAllFullValue(CDHTestHardWare *pHardWare, vector<stuHardChannel> &vecHardChannel, string strMachineIP,vector<string> &result){
-	BSTR *strSelectValue = new BSTR();
-	char *pTempData;
-	//获取参数可选项列表
-	pHardWare->GetParamSelectValue(vecHardChannel[0].m_nChannelGroupID, strMachineIP.data(), vecHardChannel[0].m_nChannelStyle, vecHardChannel[0].m_nChannelID, vecHardChannel[0].m_nCellID, SHOW_CHANNEL_FULLVALUE, strSelectValue);
-	if (*strSelectValue){
-		pTempData = _com_util::ConvertBSTRToString(*strSelectValue);
-		string strFullValueSelect = pTempData;
-		int nFullValueCount = BreakString(strFullValueSelect, result, string("|"));
-	}
+	//BSTR *strSelectValue = new BSTR();
+	//char *pTempData;
+	////获取参数可选项列表
+	//pHardWare->GetParamSelectValue(vecHardChannel[0].m_nChannelGroupID, strMachineIP.data(), vecHardChannel[0].m_nChannelStyle, vecHardChannel[0].m_nChannelID, vecHardChannel[0].m_nCellID, SHOW_CHANNEL_FULLVALUE, strSelectValue);
+	//if (*strSelectValue){
+	//	pTempData = _com_util::ConvertBSTRToString(*strSelectValue);
+	//	string strFullValueSelect = pTempData;
+	//	int nFullValueCount = BreakString(strFullValueSelect, result, string("|"));
+	//}
 	//delete pTempData;
+	result.push_back("10000");
+	result.push_back("5000");
+	result.push_back("2000");
+	result.push_back("1000");
+	result.push_back("500");
+	result.push_back("200");
+	result.push_back("100");
+	result.push_back("50");
+	result.push_back("20");
 }
 
 void DHTestHardWareController::GetAllUpFreq(CDHTestHardWare *pHardWare, vector<stuHardChannel> &vecHardChannel, string strMachineIP, vector<string> &result){
 	//获取所有的上限频率
-	BSTR *strSelectValue = new BSTR();
+	/*BSTR *strSelectValue = new BSTR();
 	char *pTempData;
 	pHardWare->GetParamSelectValue(vecHardChannel[0].m_nChannelGroupID, strMachineIP.data(), vecHardChannel[0].m_nChannelStyle, vecHardChannel[0].m_nChannelID, vecHardChannel[0].m_nCellID, SHOW_CHANNEL_UPFREQ, strSelectValue);
 	if (*strSelectValue){
@@ -366,41 +380,67 @@ void DHTestHardWareController::GetAllUpFreq(CDHTestHardWare *pHardWare, vector<s
 		string strUpFreq = pTempData;
 		int nUpFreqCount = BreakString(strUpFreq, result, string("|"));
 	}
-	delete pTempData;
+	delete pTempData;*/
+	result.push_back("30Hz");
+	result.push_back("300Hz");
+	result.push_back("3kHz");
+	result.push_back("PASS");
 }
 
 void DHTestHardWareController::GetAllInputMode(CDHTestHardWare *pHardWare, vector<stuHardChannel> &vecHardChannel, string strMachineIP, vector<string> &result){
 	//获取参数可选项列表
-	BSTR *strSelectValue = new BSTR();
+	/*BSTR *strSelectValue = new BSTR();
 	char *pTempData;
 	pHardWare->GetParamSelectValue(vecHardChannel[0].m_nChannelGroupID, strMachineIP.data(), vecHardChannel[0].m_nChannelStyle, vecHardChannel[0].m_nChannelID, vecHardChannel[0].m_nCellID, SHOW_CHANNEL_ACQ_INPUTMODE, strSelectValue);
 	if (*strSelectValue){
 		pTempData = _com_util::ConvertBSTRToString(*strSelectValue);
 		string strInputMode = pTempData;
 		int nInputModeCount = BreakString(strInputMode, result, string("|"));
-	}
+	}*/
+	result.push_back("DIF_DC");
+	result.push_back("SIN_DC");
+	result.push_back("AC");
+	result.push_back("SIN_IEPE");
+	result.push_back("DIF_IEPE");
+	result.push_back("GND");
+
 }
 
 void DHTestHardWareController::GetAllElcPressure(CDHTestHardWare *pHardWare, vector<stuHardChannel> &vecHardChannel, string strMachineIP, vector<string> &result){
-	BSTR *strSelectValue = new BSTR();
-	char *pTempData;
-	//获取电压测量范围
-	pHardWare->GetParamSelectValue(vecHardChannel[0].m_nChannelGroupID, strMachineIP.data(), vecHardChannel[0].m_nChannelStyle, vecHardChannel[0].m_nChannelID, vecHardChannel[0].m_nCellID, SHOW_ELC_PRESSURE, strSelectValue);
-	if (*strSelectValue){
-		char *pTempData = _com_util::ConvertBSTRToString(*strSelectValue);
-		string strEXCHANGEAB = pTempData;
-		int nBridgeTypeCount = BreakString(strEXCHANGEAB, result, string("|"));
-	}
+	//BSTR *strSelectValue = new BSTR();
+	//char *pTempData;
+	////获取电压测量范围
+	//pHardWare->GetParamSelectValue(vecHardChannel[0].m_nChannelGroupID, strMachineIP.data(), vecHardChannel[0].m_nChannelStyle, vecHardChannel[0].m_nChannelID, vecHardChannel[0].m_nCellID, SHOW_ELC_PRESSURE, strSelectValue);
+	//if (*strSelectValue){
+	//	char *pTempData = _com_util::ConvertBSTRToString(*strSelectValue);
+	//	string strEXCHANGEAB = pTempData;
+	//	int nBridgeTypeCount = BreakString(strEXCHANGEAB, result, string("|"));
+	//}
+	result.push_back("10000");
+	result.push_back("5000");
+	result.push_back("2000");
+	result.push_back("1000");
+	result.push_back("500");
+	result.push_back("200");
+	result.push_back("100");
+	result.push_back("50");
+	result.push_back("20");
 }
 
 
 void DHTestHardWareController::GetAllMessaueType(CDHTestHardWare *pHardWare, vector<stuHardChannel> &vecHardChannel, string strMachineIP, vector<string> &result){
-	BSTR *strSelectValue = new BSTR();
-	//获取参数值
-	pHardWare->GetParamSelectValue(vecHardChannel[0].m_nChannelGroupID, strMachineIP.data(), vecHardChannel[0].m_nChannelStyle, vecHardChannel[0].m_nChannelID, vecHardChannel[0].m_nCellID, SHOW_CHANNEL_MEASURETYPE, strSelectValue);
-	char *pTmpData = _com_util::ConvertBSTRToString(*strSelectValue);
-	string strMeasureTypeSelect = pTmpData;
-	int nMeasureTypeCount = BreakString(strMeasureTypeSelect, result, string("|"));
+	//BSTR *strSelectValue = new BSTR();
+	////获取参数值
+	//pHardWare->GetParamSelectValue(vecHardChannel[0].m_nChannelGroupID, strMachineIP.data(), vecHardChannel[0].m_nChannelStyle, vecHardChannel[0].m_nChannelID, vecHardChannel[0].m_nCellID, SHOW_CHANNEL_MEASURETYPE, strSelectValue);
+	//char *pTmpData = _com_util::ConvertBSTRToString(*strSelectValue);
+	//string strMeasureTypeSelect = pTmpData;
+	//int nMeasureTypeCount = BreakString(strMeasureTypeSelect, result, string("|"));
+	result.push_back("电压测量");
+	result.push_back("应变应力");
+	result.push_back("桥式传感器");
+	result.push_back("热电偶测温");
+
+
 }
 void DHTestHardWareController::GetDefaultSensorEF(CDHTestHardWare *pHardWare, vector<stuHardChannel> &vecHardChannel, string strMachineIP, string &result){
 	//获取默认的灵敏度参数值
@@ -440,18 +480,35 @@ void DHTestHardWareController::GetDefaultMessaueType(CDHTestHardWare *pHardWare,
 //strFreqList – 可选频率索引（获取的频率索引 10 | 20 | 50 | 100 | 500 | 1000 | 5000 | 10000），每个可选频率使用” | ”分隔开。
 void DHTestHardWareController::GetSampleFreqList(CDHTestHardWare *pHardWare, vector<stuHardChannel> &vecHardChannel, vector<int> &result)
 {
-	BSTR *strList = new BSTR();
-	//获取采样频率可选项
-	pHardWare->GetSampleFreqList(2, strList);
-	char *pTemData = _com_util::ConvertBSTRToString(*strList);
-	string strFrepList = pTemData;
-	delete pTemData;
-	vector<string> temp;
-	int nFreqCount = BreakString(strFrepList, temp, string("|"));
-	for (int i = 0; i < temp.size();i++){
-		result.push_back(atoi(temp[i].c_str()));
-	}
-	delete strList;
+	//BSTR *strList = new BSTR();
+	////获取采样频率可选项
+	//pHardWare->GetSampleFreqList(2, strList);
+	//char *pTemData = _com_util::ConvertBSTRToString(*strList);
+	//string strFrepList = pTemData;
+	//delete pTemData;
+	//vector<string> temp;
+	//int nFreqCount = BreakString(strFrepList, temp, string("|"));
+	//for (int i = 0; i < temp.size();i++){
+	//	result.push_back(atoi(temp[i].c_str()));
+	//}
+	//delete strList;
+	result.push_back(10);
+	result.push_back(20);
+	result.push_back(50);
+	result.push_back(100);
+	result.push_back(200);
+	result.push_back(500);
+	result.push_back(1000);
+	result.push_back(2000);
+	result.push_back(5000);
+	result.push_back(10000);
+	result.push_back(20000);
+	result.push_back(50000);
+	result.push_back(100000);
+	result.push_back(200000);
+
+
+
 }
 //获取当前采样参数
 void DHTestHardWareController::GetSampleParam(CDHTestHardWare *pHardWare, stuSampleParam &sampleParam)

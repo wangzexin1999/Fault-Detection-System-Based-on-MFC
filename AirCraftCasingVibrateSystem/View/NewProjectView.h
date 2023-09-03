@@ -50,8 +50,6 @@ protected:
 	afx_msg void OnBnClickedOk();
 	virtual BOOL OnInitDialog();
 	ProjectController m_projectController;
-	CGridCtrl m_projectOperatorDataGridCtrl;
-	void GridCtrlInit();
 	CTabCtrl m_projectNavigationTab;
 	afx_msg void OnTcnSelchangeTabProjectnavigation(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedButtonLaststep();

@@ -5,13 +5,13 @@
 #include "SignalService.h"
 #include "ProjectService.h"
 #include "ProductService.h"
-#include "TbRecordSignal.h"
-#include "RecordSignalService.h"
+#include "TbSumsignal.h"
 #include "ThreadSafeQueue.h"
 #include "AcquiredSignal.h"
 #include "TbSumsignal.h"
 #include <fstream>
 #include <map>
+#include "SmartArray.h"
 using namespace std;
 
 struct SignalFileHeader{
@@ -67,7 +67,6 @@ class SignalController
 private:
 	SignalService m_signalService;
 	ProjectService m_projectService;
-	RecordSignalService m_recordSignalService;
 	ProductService m_productService;
 
 
@@ -82,13 +81,7 @@ public:
 	返 回 值：Result对象
 	其它说明：查询采样数据文件，主要针对产品的型号和转速进行查询
 	***********************************************************************/
-	Result FindAllRecordSignalBySearchCondition(TbRecordSignal searchEntity, vector<TbRecordSignal> &signalVector);
-
-	/**********************************************************************
-	功能描述：保存采样的数据
-	输入参数：当前窗口的id，传感器的id
-	***********************************************************************/
-	Result SaveSampleSignal(TbRecordSignal m_recordSignal);
+	Result FindAllSumSignalBySearchCondition(TbSumsignal searchEntity, vector<TbSumsignal> &signalVector);
 
 	/**********************************************************************
 	功能描述：保存采集的数据
@@ -123,7 +116,7 @@ public:
 	输出参数：vSignal--信号；
 	返 回 值： true--继续；false--读完了
 	***********************************************************************/
-	bool GetCollectionData(ifstream &inputStream, long long llfileSize, long long llStart, long long llReadSize, vector<double>& vSumsignal);
+	bool GetCollectionData(ifstream &inputStream, long long llfileSize, long long llReadSize, double*&  fftwInputArray);
 
 	/**********************************************************************
 	功能描述： 保存采样数据的二进制文件头部信息
@@ -147,9 +140,24 @@ public:
 	Result updateSumSignal(TbSumsignal sumSignal);
 
 	/**********************************************************************
+	功能描述：根据产品编号获取总信号
+	输入参数：productId--文件路径
+	输出参数： sumSignalVec--总信号集合
+	返 回 值： ture--成功； false--打开文件失败
+	***********************************************************************/
+	Result GetSumSignalByProductId(int productId,vector<TbSumsignal> &sumSignalVec);
+
+
+	/**********************************************************************
 	功能描述： 保存采样数据为二进制文件
 	输入参数：outputStream--输出流；acquireSigna--采集信号
 	***********************************************************************/
 	Result SaveCollectionData2Binary(ofstream &outputStream, ThreadSafeQueue<double> & acquireSignal);
+
+	/**********************************************************************
+	功能描述： 得到指定SumSignalId的所有信号。
+	输入参数：sumSignalId--总信号编号；signals--信号集合
+	***********************************************************************/
+	Result GetSignalsBySumSignalId(CString sumSignalId, vector<TbSignal> &signals);
 };
 

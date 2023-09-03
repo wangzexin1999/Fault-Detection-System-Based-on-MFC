@@ -42,7 +42,7 @@ private:
 
 	ChannelController m_channelController; ///传感器控制类
 
-	ThreadSafeQueue<EchoSignal>  m_echoSignalQueue; // 回显信号队列
+	ThreadSafeQueue<double *>  m_echoSignalQueue; // 回显信号队列
 
 	EchoSignal m_echoSignal;
 
@@ -58,7 +58,7 @@ private:
 	TbSignalTestRecord m_signalTestRecord;
 	double m_peak;
 	double m_gross;
-
+	TbChannel m_currentChannel;
 public:
 	ThreadSafeQueue<RealTimeSignal> m_realTimeSignal;  // 实时数据队列
 	vector<AcquiredSignal> m_sampleFromFileDataQueue;  // 采样队列从文件中获得
@@ -67,6 +67,9 @@ public:
 	void SetPeak(double peak);
 	double GetGross();
 	void SetGross(double gross);
+
+	bool b_mutation = true;								//是否使用突变
+	double mutationValue = 100;								//突变值
 
 public:
 	enum{ IDD = IDD_AIRCRAFTCASINGVIBRATESYSTEM_FORM };
@@ -178,7 +181,18 @@ public:
 	功能描述：添加回显数据
 	其它说明：设置采集窗口的传感器
 	***********************************************************************/
-	void SetEchoSignalData(EchoSignal &channel);
+	void PushEchoSignal(double* chartPoints);
+	/**********************************************************************
+	功能描述：添加回显数据
+	其它说明：设置采集窗口的传感器
+	***********************************************************************/
+	void clearEchoSignal();
+
+	/**********************************************************************
+	功能描述：添加回显数据
+	其它说明：设置采集窗口的传感器
+	***********************************************************************/
+	void SetEchoSignal(double* chartPoints);
 
 	int echoStartTime = 0;
 	/**********************************************************************
@@ -186,7 +200,6 @@ public:
 	***********************************************************************/
 	afx_msg LRESULT OnRefreshChart(WPARAM wParam, LPARAM lParam);
 
-	int showStartTime = 0;
 
 // 重写
 public:
@@ -233,7 +246,7 @@ public:
 	输入参数：xmin,xmax,ymin,ymax
 	其它说明：坐标值存在默认参数-1，如果使用默认参数的话，默认的设置为采集窗口绑定的传感器的参数取值
 	***********************************************************************/
-	void SetChartXYCoordinateLen(double xmin = 0, double xmax = -1, double ymin = -1, double ymax = -1);
+	void SetChartXYCoordinateLen(double xmin = -1, double xmax = -1, double ymin = -1, double ymax = -1);
 	
 
 

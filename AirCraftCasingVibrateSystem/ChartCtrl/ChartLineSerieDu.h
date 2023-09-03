@@ -23,7 +23,6 @@ public:
 public:
 	virtual void SetNeedCalStatValue(BOOL b) {m_bNeedCalStatValue = b;}
 public:
-	virtual void AddPoints(double* pX, double* pY, unsigned Count);
 	virtual void DrawDu();
 
 	/**********************************************************************
@@ -32,13 +31,11 @@ public:
 	void AddPoints(SChartXYPoint* pPoints,unsigned Count);
 	double GetMax();
 	double GetSum();
-	
-
-	virtual void SetPoints(double* pX, double* pY, unsigned Count);
+	virtual void SetPoints(SChartXYPoint* pPoints, unsigned Count);
 
 protected:
 	// 实时采样计算统计值
-	void CalSamplingStatValue(double* pY, unsigned Count);
+	void CalSamplingStatValue(SChartXYPoint* pPoints, unsigned Count);
 private:
 	void DrawAll(CDC * pDC);
 };

@@ -65,3 +65,10 @@ bool ProductService::AddProduct(TbProduct product)
 	return isSuccess;
 
 }
+
+bool ProductService::GetById(int  productId, TbProduct &product){
+	m_productDao.m_key->SetValue(productId);
+	bool isSuccess = m_productDao.SelectByKey();
+	m_productDao.GetTableFieldValues(product);
+	return isSuccess;
+}

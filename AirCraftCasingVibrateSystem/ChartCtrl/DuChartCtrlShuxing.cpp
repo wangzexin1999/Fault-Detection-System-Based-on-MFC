@@ -44,22 +44,22 @@ CDuChartCtrlShuxing::CDuChartCtrlShuxing(void)
 	m_nTrackerValueRowCount = 0;
 	m_nTrackerValueColumnCount = 0;
 
-	m_colorSerie[0] = RGB(255,0,0);
-	m_colorSerie[1] = RGB(0,150,0);
-	m_colorSerie[2] = RGB(0,0,255);
-	m_colorSerie[3] = RGB(255,128,0);
-	m_colorSerie[4] = RGB(128,0,128);
-	m_colorSerie[5] = RGB(128,128,0);
-	m_colorSerie[6] = RGB(255,0,255);
-	m_colorSerie[7] = RGB(64,128,128);
-	m_colorSerie[8] = RGB(255,0,0);
-	m_colorSerie[9] = RGB(0,150,0);
-	m_colorSerie[10] = RGB(0,0,255);
-	m_colorSerie[11] = RGB(255,128,0);
-	m_colorSerie[12] = RGB(128,0,128);
-	m_colorSerie[13] = RGB(128,128,0);
-	m_colorSerie[14] = RGB(255,0,255);
-	m_colorSerie[15] = RGB(64,128,128);
+	m_colorSerie[0] = RGB(255, 0, 0);
+	m_colorSerie[1] = RGB(0, 150, 0);
+	m_colorSerie[2] = RGB(0, 0, 255);
+	m_colorSerie[3] = RGB(255, 128, 0);
+	m_colorSerie[4] = RGB(128, 0, 128);
+	m_colorSerie[5] = RGB(128, 128, 0);
+	m_colorSerie[6] = RGB(255, 0, 255);
+	m_colorSerie[7] = RGB(64, 128, 128);
+	m_colorSerie[8] = RGB(255, 0, 0);
+	m_colorSerie[9] = RGB(0, 150, 0);
+	m_colorSerie[10] = RGB(0, 0, 255);
+	m_colorSerie[11] = RGB(255, 128, 0);
+	m_colorSerie[12] = RGB(128, 0, 128);
+	m_colorSerie[13] = RGB(128, 128, 0);
+	m_colorSerie[14] = RGB(255, 0, 255);
+	m_colorSerie[15] = RGB(64, 128, 128);
 
 	m_nXZoomType = typeXZoomLeft;
 	m_nYZoomType = typeYZoomZero;
@@ -684,7 +684,7 @@ void CDuChartCtrlShuxing::ClipStatValueArea(CDC * pDC)
 	};
 	LPCTSTR lpsz[] = {"最大值:%%.%df", "最小值:%%.%df", 
 		"平均值:%%.%df", "峰峰值:%%.%df", 
-		"标准差:%%.%df", "有效值:%%.%df", "总值:%%.%df" };
+		"方差:%%.%df", "有效值:%%.%df", "总值:%%.%df" };
 	for (int i=0; i<sizeof(b)/sizeof(BOOL); i++)
 	{
 		_stprintf_s(tchFormatV, lpsz[i], pStdAxisV->m_nDigits);

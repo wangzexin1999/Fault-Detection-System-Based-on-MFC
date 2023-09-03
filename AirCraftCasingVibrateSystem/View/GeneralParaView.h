@@ -26,7 +26,12 @@ Modification:
 #include <vector>
 #include "CDHTestHardWare.h"
 #include "TbProject.h"
+#include "TestController.h"
+#include "SensorController.h"
+
 using namespace  std;
+
+
 // CGeneralParaView 对话框
 // CMyDialog 对话框
 //const int theApp.SHOW_CHANNEL_FULLVALUE_ = 5; 	/// 满度量程1
@@ -58,6 +63,11 @@ protected:
 	list<string> m_listInputMode;
 	DECLARE_MESSAGE_MAP()
 	ChannelParaController m_channelParaController;
+	TestController m_testController;
+	SensorController m_sensorController;
+	std::vector<TbTestlocation> m_testLocationVec;
+	std::vector<TbSensor> m_sensorVec;
+
 public:
 	virtual BOOL OnInitDialog();
 	/**********************************************************************

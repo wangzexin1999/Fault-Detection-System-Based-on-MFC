@@ -13,10 +13,9 @@ public:
 
 	PDAttribute m_signalId;
 	PDAttribute m_channelId;
-	PDAttribute m_sumsignalId;
 	PDAttribute m_SignalLabel;
 	PDAttribute m_dataUrl;
-	//PDAttribute m_sumSignalId;
+	PDAttribute m_sumSignalId;
 
 	void SetTableFieldValues(TbSignal signal);
 	void GetTableFieldValues(TbSignal &signal);

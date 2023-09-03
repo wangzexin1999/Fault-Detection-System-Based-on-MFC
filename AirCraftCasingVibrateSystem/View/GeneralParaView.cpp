@@ -13,7 +13,7 @@ IMPLEMENT_DYNAMIC(CGeneralParaView, CDialogEx)
 CGeneralParaView::CGeneralParaView(CWnd* pParent /*=NULL*/)
 : CDialogEx(CGeneralParaView::IDD, pParent)
 {
-	
+
 }
 
 CGeneralParaView::~CGeneralParaView()
@@ -35,8 +35,6 @@ END_MESSAGE_MAP()
 BOOL CGeneralParaView::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
-	//m_dictionController.FindAllBySearchCondition(m_vwindowTypes, 0, "windowtype");
-	//m_dictionController.FindAllBySearchCondition(m_vinputMethods, 0, "inputmethod");
 	GetParamSelectValue(theApp.m_vecHardChannel[0].m_strMachineIP);
 	GridCtrlInit();
 	return TRUE;
@@ -47,7 +45,7 @@ void CGeneralParaView::OnGridEndEdit(NMHDR *pNotifyStruct, LRESULT* pResult)
 	NM_GRIDVIEW* pItem = (NM_GRIDVIEW*)pNotifyStruct;
 	int index;
 	TRACE("\n保存第%d行\n", pItem->iRow);
-	
+
 	///获取指定行的数据，同步到全局项目对象
 	for (int col = 1; col < m_generalParaGridCtrl.GetColumnCount(); col++){
 		if (col == 1) theApp.m_currentProject.GetChannelVector()[pItem->iRow - 1].SetChannelDesc(m_generalParaGridCtrl.GetItemText(pItem->iRow, col));
@@ -83,7 +81,7 @@ void CGeneralParaView::OnGridEndEdit(NMHDR *pNotifyStruct, LRESULT* pResult)
 			if (index < 0) continue;
 			theApp.m_currentProject.GetChannelVector()[pItem->iRow - 1].SetElcPressure(std::make_pair(index, pCellCombo->GetText()));
 		}
-			
+
 	}
 	///根据选择的量程范围获取量程的最大值和最小值
 	//theApp.m_vsignalCaptureView[pItem->iRow - 1]->SetChartXYCoordinateLen(0,-1,0, yInterval.Max);
@@ -218,26 +216,51 @@ void CGeneralParaView::GridCtrlInit()
 			///设置表头内容
 			if (row == 0){
 				Item.nFormat = DT_CENTER | DT_WORDBREAK;
-				if (col == 0){ Item.strText.Format(_T("通道号"), 0); }
+				/*if (col == 0){ Item.strText.Format(_T("通道号"), 0); }
 				if (col == 1){ Item.strText.Format(_T("通道描述"), 1); }
 				if (col == 2){ Item.strText.Format(_T("满度量程"), 2); }
 				if (col == 3){ Item.strText.Format(_T("上限频率"), 3); }
 				if (col == 4){ Item.strText.Format(_T("输入方式"), 4); }
 				if (col == 5){ Item.strText.Format(_T("灵敏度"), 5); }
-				if (col == 6){ Item.strText.Format(_T("电压测量范围"), 6); }
+				if (col == 6){ Item.strText.Format(_T("电压测量范围"), 6); }*/
+
+				if (col == 0){ Item.strText.Format(_T("通道号"), 0); }
+				if (col == 1){ Item.strText.Format(_T("通道描述"), 1); }
+				if (col == 2){ Item.strText.Format(_T("传感器"), 2); }
+				if (col == 3){ Item.strText.Format(_T("测点位置"), 3); }
+				if (col == 4){ Item.strText.Format(_T("满度量程"), 4); }
+				if (col == 5){ Item.strText.Format(_T("上限频率"), 5); }
+				if (col == 6){ Item.strText.Format(_T("输入方式"), 6); }
+				if (col == 7){ Item.strText.Format(_T("灵敏度"), 7); }
+				if (col == 8){ Item.strText.Format(_T("电压测量范围"), 8); }
+				if (col == 9){ Item.strText.Format(_T("x轴最小值"), 9); }
+				if (col == 10){ Item.strText.Format(_T("x轴最大值"), 10); }
+				if (col == 11){ Item.strText.Format(_T("y轴最小值"), 11); }
+				if (col == 12){ Item.strText.Format(_T("y轴最大值"), 12); }
+
 				m_generalParaGridCtrl.SetItem(&Item);
 				continue;
 			}
 			Item.nFormat = DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS;
 			CString strText;
-			if (col == 0)
-			{
+			if (col == 0){
 				Item.strText = theApp.m_currentProject.GetChannelVector()[row - 1].GetChannelCode();
 				m_generalParaGridCtrl.SetItemState(row, col, GVIS_READONLY);
 			}
-			if (col == 1)
+			if (col == 1){
 				Item.strText = theApp.m_currentProject.GetChannelVector()[row - 1].GetChannelDesc();
+			}
+
 			if (col == 2) {
+				m_sensorController.GetById(theApp.m_currentProject.GetChannelVector()[row - 1].GetSensor().GetSensorId(), theApp.m_currentProject.GetChannelVector()[row - 1].GetSensor());
+				Item.strText = theApp.m_currentProject.GetChannelVector()[row - 1].GetSensor().GetSensorName();
+			}
+			if (col == 3) {
+				TbTestlocation testLocation;
+				m_testController.GetTestLocationById(theApp.m_currentProject.GetChannelVector()[row - 1].GetTestLocation().GetLocationId(), testLocation);
+				Item.strText = CString(testLocation.GetLocationName());
+			}
+			if (col == 4) {
 				//满度量程
 				m_generalParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCombo));
 				CGridCellCombo* pCellCombo = (CGridCellCombo*)m_generalParaGridCtrl.GetCell(row, col);
@@ -247,13 +270,13 @@ void CGeneralParaView::GridCtrlInit()
 					OptionsType.Add(_T(FullValue.data()));
 				}
 				pCellCombo->SetOptions(OptionsType);
-				pCellCombo->SetCurSel(0);
+				pCellCombo->SetCurSel(theApp.m_currentProject.GetChannelVector()[row - 1].GetFullValue().first);
 				list<string>::iterator iter = m_listFullValue.begin();
 				advance(iter, theApp.m_currentProject.GetChannelVector()[row - 1].GetFullValue().first);//取其中第三个元素
 				string ddds = *iter;
 				Item.strText = CString(ddds.c_str());;
 			}
-			if (col == 3) {
+			if (col == 5) {
 				//上限频率
 				m_generalParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCombo));
 				CGridCellCombo* pCellCombo = (CGridCellCombo*)m_generalParaGridCtrl.GetCell(row, col);
@@ -263,13 +286,13 @@ void CGeneralParaView::GridCtrlInit()
 					OptionsType.Add(_T(UpFreq.data()));
 				}
 				pCellCombo->SetOptions(OptionsType);
-				pCellCombo->SetCurSel(0);
+				pCellCombo->SetCurSel(theApp.m_currentProject.GetChannelVector()[row - 1].GetUpFreq().first);
 				list<string>::iterator iter = m_listUpFreq.begin();
 				advance(iter, theApp.m_currentProject.GetChannelVector()[row - 1].GetUpFreq().first);//取其中第三个元素
 				string ddds = *iter;
 				Item.strText = CString(ddds.c_str());;
 			}
-			if (col == 4) {
+			if (col == 6) {
 				//输入方式
 				m_generalParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCombo));
 				CGridCellCombo* pCellCombo = (CGridCellCombo*)m_generalParaGridCtrl.GetCell(row, col);
@@ -279,17 +302,18 @@ void CGeneralParaView::GridCtrlInit()
 					OptionsType.Add(_T(inputMethod.data()));
 				}
 				pCellCombo->SetOptions(OptionsType);
-				pCellCombo->SetCurSel(0);
+				pCellCombo->SetCurSel(theApp.m_currentProject.GetChannelVector()[row - 1].GetInputMode().first);
 				list<string>::iterator iter = m_listInputMode.begin();
 				advance(iter, theApp.m_currentProject.GetChannelVector()[row - 1].GetInputMode().first);//取其中第三个元素
 				string ddds = *iter;
 				Item.strText = CString(ddds.c_str());//theApp.m_currentProject.GetChannelVector()[row - 1].GetInputMode().GetDictValue();
 			}
 			// 灵敏度
-			if (col == 5)
+			if (col == 7){
 				Item.strText = CommonUtil::DoubleOrFloat2CString(theApp.m_currentProject.GetChannelVector()[row - 1].GetSensitivity());
+			}
 
-			if (col == 6) {
+			if (col == 8) {
 				//电压测量范围
 				m_generalParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCombo));
 				CGridCellCombo* pCellCombo = (CGridCellCombo*)m_generalParaGridCtrl.GetCell(row, col);
@@ -299,11 +323,28 @@ void CGeneralParaView::GridCtrlInit()
 					OptionsType.Add(_T(elcpressure.data()));
 				}
 				pCellCombo->SetOptions(OptionsType);
-				pCellCombo->SetCurSel(0);
+				pCellCombo->SetCurSel(theApp.m_currentProject.GetChannelVector()[row - 1].GetElcPressure().first);
 				list<string>::iterator iter = m_elcpressure.begin();
 				advance(iter, theApp.m_currentProject.GetChannelVector()[row - 1].GetElcPressure().first);//取其中第三个元素
 				string ddds = *iter;
 				Item.strText = CString(ddds.c_str());//theApp.m_currentProject.GetChannelVector()[row - 1].GetInputMode().GetDictValue();
+			}
+			if (col == 9){ Item.strText.Format(_T("x轴最小值"), 9); }
+			if (col == 10){ Item.strText.Format(_T("x轴最大值"), 10); }
+			if (col == 11){ Item.strText.Format(_T("y轴最小值"), 11); }
+			if (col == 12){ Item.strText.Format(_T("y轴最大值"), 12); }
+
+			if (col == 9){
+				Item.strText = CommonUtil::DoubleOrFloat2CString(theApp.m_currentProject.GetChannelVector()[row - 1].GetXMin());
+			}
+			if (col == 10){
+				Item.strText = CommonUtil::DoubleOrFloat2CString(theApp.m_currentProject.GetChannelVector()[row - 1].GetXMax());
+			}
+			if (col == 11){
+				Item.strText = CommonUtil::DoubleOrFloat2CString(theApp.m_currentProject.GetChannelVector()[row - 1].GetYMin());
+			}
+			if (col == 12){
+				Item.strText = CommonUtil::DoubleOrFloat2CString(theApp.m_currentProject.GetChannelVector()[row - 1].GetYMax());
 			}
 			m_generalParaGridCtrl.SetItem(&Item);
 		}

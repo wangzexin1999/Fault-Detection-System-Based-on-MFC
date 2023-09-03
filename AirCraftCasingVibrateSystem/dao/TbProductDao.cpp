@@ -58,7 +58,6 @@ bool TbProductDao::SelectObjectsByCondition(vector<TbProductDao> &selectedValueV
  void TbProductDao::GetTableFieldValues(TbProduct &product){
 	 product.SetProductId(m_productId.GetInt());
 	 product.SetProductName(m_productName.m_strValue);
-	 //product.SetProductType(m_productType.m_strValue);
 	 product.GetProductType().SetId(m_productType.GetInt());
  }
 
@@ -66,7 +65,6 @@ bool TbProductDao::SelectObjectsByCondition(vector<TbProductDao> &selectedValueV
  {
 	 m_productId.SetValue(product.GetProductId());
 	 m_productName.SetValue(product.GetProductName());
-	 //m_productType.SetValue(product.GetProductType());
 	 m_productType.SetValue(product.GetProductType().GetId());
 
  }

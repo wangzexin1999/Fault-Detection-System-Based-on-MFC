@@ -97,7 +97,6 @@ void CAirCraftCasingVibrateSystemView::OnInitialUpdate()
 	axisDu->SetTickIncrement(true, 100);
 	axisDu = m_chart.CreateStandardAxisDu(CChartCtrl::LeftAxis, 0);
 	axisDu->SetTickIncrement(true, 1);
-	SetChartXYCoordinateLen(0, 500, -15, 15);
 	// 构造曲线
 	CDuChartCtrlStaticFunction::CreateSeries(pDuChartCtrl, nSelectChannelCount, nSerieType);
 	// 构造光标
@@ -121,7 +120,7 @@ void CAirCraftCasingVibrateSystemView::OnInitialUpdate()
 		//pSerie->SetNeedCalStatValue(true);
 	}
 	pDuChartCtrl->m_shuxing.m_bDrawStatValue = TRUE;
-	//pDuChartCtrl->SetPanEnabled(false);/*设置控件右键不可拖动*/
+	pDuChartCtrl->SetPanEnabled(false);/*设置控件右键不可拖动*/
 	pDuChartCtrl->EnableRefresh(true);
 	m_flag = true;
 	RefreshGraphAttri(); //加载图形属性
@@ -135,22 +134,6 @@ void CAirCraftCasingVibrateSystemView::OnInitialUpdate()
 //}
 
 void CAirCraftCasingVibrateSystemView::SetChartXYCoordinateLen(double xmin, double xmax, double ymin, double ymax){
-	///坐标值存在默认参数-1，如果使用默认参数的话，默认的设置为采集窗口绑定的传感器的参数取值
-	Value temp;
-	Result res;
-	if (xmax == -1){
-		///xmax如果使用默认参数,那么就将x的最大值设置为采集频率
-		xmax = 0;
-		if (theApp.m_currentProject.GetCollectionparas().GetLine() > 0)
-		{
-			xmax = theApp.m_currentProject.GetCollectionparas().GetLine();
-		}
-	}
-	if (ymax==-1||ymin==-1){
-		///量程的最大和最小值默认设置为当前采集窗口绑定的传感器的量程
-		ymin = -100;
-		ymax = 100;
-	}
 	///设置x坐标的长度
 	CChartAxis * pxAxis = m_chart.GetAxisDu(CChartCtrl::BottomAxis, 0);
 	pxAxis->SetMinMax(xmin, xmax);
@@ -171,13 +154,9 @@ void CAirCraftCasingVibrateSystemView::SetChartXYCoordinateLen(double xmin, doub
 	pLeftAxis->SetTickIncrement(true, 3);*/
 }
 
-void CAirCraftCasingVibrateSystemView::openThread2RefershView(){
-	thread t(&CAirCraftCasingVibrateSystemView::RefershView, this);
-	t.detach();
-}
 
 void CAirCraftCasingVibrateSystemView::openTimer2RefershView(){
-	SetTimer(88, 1, NULL);
+	SetTimer(88, 10, NULL);
 }
 
 void CAirCraftCasingVibrateSystemView::killTimer2RefershView(){
@@ -185,14 +164,14 @@ void CAirCraftCasingVibrateSystemView::killTimer2RefershView(){
 }
 
 void CAirCraftCasingVibrateSystemView::RefershView(){
-	while (theApp.m_icollectionState){
-		if (theApp.m_icollectionState == 2){
+	while (theApp.m_icollectState){
+		if (theApp.m_icollectState == 2){
 			//暂停状态就卡在这
 			Sleep(10);
 			continue;
 		}
 		while (m_echoSignalQueue.size() > 0){
-			TRACE("\n发送消息：队列长度:%d\n", m_echoSignalQueue.size());
+			//TRACE("\n发送消息：队列长度:%d\n", m_echoSignalQueue.size());
 			SendMessage(WM_USER_REFRESH_CHART);
 			Sleep(100);
 		}
@@ -348,7 +327,7 @@ void CAirCraftCasingVibrateSystemView::OnBtnSelfScale()
 {
 	CChartStandardAxisDu * leftAxis = (CChartStandardAxisDu*)this->m_chart.GetAxisDu(CChartCtrl::LeftAxis, 0);
 	CChartStandardAxisDu * bottomAxis = (CChartStandardAxisDu*)this->m_chart.GetAxisDu(CChartCtrl::BottomAxis, 0);
-	bottomAxis->SetMinMax(-500, 500);//设置下刻度
+	bottomAxis->SetMinMax(0, 500);//设置下刻度
 	bottomAxis->SetTickIncrement(false, 100);
 
 	leftAxis->SetMinMax(-0.1, 0.1);
@@ -429,28 +408,28 @@ void CAirCraftCasingVibrateSystemView::RefreshGraphAttri()
 
 void CAirCraftCasingVibrateSystemView::SampleDataEcho()
 {
+	//m_pLineSerie->ClearSerie();
+	//SmartArray<double> dXData, dYData;
+	//m_pLineSerie->SetNeedCalStatValue(TRUE);
+	//
+	//int iPointNums = 1000;
+	//// 截取一部分
+	//SplitVector(dXData, dYData, iPointNums);
+	//SmartFFTWComplexArray fftwInput; ///傅里叶变换初始的输入
 
-	m_pLineSerie->ClearSerie();
-	SmartArray<double> dXData, dYData;
-	m_pLineSerie->SetNeedCalStatValue(TRUE);
-	
-	int iPointNums = 1000;
-	// 截取一部分
-	SplitVector(dXData, dYData, iPointNums);
-	SmartFFTWComplexArray fftwInput; ///傅里叶变换初始的输入
-	for (int i = 0; i < iPointNums; i++)
-	{
-		fftw_complex fftw;
-		fftw[0] = dYData.GetSmartArray()[i];
-		fftwInput.push_back(fftw);
-	}
-	SmartFFTWComplexArray fftwOutput(fftwInput.size());
-	FFTWUtil::FastFourierTransformation(fftwInput.size(), fftwInput.GeFFTWComplexArray(),
-		fftwOutput.GeFFTWComplexArray());
-	/////将处理之后的傅里叶变换转换成XY坐标
-	SmartArray<double> yData(dXData.size()); ///y坐标
-	FFTWUtil::FFTDataToXY(fftwOutput, yData, dXData.size());
-	m_pLineSerie->AddPoints(dXData.GetSmartArray(), yData.GetSmartArray(), dXData.size() / 2);
+	//for (int i = 0; i < iPointNums; i++)
+	//{
+	//	fftw_complex fftw;
+	//	fftw[0] = dYData.GetSmartArray()[i];
+	//	fftwInput.push_back(fftw);
+	//}
+	//SmartFFTWComplexArray fftwOutput(fftwInput.size());
+	//FFTWUtil::FastFourierTransformation(fftwInput.size(), fftwInput.GeFFTWComplexArray(),
+	//	fftwOutput.GeFFTWComplexArray());
+	///////将处理之后的傅里叶变换转换成XY坐标
+	//SmartArray<double> yData(dXData.size()); ///y坐标
+	//FFTWUtil::FFTDataToXY(fftwOutput, yData, dXData.size());
+	//m_pLineSerie->AddPoints(dXData.GetSmartArray(), yData.GetSmartArray(), dXData.size() / 2);
 }
 
 void CAirCraftCasingVibrateSystemView::SetSampleDataEchoTimerNum(int nSampleDataEchoTimerNums)
@@ -467,11 +446,6 @@ int CAirCraftCasingVibrateSystemView::GetSampleDataEchoTimerNum()
 void CAirCraftCasingVibrateSystemView::StartSampleEncho()
 {
 	SetTimer(m_iSampleDataEchoTimerNum, 100, 0);
-}
-
-void CAirCraftCasingVibrateSystemView::StopSampleEncho()
-{
-	KillTimer(m_iSampleDataEchoTimerNum);
 }
 
 void CAirCraftCasingVibrateSystemView::SplitVector(SmartArray<double> &dXData, SmartArray<double> &dYData, int nNums)
@@ -507,30 +481,100 @@ void  CAirCraftCasingVibrateSystemView::SetChannel(TbChannel channel){
 	m_dhtestHardWareController.SetChannelParam(theApp.m_pHardWare, theApp.m_vecHardChannel, channel);
 	m_signalSelectView.SetChannel(channel); ///取消设置通道参数
 	GetDocument()->SetTitle(channel.GetChannelDesc());
-	SetChartXYCoordinateLen(0, theApp.m_currentProject.GetCollectionparas().GetSampleFrequency().second / theApp.FFTRATE);
+	SetChartXYCoordinateLen(channel.GetXMin(), channel.GetXMax(), channel.GetYMin(), channel.GetYMax());
 }
 void  CAirCraftCasingVibrateSystemView::GetChannel(TbChannel & channel){
 	m_signalSelectView.GetChannel(channel);
 }
 
-void  CAirCraftCasingVibrateSystemView::SetEchoSignalData(EchoSignal &echoSignal){
-	m_echoSignalQueue.push(echoSignal);
-	TRACE("\n队列长度:%d，生成一次数据耗时:%d\n", m_echoSignalQueue.size(), GetTickCount() - echoStartTime);
-	echoStartTime = GetTickCount();
+void  CAirCraftCasingVibrateSystemView::PushEchoSignal(double* chartPoints){
+	m_echoSignalQueue.push(chartPoints);
+	//TRACE("\n队列长度:%d，生成一次数据耗时:%d\n", m_echoSignalQueue.size(), GetTickCount() - echoStartTime);
+}
+
+void CAirCraftCasingVibrateSystemView::clearEchoSignal(){
+	m_echoSignalQueue.clear();
+	while (!m_echoSignalQueue.empty()){
+		double* fftinput = *m_echoSignalQueue.wait_and_pop();
+		delete fftinput;
+	}
+}
+
+void CAirCraftCasingVibrateSystemView::SetEchoSignal(double* chartPoints){
+	m_echoSignalQueue.push(chartPoints);
+	SendMessage(WM_USER_REFRESH_CHART);
 }
 
 LRESULT CAirCraftCasingVibrateSystemView::OnRefreshChart(WPARAM wParam, LPARAM lParam){
-	int ltime = GetTickCount();
 
+	//TRACE("\n刷新一次页面需要耗时：%d\n", GetTickCount() - ltime);
+
+	if ((!theApp.m_icollectState&&!theApp.m_iplaybackState)&&m_echoSignalQueue.empty()){
+		KillTimer(88);
+		return 0;
+	}
 	if (m_echoSignalQueue.empty()){
 		return 0;
 	}
+	//long showStartTime = GetTickCount();
 	m_pLineSerie->ClearSerie();
 	m_pLineSerie->SetNeedCalStatValue(TRUE);
-	EchoSignal echoSignal = *m_echoSignalQueue.wait_and_pop();
-	
-	m_pLineSerie->AddPoints(echoSignal.GetXData().GetSmartArray(), echoSignal.GetYData().GetSmartArray(), echoSignal.GetYData().size());
+	//TRACE("\nSIZE = %d\n", m_echoSignalQueue.size());
+	double* fftinput = *m_echoSignalQueue.wait_and_pop();
+	int pointCount = _msize(fftinput) / sizeof(*fftinput);
+	int line = pointCount / 2;
+	double interval = (double)theApp.m_currentProject.GetCollectionparas().GetSampleFrequency().second / (line*2);
+	SChartXYPoint * pPoints = new SChartXYPoint[line];
+	//对传入的数据进行傅里叶变换处理
+	SmartFFTWComplexArray fftwOutput(pointCount);
+	FFTWUtil::FastFourierTransformation(pointCount, fftinput,fftwOutput.GeFFTWComplexArray());
+	//将处理之后的傅里叶变换转换成XY坐标
+	float yMax = 0;
+	fftw_complex * out = fftwOutput.GeFFTWComplexArray();
+	pPoints[0].Y = 0;
+	double y_difference = 0;
+	double sum_difference = 0;
+	for (int i = 1; i < line; i++)
+	{
+		int j = 2 * sqrt(out[i][0] * out[i][0] + out[i][1] * out[i][1]);
+		pPoints[i].X = i * interval;
+		pPoints[i].Y = 2 * sqrt(out[i][0] * out[i][0] + out[i][1] * out[i][1]);
+		y_difference = pPoints[i].Y - pPoints[i - 1].Y;				//计算坐标变化值
+		yMax = max(yMax, pPoints[i].Y);
+		sum_difference += fabs(y_difference);
+	}
+	m_pLineSerie->AddPoints(pPoints, line);
 
+	// 自动设置X轴坐标系
+	CChartAxis * pyAxisX = m_chart.GetAxisDu(CChartCtrl::BottomAxis, 0);
+	pyAxisX->SetMinMax(0, line);
+
+	// 自动设置Y轴坐标系
+	CChartAxis * pyAxisY = m_chart.GetAxisDu(CChartCtrl::LeftAxis, 0);
+	pyAxisY->SetMinMax(0, yMax*1.2);
+
+	delete fftinput; // 删除new出来的傅立叶变换输入数组。
+	fftinput = nullptr;
+
+	if (b_mutation){
+		if (mutationValue <= sum_difference/line ){
+			COLORREF colorrrefRGB = RGB(255, 255, 0);
+			m_chart.GetSerieFromIndexDu(0)->SetColor(colorrrefRGB);
+		}
+		else
+		{
+			CGraphAttributeView graphAttributeView;
+			//graphAttributeView.m_fontView.InitAttri();
+			graphAttributeView.m_colorView.InitAttri();
+			//graphAttributeView.m_selectView.InitAttri2();
+			m_chart.GetSerieFromIndexDu(0)->SetColor(graphAttributeView.m_colorView.m_colSerie[0]);
+		}
+
+	}
+
+
+
+	///报警代码 yMax
 	//if (theApp.m_isAlarm == 1){
 	//	if (m_pLineSerie->GetMax() >= theApp.m_alarmLimit)
 	//	{
@@ -549,14 +593,30 @@ LRESULT CAirCraftCasingVibrateSystemView::OnRefreshChart(WPARAM wParam, LPARAM l
 	//CDuChartCtrlStaticFunction::AutoYScale(&m_chart, FALSE);
 	//this->m_chart.SetCursorPeak(TRUE);
 
+	//if (theApp.m_isAlarm == 1){
+	//	if (m_pLineSerie->GetMax() >= theApp.m_alarmLimit)
+	//	{
+	//		COLORREF colorrrefRGB = RGB(255, 0, 0);
+	//		m_chart.GetSerieFromIndexDu(0)->SetColor(colorrrefRGB);
+	//	}
+	//	else
+	//	{
+	//		CGraphAttributeView graphAttributeView;
+	//		//graphAttributeView.m_fontView.InitAttri();
+	//		graphAttributeView.m_colorView.InitAttri();
+	//		//graphAttributeView.m_selectView.InitAttri2();
+	//		m_chart.GetSerieFromIndexDu(0)->SetColor(graphAttributeView.m_colorView.m_colSerie[0]);
+	//	}
+	//}
+
+
 	SetPeak(m_pLineSerie->GetMax());
 	SetGross(m_pLineSerie->GetSum());
 	m_pLineSerie->DrawDu();
+	//m_chart.RefreshCtrl
 	//UpdateWindow();
-	TRACE("\n显示一次需要耗时：%d\n", GetTickCount() - showStartTime);
-	TRACE("\n刷新一次页面需要耗时：%d\n", GetTickCount() - ltime);
-	
-	showStartTime = GetTickCount();
+	//TRACE("\n显示一次需要耗时：%d\n", GetTickCount() - showStartTime);
+	//TRACE("\n刷新一次页面需要耗时：%d\n", GetTickCount() - ltime);
 	return 0;
 }
 double CAirCraftCasingVibrateSystemView::GetPeak()

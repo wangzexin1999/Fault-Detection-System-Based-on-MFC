@@ -13,7 +13,6 @@ class Redis
 public:
 
 	Redis(){}
-
 	~Redis()
 	{
 		this->connect = NULL;

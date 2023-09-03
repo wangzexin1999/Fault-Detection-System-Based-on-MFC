@@ -119,6 +119,15 @@ bool CFileUtil::ReadFile(CString sFilePath, double(&outRead)[100][1000])
 	return true;
 }
 
+size_t CFileUtil::GetFileSize(CString& file_name){
+	std::ifstream in(file_name);
+	in.seekg(0, std::ios::end);
+	size_t size = in.tellg();
+	in.close();
+	return size; 
+}
+
+
 
 
 

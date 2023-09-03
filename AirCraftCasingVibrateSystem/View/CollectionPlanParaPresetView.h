@@ -22,18 +22,6 @@ public:
 
 // 对话框数据
 	enum { IDD = IDD_DIALOG_STABLESTATUSPRESET };
-	/**********************************************************************
-	功能描述：得到采集计划
-	输入参数：
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
-	***********************************************************************/
-	void GetCollectionPlan(Value &planEntity,  Document::AllocatorType & allocator);
-	void GetDefaultCollectionPlan(Value &planEntity_default, Document::AllocatorType & allocator);
-
 
 	bool GetGridCellCheck(int row, int col);
 

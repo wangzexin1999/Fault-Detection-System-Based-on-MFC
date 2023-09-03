@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ 生成的包含文件。
-// 供 AirCraftCasingVibrateSystem.rc 使用
+// Microsoft Visual C++ generated include file.
+// Used by AirCraftCasingVibrateSystem.rc
 //
 #define ID_BMPSIGNALRED                 3
 #define IDOK2                           3

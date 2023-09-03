@@ -11,8 +11,6 @@ TbChannelDao::TbChannelDao()
 	SetVectorAndField("channel_code", "CString", m_channelCode);
 	SetVectorAndField("sensor_id", "int", m_sensorId);
 	SetVectorAndField("channel_desc", "CString", m_channelDesc);
-	//SetVectorAndField("equipment_id", "int", m_equipmentId);
-	//SetVectorAndField("collectionparas_id", "int", m_collectionparasId);
 	SetVectorAndField("channel_status", "char", m_sersorStatus);
 	SetVectorAndField("measure_type", "int", m_messureType);
 	SetVectorAndField("window_type", "int", m_windowType);
@@ -32,7 +30,11 @@ TbChannelDao::TbChannelDao()
 	SetVectorAndField("up_freq", "int", m_upFreq);//上限频率
 	SetVectorAndField("elc_pressure", "int", m_elcpressure);//电压测量范围
 	SetVectorAndField("project_id", "int", m_projectId);//项目编号
-	
+	SetVectorAndField("testlocaton_id", "int", m_testlocatonId);//测点位置编号
+	SetVectorAndField("x_min", "double", m_xMin); //X轴最小值
+	SetVectorAndField("x_max", "double", m_xMax);//X轴最大值
+	SetVectorAndField("y_min", "double", m_yMin);//Y轴最小值
+	SetVectorAndField("y_max", "double", m_yMax);//Y轴最大值
 }
 
 TbChannelDao::~TbChannelDao()
@@ -46,8 +48,6 @@ TbChannelDao::TbChannelDao(const TbChannelDao & channel){
 	SetVectorAndField("channel_code", "CString", m_channelCode);
 	SetVectorAndField("sensor_id", "int", m_sensorId);
 	SetVectorAndField("channel_desc", "CString", m_channelDesc);
-	//SetVectorAndField("equipment_id", "int", m_equipmentId);
-	//SetVectorAndField("collectionparas_id", "int", m_collectionparasId);
 	SetVectorAndField("channel_status", "char", m_sersorStatus);
 	SetVectorAndField("measure_type", "int", m_messureType);
 	SetVectorAndField("window_type", "int", m_windowType);
@@ -67,6 +67,11 @@ TbChannelDao::TbChannelDao(const TbChannelDao & channel){
 	SetVectorAndField("up_freq", "int", m_upFreq);//上限频率
 	SetVectorAndField("elc_pressure", "int", m_elcpressure);//电压测量范围
 	SetVectorAndField("project_id", "int", m_projectId);//项目编号
+	SetVectorAndField("testlocaton_id", "int", m_testlocatonId);//测点位置编号
+	SetVectorAndField("x_min", "double", m_xMin); //X轴最小值
+	SetVectorAndField("x_max", "double", m_xMax);//X轴最大值
+	SetVectorAndField("y_min", "double", m_yMin);//Y轴最小值
+	SetVectorAndField("y_max", "double", m_yMax);//Y轴最大值
 	operator = (channel);
 }
 
@@ -76,7 +81,7 @@ bool TbChannelDao::SelectObjectsByCondition(vector<TbChannelDao> &selectedValueV
 	return SelectObjectsByCondition(selectedValueVector, iStartNumberIn, iRecordCountIn, strSqlQueryWhere);
 }
 
-bool TbChannelDao::SelectObjectsByCondition(vector<TbChannelDao> &selectedValueVector, int iStartNumberIn, int iRecordCountIn, CString strSqlQueryWhere)
+bool TbChannelDao::SelectObjectsByCondition(vector<TbChannelDao> &selectedValueVector, int iStartNumberIn, int iRecordCountIn, CString strSqlQueryWhere)//zuihou
 {
 	vector<CString> tmpDetectedObjecIDs;
 	TbChannelDao channelDao;
@@ -116,7 +121,6 @@ void  TbChannelDao::GetTableFieldValues(TbChannel & channel){
 	channel.SetMessureType(std::make_pair(m_messureType.GetInt(), theApp.m_listMessaueType[m_messureType.GetInt()].c_str()));
 	channel.SetFullValue(std::make_pair(m_fullvalue.GetInt(), theApp.m_listFullValue[m_fullvalue.GetInt()].c_str()));
 	channel.SetPointNum(m_pointNum.GetInt());
-	//channel.SetCollectionparasId(m_collectionparasId.GetInt());
 	channel.SetSensitivity(m_sensitivity.GetFloatOrDouble());
 	channel.SetChannelDesc(m_channelDesc.m_strValue);
 	channel.GetChannelStatus().SetDictId(m_sersorStatus.GetInt());
@@ -126,7 +130,11 @@ void  TbChannelDao::GetTableFieldValues(TbChannel & channel){
 	channel.GetSensor().SetSensorId(m_sensorId.GetInt());
 	channel.SetProjectId(m_projectId.GetInt());
 	channel.SetElcPressure(std::make_pair(m_elcpressure.GetInt(), theApp.m_elcpressure[m_elcpressure.GetInt()].c_str()));
-	//channel.GetEquipment().SetEquipmentId(m_equipmentId.GetInt());
+	channel.GetTestLocation().SetLocationId(m_testlocatonId.GetInt());
+	channel.SetXMin(m_xMin.GetFloatOrDouble());
+	channel.SetXMax(m_xMax.GetFloatOrDouble());
+	channel.SetYMin(m_yMin.GetFloatOrDouble());
+	channel.SetYMax(m_yMax.GetFloatOrDouble());
 }
 void TbChannelDao::SetTableFieldValues(TbChannel channel){
 	m_antiAliasingFiltering.SetValue(channel.GetAntiAliasingFiltering());
@@ -142,7 +150,6 @@ void TbChannelDao::SetTableFieldValues(TbChannel channel){
 	m_messureType.SetValue(channel.GetMessureType().first);
 	m_fullvalue.SetValue(channel.GetFullValue().first);
 	m_pointNum.SetValue(channel.GetPointNum());
-	//m_collectionparasId.SetValue(channel.GetCollectionparasId());
 	m_sensitivity.SetValue(channel.GetSensitivity());
 	m_channelDesc.SetValue(channel.GetChannelDesc());
 	m_channelCode.SetValue(channel.GetChannelCode());
@@ -150,9 +157,12 @@ void TbChannelDao::SetTableFieldValues(TbChannel channel){
 	m_triggerMagnitude.SetValue(channel.GetTriggerMagnitude());
 	m_triggerPolarity.SetValue(channel.GetTriggerPolarity().GetDictId());
 	m_windowType.SetValue(channel.GetWindowType().GetDictId());
-
 	m_sensorId.SetValue(channel.GetSensor().GetSensorId());
 	m_projectId.SetValue(channel.GetProjectId());
 	m_elcpressure.SetValue(channel.GetElcPressure().first);
-	//m_equipmentId.SetValue(channel.GetEquipment().GetEquipmentId());
+	m_testlocatonId.SetValue(channel.GetTestLocation().GetLocationId());
+	m_xMin.SetValue(channel.GetXMin());
+	m_xMax.SetValue(channel.GetXMax());
+	m_yMin.SetValue(channel.GetYMin());
+	m_yMax.SetValue(channel.GetYMax());
 }

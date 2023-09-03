@@ -46,6 +46,10 @@ END_MESSAGE_MAP()
 
 BOOL ChannelParaPresetView::OnInitDialog()
 {
+	// 查询所有的测点位置
+	m_testController.FindAllTestLocationByProductId(m_productId, m_testLocationVec);
+	// 查询所有的传感器
+	m_sensorController.FindAllSensor(m_sensorVec);
 	///查询所有的窗类型
 	/*Result res = m_dictionController.FindAllBySearchCondition(m_vwindowTypes, 0, "windowtype");
 	if (!res.GetIsSuccess()){
@@ -56,23 +60,23 @@ BOOL ChannelParaPresetView::OnInitDialog()
 		AfxMessageBox("输入类型查询失败");
 	}*/
 
-		for (int i = 0; i < theApp.m_vecHardChannel.size(); i++)
-		{
-			// 跳过不在线通道
-			if (!theApp.m_vecHardChannel[i].m_bOnlineFlag)
-				continue;
-			CString strGroupID;
-			int nGroupID = theApp.m_vecHardChannel[i].m_nChannelGroupID;
-			strGroupID.Format("%d", nGroupID);
+	for (int i = 0; i < theApp.m_vecHardChannel.size(); i++)
+	{
+		// 跳过不在线通道
+		if (!theApp.m_vecHardChannel[i].m_bOnlineFlag)
+			continue;
+		CString strGroupID;
+		int nGroupID = theApp.m_vecHardChannel[i].m_nChannelGroupID;
+		strGroupID.Format("%d", nGroupID);
 
-			CString strChannelID;
-			strChannelID.Format("%d", theApp.m_vecHardChannel[i].m_nChannelID);
+		CString strChannelID;
+		strChannelID.Format("%d", theApp.m_vecHardChannel[i].m_nChannelID);
 
-			CString strText = strGroupID + "-" + strChannelID;
+		CString strText = strGroupID + "-" + strChannelID;
 
-			m_vchannelCode.push_back(strText);
-		}
-		GetParamSelectValue(theApp.m_vecHardChannel[0].m_strMachineIP);
+		m_vchannelCode.push_back(strText);
+	}
+	GetParamSelectValue(theApp.m_vecHardChannel[0].m_strMachineIP);
 	////把下面这行注释掉
 	//m_advantechDaqController.GetChannels(m_vchannelCode);
 	CDialogEx::OnInitDialog();
@@ -83,6 +87,14 @@ BOOL ChannelParaPresetView::OnInitDialog()
 //获取参数可选项列表
 void ChannelParaPresetView::GetParamSelectValue(string strMachineIP)
 {
+	theApp.m_listInputMode.clear();
+	theApp.m_listFullValue.clear();
+	theApp.m_listMessaueType.clear();
+	theApp.m_vecHardChannel.clear();
+	theApp.m_elcpressure.clear();
+	theApp.m_listUpFreq.clear();
+	theApp.m_vecGroupChannel.clear();
+
 	m_dhTestHardWareController.GetAllGroupChannel(theApp.m_pHardWare, theApp.m_vecGroupChannel, theApp.m_vecHardChannel);
 	m_dhTestHardWareController.GetAllInputMode(theApp.m_pHardWare, theApp.m_vecHardChannel, theApp.m_vecHardChannel[0].m_strMachineIP, theApp.m_listInputMode);
 	m_dhTestHardWareController.GetAllElcPressure(theApp.m_pHardWare, theApp.m_vecHardChannel, theApp.m_vecHardChannel[0].m_strMachineIP, theApp.m_elcpressure);
@@ -148,7 +160,7 @@ void ChannelParaPresetView::GridCtrlInit()
 		m_channelParaGridCtrl.SetRowCount(1);
 	}
 	else m_channelParaGridCtrl.SetRowCount(endChannelIndex-startChannelIndex+2); //初始为n行
-	m_channelParaGridCtrl.SetColumnCount(8); //初始化为8列
+	m_channelParaGridCtrl.SetColumnCount(15); //初始化为8列
 	m_channelParaGridCtrl.SetFixedRowCount(1); //表头为一行
 	m_channelParaGridCtrl.SetRowResize(TRUE); ///自动设置行和列的大小
 	m_channelParaGridCtrl.SetColumnResize(TRUE);
@@ -159,136 +171,219 @@ void ChannelParaPresetView::GridCtrlInit()
 	//m_channelParaGridCtrl.OnGridClick();
 	m_vmeasuringRange.clear();
 	m_vmeasuringRange.resize(m_channelParaGridCtrl.GetRowCount()-1);
-	for (int row = 0; row < m_channelParaGridCtrl.GetRowCount(); row++)
-	for (int col = 0; col < m_channelParaGridCtrl.GetColumnCount(); col++)
-	{
-		//设置表格显示属性
-		GV_ITEM Item;
-		Item.mask = GVIF_TEXT | GVIF_FORMAT;
-		Item.row = row;
-		Item.col = col;
-		///设置表头内容
-		if (row == 0){
-			Item.nFormat = DT_CENTER | DT_WORDBREAK;
-			if (col == 0){
-				m_channelParaGridCtrl.SetCellType(0, 0, RUNTIME_CLASS(CGridCellCheck));
-			}
-			if (col == 1){
-				Item.strText = "通道号";
-			}
-			if (col == 2){
-				Item.strText = "通道描述";
-			}
-			if (col == 3){
-				Item.strText = "上限频率";
-			}
-			if (col == 4){
-				Item.strText = "传感器灵敏度";
-			}
-			if (col == 5){
-				Item.strText = "输入方式";
+	for (int row = 0; row < m_channelParaGridCtrl.GetRowCount(); row++){
+		if (row > m_testLocationVec.size()||row > m_sensorVec.size()) break;
+		for (int col = 0; col < m_channelParaGridCtrl.GetColumnCount(); col++)
+		{
+			//设置表格显示属性
+			GV_ITEM Item;
+			Item.mask = GVIF_TEXT | GVIF_FORMAT;
+			Item.row = row;
+			Item.col = col;
+			///设置表头内容
+			if (row == 0){
+				Item.nFormat = DT_CENTER | DT_WORDBREAK;
+				if (col == 0){
+					m_channelParaGridCtrl.SetCellType(0, 0, RUNTIME_CLASS(CGridCellCheck));
+				}
+				if (col == 1){
+					Item.strText = "通道号";
+				}
+				if (col == 2){
+					Item.strText = "通道描述";
+				}
+				if (col == 3){
+					Item.strText = "上限频率";
+				}
+				if (col == 4){
+					Item.strText = "传感器灵敏度";
+				}
+				if (col == 5){
+					Item.strText = "输入方式";
+				}
+
+				if (col == 6){
+					Item.strText = "满度量程";
+				}
+				if (col == 7){
+					Item.strText = "测量类型";
+				}
+				if (col == 8){
+					Item.strText = "测量范围";
+				}
+				if (col == 9){
+					Item.strText = "测点位置";
+				}
+				if (col == 10){
+					Item.strText = "传感器";
+				}
+				if (col == 11){
+					Item.strText = "x轴最小值";
+				}
+				if (col == 12){
+					Item.strText = "x轴最大值";
+				}
+				if (col == 13){
+					Item.strText = "y轴最小值";
+				}
+				if (col == 14){
+					Item.strText = "y轴最大值";
+				}
+				m_channelParaGridCtrl.SetItem(&Item);
+				continue;
 			}
 
-			if (col == 6){
-				Item.strText = "满度量程";
+			Item.nFormat = DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS;
+			CString strText;
+			if (col == 0)
+			{
+				m_channelParaGridCtrl.SetCellType(row, 0, RUNTIME_CLASS(CGridCellCheck));
+				m_channelParaGridCtrl.SetItemState(row, col, GVIS_READONLY);
 			}
-			if (col == 7){
-				Item.strText = "测量类型";
+			if (col == 1)
+			{
+				Item.strText = m_vchannelCode[startChannelIndex++];
+				m_channelParaGridCtrl.SetItemState(row, col, GVIS_READONLY);
 			}
-			if (col == 8){
-				Item.strText = "测量范围";
+			if (col == 2) Item.strText = "通道" + CommonUtil::Int2CString(row);
+			if (col == 3) {
+				m_channelParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCombo));
+				CGridCellCombo* pCellCombo = (CGridCellCombo*)m_channelParaGridCtrl.GetCell(row, col);
+				pCellCombo->SetStyle(CBS_DROPDOWN);
+				CStringArray OptionsType;
+				for (auto windowType : theApp.m_listUpFreq){
+					OptionsType.Add(_T(windowType.data()));
+					//.GetDictValue()));
+				}
+				pCellCombo->SetOptions(OptionsType);
+				pCellCombo->SetCurSel(0);
+				Item.strText = OptionsType[0];
+			}
+			if (col == 4) Item.strText = m_strSenseCoef;
+			if (col == 5) {
+				m_channelParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCombo));
+				CGridCellCombo* pCellCombo = (CGridCellCombo*)m_channelParaGridCtrl.GetCell(row, col);
+				pCellCombo->SetStyle(CBS_DROPDOWN);
+				CStringArray OptionsType;
+				for (auto inputMethod : theApp.m_listInputMode){
+					OptionsType.Add(_T(inputMethod.data()));
+				}
+				pCellCombo->SetOptions(OptionsType);
+				pCellCombo->SetCurSel(0);
+				Item.strText = OptionsType[0];
+			}
+			if (col == 6)
+			{
+				m_channelParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCombo));
+				CGridCellCombo* pCellCombo = (CGridCellCombo*)m_channelParaGridCtrl.GetCell(row, col);
+				pCellCombo->SetStyle(CBS_DROPDOWN);
+				CStringArray OptionsType;
+				for (auto FullValue : theApp.m_listFullValue){
+					OptionsType.Add(_T(FullValue.data()));
+					//GetDictValue()));
+				}
+				pCellCombo->SetOptions(OptionsType);
+				pCellCombo->SetCurSel(0);
+				Item.strText = OptionsType[0];
+				pCellCombo->SetOptions(OptionsType);
+				pCellCombo->SetCurSel(0);
+				Item.strText = OptionsType[0];
+
+			}
+			if (col == 7) {
+				//测量类型
+				m_channelParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCombo));
+				CGridCellCombo* pCellCombo = (CGridCellCombo*)m_channelParaGridCtrl.GetCell(row, col);
+				pCellCombo->SetStyle(CBS_DROPDOWN);
+				CStringArray OptionsType;
+				for (auto messaueType : theApp.m_listMessaueType){
+					OptionsType.Add(_T(messaueType.data()));
+					//.GetDictValue()));
+				}
+				pCellCombo->SetOptions(OptionsType);
+				pCellCombo->SetCurSel(0);
+				Item.strText = OptionsType[0];
+			}
+			if (col == 8) {
+				//测量范围
+				m_channelParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCombo));
+				CGridCellCombo* pCellCombo = (CGridCellCombo*)m_channelParaGridCtrl.GetCell(row, col);
+				pCellCombo->SetStyle(CBS_DROPDOWN);
+				CStringArray OptionsType;
+				for (auto inputMethod : theApp.m_elcpressure){
+					OptionsType.Add(_T(inputMethod.data()));
+					//.GetDictValue()));
+				}
+				pCellCombo->SetOptions(OptionsType);
+				pCellCombo->SetCurSel(0);
+				Item.strText = OptionsType[0];
+			}
+			if (col == 9) {
+				//传感器测点
+				m_channelParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCombo));
+				CGridCellCombo* pCellCombo = (CGridCellCombo*)m_channelParaGridCtrl.GetCell(row, col);
+				pCellCombo->SetStyle(CBS_DROPDOWN);
+				CStringArray OptionsType;
+				for (auto testLocation : m_testLocationVec){
+					OptionsType.Add(testLocation.GetLocationName());
+				}
+				pCellCombo->SetOptions(OptionsType);
+				pCellCombo->SetCurSel(row - 1);
+				Item.strText = OptionsType[row - 1];
+			}
+			if (col == 10) {
+				//传感器测点
+				m_channelParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCombo));
+				CGridCellCombo* pCellCombo = (CGridCellCombo*)m_channelParaGridCtrl.GetCell(row, col);
+				pCellCombo->SetStyle(CBS_DROPDOWN);
+				CStringArray OptionsType;
+				for (auto sensor : m_sensorVec){
+					OptionsType.Add(sensor.GetSensorName());
+				}
+				pCellCombo->SetOptions(OptionsType);
+				pCellCombo->SetCurSel(row - 1);
+				Item.strText = OptionsType[0];
+			}
+			if (col == 11) {
+				if ( 0 < row && row <= theApp.m_currentProject.GetChannelVector().size()){
+					Item.strText = CommonUtil::Int2CString(theApp.m_currentProject.GetChannelVector()[row - 1].GetXMin());
+				}
+				else{
+					Item.strText = CommonUtil::Int2CString(0);
+				}
+				
+			}
+			if (col == 12) {
+				if (0 < row && row <= theApp.m_currentProject.GetChannelVector().size()){
+					int xmax = theApp.m_currentProject.GetChannelVector()[row - 1].GetXMax();
+					Item.strText = CommonUtil::Int2CString(xmax == 0 || xmax <= theApp.m_currentProject.GetChannelVector()[row - 1].GetXMin() ? 10000 : xmax);
+				}
+				else{
+					Item.strText = CommonUtil::Int2CString(10000);
+				}
+				
+			}
+			if (col == 13) {
+				if (0 < row && row <= theApp.m_currentProject.GetChannelVector().size()){
+					Item.strText = CommonUtil::Int2CString(theApp.m_currentProject.GetChannelVector()[row - 1].GetYMin());
+				}
+				else{
+					Item.strText = CommonUtil::Int2CString(0);
+				}
+
+			}
+			if (col == 14) {
+
+				if (0 < row && row <= theApp.m_currentProject.GetChannelVector().size()){
+					int ymax = theApp.m_currentProject.GetChannelVector()[row - 1].GetYMax();
+					Item.strText = CommonUtil::Int2CString(ymax == 0 || ymax <= theApp.m_currentProject.GetChannelVector()[row - 1].GetYMin() ? 10000 : ymax);
+				}
+				else{
+					Item.strText = CommonUtil::Int2CString(10000);
+				}
 			}
 			m_channelParaGridCtrl.SetItem(&Item);
-			continue;
 		}
-
-		Item.nFormat = DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS;
-		CString strText;
-		if (col == 0)
-		{
-			m_channelParaGridCtrl.SetCellType(row, 0, RUNTIME_CLASS(CGridCellCheck));
-			m_channelParaGridCtrl.SetItemState(row, col, GVIS_READONLY);
-		}
-		if (col == 1)
-		{
-			Item.strText = m_vchannelCode[startChannelIndex++];
-			m_channelParaGridCtrl.SetItemState(row, col, GVIS_READONLY);
-		}
-		if (col == 2) Item.strText = "通道" + CommonUtil::Int2CString(row);
-		if (col == 3) {
-			m_channelParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCombo));
-			CGridCellCombo* pCellCombo = (CGridCellCombo*)m_channelParaGridCtrl.GetCell(row, col);
-			pCellCombo->SetStyle(CBS_DROPDOWN);
-			CStringArray OptionsType;
-			for (auto windowType : theApp.m_listUpFreq){
-				OptionsType.Add(_T(windowType.data()));
-					//.GetDictValue()));
-			}
-			pCellCombo->SetOptions(OptionsType);
-			pCellCombo->SetCurSel(0);
-			Item.strText = OptionsType[0];
-		}
-		if (col == 4) Item.strText = m_strSenseCoef;
-		if (col == 5) {
-			m_channelParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCombo));
-			CGridCellCombo* pCellCombo = (CGridCellCombo*)m_channelParaGridCtrl.GetCell(row, col);
-			pCellCombo->SetStyle(CBS_DROPDOWN);
-			CStringArray OptionsType;
-			for (auto inputMethod : theApp.m_listInputMode){
-				OptionsType.Add(_T(inputMethod.data()));
-			}
-			pCellCombo->SetOptions(OptionsType);
-			pCellCombo->SetCurSel(0);
-			Item.strText = OptionsType[0];
-		}
-		if (col == 6)
-		{
-			m_channelParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCombo));
-			CGridCellCombo* pCellCombo = (CGridCellCombo*)m_channelParaGridCtrl.GetCell(row, col);
-			pCellCombo->SetStyle(CBS_DROPDOWN);
-			CStringArray OptionsType;
-			for (auto FullValue : theApp.m_listFullValue){
-				OptionsType.Add(_T(FullValue.data()));
-					//GetDictValue()));
-			}
-			pCellCombo->SetOptions(OptionsType);
-			pCellCombo->SetCurSel(0);
-			Item.strText = OptionsType[0];
-			pCellCombo->SetOptions(OptionsType);
-			pCellCombo->SetCurSel(0);
-			Item.strText = OptionsType[0];
-			
-		}
-		if (col == 7) {
-			//测量类型
-			m_channelParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCombo));
-			CGridCellCombo* pCellCombo = (CGridCellCombo*)m_channelParaGridCtrl.GetCell(row, col);
-			pCellCombo->SetStyle(CBS_DROPDOWN);
-			CStringArray OptionsType;
-			for (auto messaueType : theApp.m_listMessaueType){
-				OptionsType.Add(_T(messaueType.data()));
-				//.GetDictValue()));
-			}
-			pCellCombo->SetOptions(OptionsType);
-			pCellCombo->SetCurSel(0);
-			Item.strText = OptionsType[0];
-		}
-		if (col == 8) {
-			//测量范围
-			m_channelParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCombo));
-			CGridCellCombo* pCellCombo = (CGridCellCombo*)m_channelParaGridCtrl.GetCell(row, col);
-			pCellCombo->SetStyle(CBS_DROPDOWN);
-			CStringArray OptionsType;
-			for (auto inputMethod : theApp.m_elcpressure){
-				OptionsType.Add(_T(inputMethod.data()));
-				//.GetDictValue()));
-			}
-			pCellCombo->SetOptions(OptionsType);
-			pCellCombo->SetCurSel(0);
-			Item.strText = OptionsType[0];
-		}
-		
-		m_channelParaGridCtrl.SetItem(&Item);
 	}
 	///默认选中所有通道
 	for (int row = 0; row < m_channelParaGridCtrl.GetRowCount(); row++){
@@ -343,6 +438,10 @@ void ChannelParaPresetView::SetGridCellCheck(int row, int col, bool isChecked){
 	pCell->SetCheck(isChecked);
 }
 
+void ChannelParaPresetView::SetProductId(int productId){
+	m_productId = productId;
+}
+
 bool ChannelParaPresetView::GetGridCellCheck(int row, int col){
 	if (!m_channelParaGridCtrl.GetCell(row, col)->IsKindOf(RUNTIME_CLASS(CGridCellCheck)))
 		m_channelParaGridCtrl.SetCellType(row, col, RUNTIME_CLASS(CGridCellCheck));
@@ -356,6 +455,7 @@ void ChannelParaPresetView::OnGridDblClick(NMHDR *pNotifyStruct, LRESULT* pResul
 }
 
 void ChannelParaPresetView::GetSelectedChannels(vector<TbChannel> & vchannels){
+
 	int a = m_channelParaGridCtrl.GetRowCount();
 	for (int row = 1; row < m_channelParaGridCtrl.GetRowCount(); row++){
 		if (!m_channelParaGridCtrl.GetCell(row, 0)->IsKindOf(RUNTIME_CLASS(CGridCellCheck)))
@@ -401,14 +501,36 @@ void ChannelParaPresetView::GetSelectedChannels(vector<TbChannel> & vchannels){
 					CString strText = pCellCombo->GetText();
 					currentChannel.SetMessureType(std::make_pair(index, strText));
 				}
-				if (col == 8)
-					//currentSensor.SetFullValue(atoi(m_channelParaGridCtrl.GetItemText(row, col)));
-				{
+				if (col == 8){
 					///拿到选择的电压范围
 					CGridCellCombo* pCellCombo = (CGridCellCombo*)m_channelParaGridCtrl.GetCell(row, col);
 					int index = pCellCombo->GetCurSel();
 					CString strText = pCellCombo->GetText();
 					currentChannel.SetElcPressure(std::make_pair(index, strText));
+				}
+				if (col == 9){
+					///拿到选择的测点位置
+					CGridCellCombo* pCellCombo = (CGridCellCombo*)m_channelParaGridCtrl.GetCell(row, col);
+					int index = pCellCombo->GetCurSel();
+					currentChannel.SetTestLocation(m_testLocationVec[index]);
+				}
+				if (col == 10){
+					///拿到选择的测点位置
+					CGridCellCombo* pCellCombo = (CGridCellCombo*)m_channelParaGridCtrl.GetCell(row, col);
+					int index = pCellCombo->GetCurSel();
+					currentChannel.SetSensor(m_sensorVec[index]);
+				}
+				if (col == 11){
+					currentChannel.SetXMin(atof(m_channelParaGridCtrl.GetItemText(row, col).GetBuffer()));
+				}
+				if (col == 12){
+					currentChannel.SetXMax(atof(m_channelParaGridCtrl.GetItemText(row, col).GetBuffer()));
+				}
+				if (col == 13){
+					currentChannel.SetYMin(atof(m_channelParaGridCtrl.GetItemText(row, col).GetBuffer()));
+				}
+				if (col == 14){
+					currentChannel.SetYMax(atof(m_channelParaGridCtrl.GetItemText(row, col).GetBuffer()));
 				}
 			}
 			vchannels.push_back(currentChannel);

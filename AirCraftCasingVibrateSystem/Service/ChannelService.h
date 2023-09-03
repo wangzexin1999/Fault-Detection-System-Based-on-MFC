@@ -2,7 +2,6 @@
 #include "fftw3.h"
 #include "EchoSignal.h"
 #include "TbSumsignalDao.h"
-#include "TbRecordSignalDao.h"
 //#include "TbProject.h"
 #include "AcquiredSignal.h"
 #include "ThreadSafeQueue.h"
@@ -10,7 +9,6 @@
 #include "TbChannelDao.h"
 #include "TbChannel.h"
 #include "TbDictionaryDao.h"
-#include "TbRecordSignal.h"
 #include "TbCollectionparasDao.h"
 //#include "TbTestingDevice.h"
 class CChannelService
@@ -111,7 +109,6 @@ private:
 	//queue<EchoSignal> m_echoSignalQueue; ///回显数据的队列
 	EchoSignal m_signal; ///需要回显的数据
 	TbSumsignalDao m_sumsignalDao;
-	TbRecordSignalDao m_recordSignalDao;
 	TbChannelDao m_channelDao;
 	TbCollectionparasDao m_collectionParasDao;
 };

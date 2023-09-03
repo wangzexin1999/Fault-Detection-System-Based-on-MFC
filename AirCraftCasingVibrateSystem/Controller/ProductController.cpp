@@ -74,3 +74,13 @@ Result ProductController::FindProductByProductName(TbProduct product, vector<TbP
 	}
 
 }
+
+Result ProductController::GetById(int  productId, TbProduct &product){
+	bool flag = m_productService.GetById(productId, product);
+	if (flag){
+		return Result(true, "产品加载成功");
+	}
+	else{
+		return Result(false, "产品加载失败");
+	}
+}

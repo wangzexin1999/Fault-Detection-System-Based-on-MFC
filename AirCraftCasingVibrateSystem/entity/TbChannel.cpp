@@ -174,3 +174,37 @@ std::pair<int, CString> & TbChannel::GetMessureType(){
 void TbChannel::SetMessureType(std::pair<int, CString> messureType){
 	m_messureType = messureType;
 }
+
+
+TbTestlocation & TbChannel::GetTestLocation(){
+	return m_testLocation;
+}
+void TbChannel::SetTestLocation(TbTestlocation testLocation){
+	m_testLocation = testLocation;
+}
+
+
+void TbChannel::SetXMin(double xmin){
+	m_xMin = xmin;
+}
+double TbChannel::GetXMin(){
+	return m_xMin;
+}
+void TbChannel::SetXMax(double xmax){
+	m_xMax = xmax;
+}
+double TbChannel::GetXMax(){
+	return m_xMax;
+}
+void TbChannel::SetYMin(double xmin){
+	m_xMin = xmin;
+}
+double TbChannel::GetYMin(){
+	return m_xMin;
+}
+void TbChannel::SetYMax(double ymax){
+	m_yMax = ymax;
+}
+double TbChannel::GetYMax(){
+	return m_yMax;
+}

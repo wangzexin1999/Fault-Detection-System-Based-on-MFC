@@ -68,6 +68,14 @@ public:
 		data_queue.pop();
 		return val;
 	}
+
+	void clear()
+	{
+		std::lock_guard<std::mutex> lk(mut);
+		std::queue<T> empty;
+		swap(empty, data_queue);
+	}
+
 	bool empty()
 	{
 		std::lock_guard<std::mutex> lk(mut);

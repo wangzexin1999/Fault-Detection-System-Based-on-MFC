@@ -4,9 +4,8 @@
 #include "TbDictionary.h"
 #include "DictionaryController.h"
 #include "Result.h"
-#include "include/rapidjson/document.h"
+#include "DHTestHardWareController.h"
 using namespace std;
-using namespace rapidjson;
 
 // CollectionParaPresetView 对话框
 
@@ -24,17 +23,16 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 
-	vector<TbDictionary> m_DsampleFrequency;
-	vector<TbDictionary> m_vcollectionMethod;
+	/*vector<TbDictionary> m_vcollectionMethod;
 	vector<TbDictionary> m_DanalysisFrequency;
-	vector<TbDictionary> m_vcollectionPoint;
+	vector<TbDictionary> m_vcollectionPoint;*/
 
 	DictionaryController m_dictionaryController;
+	DHTestHardWareController m_dhTestHardWareController;
 
 	CComboBox m_sampleFrequencyCombo;
 	CComboBox m_collectionMethodCombo;
 	CComboBox m_analysisFrequencyCombo;
-	CComboBox m_collectionPointCombo;
 	CEdit m_sampleBatchEdit;
 
 	DECLARE_MESSAGE_MAP()
@@ -43,4 +41,5 @@ public:
 	void CollectionParaInfoInit();
 	void GetSelectedCollectionparas(TbCollectionparas &collectionparas);
 	afx_msg void OnCbnSelchangeComboSamplefrequency();
+	CEdit m_lineEdit;
 };

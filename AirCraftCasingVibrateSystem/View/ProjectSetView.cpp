@@ -49,8 +49,6 @@ BOOL ProjectSetView::OnInitDialog()
 	}
 	CDialogEx::OnInitDialog();
 	///得到用户选择的计划信息
-	vector<TbDictionary> selectedCollctionPlans;
-	m_baseProjectInfoView.GetSelectedCollectionPlan(selectedCollctionPlans);
 	m_project = theApp.m_currentProject;
 	m_baseProjectInfoView.GetProjectBaseInfo(m_project);
 	////创建基本的窗口信息
@@ -63,6 +61,7 @@ BOOL ProjectSetView::OnInitDialog()
 	tabRect.bottom -= 1;
 
 	m_projectNavigationTab.InsertItem(1, _T("通道设置"));
+	m_channelParaPresetView.SetProductId(m_project.GetProduct().GetProductId());
 	m_channelParaPresetView.Create(IDD_DIALOG_CHANNEL_PARA_SELECT_AND_SET, &m_projectNavigationTab);
 	m_channelParaPresetView.MoveWindow(&tabRect);
 	m_pDialogVec.push_back(&m_channelParaPresetView);
@@ -71,18 +70,6 @@ BOOL ProjectSetView::OnInitDialog()
 	////记录动态创建的对话框的起始索引值
 	m_newDialogIndex = m_projectNavigationTab.GetItemCount();
 	int count = m_newDialogIndex;
-	for (auto plan : selectedCollctionPlans){
-		// 根据用户选择的计划创建相应的窗口
-		Document doc;
-		doc.Parse(plan.GetDictValue());
-		const Value& planName = doc["planName"];
-		CollectionPlanParaPresetView * collectionParaPresetView = new CollectionPlanParaPresetView(plan);
-		m_projectNavigationTab.InsertItem(count++, planName.GetString());
-		collectionParaPresetView->Create(IDD_DIALOG_STABLESTATUSPRESET, &m_projectNavigationTab);
-		collectionParaPresetView->MoveWindow(&tabRect);
-		m_pDialogVec.push_back(collectionParaPresetView);
-		// 创建窗口对应的采集计划对象
-	}
 	//设置当前选择的tab的索引
 	m_icurSelTabIndex = 0;
 
@@ -95,7 +82,6 @@ BOOL ProjectSetView::OnInitDialog()
 	int iXpos = rtDesk.Width() / 2 - rtDlg.Width() / 2;
 	int iYpos = rtDesk.Height() / 2 - rtDlg.Height() / 2;
 	SetWindowPos(NULL, iXpos, iYpos, 0, 0, SWP_NOOWNERZORDER | SWP_NOSIZE | SWP_NOZORDER);
-
 	return TRUE;
 }
 
@@ -128,38 +114,18 @@ void ProjectSetView::OnBnClickedButtonNextstep()
 
 void ProjectSetView::OnBnClickedOk()
 {
-	
 	// 得到所有的通道
 	m_vchannels.clear();
 	m_channelParaPresetView.GetSelectedChannels(m_vchannels);
-
-	////封装采集计划参数
-	Document plansDoc;
-	//获得分配器
-	Document::AllocatorType & allocator = plansDoc.GetAllocator();
-	//root为kObjectType
-	Value root(kObjectType);
-	//采集计划的内容
-	Value collectionPlans(kArrayType);
-	for (int i = m_newDialogIndex; i < m_pDialogVec.size(); i++){
-		CollectionPlanParaPresetView* collectionPlanPresetView = dynamic_cast<CollectionPlanParaPresetView*>(m_pDialogVec[i]);
-		if (collectionPlanPresetView != NULL){
-			Value planEntity(kObjectType);
-			collectionPlanPresetView->GetCollectionPlan(planEntity, allocator);
-			collectionPlans.PushBack(planEntity, allocator);
-		}
-	}
-
-	root.AddMember("collectionPlans", collectionPlans, allocator);
-
-	StringBuffer buffer;
-	Writer<StringBuffer> writer(buffer);
-	root.Accept(writer);
-	std::string result = buffer.GetString();
-	///给项目对象设置采集
-	//m_project.SetCollectionPlans(result.c_str());
 	///封装project对象
 	m_project.SetProjectUpdateTime(DateUtil::GetCurrentCStringTime());
+	if (m_project.GetChannelVector().size() != m_vchannels.size()){
+		AfxMessageBox("通道数量要与之前保持一致");
+		return;
+	}
+	for (int i = 0; i < m_project.GetChannelVector().size(); i++){
+		m_vchannels[i].SetId(m_project.GetChannelVector()[i].GetId());
+	}
 	m_project.SetChannelVector(m_vchannels);
 	///更新项目数据
 	Result res = m_projectController.Update(m_project);

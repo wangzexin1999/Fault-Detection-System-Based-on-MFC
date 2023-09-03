@@ -11,9 +11,11 @@
 #include "TbChannel.h"
 #include "TbCollectionparas.h"
 #include <iostream>
+#include "ThreadSafeQueue.h"
+//#include "include/static_json.hpp"
 using namespace std;
 using namespace rapidjson;
-
+//using namespace static_json;
 #pragma once
 
 class JsonUtil
@@ -77,5 +79,20 @@ public:
 	***********************************************************************/
 	static CString GetStringFromDom(const Value &val);
 
+
+	
+
+	/**********************************************************************
+	功能描述：数组序列化为字符串
+	输入参数：
+	输出参数：
+	返 回 值：
+	其它说明：
+	修改日期 版本号 修改人 修改内容
+	----------------------------------------------------------------------
+	***********************************************************************/
+	CString  DataSerialize(ThreadSafeQueue<double> &dataQueue);
+
+	static void JsonTest();
 };
 

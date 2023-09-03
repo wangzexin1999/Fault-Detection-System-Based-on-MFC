@@ -48,56 +48,6 @@ void CNewProjectView::OnBnClickedOk()
 	// 得到所有的通道
 	m_vchannels.clear();
 	m_channelParaPresetView.GetSelectedChannels(m_vchannels);
-	
-	////封装采集计划参数
-	Document plansDoc;
-	//获得分配器
-	Document::AllocatorType & allocator = plansDoc.GetAllocator();
-	//root为kObjectType
-	Value root(kObjectType);
-	//采集计划的内容
-	Value collectionPlans(kArrayType);
-	Value planEntity_default(kObjectType);
-
-	for (int i = m_newDialogIndex; i < m_pDialogVec.size(); i++){
-		CollectionPlanParaPresetView* collectionPlanPresetView = dynamic_cast<CollectionPlanParaPresetView*>(m_pDialogVec[i]);
-		if (collectionPlanPresetView != NULL){
-			Value planEntity(kObjectType);
-			collectionPlanPresetView->GetCollectionPlan(planEntity, allocator);
-
-			Value Array_z(kArrayType);
-			if (planEntity["planParaContent"].GetArray().Size()==0)
-			{
-				CString v_planName = planEntity["planName"].GetString();
-				AfxMessageBox(_T("请选择“")+v_planName + _T("”的参数"));
-				return;
-			}
-			
-			collectionPlans.PushBack(planEntity, allocator);
-
-			if (i == m_newDialogIndex)
-			{
-				collectionPlanPresetView->GetDefaultCollectionPlan(planEntity_default, allocator);
-
-			}
-		}
-	}
-	root.AddMember("collectionPlans", collectionPlans, allocator);
-
-	StringBuffer buffer;
-	Writer<StringBuffer> writer(buffer);
-	root.Accept(writer);
-
-	StringBuffer buffer_default;
-	Writer<StringBuffer> writer_default(buffer_default);
-	planEntity_default.Accept(writer_default);
-
-	std::string result = buffer.GetString();
-	std::string result_default = buffer_default.GetString();
-	///给项目对象设置采集
-	//m_project.SetCollectionPlans(result.c_str());
-	//m_project.SetCollectionStatus(result_default.c_str());
-
 	///封装project对象
 	TbUser user = theApp.m_currentProject.GetUser();
 	m_project.SetUser(user);
@@ -105,9 +55,11 @@ void CNewProjectView::OnBnClickedOk()
 	m_project.SetProjectUpdateTime(DateUtil::GetCurrentCStringTime());
 	m_project.SetCollectionparas(m_collectionparas);
 	m_project.SetChannelVector(m_vchannels);
-	///保存项目数据
+	if (m_vchannels.size() < 4){
+		MessageBox(TEXT("通道数量不匹配！"), TEXT("提示"), MB_YESNO);
+		return;
+	}	///保存项目数据
 	Result res = m_projectController.AddProject(m_project);
-
 	if (!res.GetIsSuccess()){
 		AfxMessageBox(res.GetMessages());
 		CDialogEx::OnCancel();
@@ -131,9 +83,6 @@ BOOL CNewProjectView::OnInitDialog()
 	}
 	CDialogEx::OnInitDialog();
 	///得到用户选择的计划信息
-	vector<TbDictionary> selectedCollctionPlans;
-	m_baseProjectInfoView.GetSelectedCollectionPlan(selectedCollctionPlans);
-
 	m_baseProjectInfoView.GetProjectBaseInfo(m_project);
 	////创建基本的窗口信息
 
@@ -151,6 +100,7 @@ BOOL CNewProjectView::OnInitDialog()
 	m_collectionParaPresetView.ShowWindow(SW_SHOW);
 
 	m_projectNavigationTab.InsertItem(1, _T("通道设置"));
+	m_channelParaPresetView.SetProductId(m_project.GetProduct().GetProductId());
 	m_channelParaPresetView.Create(IDD_DIALOG_CHANNEL_PARA_SELECT_AND_SET, &m_projectNavigationTab);
 	m_channelParaPresetView.MoveWindow(&tabRect);
 	m_pDialogVec.push_back(&m_channelParaPresetView);
@@ -159,18 +109,7 @@ BOOL CNewProjectView::OnInitDialog()
 	////记录动态创建的对话框的起始索引值
 	m_newDialogIndex = m_projectNavigationTab.GetItemCount();
 	int count = m_newDialogIndex;
-	for (auto plan : selectedCollctionPlans){
-		// 根据用户选择的计划创建相应的窗口
-		Document doc;
-		doc.Parse(plan.GetDictValue());
-		const Value& planName = doc["planName"];
-		CollectionPlanParaPresetView * collectionParaPresetView = new CollectionPlanParaPresetView(plan);
-		m_projectNavigationTab.InsertItem(count++, planName.GetString());
-		collectionParaPresetView->Create(IDD_DIALOG_STABLESTATUSPRESET, &m_projectNavigationTab);
-		collectionParaPresetView->MoveWindow(&tabRect);
-		m_pDialogVec.push_back(collectionParaPresetView);
-		// 创建窗口对应的采集计划对象
-	}
+	
 	//设置当前选择的tab的索引
 	m_icurSelTabIndex = 0;
 
@@ -183,57 +122,9 @@ BOOL CNewProjectView::OnInitDialog()
 	int iXpos = rtDesk.Width() / 2 - rtDlg.Width() / 2;
 	int iYpos = rtDesk.Height() / 2 - rtDlg.Height() / 2;
 	SetWindowPos(NULL, iXpos, iYpos, 0, 0, SWP_NOOWNERZORDER | SWP_NOSIZE | SWP_NOZORDER);
-
 	return TRUE;  
 }
 
-void CNewProjectView::GridCtrlInit(){
-	m_projectOperatorDataGridCtrl.SetEditable(false);
-	m_projectOperatorDataGridCtrl.SetTextBkColor(RGB(0xFF, 0xFF, 0xE0));//黄色背景
-	m_projectOperatorDataGridCtrl.SetRowCount(8); //初始为n行
-	m_projectOperatorDataGridCtrl.SetColumnCount(3); //初始化为5列
-	m_projectOperatorDataGridCtrl.SetFixedRowCount(1); //表头为一行
-	m_projectOperatorDataGridCtrl.SetRowResize(TRUE); ///自动设置行和列的大小
-	m_projectOperatorDataGridCtrl.SetListMode(true); ////在选定一个单元格时，选择整行
-	m_projectOperatorDataGridCtrl.ExpandColumnsToFit(true);
-	m_projectOperatorDataGridCtrl.SetSingleRowSelection(true);
-	for (int row = 0; row < m_projectOperatorDataGridCtrl.GetRowCount(); row++)
-	for (int col = 0; col < m_projectOperatorDataGridCtrl.GetColumnCount(); col++)
-	{
-		//设置表格显示属性
-		GV_ITEM Item;
-		Item.mask = GVIF_TEXT | GVIF_FORMAT;
-		Item.row = row;
-		Item.col = col;
-		if (row == 0 ) //第(0，0)格
-		{
-			if (col == 0){
-				Item.strText.Format(_T("转速序号"), 0);
-			}
-			if (col == 1){
-				Item.strText.Format(_T("转速值"), 1);
-			}
-			if (col == 2){
-				Item.strText.Format(_T("备注"), 2);
-			}
-		}
-
-		else if (col < 1) //设置0列表头显示
-		{
-			if (row < m_projectOperatorDataGridCtrl.GetRowCount())
-			{
-				Item.nFormat = DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS;
-				Item.strText.Format(_T("第%d次"), row);
-			}
-		}
-		else
-		{
-			Item.nFormat = DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS;
-			Item.strText.Format(_T(""), 2);
-		}
-		m_projectOperatorDataGridCtrl.SetItem(&Item);
-	}
-}
 
 void CNewProjectView::OnTcnSelchangeTabProjectnavigation(NMHDR *pNMHDR, LRESULT *pResult)
 {
@@ -261,11 +152,11 @@ void CNewProjectView::OnBnClickedButtonLaststep()
 ////下一步
 void CNewProjectView::OnBnClickedButtonNextstep()
 {
-
-	//if (m_icurSelTabIndex == 0) {
-	//	// 得到当前检测设备的参数
-	//	m_collectionParaPresetView.GetSelectedTestingDevicePara(m_testingDevicePara);
-	//}
+	m_project;
+	if (m_icurSelTabIndex == 0) {
+		// 得到当前检测设备的参数
+		((ChannelParaPresetView *)m_pDialogVec[m_icurSelTabIndex])->SetProductId(m_project.GetProduct().GetProductId());
+	}
 
 	//if (m_icurSelTabIndex == 1) {
 	//	// 得到所有的通道

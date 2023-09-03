@@ -1,0 +1,88 @@
+[ChannelID0]
+ACQSubVersion = 1
+FullVltParaCode1 = 1.054257
+FullVltParaCode2 = 1.043879
+FullVltParaCode3 = 1.043776
+FullVltParaCode4 = 1.043900
+FullVltParaCode5 = 1.034286
+FullVltParaCode6 = 1.034279
+FullVltParaCode7 = 1.064260
+FullVltParaCode8 = 1.053596
+FullVltParaCode9 = 1.053519
+FullVltParaCode10 = 1.053716
+FullVltParaCode11 = 1.000000
+FullVltParaCode12 = 1.000000
+FullVltParaCode13 = 1.044105
+ACQType = 187
+SSampleRate = 0
+MultiCoief = 0
+VerifyFlag = 1
+[AmpliferID0]
+AMPType = 0
+AmpVersion = 0
+[ChannelID1]
+ACQSubVersion = 1
+FullVltParaCode1 = 1.055307
+FullVltParaCode2 = 1.044852
+FullVltParaCode3 = 1.044694
+FullVltParaCode4 = 1.044792
+FullVltParaCode5 = 1.035665
+FullVltParaCode6 = 1.035567
+FullVltParaCode7 = 1.064827
+FullVltParaCode8 = 1.054096
+FullVltParaCode9 = 1.053935
+FullVltParaCode10 = 1.054241
+FullVltParaCode11 = 1.000000
+FullVltParaCode12 = 1.000000
+FullVltParaCode13 = 1.045156
+ACQType = 187
+SSampleRate = 0
+MultiCoief = 0
+VerifyFlag = 1
+[AmpliferID1]
+AMPType = 0
+AmpVersion = 0
+[ChannelID2]
+ACQSubVersion = 1
+FullVltParaCode1 = 1.052485
+FullVltParaCode2 = 1.042114
+FullVltParaCode3 = 1.042032
+FullVltParaCode4 = 1.042058
+FullVltParaCode5 = 1.032809
+FullVltParaCode6 = 1.032834
+FullVltParaCode7 = 1.062519
+FullVltParaCode8 = 1.051868
+FullVltParaCode9 = 1.051801
+FullVltParaCode10 = 1.051793
+FullVltParaCode11 = 1.000000
+FullVltParaCode12 = 1.000000
+FullVltParaCode13 = 1.042637
+ACQType = 187
+SSampleRate = 0
+MultiCoief = 0
+VerifyFlag = 1
+[AmpliferID2]
+AMPType = 0
+AmpVersion = 0
+[ChannelID3]
+ACQSubVersion = 1
+FullVltParaCode1 = 1.054916
+FullVltParaCode2 = 1.044654
+FullVltParaCode3 = 1.044274
+FullVltParaCode4 = 1.044428
+FullVltParaCode5 = 1.035333
+FullVltParaCode6 = 1.035001
+FullVltParaCode7 = 1.064923
+FullVltParaCode8 = 1.054374
+FullVltParaCode9 = 1.054018
+FullVltParaCode10 = 1.054454
+FullVltParaCode11 = 1.000000
+FullVltParaCode12 = 1.000000
+FullVltParaCode13 = 1.045063
+ACQType = 187
+SSampleRate = 0
+MultiCoief = 0
+VerifyFlag = 1
+[AmpliferID3]
+AMPType = 0
+AmpVersion = 0

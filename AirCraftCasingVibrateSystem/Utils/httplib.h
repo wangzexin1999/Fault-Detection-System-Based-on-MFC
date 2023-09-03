@@ -4,7 +4,7 @@
 //  Copyright (c) 2019 Yuji Hirose. All rights reserved.
 //  MIT License
 //
-
+#include "stdafx.h"
 #ifndef CPPHTTPLIB_HTTPLIB_H
 #define CPPHTTPLIB_HTTPLIB_H
 
@@ -990,9 +990,9 @@ socket_t create_socket(const char *host, int port, Fn fn,
 
   auto service = std::to_string(port);
 
-  if (getaddrinfo(host, service.c_str(), &hints, &result)) {
+  /*if (getaddrinfo(host, service.c_str(), &hints, &result)) {
     return INVALID_SOCKET;
-  }
+  }*/
 
   for (auto rp = result; rp; rp = rp->ai_next) {
     // Create a socket
@@ -1017,14 +1017,14 @@ socket_t create_socket(const char *host, int port, Fn fn,
 
     // bind or connect
     if (fn(sock, *rp)) {
-      freeaddrinfo(result);
+//      freeaddrinfo(result);
       return sock;
     }
 
     close_socket(sock);
   }
 
-  freeaddrinfo(result);
+  //freeaddrinfo(result);
   return INVALID_SOCKET;
 }
 

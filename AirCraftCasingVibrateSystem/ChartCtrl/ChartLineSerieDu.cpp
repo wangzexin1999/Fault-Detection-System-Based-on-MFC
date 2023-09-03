@@ -27,46 +27,34 @@ CChartLineSerieDu::~CChartLineSerieDu()
 
 }
 
-void CChartLineSerieDu::AddPoints(double* pX, double* pY, unsigned Count)
+void CChartLineSerieDu::AddPoints(SChartXYPoint* pPoints, unsigned Count)
 {
-	if (Count <= 0 || pX == NULL || pY == NULL)
-	{
-		ASSERT(FALSE);
-		return;
-	}
-	
-	// 拷贝基类的
-	SChartXYPoint* pPoints = new SChartXYPoint[Count];
-
-	for (unsigned i=0; i<Count; i++)
-	{
-		pPoints[i].X = pX[i];
-		pPoints[i].Y = pY[i];
-	}
-	m_vPoints.AddPoints(pPoints, Count);
-	RefreshAutoAxes(false);
-	delete pPoints;
+	if (pPoints == nullptr || Count == 0) return;
 
 	// 自己添加的
 	int nStart = GetPointsCount() - Count;
-	for (unsigned i=0; i<Count; i++)
+	for (unsigned i = 0; i < Count; i++)
 	{
-		if (m_dMaxData < pY[i])
+		if (m_dMaxData < pPoints[i].Y)
 		{
 			m_nMaxPositionIndexInData = nStart + i;
-			m_dMaxData = pY[i];
+			m_dMaxData = pPoints[i].Y;
 		}
-		if (m_dMinData > pY[i])
+		if (m_dMinData > pPoints[i].Y)
 		{
 			m_nMinPositionIndexInData = nStart + i;
-			m_dMinData = pY[i];
+			m_dMinData = pPoints[i].Y;
 		}
 	}
 
 	// 计算统计值
 	if (m_bNeedCalStatValue)
-		CalSamplingStatValue(pY, Count);
+		CalSamplingStatValue(pPoints, Count);
 
+	m_vPoints.AddPoints(pPoints, Count);
+	RefreshAutoAxes(false);
+	delete pPoints;
+	pPoints = nullptr;
 	//CDC* pDC = m_pParentCtrl->GetDC();
 	//Draw(pDC);
 	//m_pParentCtrl->Invalidate();
@@ -78,24 +66,12 @@ void CChartLineSerieDu::DrawDu()
 	m_pParentCtrl->Invalidate();
 }
 
-
-void CChartLineSerieDu::AddPoints(SChartXYPoint* pPoints, unsigned Count){
-}
-
-void CChartLineSerieDu::SetPoints(double* pX, double* pY, unsigned Count)
+void CChartLineSerieDu::SetPoints(SChartXYPoint* pPoints, unsigned Count)
 {
-	if (Count <= 0 || pX == NULL || pY == NULL)
+	if (Count <= 0 || pPoints == NULL)
 	{
 		ASSERT(FALSE);
 		return;
-	}
-
-	// 拷贝基类的
-	SChartXYPoint* pPoints = new SChartXYPoint[Count];
-	for (unsigned i=0; i<Count; i++)
-	{
-		pPoints[i].X = pX[i];
-		pPoints[i].Y = pY[i];
 	}
 	m_vPoints.SetPoints(pPoints, Count);
 	RefreshAutoAxes(true);
@@ -104,59 +80,62 @@ void CChartLineSerieDu::SetPoints(double* pX, double* pY, unsigned Count)
 	// 自己添加的
 	m_nMaxPositionIndexInData = 0;
 	m_nMinPositionIndexInData = 0;
-	m_dMaxData = pY[m_nMaxPositionIndexInData];
-	m_dMinData = pY[m_nMinPositionIndexInData];
+	m_dMaxData = pPoints[m_nMaxPositionIndexInData].Y;
+	m_dMinData = pPoints[m_nMaxPositionIndexInData].Y;
 
 	for (unsigned i=0; i<Count; i++)
 	{
-		if (m_dMaxData < pY[i])
+		if (m_dMaxData <  pPoints[i].Y)
 		{
 			m_nMaxPositionIndexInData = i;
-			m_dMaxData = pY[m_nMaxPositionIndexInData];
+			m_dMaxData = pPoints[m_nMaxPositionIndexInData].Y;
 		}
-		if (m_dMinData > pY[i])
+		if (m_dMinData >  pPoints[i].Y)
 		{
 			m_nMinPositionIndexInData = i;
-			m_dMinData = pY[m_nMinPositionIndexInData];
+			m_dMinData = pPoints[m_nMaxPositionIndexInData].Y;
 		}
 	}
 
 	// 计算统计值
 	if (m_bNeedCalStatValue)
-		CalSamplingStatValue(pY, Count);
+		CalSamplingStatValue(pPoints, Count);
 }
 
-void CChartLineSerieDu::CalSamplingStatValue(double* pY, unsigned Count)
+void CChartLineSerieDu::CalSamplingStatValue(SChartXYPoint* pPoints, unsigned Count)
 {
-	if (pY == NULL || Count == 0)
+	if (pPoints == NULL || Count == 0)
 	{
 		ASSERT(FALSE);
 		return;
 	}
 
-	m_dStatMaxValue = pY[0];
-	m_dStatMinValue = pY[0];
+	m_dStatMaxValue = pPoints[0].Y;
+	m_dStatMinValue = pPoints[0].Y;
 	double dSum = 0;
 	for (unsigned i=0; i<Count; i++)
 	{
-		if (m_dStatMaxValue < pY[i]) m_dStatMaxValue = pY[i];
-		if (m_dStatMinValue > pY[i]) m_dStatMinValue = pY[i];
-		dSum += pY[i];
+		if (m_dStatMaxValue < pPoints[i].Y) m_dStatMaxValue = pPoints[i].Y;
+		if (m_dStatMinValue >  pPoints[i].Y) m_dStatMinValue = pPoints[i].Y;
+		dSum += pPoints[i].Y;
 	}
 	m_dStatSumValue = dSum;
+
+	//均值
 	m_dStatAveValue = dSum / Count;
 	m_dStatPeakValue = m_dStatMaxValue - m_dStatMinValue;
 
-	// 标准差
+	// 方差
 	dSum = 0;
 	for (unsigned i=0; i<Count; i++)
-		dSum += (pY[i] - m_dStatAveValue) * (pY[i] - m_dStatAveValue);
-	m_dStatStdValue = sqrt(dSum / Count);
+		dSum += ( pPoints[i].Y - m_dStatAveValue) * ( pPoints[i].Y - m_dStatAveValue);
+	//m_dStatStdValue = sqrt(dSum / Count);//标准差
+	m_dStatStdValue = dSum / Count;
 
 	// 有效值
 	dSum = 0;
 	for (unsigned i=0; i<Count; i++)
-		dSum += (pY[i] * pY[i]);
+		dSum += ( pPoints[i].Y *  pPoints[i].Y);
 	m_dStatRmsValue = sqrt(dSum / Count);
 }
 

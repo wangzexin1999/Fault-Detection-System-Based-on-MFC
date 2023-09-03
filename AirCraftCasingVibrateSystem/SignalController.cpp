@@ -12,15 +12,10 @@ SignalController::~SignalController()
 
 }
 
-Result SignalController::FindAllRecordSignalBySearchCondition(TbRecordSignal searchEntity, vector<TbRecordSignal> &signalVector){
-	bool isSuccess = m_recordSignalService.FindAllRecordSignalBySearchCondition(searchEntity, signalVector);
+Result SignalController::FindAllSumSignalBySearchCondition(TbSumsignal searchEntity, vector<TbSumsignal> &signalVector){
+	bool isSuccess = m_signalService.FindAllSumSignalBySearchCondition(searchEntity, signalVector);
 	if (isSuccess) return Result(true, "采样数据加载成功");
 	return Result(false, "采样数据加载失败");
-}
-Result SignalController::SaveSampleSignal(TbRecordSignal m_recordSignal){
-	bool isSuccess = m_recordSignalService.AddRecordSignal(m_recordSignal);
-	if (isSuccess) return Result(true, "采样数据保存成功");
-	return Result(false, "采样数据保存失败");
 }
 Result SignalController::SaveCollectionSignal(TbSignal collectionSumsignal){
 	bool isSuccess = m_signalService.SaveSignal(collectionSumsignal);
@@ -82,25 +77,17 @@ Result SignalController::FindAllSignalBySearchCondition(TbSignal searchEntity, v
 //	return false;
 //}
 
-
-
-
-
-
-
-bool SignalController::GetCollectionData(ifstream &inputStream, long long llfileSize, long long llStart, long long llcollectionPoints, vector<double>& vSignal)
+bool SignalController::GetCollectionData(ifstream &inputStream, long long llfileSize, long long llcollectionPoints, double*& fftwInputArray)
 {
+	long long llStart = inputStream.tellg();
 	///当前文件所剩字节数不够时，设置读取剩余字节
-	if ((llfileSize - llStart) < llcollectionPoints*sizeof(double)){ llcollectionPoints = (llfileSize - llStart) / sizeof(double); }
-	double* dpReadData = new double[llcollectionPoints];
-	inputStream.read((char*)dpReadData, llcollectionPoints*sizeof(double));
-	for (int i = 0; i < llcollectionPoints; i++)
-	{
-		/*读不够size的部分*/
-		vSignal.push_back(dpReadData[i]);
+	if ((llfileSize - llStart) < llcollectionPoints*sizeof(double)){
+		llcollectionPoints = (llfileSize - llStart) / sizeof(double);
 	}
-	delete[] dpReadData;
-	return false;
+
+	fftwInputArray = new double[llcollectionPoints];
+	inputStream.read((char*)fftwInputArray, llcollectionPoints*sizeof(double));
+	return true;
 }
 
 Result SignalController::saveSumSignal(TbSumsignal sumSignal){
@@ -120,7 +107,7 @@ Result SignalController::updateSumSignal(TbSumsignal sumSignal){
 	return Result(false, "总信号更新失败");
 }
 
-Result SignalController::SaveCollectionData2Binary(ofstream &outputStream,ThreadSafeQueue<double> & acquireSignal){
+Result SignalController::SaveCollectionData2Binary(ofstream &outputStream, ThreadSafeQueue<double> & acquireSignal){
 	int saveCount = acquireSignal.size();
 	double* saveData = new double[saveCount];
 	for (int i = 0; i < saveCount; i++){
@@ -134,20 +121,35 @@ Result SignalController::SaveCollectionData2Binary(ofstream &outputStream,Thread
 }
 
 
-
 void SignalController::SaveSignalFileHeader(CString fileName, SignalFileHeader  signalInfoHeader){
 	/*如果文件不存在创建文件*/
-	if (access(_T(fileName), 0))
+	/*if (access(_T(fileName), 0))
 	{
 		std::ofstream  ofs(_T(fileName), std::ios::binary | std::ios::out | std::ios::app);
 		ofs.close();
-	}
+	}*/
 	fstream fout;
 	fout.open(fileName, std::ios_base::binary | fstream::out | fstream::in);
-	fout.seekp(0, ios::cur);
+	fout.seekp(0, ios::cur);     
 	fout.write((const char *)&signalInfoHeader, sizeof(SignalFileHeader));
 	fout.flush();
 	fout.close();
+}
+
+Result SignalController::GetSumSignalByProductId(int productId, vector<TbSumsignal> &sumSignalVec){
+	bool isSuccess = m_signalService.GetSumSignalByProductId(productId, sumSignalVec);
+	for (int i = 0; i < sumSignalVec.size(); i++){
+		isSuccess = m_signalService.GetSignalsBySumSignalId(sumSignalVec[i].GetSumsignalId(), sumSignalVec[i].GetAllSignal());
+		isSuccess = m_productService.GetById(sumSignalVec[i].GetProductId(), sumSignalVec[i].GetProduct());
+	}
+	if (isSuccess) return Result(true, "信号查询成功");
+	return Result(false, "信号查询失败");
+}
+
+Result SignalController::GetSignalsBySumSignalId(CString sumSignalId, vector<TbSignal> &signals){
+	bool isSuccess = m_signalService.GetSignalsBySumSignalId(sumSignalId, signals);
+	if (isSuccess) return Result(true, "单通道信号查询成功");
+	return Result(false, "单通道信号查询失败");
 }
 
 //

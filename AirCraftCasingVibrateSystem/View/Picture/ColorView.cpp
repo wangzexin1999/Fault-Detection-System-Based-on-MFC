@@ -12,7 +12,7 @@
 IMPLEMENT_DYNAMIC(CColorView, CDialogEx)
 
 CColorView::CColorView(CWnd* pParent /*=NULL*/)
-	: CDialogEx(CColorView::IDD, pParent)
+: CDialogEx(CColorView::IDD, pParent)
 {
 
 }
@@ -171,7 +171,7 @@ void CColorView::OnBnClickedMfcbuttonStatiscBg()
 	// TODO:  在此添加控件通知处理程序代码
 	m_colStatisticInf = GetColorDiag();
 	SetMFCButtonColor(m_statisticsInfColor, m_colStatisticInf);
-	
+
 }
 
 //获得用户选择的颜色
@@ -193,7 +193,7 @@ void CColorView::SetMFCButtonColor(CMFCButton & btn, COLORREF color)
 	btn.m_bDrawFocus = FALSE;//设置聚焦线
 	btn.SetFocus();
 	btn.m_nFlatStyle = CMFCButton::BUTTONSTYLE_FLAT;//设置Win10扁平效果
-	
+
 }
 
 BOOL CColorView::OnInitDialog()
@@ -203,21 +203,21 @@ BOOL CColorView::OnInitDialog()
 	// TODO:  在此添加额外的初始化
 	// 加载默认颜色
 	InitAttri();
-	 // 设置按钮默认颜色
-	 SetMFCButtonColor(m_series1Color, m_colSerie[0]);
-	 SetMFCButtonColor(m_windowBGColor, m_colBKColor);
-	 SetMFCButtonColor(m_graphBGColor, m_colGBKColor);
-	 SetMFCButtonColor(m_infWinBGColor, m_colTBKColor);
-	 SetMFCButtonColor(m_gridColor, m_colGridLineColor);
-	 SetMFCButtonColor(m_coordinateColor, m_colCoorColor);
-	 SetMFCButtonColor(m_cursorColor, m_colCursor1);
-	 SetMFCButtonColor(m_cursorColor, m_colCursor2);
-	 SetMFCButtonColor(m_scaleColor, m_colScale);
-	 SetMFCButtonColor(m_xAxisColor, m_colXCoor);
-	 SetMFCButtonColor(m_yAxisColor, m_colYCoor);
-	 SetMFCButtonColor(m_statisticsInfColor, m_colStatisticInf);
+	// 设置按钮默认颜色
+	SetMFCButtonColor(m_series1Color, m_colSerie[0]);
+	SetMFCButtonColor(m_windowBGColor, m_colBKColor);
+	SetMFCButtonColor(m_graphBGColor, m_colGBKColor);
+	SetMFCButtonColor(m_infWinBGColor, m_colTBKColor);
+	SetMFCButtonColor(m_gridColor, m_colGridLineColor);
+	SetMFCButtonColor(m_coordinateColor, m_colCoorColor);
+	SetMFCButtonColor(m_cursorColor, m_colCursor1);
+	SetMFCButtonColor(m_cursorColor, m_colCursor2);
+	SetMFCButtonColor(m_scaleColor, m_colScale);
+	SetMFCButtonColor(m_xAxisColor, m_colXCoor);
+	SetMFCButtonColor(m_yAxisColor, m_colYCoor);
+	SetMFCButtonColor(m_statisticsInfColor, m_colStatisticInf);
 
-	 
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常:  OCX 属性页应返回 FALSE
 }

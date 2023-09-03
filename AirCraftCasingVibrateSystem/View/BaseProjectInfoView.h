@@ -29,8 +29,6 @@ public:
 
 protected:
 
-	vector<TbDictionary> m_vcollectionPlan;
-
 	DictionaryController m_dictionaryController;
 
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
@@ -38,10 +36,6 @@ protected:
 	vector<TbProduct> m_productVector;
 	
 	ProductController m_productController;
-
-	CGridCtrl m_projectPlanGridCtrl;
-	
-	void GridCtrlInit();
 
 	/**********************************************************************
 	功能描述：检测设备表格的单击事件
@@ -52,9 +46,6 @@ protected:
 	修改日期 版本号 修改人 修改内容
 	----------------------------------------------------------------------
 	***********************************************************************/
-	afx_msg void OnGridClick(NMHDR *pNotifyStruct, LRESULT* pResult);
-
-	void SetGridCellCheck(int row,int col,bool isChecked);
 	
 	CString m_projectName;
 
@@ -68,17 +59,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	virtual BOOL OnInitDialog();
-	bool GetGridCellCheck(int row, int col);
-	/**********************************************************************
-	功能描述：得到选中的项目采集计划
-	输入参数：
-	输出参数：
-	返 回 值：
-	其它说明：
-	修改日期 版本号 修改人 修改内容
-	----------------------------------------------------------------------
-	***********************************************************************/
-	void GetSelectedCollectionPlan(vector<TbDictionary> &selectedPlan);
 	CComboBox m_productCombo;
 	afx_msg void OnBnClickedButtonOk();
 	afx_msg void OnBnClickedButtonCancel();
@@ -104,4 +84,6 @@ public:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	void SetProjectEchoStatus(bool isEcho);
+	afx_msg void OnCbnSelchangeComboProduct();
+	virtual void OnOK();
 };

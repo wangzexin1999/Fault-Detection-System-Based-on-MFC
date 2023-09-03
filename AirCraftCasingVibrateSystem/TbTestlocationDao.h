@@ -11,7 +11,6 @@ public:
 
 public:
 	PDAttribute m_locationId;
-	PDAttribute m_productId;
 	PDAttribute m_locationName;
 	PDAttribute m_productTypeId;
 

@@ -5,19 +5,9 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="头文件">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="资源文件">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="头文件\Controller">
-      <UniqueIdentifier>{d1c70040-69ff-42d4-8247-13bd13c3d658}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\Service">
-      <UniqueIdentifier>{54518379-0f6d-48ea-8b53-b42dae47bc9f}</UniqueIdentifier>
     </Filter>
     <Filter Include="源文件\View">
       <UniqueIdentifier>{a82f5050-e76b-4ec3-aa81-81ca5d7c046a}</UniqueIdentifier>
@@ -28,9 +18,6 @@
     <Filter Include="源文件\Utils">
       <UniqueIdentifier>{a85a9f2f-534d-4c3f-af73-7d4078d040e7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\Utils">
-      <UniqueIdentifier>{43600346-829f-4b2f-bf05-7aa2677ea964}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\entity">
       <UniqueIdentifier>{fadd07fd-7805-4fda-8746-87f2e264bb6d}</UniqueIdentifier>
     </Filter>
@@ -39,12 +26,6 @@
     </Filter>
     <Filter Include="源文件\dao\basedao">
       <UniqueIdentifier>{81d9fac5-fc56-45d7-9823-4169a2e75b6e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\FFT">
-      <UniqueIdentifier>{07eddc42-6955-4c1b-99ed-c94d16d02315}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\View">
-      <UniqueIdentifier>{d02a1e50-aaa4-4e8f-919d-843eb945a575}</UniqueIdentifier>
     </Filter>
     <Filter Include="GridCtrl">
       <UniqueIdentifier>{5e181a81-ed64-42d0-a659-63633fabbac8}</UniqueIdentifier>
@@ -70,44 +51,26 @@
     <Filter Include="源文件\View\图形属性">
       <UniqueIdentifier>{58f0ba61-4c04-4db6-9fbb-afdd62807a4c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\View\图形属性">
-      <UniqueIdentifier>{2d2a8143-5526-41d5-8f59-502f0fdf323b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\Controller">
       <UniqueIdentifier>{cbc929cc-2583-4f72-9820-92e05284f936}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{43ab1dd0-0ca8-4b6a-8f92-17db97d90ce8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Controller">
+      <UniqueIdentifier>{abebb342-7034-46af-932b-ff2b635f4bc6}</UniqueIdentifier>
+    </Filter>
     <Filter Include="头文件\dao">
-      <UniqueIdentifier>{895c9c0d-11b2-4a59-a164-db982858fd60}</UniqueIdentifier>
+      <UniqueIdentifier>{34018671-b930-466f-b27e-3fe258e05429}</UniqueIdentifier>
     </Filter>
     <Filter Include="头文件\dao\basedao">
-      <UniqueIdentifier>{83d46d13-d3f5-429e-9494-9d14535b0e82}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="头文件\dao\entity">
-      <UniqueIdentifier>{65b8e1e7-4a7d-473b-b531-f1f382895c0b}</UniqueIdentifier>
+      <UniqueIdentifier>{41031e17-5c41-4ded-a9da-18382e177a6c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AirCraftCasingVibrateSystem.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ChildFrm.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="AirCraftCasingVibrateSystemDoc.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="MainFrm.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="GridCtrl_src\CellRange.h">
       <Filter>GridCtrl</Filter>
     </ClInclude>
@@ -396,7 +359,23 @@
     <ClInclude Include="include\rapidjson\msinttypes\stdint.h">
       <Filter>rapidjson\msinttypes</Filter>
     </ClInclude>
+    <ClInclude Include="TbTestlocationDao.h" />
+    <ClInclude Include="Controller\AlarmController.h">
+      <Filter>头文件\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\ChannelController.h">
+      <Filter>头文件\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\ChannelParaController.h">
+      <Filter>头文件\Controller</Filter>
+    </ClInclude>
     <ClInclude Include="Controller\ClassifierController.h">
+      <Filter>头文件\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\CollectionparasController.h">
+      <Filter>头文件\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller\CollectionPlanController.h">
       <Filter>头文件\Controller</Filter>
     </ClInclude>
     <ClInclude Include="Controller\DictionaryController.h">
@@ -417,6 +396,57 @@
     <ClInclude Include="Controller\SelfCheckController.h">
       <Filter>头文件\Controller</Filter>
     </ClInclude>
+    <ClInclude Include="Controller\UserController.h">
+      <Filter>头文件\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="TbAlarmparaDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="TbEquipmentDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="TbLabelDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="TbPostDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="TbProductTypeDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="TbSensorDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="TbSignalDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="TbTeststandDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="TbTeststateDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="dao\TbChannelDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="dao\TbCollectionparasDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="dao\TbDictionaryDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="dao\TbProductDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="dao\TbProjectDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="dao\TbSumsignalDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
+    <ClInclude Include="dao\TbUserDao.h">
+      <Filter>头文件\dao</Filter>
+    </ClInclude>
     <ClInclude Include="dao\basedao\PDAttribute.h">
       <Filter>头文件\dao\basedao</Filter>
     </ClInclude>
@@ -426,396 +456,92 @@
     <ClInclude Include="dao\basedao\PDSQL.h">
       <Filter>头文件\dao\basedao</Filter>
     </ClInclude>
-    <ClInclude Include="dao\TbDictionaryDao.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
-    <ClInclude Include="dao\TbProjectDao.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
-    <ClInclude Include="dao\TbRecordSignalDao.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\AcquiredSignal.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\DataStructure.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\EchoSignal.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\RealTimeSignal.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\Result.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\SmartArray.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\SmartFFTWComplexArray.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\TbCollectionPlan.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\TbDictionary.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\TbProduct.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\TbProject.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="dao\TbProductDao.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
-    <ClInclude Include="FFT\fftw3.h">
-      <Filter>头文件\FFT</Filter>
-    </ClInclude>
-    <ClInclude Include="Service\DictionaryService.h">
-      <Filter>头文件\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="Service\NetConService.h">
-      <Filter>头文件\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="Service\ProductService.h">
-      <Filter>头文件\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="Service\ProjectService.h">
-      <Filter>头文件\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="Service\SignalAcquisitionService.h">
-      <Filter>头文件\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\CherryTree.h">
-      <Filter>头文件\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\CommonUtil.h">
-      <Filter>头文件\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\ConfigurationUtil.h">
-      <Filter>头文件\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\DateUtil.h">
-      <Filter>头文件\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\FFTWUtil.h">
-      <Filter>头文件\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\FileUtil.h">
-      <Filter>头文件\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\httplib.h">
-      <Filter>头文件\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\MyGridCtrl.h">
-      <Filter>头文件\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\ThreadSafeQueue.h">
-      <Filter>头文件\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Controller\Constant.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Controller\CollectionPlanController.h">
-      <Filter>头文件\Controller</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\JsonUtil.h">
-      <Filter>头文件\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Service\RecordSignalService.h">
-      <Filter>头文件\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\TbRecordSignal.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="View\Picture\ColorView.h">
-      <Filter>头文件\View\图形属性</Filter>
-    </ClInclude>
-    <ClInclude Include="View\Picture\CoordinateView.h">
-      <Filter>头文件\View\图形属性</Filter>
-    </ClInclude>
-    <ClInclude Include="View\Picture\FontView.h">
-      <Filter>头文件\View\图形属性</Filter>
-    </ClInclude>
-    <ClInclude Include="View\Picture\GraphAttributeView.h">
-      <Filter>头文件\View\图形属性</Filter>
-    </ClInclude>
-    <ClInclude Include="View\Picture\GraphicAttributeView.h">
-      <Filter>头文件\View\图形属性</Filter>
-    </ClInclude>
-    <ClInclude Include="View\Picture\LineView.h">
-      <Filter>头文件\View\图形属性</Filter>
-    </ClInclude>
-    <ClInclude Include="View\Picture\SelectView.h">
-      <Filter>头文件\View\图形属性</Filter>
-    </ClInclude>
-    <ClInclude Include="View\AirCraftCasingVibrateSystemView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\AlarmParaSetView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\BaseProjectInfoView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\ChannelParaDialog.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\ChannelParaPresetView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\CollectionParaPresetView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\CollectionParaView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\CollectionPlanManageView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\CollectionPlanParaPresetView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\DetectDeviceManageView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\DeviceParaView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\EngineerUnitView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\GeneralParaView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\GeometricParaView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\LoginView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\NewProjectView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\OpenProjectView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\ProductManageView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\ProjectSetView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\RegisterView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\SignalDataView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\SignalSaveView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\SignalSelectView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\StateSetDialog.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\StateSetDockPanelView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\StatisticView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\SubChannelParaView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\SystemParaDialog.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\SystemParaView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="View\TriggerParaView.h">
-      <Filter>头文件\View</Filter>
-    </ClInclude>
-    <ClInclude Include="UUIDUtil.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ChildRibbonPanel.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\TbUser.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="dao\TbUserDao.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
-    <ClInclude Include="Service\UserService.h">
-      <Filter>头文件\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="Controller\UserController.h">
-      <Filter>头文件\Controller</Filter>
-    </ClInclude>
-    <ClInclude Include="TbPost.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="TbPostDao.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
-    <ClInclude Include="TbEquipment.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="TbEquipmentDao.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\TbCollectionparas.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="dao\TbCollectionparasDao.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
-    <ClInclude Include="Service\CollectionparasService.h">
-      <Filter>头文件\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="Controller\CollectionparasController.h">
-      <Filter>头文件\Controller</Filter>
-    </ClInclude>
-    <ClInclude Include="TbProductTypeDao.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
-    <ClInclude Include="TbProductType.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\TbChannel.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="dao\TbChannelDao.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
-    <ClInclude Include="Controller\ChannelController.h">
-      <Filter>头文件\Controller</Filter>
-    </ClInclude>
-    <ClInclude Include="Controller\ChannelParaController.h">
-      <Filter>头文件\Controller</Filter>
-    </ClInclude>
-    <ClInclude Include="Service\ChannelParaService.h">
-      <Filter>头文件\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="Service\ChannelService.h">
-      <Filter>头文件\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="TbSensor.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="TbSensorDao.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
-    <ClInclude Include="TbTestlocation.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="TbTeststand.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="TbTeststate.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="TbTestlocationDao.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
-    <ClInclude Include="TbTeststandDao.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
-    <ClInclude Include="TbTeststateDao.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
-    <ClInclude Include="TbLabel.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="TbLabelDao.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
-    <ClInclude Include="dao\TbSumsignalDao.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\TbSumsignal.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Service\SumsignalService.h">
-      <Filter>头文件\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="TbAlarmpara.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="TbAlarmparaDao.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
-    <ClInclude Include="TbSignalDao.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
-    <ClInclude Include="TbSignal.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="SignalController.h">
-      <Filter>头文件\Controller</Filter>
-    </ClInclude>
-    <ClInclude Include="SignalService.h">
-      <Filter>头文件\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="TbSignalTestRecordDao.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
-    <ClInclude Include="TbSignalTestRecord.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="TbSumsignalLabelDao.h">
-      <Filter>头文件\dao</Filter>
-    </ClInclude>
-    <ClInclude Include="TbSumsignalLabel.h">
-      <Filter>头文件\dao\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="SumsignalLabelService.h">
-      <Filter>头文件\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="SumsignalLabelController.h">
-      <Filter>头文件\Controller</Filter>
-    </ClInclude>
-    <ClInclude Include="SignalTestRecordService.h">
-      <Filter>头文件\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="SignalTestRecordController.h">
-      <Filter>头文件\Controller</Filter>
-    </ClInclude>
-    <ClInclude Include="AlarmparaService.h">
-      <Filter>头文件\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="AlarmparaController.h">
-      <Filter>头文件\Controller</Filter>
-    </ClInclude>
-    <ClInclude Include="CDHTestHardWare.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="DlgCom.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Common.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="DHTestHardWareController.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ConstDefine.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Channel.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
+    <ClInclude Include="TestService.h" />
+    <ClInclude Include="SensorController.h" />
+    <ClInclude Include="SensorService.h" />
+    <ClInclude Include="View\BaseProjectInfoView.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="View\GeneralParaView.h" />
+    <ClInclude Include="entity\AcquiredSignal.h" />
+    <ClInclude Include="Channel.h" />
+    <ClInclude Include="View\ChannelParaDialog.h" />
+    <ClInclude Include="View\ChannelParaPresetView.h" />
+    <ClInclude Include="View\CollectionParaPresetView.h" />
+    <ClInclude Include="AirCraftCasingVibrateSystem.h" />
+    <ClInclude Include="AirCraftCasingVibrateSystemDoc.h" />
+    <ClInclude Include="View\AirCraftCasingVibrateSystemView.h" />
+    <ClInclude Include="Service\CollectionparasService.h" />
+    <ClInclude Include="Service\ChannelParaService.h" />
+    <ClInclude Include="AlarmparaController.h" />
+    <ClInclude Include="View\ChannelParaView.h" />
+    <ClInclude Include="CDHTestHardWare.h" />
+    <ClInclude Include="Service\ChannelService.h" />
+    <ClInclude Include="ChildFrm.h" />
+    <ClInclude Include="Utils\CherryTree.h" />
+    <ClInclude Include="Utils\ConfigurationUtil.h" />
+    <ClInclude Include="Utils\CommonUtil.h" />
+    <ClInclude Include="View\AlarmParaSetView.h" />
+    <ClInclude Include="View\CollectionParaView.h" />
+    <ClInclude Include="View\CollectionPlanManageView.h" />
+    <ClInclude Include="View\CollectionPlanParaPresetView.h" />
+    <ClInclude Include="Controller\Constant.h" />
+    <ClInclude Include="ChildRibbonPanel.h" />
+    <ClInclude Include="AlarmparaService.h" />
+    <ClInclude Include="Common.h" />
+    <ClInclude Include="View\Picture\ColorView.h" />
+    <ClInclude Include="View\Picture\CoordinateView.h" />
+    <ClInclude Include="Service\DictionaryService.h" />
+    <ClInclude Include="DHTestHardWareController.h" />
+    <ClInclude Include="View\GeometricParaView.h" />
+    <ClInclude Include="View\LoginView.h" />
+    <ClInclude Include="View\DeviceParaView.h" />
+    <ClInclude Include="Utils\MyGridCtrl.h" />
+    <ClInclude Include="View\EngineerUnitView.h" />
+    <ClInclude Include="Utils\DateUtil.h" />
+    <ClInclude Include="entity\EchoSignal.h" />
+    <ClInclude Include="View\DetectDeviceManageView.h" />
+    <ClInclude Include="DlgCom.h" />
+    <ClInclude Include="Utils\FFTWUtil.h" />
+    <ClInclude Include="View\OpenProjectView.h" />
+    <ClInclude Include="View\NewProjectView.h" />
+    <ClInclude Include="Service\SignalAcquisitionService.h" />
+    <ClInclude Include="SignalController.h" />
+    <ClInclude Include="View\ProductManageView.h" />
+    <ClInclude Include="Service\ProjectService.h" />
+    <ClInclude Include="Service\ProductService.h" />
+    <ClInclude Include="View\Picture\GraphAttributeView.h" />
+    <ClInclude Include="Utils\FileUtil.h" />
+    <ClInclude Include="View\SignalDataView.h" />
+    <ClInclude Include="View\Picture\LineView.h" />
+    <ClInclude Include="TbAlarmpara.h" />
+    <ClInclude Include="View\SignalSaveView.h" />
+    <ClInclude Include="View\SignalSelectView.h" />
+    <ClInclude Include="View\RegisterView.h" />
+    <ClInclude Include="View\ProjectSetView.h" />
+    <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="SignalService.h" />
+    <ClInclude Include="TbLabel.h" />
+    <ClInclude Include="entity\TbChannel.h" />
+    <ClInclude Include="entity\TbCollectionparas.h" />
+    <ClInclude Include="entity\TbDictionary.h" />
+    <ClInclude Include="entity\TbCollectionPlan.h" />
+    <ClInclude Include="TbEquipment.h" />
+    <ClInclude Include="TbPost.h" />
+    <ClInclude Include="entity\TbProduct.h" />
+    <ClInclude Include="TbProductType.h" />
+    <ClInclude Include="entity\TbProject.h" />
+    <ClInclude Include="TbSensor.h" />
+    <ClInclude Include="TbSignal.h" />
+    <ClInclude Include="entity\TbSumsignal.h" />
+    <ClInclude Include="TbSignalTestRecord.h" />
+    <ClInclude Include="TbSumsignalLabelDao.h" />
+    <ClInclude Include="TbSumsignalLabel.h" />
+    <ClInclude Include="TbTestlocation.h" />
+    <ClInclude Include="TbTeststand.h" />
+    <ClInclude Include="TbTeststate.h" />
+    <ClInclude Include="entity\TbUser.h" />
+    <ClInclude Include="RedisDataProcess.h" />
+    <ClInclude Include="Utils\JsonUtil.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AirCraftCasingVibrateSystem.cpp">
@@ -1010,9 +736,6 @@
     <ClCompile Include="dao\TbProjectDao.cpp">
       <Filter>源文件\dao</Filter>
     </ClCompile>
-    <ClCompile Include="dao\TbRecordSignalDao.cpp">
-      <Filter>源文件\dao</Filter>
-    </ClCompile>
     <ClCompile Include="entity\AcquiredSignal.cpp">
       <Filter>源文件\entity</Filter>
     </ClCompile>
@@ -1084,12 +807,6 @@
     </ClCompile>
     <ClCompile Include="Utils\JsonUtil.cpp">
       <Filter>源文件\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="Service\RecordSignalService.cpp">
-      <Filter>头文件\View</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\TbRecordSignal.cpp">
-      <Filter>源文件\entity</Filter>
     </ClCompile>
     <ClCompile Include="View\Picture\ColorView.cpp">
       <Filter>源文件\View\图形属性</Filter>
@@ -1204,9 +921,6 @@
     </ClCompile>
     <ClCompile Include="View\TriggerParaView.cpp">
       <Filter>源文件\View</Filter>
-    </ClCompile>
-    <ClCompile Include="ChildRibbonPanel.cpp">
-      <Filter>头文件</Filter>
     </ClCompile>
     <ClCompile Include="entity\TbUser.cpp">
       <Filter>源文件\entity</Filter>
@@ -1328,9 +1042,6 @@
     <ClCompile Include="SignalController.cpp">
       <Filter>源文件\Controller</Filter>
     </ClCompile>
-    <ClCompile Include="TbSignalTestRecordDao.cpp">
-      <Filter>源文件\dao</Filter>
-    </ClCompile>
     <ClCompile Include="TbSignalTestRecord.cpp">
       <Filter>源文件\entity</Filter>
     </ClCompile>
@@ -1377,6 +1088,21 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="SumsignalLabelController.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TestController.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TestService.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SensorController.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SensorService.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RedisDataProcess.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

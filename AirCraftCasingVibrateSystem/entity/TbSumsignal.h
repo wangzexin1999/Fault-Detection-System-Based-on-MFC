@@ -4,7 +4,7 @@
 #include "TbCollectionparas.h"
 #include <vector>
 #include "TbProject.h"
-using namespace std;
+#include "TbSignal.h"
 
 class TbSumsignal
 {
@@ -25,8 +25,8 @@ private:
 	int m_collectionparasId;
 	CString m_collectionStatus;
 	CString m_channelInfo;
-
-	
+	std::vector<TbSignal> m_vsignals;
+	TbProduct m_product;
 
 public:
 	CString GetSumsignalId();
@@ -47,11 +47,13 @@ public:
 	void SetDataUrl(CString data_url);
 	void SetProjectId(int projectId);
 	int   GetProjectId();
-	/*int  GetCollectionparasId();
-	void SetCollectionparasId(int  collectionparasId);*/
 	void SetCollectionStatus(CString para);
 	CString GetCollectionStatus();
 	CString GetChannelInfo();
 	void SetChannelInfo(CString channelinfo);
+
+	vector<TbSignal> & GetAllSignal();
+
+	TbProduct & GetProduct();
 };
 

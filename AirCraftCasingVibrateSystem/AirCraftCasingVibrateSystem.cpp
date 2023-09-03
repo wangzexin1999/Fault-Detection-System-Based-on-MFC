@@ -62,7 +62,7 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	// 使用 ComCtl32.dll 版本 6 或更高版本来启用可视化方式，
 	//则需要 InitCommonControlsEx()。  否则，将无法创建窗口。
 	/*redis 传输*/
-	/*if (!m_redisCon->Connect("127.0.0.1", 6379))
+	/*if (!      ->Connect("127.0.0.1", 6379))
 	{
 		printf("connect error!\n");
 		//return 0;
@@ -80,12 +80,11 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	//theApp.PDsql.SetMysql(host, user, pswd, table);
 	//theApp.PDsql.OpenSql();
 
-
 	/*连接本地数据库*/
 	const char localUser[] = "root";         //local username
-	const char localPswd[] = "oxygen3.14"; //local password
-	//const char localPswd[] = "1604011031";//local password
-	const char localHost[] = "127.0.0.1";    //local ip "127.0.0.1" 
+	//const char localPswd[] = "oxygen3.14"; //local password
+	const char localPswd[] = "root";//local password
+	const char localHost[] = "localhost";    //local ip "127.0.0.1" 
 	const char localTable[] = "aircraftfaultdetectdb15";        //local database
 	theApp.m_conPDLocalSql.SetMysql(localHost, localUser, localPswd, localTable);
 	theApp.m_conPDLocalSql.OpenSql();
@@ -161,6 +160,7 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 
 	// 创建主 MDI 框架窗口
 	CMainFrame* pMainFrame = new CMainFrame();
+	pMainFrame->LoadFrame(IDR_MAINFRAME);
 	// 如果设备不在线，就退出程序
 	if (!deviceIsOnline) return FALSE;
 	// 根据当前登录用户，加载用户最后一次使用的项目
@@ -169,14 +169,15 @@ BOOL CAirCraftCasingVibrateSystemApp::InitInstance()
 	projectController.FindLastOpenProjectByUser(theApp.m_currentProject);
 	if (theApp.m_currentProject.GetProjectId() != 0){
 		theApp.m_currentProject.SetProjectUpdateTime(DateUtil::GetCurrentCStringTime());
-		projectController.Update(theApp.m_currentProject);
+		projectController.UpdateTime(theApp.m_currentProject);
 	}
 
-	if (!pMainFrame || !pMainFrame->LoadFrame(IDR_MAINFRAME))
+	/*if (!pMainFrame || !pMainFrame->LoadFrame(IDR_MAINFRAME))
 	{
 		delete pMainFrame;
 		return FALSE;
-	}
+	}*/
+	//pMainFrame->LoadFrame(IDR_MAINFRAME);
 	m_pMainWnd = pMainFrame;
 
 	// 分析标准 shell 命令、DDE、打开文件操作的命令行

@@ -24,7 +24,13 @@ private:
 	float m_sensitivity;//灵敏度
 	std::pair<int, CString> m_elcpressure;//电压测量范围
 	std::pair<int, CString> m_messureType;//测量类型
-	
+	int m_projectId;
+	TbTestlocation m_testLocation;
+	double m_xMin; //X轴最小值
+	double m_xMax; //X轴最大值
+	double m_yMin; //Y轴最小值
+	double m_yMax; //Y轴最大值
+
 	TbDictionary m_channelStatus;
 	int m_collectionparasId;
 	CString m_channelDesc;
@@ -39,7 +45,7 @@ private:
 	TbDictionary m_integralType;
 	TbDictionary m_integralUnits;
 	char m_antiAliasingFiltering;
-	int m_projectId;
+
 	
 
 public:
@@ -74,11 +80,26 @@ public:
 	int GetProjectId();
 	void SetProjectId(int projectId);
 
+	// 测点位置
+	TbTestlocation & GetTestLocation();
+	void SetTestLocation(TbTestlocation testLocation);
 
 	//测量类型
 	std::pair<int, CString> & GetMessureType();
 	void SetMessureType(std::pair<int, CString> messureType);
 
+	//设置控件的横坐标最小值
+	void SetXMin(double xmin);
+	double GetXMin();
+	//设置空间横坐标的最大值
+	void SetXMax(double xmax);
+	double GetXMax();
+	//设置纵坐标的最小值
+	void SetYMin(double xmin);
+	double GetYMin();
+	//设置纵坐标的最大值
+	void SetYMax(double ymax);
+	double GetYMax();
 
 	char GetAntiAliasingFiltering();
 	void SetAntiAliasingFiltering(char antiAliasingFiltering);

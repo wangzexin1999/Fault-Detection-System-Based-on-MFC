@@ -83,3 +83,11 @@ void TbSumsignal::SetChannelInfo(CString channelInfo){
 CString TbSumsignal::GetChannelInfo(){
 	return m_channelInfo;
 }
+
+vector<TbSignal>&  TbSumsignal::GetAllSignal(){
+	return m_vsignals;
+}
+
+TbProduct & TbSumsignal::GetProduct(){
+	return m_product;
+}

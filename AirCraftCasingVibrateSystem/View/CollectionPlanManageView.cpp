@@ -198,6 +198,10 @@ void CollectionPlanManageView::OnBnClickedButtonDelPlanBaseInfo()
 {
 	///1.首先确定是否要删除
 	if (MessageBox("是否删除该采集计划", "删除采集计划", MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL) return;
+	if (m_selectedPlanIndex >= m_vcollectionPlan.size()){
+		m_collectionPlanBaseInfoGridCtrl.DeleteRow(m_selectedPlanIndex);
+		return;
+	}
 	///2.删除采集参数
 	Result res = m_collectionPlanController.DeleteById(m_vcollectionPlan[m_selectedPlanIndex]);
 	if (!res.GetIsSuccess()){ AfxMessageBox(res.GetMessages()); return; }

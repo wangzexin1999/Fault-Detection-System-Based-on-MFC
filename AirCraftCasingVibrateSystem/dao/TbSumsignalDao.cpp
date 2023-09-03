@@ -10,7 +10,6 @@ TbSumsignalDao::TbSumsignalDao()
 	SetVectorAndField("signal_id", "CString", m_sumsignalId);
 	SetVectorAndField("start_time", "CString", m_startTime);
 	SetVectorAndField("end_time", "CString",m_endTime);
-	SetVectorAndField("signal_label", "int", m_sumsignalLabel);
 	SetVectorAndField("product_id", "int", m_productId);
 	SetVectorAndField("signal_status", "char", m_sumSignalLabel);
 	SetVectorAndField("data_url", "CString", m_dataUrl);
@@ -23,7 +22,6 @@ TbSumsignalDao::TbSumsignalDao(const TbSumsignalDao & sumsignal){
 	SetVectorAndField("signal_id", "CString", m_sumsignalId);
 	SetVectorAndField("start_time", "CString", m_startTime);
 	SetVectorAndField("end_time", "CString", m_endTime);
-	SetVectorAndField("signal_label", "int", m_sumsignalLabel);
 	SetVectorAndField("product_id", "int", m_productId);
 	SetVectorAndField("signal_status", "char", m_sumSignalLabel);
 	SetVectorAndField("data_url", "CString", m_dataUrl);

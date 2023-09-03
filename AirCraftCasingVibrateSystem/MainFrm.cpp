@@ -24,6 +24,7 @@
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
+#define M_PI       3.14159265358979323846   // pi
 #endif
 
 // CMainFrame
@@ -86,14 +87,13 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
 	ON_COMMAND(ID_BUTTON_OPENPROJECTVIEW, &CMainFrame::OnButtonOpenProjectView)
 	ON_COMMAND(ID_BUTTON_OPEN_PROJECTSET_VIEW, &CMainFrame::OnButtonOpenProjectSetView)
 	///消息
-
 	ON_MESSAGE(StatusInfMessage, OnStatusInf)
 	ON_MESSAGE(WM_REFRESHVIEW_BY_PROJECT, &CMainFrame::OnRefreshViewByProject)
 	ON_MESSAGE(WM_SETTEXT, &CMainFrame::OnSetText)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_ANALYSE_FRE_MIN, &CMainFrame::OnUpdateEditAnalyseFreMin)
+	//ON_UPDATE_COMMAND_UI(ID_EDIT_ANALYSE_FRE_MIN, &CMainFrame::OnUpdateEditAnalyseFreMin)
 	ON_COMMAND(ID_EDIT_ANALYSE_FRE_MIN, &CMainFrame::OnEditAnalyseFreMin)
 	ON_COMMAND(ID_EDIT_ANALYSE_FRE_MAX, &CMainFrame::OnEditAnalyseFreMax)
-	ON_UPDATE_COMMAND_UI(ID_EDIT_ANALYSE_FRE_MAX, &CMainFrame::OnUpdateEditAnalyseFreMax)
+	//ON_UPDATE_COMMAND_UI(ID_EDIT_ANALYSE_FRE_MAX, &CMainFrame::OnUpdateEditAnalyseFreMax)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_BUTTON_START_CAPTURE, ID_BTN_STOP_SAMPLE, &CMainFrame::OnUpdateIdrRibbonI)
 END_MESSAGE_MAP()
 
@@ -124,13 +124,14 @@ CMainFrame::CMainFrame()
 	//建立连接
 	long lReturnValue;
 	//初始化采集窗口
-	//InitCaptureViewVector();
+	//InitCaptureViewVector();//改正
 	theApp.m_pHardWare->ReConnectAllMac(&lReturnValue);//连接在DeviceInfo.ini文件的IP的仪器。
-	if (!IsConnectMachine())
+	//liuxiu
+	/*if (!IsConnectMachine())
 	{
 		AfxMessageBox(LPCTSTR("仪器未连接!无法打开程序"));
 		theApp.deviceIsOnline = false;
-	}
+	}*/
 
 	m_dhTestHardWareController.GetAllGroupChannel(theApp.m_pHardWare, theApp.m_vecGroupChannel,theApp.m_vecHardChannel);
 	m_dhTestHardWareController.GetAllInputMode(theApp.m_pHardWare, theApp.m_vecHardChannel, theApp.m_vecHardChannel[0].m_strMachineIP, theApp.m_listInputMode);
@@ -140,6 +141,7 @@ CMainFrame::CMainFrame()
 	m_dhTestHardWareController.GetAllMessaueType(theApp.m_pHardWare, theApp.m_vecHardChannel, theApp.m_vecHardChannel[0].m_strMachineIP, theApp.m_listMessaueType);
 	m_dhTestHardWareController.GetSampleFreqList(theApp.m_pHardWare, theApp.m_vecHardChannel,theApp.m_listSampleFreq);
 
+	//AcquireResult();
 	//InitSampleClock();//绑定时钟 1.内部时钟2.外部时钟
 	//除通道信息外获取所有参数
 	//RefreshAllParam();//<------------------
@@ -160,6 +162,7 @@ CMainFrame::~CMainFrame(){
 //初始化仪器控制接口
 long CMainFrame::InitInterface()
 {
+
 	TCHAR cPath[MAX_PATH];
 	GetModuleFileName(NULL, cPath, MAX_PATH);
 	CString  strPath = ".\\COM";
@@ -172,9 +175,12 @@ long CMainFrame::InitInterface()
 	m_nInstrumentType = GetPrivateProfileInt("SystemParameter", "InstrumentType", 27, strCfgpath);
 
 	m_bOneMacBuffer = GetPrivateProfileInt("SystemParameter", "OneMacBuffer", 0, strCfgpath);
-	long lReturnValue;
+	long lReturnValue ;
 	//初始化仪器控制接口
 	theApp.m_pHardWare->Init(LPCTSTR(strPath), LPCTSTR("chinese"), &lReturnValue);
+	//GetParamSelectValue();//获取通道测量类型
+	RedisHandel();
+	//InitRedisDatabase();
 	return lReturnValue;
 }
 //检查仪器是否连接
@@ -643,8 +649,7 @@ void CMainFrame::InitCaptureViewVector(){
 			currentView->ResetView();
 			theApp.m_vsignalCaptureView.push_back(currentView);
 			currentView->GetChannel(channel);
-			currentView->SetChartXYCoordinateLen(0, theApp.m_currentProject.GetCollectionparas().GetSampleFrequency().second/theApp.FFTRATE,-500,500);
-			m_mpsignalCollectionView[channel.GetChannelCode()] = currentView;
+			m_mpsignalCollectionView[channel.GetChannelCode()] = currentView;//问题
 
 		}
 		viewNumber++;
@@ -742,42 +747,34 @@ void CMainFrame::OnButtonOpenDataFile()
 	{
 		//去查询采集数据
 		///得到选中的采样信号
-		m_selectedRecordSignal = sampleDataView.GetSelectedRecordSignal();
-		Value channelCount;
-		JsonUtil::GetValueFromJsonString(m_selectedRecordSignal.GetChannelInfo(), "channelCount", channelCount);
-		///拿到通道个数
+		m_selectedSumSignal = sampleDataView.GetSelectedSumSignal();
+		m_selectedSumSignal.GetAllSignal().clear();
+		///拿到所有的信号
+		m_signalController.GetSignalsBySumSignalId(m_selectedSumSignal.GetSumsignalId(),m_selectedSumSignal.GetAllSignal());
 		///拿到所有通道便于回显
-		vector<TbChannel> vchannel;
-		Value josnChannels;
-		JsonUtil::GetValueFromJsonString(m_selectedRecordSignal.GetChannelInfo(), "channels", josnChannels);
-		for (int i = 0; i < josnChannels.Size(); i++){
-			TbChannel currentChannel;
-			JsonUtil::ConvertValue2Channel(josnChannels[i], currentChannel);
-			vchannel.push_back(currentChannel);
+		//liuxiutheApp.m_currentProject
+		//TbChannel channel = m_project.GetChannelVector()[0];
+		
+		///创建缺少的窗口数theApp.m_currentProject.GetChannelVector().size() m_selectedSumSignal.GetAllSignal().size()
+		for (int i = 0; i < m_selectedSumSignal.GetAllSignal().size() - theApp.m_currentProject.GetChannelVector().size(); i++){
+			TbChannel channel;
+			theApp.m_currentProject.GetChannelVector().push_back(channel);
 		}
-		theApp.m_currentProject.SetChannelVector(vchannel);
 		SendMessage(WM_REFRESHVIEW_BY_PROJECT);
 		//OnBtnStartPlayback();
-		TbSumsignal signal;
-		vector<TbSumsignal> vsignal;
-		m_recordSignal = m_selectedRecordSignal;
-		signal.SetSumsignalId(m_recordSignal.GetSignalId());
-		//signal.SetSignalId(m_selectedRecordSignal.GetSignalId());
-		signal.SetProjectId(m_recordSignal.GetProject().GetProjectId());
-		signal.SetProductId(m_recordSignal.GetProduct().GetProductId());
-
-		//m_sumsignalController.FindAllSignalBySearchCondition(signal, vsignal);
-		CString x = vsignal[0].GetDataUrl();
-		m_inputStream = CFileUtil::GetIfstreamByFileName(vsignal[0].GetDataUrl());
-		if (m_inputStream.good()){
+		CString path = m_selectedSumSignal.GetAllSignal()[0].GetDataUrl();
+		ifstream inputStream = CFileUtil::GetIfstreamByFileName(path);
+		if (inputStream.good()){
+			/// 本地文件存在
+			m_blocalSignalExist = true;
 			thread t(&CMainFrame::Pre_GetDataFromlocal, this);
 			t.detach();
 		}
 		else{
 			///本地文件不存在，从服务器读取文件。 
 			AfxMessageBox("bucunzai---");
+			m_blocalSignalExist = false;
 		}
-
 
 		// 如果可以连接服务器，根据条件查询服务器数据
 		// 否则查询本体数据
@@ -862,15 +859,12 @@ void CMainFrame::OnButtonStartCapture()
 		AfxMessageBox(LPCTSTR("仪器采样中，请先停止采样!"));
 		return;
 	}
-	//如果当前状态是暂停采集，那么就直接开始采集
-	if (theApp.m_icollectionState == 2){
-		theApp.m_icollectionState = 1;
-		return;
-	}
+	int oldcollectState = theApp.m_icollectState;
+	
 	///如果当前状态为正在采集
-	if (theApp.m_icollectionState == 1) return;
+	if (theApp.m_icollectState == 1) return;
 	///设置当前状态为正在采集状态
-	theApp.m_icollectionState = 1;
+	theApp.m_icollectState = 1;
 	long lReturnValue;
 	// 设置采样频率
 	//设置取数块大小 小于等于500Hz按采样频率，1000Hz往上1024的整数倍；
@@ -878,21 +872,28 @@ void CMainFrame::OnButtonStartCapture()
 	theApp.m_pHardWare->SetSampleFreq(fltSampleFrequency, &lReturnValue);
 	//防止内存不够取不到数
 	//int dataCount = theApp.m_currentProject.GetCollectionparas().GetLine() * theApp.FFTRATE;
-	int dataCount = theApp.m_currentProject.GetCollectionparas().GetLine() * 2.56;
-
+	//int dataCount = theApp.m_currentProject.GetCollectionparas().GetLine() * 2;
+	int dataCount = 15624;
 	theApp.m_pHardWare->SetGetDataCountEveryTime(dataCount, &lReturnValue);
 
 	//启动采样 1024
 	theApp.m_pHardWare->StartSample(LPCTSTR("DH3817F"), 0, dataCount, &lReturnValue);
 
+	//如果当前状态是暂停采集，那么就直接开始采集
+	if (oldcollectState == 2){
+		return;
+	}
+
 	//// 初始化采集窗口集合
 	InitCaptureViewVector();
-	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
+	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){//
 		theApp.m_vsignalCaptureView[i]->openTimer2RefershView();
 	}
 	//// 初始化采集队列
 	for (int i = 0; i < m_vchannelCodes.size(); i++){
 		m_mpcolllectioinDataQueue.insert(std::pair<CString, ThreadSafeQueue<double>>(m_vchannelCodes[i], ThreadSafeQueue<double>()));
+		m_redisCollectionDataQueue.insert(std::pair<CString, ThreadSafeQueue<double>>(m_vchannelCodes[i], ThreadSafeQueue<double>()));
+		m_modelPredictResult.insert(std::pair<CString, ThreadSafeQueue<CString>>(m_vchannelCodes[i], ThreadSafeQueue<CString>()));
 	}
 
 	//启动取数线程
@@ -905,7 +906,12 @@ void CMainFrame::OnButtonStartCapture()
 	else{
 		m_pGetDataThread = AfxBeginThread(GetDataThread, this, THREAD_PRIORITY_NORMAL);
 	}
+	
 	OpenThread2SaveCollectionData();
+	OpenThread2RedisSaveData();
+	//AfxBeginThread(GetResultFromRedisThread, this, THREAD_PRIORITY_NORMAL);
+	// OpenThreadReadPredictResult();
+	//AcquireResult();
 	//实时数据传输
 	//SetTimer(99, 1000, NULL);
 }
@@ -934,14 +940,16 @@ UINT CMainFrame::GetDataThread(LPVOID pParam)
 	long nBufferSize = 1024 * 1024;		// 1Mb内存 防止内存不够获取不到数据
 	float *BufferPoint = new float[nBufferSize];
 	long nTotalDataPos, nReceiveCount, nChnCount, lReturnValue;
+	nChnCount = 4;
+	nReceiveCount = 15624;
 	int groupId = 0;
 	int channelId = 0;
 	long lTime = GetTickCount();
-	double interval = (double)theApp.m_currentProject.GetCollectionparas().GetSampleFrequency().second / (theApp.FFTRATE * theApp.m_currentProject.GetCollectionparas().GetLine());
+	float r = 0;
 	while (curFrame->m_bThread)
 	{
-		theApp.m_pHardWare->GetAllChnData(nBufferSize, (long)BufferPoint, &nTotalDataPos, &nReceiveCount, &nChnCount, &lReturnValue);
-		if (nReceiveCount <= 0||theApp.m_icollectionState==2){
+		//theApp.m_pHardWare->GetAllChnData(nBufferSize, (long)BufferPoint, &nTotalDataPos, &nReceiveCount, &nChnCount, &lReturnValue);
+		if (nReceiveCount <= 0||theApp.m_icollectState==2){
 			Sleep(10);
 			continue;
 		}
@@ -951,80 +959,106 @@ UINT CMainFrame::GetDataThread(LPVOID pParam)
 		float *pValue = (float*)BufferPoint;
 		for (int i = 0; i < theApp.m_vecGroupChannel.size(); i++)
 		{
-			for (int j = theApp.m_vecGroupChannel[i].m_nChannelFirst; j < theApp.m_vecGroupChannel[i].m_nChannelFirst + theApp.m_vecGroupChannel[i].m_nChannelNumber; j++){
+			// theApp.m_vecGroupChannel[i].m_nChannelNumber   .m_nChannelFirst +4
+			int a = theApp.m_vecGroupChannel[i].m_nChannelNumber;
+			for (int j = theApp.m_vecGroupChannel[i].m_nChannelFirst; j < theApp.m_vecGroupChannel[i].m_nChannelNumber; j++){
 				//获取当前通道pos
 				long nSeekPos;
-				SmartArray<double> yData; ///y坐标
-				SmartArray<double> xData; ///x坐标
-				SmartArray<double> fftwInputArray;//傅里叶输入
+				//SChartXYPoint* pPoints = new SChartXYPoint[int(nReceiveCount / 2)];
+				double * fftwInputArray = new double[nReceiveCount];//傅里叶输入
 				float pfltData;
 				CString channelCode = CommonUtil::Int2CString(theApp.m_vecGroupChannel[i].m_GroupID) + "-" + CommonUtil::Int2CString(j);
 				theApp.m_pHardWare->GetDataIndex(theApp.m_vecGroupChannel[i].m_GroupID, theApp.m_vecGroupChannel[i].m_strMachineIP.c_str(), j, &nSeekPos, &lReturnValue);
-				for (int k = 0; k < nReceiveCount; k++){
-					pfltData = pValue[nSeekPos*nReceiveCount + k];
-					curFrame->m_mpcolllectioinDataQueue[channelCode].push(pfltData);
-					fftwInputArray.push_back(pfltData);
-					//if (j == 2 && abs(pfltData) >= 10){
-					//	//我这里打印第三个通道，我就用了第三个通道
-					//	TRACE("data:%f\n", pfltData);
-					//}
+				for (int k = 0,index = 0; k < nReceiveCount; k++){
+					
+					//构造频点
+					float s1 = cos(50 * r *M_PI * 100);
+					float s2 = cos(5 * M_PI * 100 * r);
+					float s3 = sin(200 * M_PI * 100 * r);
+					float s4 = sin(5 * M_PI * 10 * r);
+					float sumsignal = s1 + s2 + s3 + s4;
+
+					pfltData = pValue[nSeekPos*nReceiveCount + k];//采集数据
+
+					curFrame->m_mpcolllectioinDataQueue[channelCode].push(sumsignal);//pfltData
+					curFrame->m_redisCollectionDataQueue[channelCode].push(sumsignal); //redis取数队列   pfltData
+					fftwInputArray[k] = sumsignal;//pfltData
+					r += 0.01;
+
+					
+					//curFrame->RedisSetCollectionData(pfltData);
+					//theApp.m_redisConnect->redisSetCollectionData("CollectionData",pfltData);
 				}
-				//设置x坐标
-				for (int i = 0; i < nReceiveCount / 2.56; i++){
-					xData.push_back(i * interval);
-				}
-				//对传入的数据进行傅里叶变换处理
-				SmartFFTWComplexArray fftwOutput(fftwInputArray.size());
-				FFTWUtil::FastFourierTransformation(fftwInputArray.size(), fftwInputArray.GetSmartArray(),
-					fftwOutput.GeFFTWComplexArray());
-				//将处理之后的傅里叶变换转换成XY坐标
-				FFTWUtil::FFTDataToXY(fftwOutput, yData, fftwInputArray.size());
-				EchoSignal echoSiganl(xData, yData);
-				curFrame->m_mpsignalCollectionView[channelCode]->SetEchoSignalData(move(echoSiganl));
+				curFrame->m_mpsignalCollectionView[channelCode]->SetEchoSignal(fftwInputArray);
+				//theApp.m_redisConnect->redisGetCollectionData("CollectionData");
 			}
 		}
-		TRACE("\nCal:%d\n", GetTickCount() - lTime);
+		//TRACE("\nCal:%d\n", GetTickCount() - lTime);
 		Sleep(10);
+		
 	}
 	delete[] BufferPoint;
 	return 0;
 }
+//结果线程
+UINT CMainFrame::GetResultFromRedisThread(LPVOID pParam){
 
-void CMainFrame::OnShowSampleData(WPARAM wParam, LPARAM lParam){
-	int nDataCount = (int)wParam;
-	float *pfltData = (float *)lParam;
-	//Double strData ;
-	SmartArray<double> xData; ///x坐标
-	fftw_complex fftw;///单次傅立叶变换的输入
-	int channel = 0;
-	vector<SmartArray<double>> fftwInputArray(1);//channelCount
-
-	for (int i = 0; i < nDataCount; i++)
-	{
-		//strData.Format("%.3f   ", pfltData[i]);
-		fftwInputArray[0].push_back(pfltData[i]);
-		//channel++;
-	}
-	tempCount += nDataCount;
-
+	CMainFrame *curFrame_redis = (CMainFrame *)pParam;
+	redisReply *reply;
+	while (curFrame_redis->m_bThread){
 	
-	//设置x坐标
-	for (int i = 0; i < nDataCount / theApp.FFTRATE; i++){
-		xData.push_back(i);
-	}
-	//for (int channel = 0; channel < 4; channel++){
-		SmartArray<double> yData; ///y坐标
-		//对传入的数据进行傅里叶变换处理
-		SmartFFTWComplexArray fftwOutput(fftwInputArray[0].size());
-		FFTWUtil::FastFourierTransformation(fftwInputArray[0].size(), fftwInputArray[0].GetSmartArray(),
-			fftwOutput.GeFFTWComplexArray());
-		//将处理之后的傅里叶变换转换成XY坐标
-		int a = fftwInputArray[0].size();
-		FFTWUtil::FFTDataToXY(fftwOutput, yData, fftwInputArray[0].size());
-		//
-		theApp.m_vsignalCaptureView[0]->SetEchoSignalData(EchoSignal(xData, yData));
+		for (int i = 0; i < 4; i++){
+			CString channelCode = "0-" + CommonUtil::Int2CString(i);
+			reply = (redisReply*)redisCommand(theApp.m_redisContext, "LPOP predictResult-%s", channelCode);
+			string redisResult = reply->str;
+			CString redisResult_c = redisResult.c_str();
+			curFrame_redis->m_modelPredictResult[channelCode].push(redisResult_c);
 
+		}
+	
+	
+	}
+	freeReplyObject(reply);
+
+
+	return 0;
+
+}
+void CMainFrame::OnShowSampleData(WPARAM wParam, LPARAM lParam){
+	//int nDataCount = (int)wParam;
+	//float *pfltData = (float *)lParam;
+	////Double strData ;
+	//SmartArray<double> xData; ///x坐标
+	//fftw_complex fftw;///单次傅立叶变换的输入
+	//int channel = 0;
+	//vector<SmartArray<double>> fftwInputArray(1);//channelCount
+
+	//for (int i = 0; i < nDataCount; i++)
+	//{
+	//	//strData.Format("%.3f   ", pfltData[i]);
+	//	fftwInputArray[0].push_back(pfltData[i]);
+	//	//channel++;
 	//}
+	//tempCount += nDataCount;
+	
+	//
+	////设置x坐标
+	//for (int i = 0; i < nDataCount / theApp.FFTRATE; i++){
+	//	xData.push_back(i);
+	//}
+	////for (int channel = 0; channel < 4; channel++){
+	//	SmartArray<double> yData; ///y坐标
+	//	//对传入的数据进行傅里叶变换处理
+	//	SmartFFTWComplexArray fftwOutput(fftwInputArray[0].size());
+	//	FFTWUtil::FastFourierTransformation(fftwInputArray[0].size(), fftwInputArray[0].GetSmartArray(),
+	//		fftwOutput.GeFFTWComplexArray());
+	//	//将处理之后的傅里叶变换转换成XY坐标
+	//	int a = fftwInputArray[0].size();
+	//	FFTWUtil::FFTDataToXY(fftwOutput, yData, fftwInputArray[0].size());
+	//	//
+	//	theApp.m_vsignalCaptureView[0]->SetEchoSignalData(EchoSignal(xData, yData));
+
+	////}
 }
 
 UINT CMainFrame::GetOneMacDataThread(LPVOID pParam)
@@ -1147,7 +1181,9 @@ void CMainFrame::OnButtonSuspendCapture()
 	theApp.m_pHardWare->IsSampling(&lIsSampling);
 	if (lIsSampling)
 	{
-		theApp.m_icollectionState = 2;
+		theApp.m_icollectState = 2;
+		////停止采样
+		theApp.m_pHardWare->StopSample(&lIsSampling);
 	}
 }
 
@@ -1190,11 +1226,13 @@ void CMainFrame::OnBtnStopCapture()
 		long lStopSample;
 		////停止采样
 		theApp.m_pHardWare->StopSample(&lStopSample);
-		for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
-			theApp.m_vsignalCaptureView[i]->killTimer2RefershView();
-		}
+		
 	}
-    theApp.m_icollectionState = 0;
+    theApp.m_icollectState = 0;
+	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
+		theApp.m_vsignalCaptureView[i]->killTimer2RefershView();
+		theApp.m_vsignalCaptureView[i]->clearEchoSignal();
+	}
 	//for (int channel = 0; channel < m_vchannelCodes.size(); channel++)
 	//{
 	//	m_vSignalTestRecord[channel].SetPeakValue(theApp.m_vsignalCaptureView[channel]->GetPeak());
@@ -1230,43 +1268,42 @@ void CMainFrame::OnBtnStopCapture()
 // 停止回放
 void CMainFrame::OnBtnStopPlayback()
 {
-	theApp.m_iplaybackStatus = 0;
+	theApp.m_iplaybackState = 0;
+	for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
+		theApp.m_vsignalCaptureView[i]->killTimer2RefershView();
+		theApp.m_vsignalCaptureView[i]->clearEchoSignal();
+	}
+
 }
+
 
 //开始回放
 void CMainFrame::OnBtnStartPlayback()
 {
-	/////根据采样数据记录的信号id去查询采集数据表的url
-	//TbSumsignal sumsignal;
-	//vector<TbSumsignal> vsumsignal;
-	//m_recordSignal = m_selectedRecordSignal;
-	//sumsignal.SetSumsignalId(m_recordSignal.GetSignalId());
-	////signal.SetSignalId(m_selectedRecordSignal.GetSignalId());
-	//sumsignal.SetProjectId(m_recordSignal.GetProject().GetProjectId());
-	//sumsignal.SetProductId(m_recordSignal.GetProduct().GetProductId());
-
-	//m_sumsignalController.FindAllSignalBySearchCondition(sumsignal, vsumsignal);
-	//CString x = vsumsignal[0].GetDataUrl();
-	//
-	//theApp.m_iplaybackStatus = 1;
-	//if (m_inputStream.good()){
-	//	thread t(&CMainFrame::GetDataFromlocal, this);
-	//	t.detach();
+	//如果现在正在回放，那么就暂停回放
+	//if (theApp.m_iplaybackState == 1){
+	//	theApp.m_iplaybackState = 2;
+	//	return;
 	//}
-	//else{
-	//	///本地文件不存在，从服务器读取文件。 
-	//	AfxMessageBox("bucunzai");
+	////如果现在暂停回放，那么就启动回放
+	//if (theApp.m_iplaybackState == 2){
+	//	theApp.m_iplaybackState = 1;
+	//	return;
 	//}
-	////开启所有窗口的采样回放
-	/*for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
-	theApp.m_vsignalCaptureView[i]->StartSampleEncho();
-	}*/
-
-	CString path = "C:\\NewCollectionData\\43C28407-3AB4-4b08-A90C-8636D3C0D518.sin";
-
-	m_inputStream = CFileUtil::GetIfstreamByFileName(path);
-	vector<double> data;
-	m_signalController.GetCollectionData(m_inputStream,1024, 0, 200, data);
+	if (m_blocalSignalExist){
+		//设置视图的刷新状态
+		theApp.m_iplaybackState = 1;
+		vector<thread> threadVector;
+		for (int i = 0; i < theApp.m_vsignalCaptureView.size(); i++){
+			theApp.m_vsignalCaptureView[i]->openTimer2RefershView();
+			threadVector.push_back(thread(&CMainFrame::GetDataFromlocal, this, m_selectedSumSignal.GetAllSignal()[i], theApp.m_vsignalCaptureView[i]));
+		}
+		for (int i = 0; i < threadVector.size(); i++){
+			threadVector[i].detach();
+		}
+		//所有线程都完事了，执行保存操作
+		//theApp.m_iplaybackState = 0;
+	}
 }
 
 // 关闭所有窗口
@@ -1295,8 +1332,7 @@ void CMainFrame::OnBtnStartSmaple()
 		AfxMessageBox("请先打开或者新建项目");
 		return;
 	}
-	if (theApp.m_icollectionState == 0)
-	{
+	if (theApp.m_icollectState == 0){
 		AfxMessageBox("当前没有采集状态");
 		return;
 	}
@@ -1308,13 +1344,9 @@ void CMainFrame::OnBtnStartSmaple()
 	//m_recordSignal.SetCollectionStatus(theApp.m_currentProject.GetCollectionStatus());
 	//m_recordSignal.SetStartPos(m_outputStream.tellp());
 	theApp.m_isampleStatus = 1;
-
+	m_sumsignalLabel.SetLabel(1);
 	m_sumsignalLabel.SetStartTime(DateUtil::GetCurrentCStringTime());
-	//m_sumsignalLabel.SetSumsignalId(name);
-	//int x = 1;
-
-
-
+	m_sumsignalLabel.SetSumsignalId(m_sumSignal.GetSumsignalId());
 }
 
 // 停止采样
@@ -1329,13 +1361,6 @@ void CMainFrame::OnBtnStopSample()
 		AfxMessageBox("当前未在采集");
 		return;
 	}
-	//////封装json格式的传感器数据。
-	//m_recordSignal.SetChannelInfo(JsonUtil::GetStringFromDom(m_channelInfo));
-	//m_recordSignal.SetCollectionStatus(JsonUtil::GetStringFromDom(m_collectionStatus));
-	//m_recordSignal.SetEndTime(DateUtil::GetCurrentCStringTime());
-	//m_recordSignal.SetEndPos(m_outputStream.tellp());
-	//Result res = m_sumsignalController.SaveSampleSignal(m_recordSignal);
-
 	m_sumsignalLabel.SetEndTime(DateUtil::GetCurrentCStringTime());
 	Result res = m_sumsignalLabelController.AddSumsignalLabel(m_sumsignalLabel);
 	if (!res.GetIsSuccess()){
@@ -1430,8 +1455,6 @@ void CMainFrame::OnBtnAutoScale()
 	view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
 	CDuChartCtrlStaticFunction::AutoXScale(&view->GetChartCtrl(), FALSE);
 	CDuChartCtrlStaticFunction::AutoYScale(&view->GetChartCtrl(), FALSE);
-	//CDuChartCtrlStaticFunction::AutoYScale(&view->GetChartCtrl(), FALSE);
-
 }
 
 // 默认刻度
@@ -1442,7 +1465,7 @@ void CMainFrame::OnBtnDefaultScale()
 	//CDuChartCtrlStaticFunction::SetCursorNone(&view->GetChartCtrl());
 	CChartStandardAxisDu * leftAxis = (CChartStandardAxisDu*)view->GetChartCtrl().GetAxisDu(CChartCtrl::LeftAxis, 0);
 	CChartStandardAxisDu * bottomAxis = (CChartStandardAxisDu*)view->GetChartCtrl().GetAxisDu(CChartCtrl::BottomAxis, 0);
-	bottomAxis->SetMinMax(-500, 500);//设置下刻度
+	bottomAxis->SetMinMax(0, 500);//设置下刻度
 	bottomAxis->SetTickIncrement(false, 100);
 
 	leftAxis->SetMinMax(-0.1, 0.1);
@@ -1601,8 +1624,13 @@ void CMainFrame::OnBtnGraphAttribute()
 	}
 }
 
-void CMainFrame::CreateCaptureWindow(vector<TbChannel>  vchannel){
+void CMainFrame::CreateCaptureWindow(vector<TbChannel> & vchannel){
 	m_vchannelCodes.clear();
+	m_mpcolllectioinDataQueue.clear();
+	m_redisCollectionDataQueue.clear();
+	m_modelPredictResult.clear();
+	m_mpsignalCollectionView.clear();
+	theApp.m_vsignalCaptureView.clear();
 	for (int i = 0; i < vchannel.size(); i++)
 	{
 		// 新建文档
@@ -1622,11 +1650,16 @@ void CMainFrame::CreateCaptureWindow(vector<TbChannel>  vchannel){
 				m_vchannelCodes.push_back(vchannel[i].GetChannelCode());
 				m_mpsignalCollectionView[vchannel[i].GetChannelCode()] = currentView;
 				m_mpcolllectioinDataQueue.insert(std::pair<CString, ThreadSafeQueue<double>>(vchannel[i].GetChannelCode(), ThreadSafeQueue<double>()));
+				m_redisCollectionDataQueue.insert(std::pair<CString, ThreadSafeQueue<double>>(vchannel[i].GetChannelCode(), ThreadSafeQueue<double>()));
+				m_modelPredictResult.insert(std::pair<CString, ThreadSafeQueue<CString>>(m_vchannelCodes[i], ThreadSafeQueue<CString>()));
 			}
 		}
 	}
 }
-//新建窗口 
+
+// 你盯着看内存情况！！！！！
+// 卧槽，看样子好像是刚才那个,盯着看吧，半小时起步的看，这电脑内存还不错，3200hz的
+ //新建窗口 
 void CMainFrame::NewDoc(int nWinNums)
 {
 	for (int i = 0; i < nWinNums; i++)
@@ -1710,7 +1743,7 @@ void CMainFrame::OnUpdateCheckStaSet(CCmdUI *pCmdUI)
 
 void CMainFrame::OnClose()
 {
-	if (theApp.m_icollectionState != 0){
+	if (theApp.m_icollectState != 0){
 		AfxMessageBox("正在采集数据，不能关闭程序");
 		return;
 	}
@@ -1723,7 +1756,6 @@ void CMainFrame::OnClose()
 }
 
 LRESULT CMainFrame::OnRefreshViewByProject(WPARAM wParam, LPARAM lParam){
-
 	theApp.m_newProjectStatus = true;
 	///1.关闭所有已经打开采集的窗口
 	CloseAllWindows();
@@ -1733,21 +1765,15 @@ LRESULT CMainFrame::OnRefreshViewByProject(WPARAM wParam, LPARAM lParam){
 	////2.1初始化采集窗口队列
 	InitCaptureViewVector();
 	///3刷新状态栏
-
 	SendMessage(StatusInfMessage);
-
 	///4.刷新标题栏（目前改功能失效了）
 	SendMessage(WM_SETTEXT);
-
-
 	///5.刷新系统参数左边窗口
 	m_systemParaView.RefreshView();
 	///6.刷新采集状态窗口
 	m_stateSetDockPanelView.RefreshView();
-	///7.刷新通道参数窗口
-	m_channelParaView.RefreshView();
-
-
+	/////7.刷新通道参数窗口
+	//m_channelParaView.RefreshView();
 	return 0;
 }
 
@@ -1805,26 +1831,26 @@ void CMainFrame::OpenThread2SaveCollectionData(){
 	thread t(&CMainFrame::SaveSumCollectionData, this);
 	t.detach();
 }
-
+//wzx
 void CMainFrame::SaveSumCollectionData(){
-	TbSumsignal sumSignal;
+	
 	theApp.m_bisSave = true;
 	CString uuid;
 	UUIDUtil::GetUUID(uuid);
-	sumSignal.SetSumsignalId(uuid);
-	m_recordSignal.SetSignalId(uuid);
-	sumSignal.SetProductId(theApp.m_currentProject.GetProduct().GetProductId());
-	sumSignal.SetStartTime(DateUtil::GetCurrentCStringTime());
-	Result res = m_signalController.saveSumSignal(sumSignal);
+	m_sumSignal.SetSumsignalId(uuid);
+	m_sumSignal.SetProductId(theApp.m_currentProject.GetProduct().GetProductId());
+	m_sumSignal.SetStartTime(DateUtil::GetCurrentCStringTime());
+	Result res = m_signalController.saveSumSignal(m_sumSignal);
 	if (!res.GetIsSuccess()){
 		AfxMessageBox(res.GetMessages());
 	}
 	//vector<TbSignal> signalVector;
+	// 咋囧事？？？？？当新建项目时候选一个通道不选四个通道时报错
 	map<CString, ThreadSafeQueue<double>>::iterator iter = this->m_mpcolllectioinDataQueue.begin();
-	vector<thread> threadVector;
+	vector<thread> threadVector;//size = 4
 	while (iter != this->m_mpcolllectioinDataQueue.end()){
 		TbSignal signal;
-		signal.GetSumsignal().SetSumsignalId(uuid);
+		signal.SetSumSignalId(uuid);                                                        
 		m_mpsignalCollectionView[iter->first]->GetChannel(signal.GetChannel());
 		threadVector.push_back(thread(&CMainFrame::SaveCollectionData, this, iter->first, signal));
 		iter++;
@@ -1833,8 +1859,8 @@ void CMainFrame::SaveSumCollectionData(){
 		threadVector[i].join();
 	}
 	//所有线程都完事了，执行保存操作
-	sumSignal.SetEndTime(DateUtil::GetCurrentCStringTime());
-	res = m_signalController.updateSumSignal(sumSignal);
+	m_sumSignal.SetEndTime(DateUtil::GetCurrentCStringTime());
+	res = m_signalController.updateSumSignal(m_sumSignal);
 	if (!res.GetIsSuccess()){
 		AfxMessageBox(res.GetMessages());
 	}
@@ -1845,8 +1871,11 @@ void CMainFrame::SaveCollectionData(CString signalCode,TbSignal signal){
 	///1、保存信号 封裝文件名：项目id_测试设备id_产品id_时间戳
 	CString filName;
 	UUIDUtil::GetUUID(filName);
-	CString filePath = "C:\\NewCollectionData\\"+filName+"-"+signalCode  + ".sin";
-	signal.SetDataUrl("文件保存路径");
+	CString filePath = "D:/NewCollectionData/"+filName+"-"+signalCode  + ".sin";
+	signal.SetDataUrl(filePath);
+	CString signalId;
+	UUIDUtil::GetUUID(signalId);
+	signal.SetSignalId(signalId);
 	saveSignalMutex.lock();
 	m_signalController.saveSignal(signal);
 	saveSignalMutex.unlock();
@@ -1867,13 +1896,14 @@ void CMainFrame::SaveCollectionData(CString signalCode,TbSignal signal){
 	m_signalController.SaveSignalFileHeader(filePath, signalFileHeader);
 
 	ofstream outputStream = CFileUtil::GetOfstreamByFileName(filePath);
-	while (theApp.m_icollectionState){
-		if (theApp.m_icollectionState == 2){
+	while (theApp.m_icollectState){
+		if (theApp.m_icollectState == 2){
 			 //暂停状态就卡在这
 			Sleep(10);
 			continue;
 		}
 		while (m_mpcolllectioinDataQueue[signalCode].size() > 0){
+			//TRACE("\n队列长度%d\n", m_mpcolllectioinDataQueue[signalCode].size());
 			saveData.push(*m_mpcolllectioinDataQueue[signalCode].wait_and_pop());
 			if (saveData.size() == theApp.m_icollectSignalsStoreCount){
 				m_signalController.SaveCollectionData2Binary(outputStream, move(saveData));
@@ -1887,7 +1917,6 @@ void CMainFrame::SaveCollectionData(CString signalCode,TbSignal signal){
 	}
 	outputStream.close();
 }
-
 
 void CMainFrame::GetInstalledDevices(ICollection<DeviceTreeNode> *& devices){
 	DeviceCtrl *devicectrl;
@@ -1930,9 +1959,8 @@ void CMainFrame::OnUpdateEditAnalyseFreMin(CCmdUI *pCmdUI)
 				{
 					CAirCraftCasingVibrateSystemView *view;
 					view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
-					view->SetChartXYCoordinateLen(m_iAnalyseFreMin);
+					//view->SetChartXYCoordinateLen(m_iAnalyseFreMin);
 				}
-
 			}
 		}
 	}
@@ -1969,7 +1997,7 @@ void CMainFrame::OnUpdateEditAnalyseFreMax(CCmdUI *pCmdUI)
 				{
 					CAirCraftCasingVibrateSystemView *view;
 					view = (CAirCraftCasingVibrateSystemView*)((CFrameWnd*)(AfxGetApp()->m_pMainWnd))->GetActiveFrame()->GetActiveView();
-					view->SetChartXYCoordinateLen(m_iAnalyseFreMin, m_iAnalyseFreMax);
+					//view->SetChartXYCoordinateLen(m_iAnalyseFreMin, m_iAnalyseFreMax);
 				}
 			}
 		}
@@ -1979,25 +2007,26 @@ void CMainFrame::OnUpdateEditAnalyseFreMax(CCmdUI *pCmdUI)
 void CMainFrame::OnUpdateIdrRibbonI(CCmdUI *pCmdUI)
 {
 	//BOOL enableTag = (BOOL)czDevs->czSelSect.size();
-	//pCmdUI->Enable(theApp.m_icollectionState == 1); //还能设置SetChecked等功能呢
+	//pCmdUI->Enable(theApp.m_icollectState == 1); //还能设置SetChecked等功能呢
 
+	//TRACE("\n当前采集状态：%d\n", theApp.m_icollectState);
 	if (pCmdUI->m_nID == ID_BUTTON_START_CAPTURE){
 		///1.如果当前控件是开始采集，如果此时不是正在采集，那么将按钮启用
-		pCmdUI->Enable(theApp.m_icollectionState != 1);
+		pCmdUI->Enable(theApp.m_icollectState != 1);
 	}
 
 	if (pCmdUI->m_nID == ID_BUTTON_SUSPEND_CAPTURE){
 		///2.如果当前控件是暂停采集，如果此时是正在采集，那么将按钮启用
-		pCmdUI->Enable(theApp.m_icollectionState == 1);
+		pCmdUI->Enable(theApp.m_icollectState == 1);
 	}
 	if (pCmdUI->m_nID == ID_BTN_STOP_CAPTURE){
 		///3.如果当前控件是停止采集，如果此时是正在采集，那么将按钮启用
-		pCmdUI->Enable(theApp.m_icollectionState == 1);
+		pCmdUI->Enable(theApp.m_icollectState == 1);
 	}
 
 	if (pCmdUI->m_nID == ID_BTN_START_SMAPLE){
 		///4.如果当前控件是开始采样，如果此时是正在采集，那么将按钮启用
-		if (theApp.m_icollectionState == 1 && theApp.m_isampleStatus != 1)
+		if (theApp.m_icollectState == 1 && theApp.m_isampleStatus != 1)
 			pCmdUI->Enable(true);
 		else
 			pCmdUI->Enable(false);
@@ -2005,94 +2034,107 @@ void CMainFrame::OnUpdateIdrRibbonI(CCmdUI *pCmdUI)
 	}
 	if (pCmdUI->m_nID == ID_BTN_STOP_SAMPLE){
 		///5.如果当前控件是停止采样，如果此时是正在采样，那么将按钮启用
-		//pCmdUI->Enable(theApp.m_icollectionState == 1);
-		if (theApp.m_icollectionState == 1 && theApp.m_isampleStatus == 1)
+		//pCmdUI->Enable(theApp.m_icollectState == 1);
+		if (theApp.m_icollectState == 1 && theApp.m_isampleStatus == 1)
 			pCmdUI->Enable(true);
 		else
 			pCmdUI->Enable(false);
 	}
-
 }
 
+//打开进行回放的线程函数
+void CMainFrame::GetDataFromlocal(TbSignal &signal, CAirCraftCasingVibrateSystemView *view){
+	SignalFileHeader signalFileHeader;
+	//1、跳过文件头
+	CString fileName = signal.GetDataUrl();
+	ifstream inputStream = CFileUtil::GetIfstreamByFileName(fileName);
+	inputStream.seekg(sizeof(SignalFileHeader), ios_base::beg);
+	int collectionPoints = 20000;
+	double interval = (double)theApp.m_currentProject.GetCollectionparas().GetSampleFrequency().second / (theApp.FFTRATE * theApp.m_currentProject.GetCollectionparas().GetLine());
+	SmartArray<double> xData; ///x坐标
+	SChartXYPoint* pPoints = new SChartXYPoint[theApp.m_currentProject.GetCollectionparas().GetLine()];
+	for (int i = 0; i < theApp.m_currentProject.GetCollectionparas().GetLine(); i++){
+		pPoints[i].X = i * interval;
+	}
+	//2、循环读取数据
+	long long fileSize = CFileUtil::GetFileSize(fileName);
+	while (!inputStream.eof()&&theApp.m_iplaybackState){
+		if (theApp.m_icollectState == 2){
+			Sleep(20);
+			continue;
+		}
+		///从文件中拿到collectionPoints条数据
+		double * fftwInputArray;//傅里叶输入
+		m_signalController.GetCollectionData(inputStream, fileSize, collectionPoints, fftwInputArray);
+		int pointsCount = _msize(fftwInputArray) / sizeof(*fftwInputArray);
+		if (pointsCount == 0){
+			break;
+		}
 
-void CMainFrame::GetDataFromlocal(){
-	//SignalInfoHeader signalInfoHeader;
-	//m_inputStream.read((char*)&signalInfoHeader, sizeof(SignalInfoHeader));
-	////m_recordSignal.SetEndPos(signalInfoHeader.m_llSiganlSize);
-	//SmartArray<double> xData; ///x坐标
-	//fftw_complex fftw;///单次傅立叶变换的输入
-	//vector<double> data;
-	/////当前状态是正在回放或者暂停回放，且循环读取数据以显示
-	//while (theApp.m_iplaybackStatus != 0 && m_inputStream.tellg() < m_recordSignal.GetEndPos()){
-	//	m_icollectionPoints = theApp.m_currentProject.GetCollectionparas().GetLine()*2.26;
-	//	xData.clear();
-	//	data.clear();
-	//	for (int i = 0; i < m_icollectionPoints; i++){
-	//		//设置x坐标
-	//		xData.push_back(i);
-	//	}
-	//	m_sumsignalController.GetCollectionData(m_inputStream, m_recordSignal.GetEndPos(), m_inputStream.tellg(), m_icollectionPoints * 2 * signalInfoHeader.m_iChannelNums, data);
-	//	//分割数据m_icollectionPoints
-	//	vector<SmartArray<double>> fftwInputArray(signalInfoHeader.m_iChannelNums);
 
-	//	for (int i = 0; i < data.size(); i += signalInfoHeader.m_iChannelNums){
-	//		for (int channel = 0; channel < signalInfoHeader.m_iChannelNums; channel++){
-	//			fftwInputArray[channel].push_back(data[i + channel]);
-	//		}
-	//	}
+		//int pointCount = _msize(fftinput) / sizeof(*fftinput);
+		//int line = pointCount / 2;
+		//double interval = (double)theApp.m_currentProject.GetCollectionparas().GetSampleFrequency().second / (line * 2);
+		//SChartXYPoint * pPoints = new SChartXYPoint[line];
+		////对传入的数据进行傅里叶变换处理
+		//SmartFFTWComplexArray fftwOutput(pointCount);
+		//FFTWUtil::FastFourierTransformation(pointCount, fftinput, fftwOutput.GeFFTWComplexArray());
+		////将处理之后的傅里叶变换转换成XY坐标
+		//float yMax = 0;
+		//fftw_complex * out = fftwOutput.GeFFTWComplexArray();
+		//pPoints[0].Y = 0;
+		//for (int i = 1; i < line; i++)
+		//{
+		//	int j = 2 * sqrt(out[i][0] * out[i][0] + out[i][1] * out[i][1]);
+		//	pPoints[i].X = i * interval;
+		//	pPoints[i].Y = 2 * sqrt(out[i][0] * out[i][0] + out[i][1] * out[i][1]);
+		//	yMax = max(yMax, pPoints[i].Y);
+		//}
 
-	//	for (int channel = 0; channel < signalInfoHeader.m_iChannelNums; channel++){
-	//		SmartArray<double> yData; ///y坐标
-	//		//对传入的数据进行傅里叶变换处理
-	//		SmartFFTWComplexArray fftwOutput(fftwInputArray[channel].size());
-	//		FFTWUtil::FastFourierTransformation(fftwInputArray[channel].size(), fftwInputArray[channel].GetSmartArray(),
-	//			fftwOutput.GeFFTWComplexArray());
-	//		//将处理之后的傅里叶变换转换成XY坐标
-	//		FFTWUtil::FFTDataToXY(fftwOutput, yData, fftwInputArray[channel].size());
-	//		/////添加到回显数据队列中
-	//		theApp.m_vsignalCaptureView[channel]->SetEchoSignalData(EchoSignal(xData, yData));
-	//	}
-	//}
+		view->PushEchoSignal(fftwInputArray);
+		Sleep(600);
+		//SmartFFTWComplexArray fftwOutput(pointsCount);
+		////对传入的数据进行傅里叶变换处理
+		//
+		//FFTWUtil::FastFourierTransformation(pointsCount, fftwInputArray,fftwOutput.GeFFTWComplexArray());
+		////将处理之后的傅里叶变换转换成XY坐标
+		//SmartArray<double> yData; ///y坐标
+
+		//FFTWUtil::FFTDataToXY(fftwOutput, pPoints, fftwInputArray.size());
+		
+	}
+	inputStream.close();
 }
 void CMainFrame::Pre_GetDataFromlocal(){
-	/////本地文件存在，直接读取本地文件
-	///////文件指针定位到开始采集的文件位置
-	//SignalInfoHeader signalInfoHeader;
-	//m_inputStream.read((char*)&signalInfoHeader, sizeof(SignalInfoHeader));
-	//m_recordSignal.SetEndPos(signalInfoHeader.m_llSiganlSize);
-	//SmartArray<double> xData; ///x坐标
-	//fftw_complex fftw;///单次傅立叶变换的输入
-	//vector<double> data;
-	/////当前状态是正在回放或者暂停回放，且循环读取数据以显示
-	////while (theApp.m_iplaybackStatus != 0 && m_inputStream.tellg() < m_recordSignal.GetEndPos()){
-	//m_icollectionPoints = theApp.m_currentProject.GetCollectionparas().GetLine()*2.56;
-	//	//m_recordSignal.SetEndPos(m_icollectionPoints);
-	//	xData.clear();
-	//	data.clear();
-	//	for (int i = 0; i < m_icollectionPoints; i++){
-	//		//设置x坐标
-	//		xData.push_back(i);
-	//	}
-	//	m_sumsignalController.GetCollectionData(m_inputStream, m_recordSignal.GetEndPos(), m_inputStream.tellg(), m_icollectionPoints * 2 * signalInfoHeader.m_iChannelNums, data);
-	//	//分割数据m_icollectionPoints
-	//	vector<SmartArray<double>> fftwInputArray(signalInfoHeader.m_iChannelNums);
+	///本地文件存在，直接读取本地文件
+	/////文件指针定位到开始采集的文件位置
+	SignalFileHeader signalFileHeader;
+	SmartArray<double> xData; ///x坐标
+	fftw_complex fftw;///单次傅立叶变换的输入
+	///当前状态是正在回放或者暂停回放，且循环读取数据以显示
+	//while (theApp.m_iplaybackState != 0 && m_inputStream.tellg() < m_recordSignal.GetEndPos()){
+	int collectionPoints = 20000;
+	//m_recordSignal.SetEndPos(m_icollectionPoints);theApp.m_currentProject.GetCollectionparas().GetLine()*2
+	int channelCount = m_selectedSumSignal.GetAllSignal().size();
+	for (int i = 0; i < channelCount; i++){
+		SmartArray<double> yData; ///y坐标
+		vector<double> data;
+		CString fileName = m_selectedSumSignal.GetAllSignal()[i].GetDataUrl();
+		ifstream inputStream = CFileUtil::GetIfstreamByFileName(fileName);
+		inputStream.seekg(sizeof(SignalFileHeader), ios_base::beg);
+		///从文件中拿到collectionPoints条数据
+		double * fftwInputArray;//傅里叶输入
+		m_signalController.GetCollectionData(inputStream, CFileUtil::GetFileSize(fileName), collectionPoints, fftwInputArray);
+		//SmartFFTWComplexArray fftwOutput(fftwInputArray.size());
+		////对传入的数据进行傅里叶变换处理
+		//FFTWUtil::FastFourierTransformation(fftwInputArray.size(), fftwInputArray.GetSmartArray(),
+		//	fftwOutput.GeFFTWComplexArray());
+		////将处理之后的傅里叶变换转换成XY坐标
+		//FFTWUtil::FFTDataToXY(fftwOutput, pPoints, fftwInputArray.size());
+		theApp.m_vsignalCaptureView[i]->SetEchoSignal(fftwInputArray);
+		inputStream.close();
+	}
 
-	//	for (int i = 0; i < data.size(); i += signalInfoHeader.m_iChannelNums){
-	//		for (int channel = 0; channel < signalInfoHeader.m_iChannelNums; channel++){
-	//			fftwInputArray[channel].push_back(data[i + channel]);
-	//		}
-	//	}
-	//	for (int channel = 0; channel < signalInfoHeader.m_iChannelNums; channel++){
-	//		SmartArray<double> yData; ///y坐标
-	//		//对传入的数据进行傅里叶变换处理
-	//		SmartFFTWComplexArray fftwOutput(fftwInputArray[channel].size());
-	//		FFTWUtil::FastFourierTransformation(fftwInputArray[channel].size(), fftwInputArray[channel].GetSmartArray(),
-	//			fftwOutput.GeFFTWComplexArray());
-	//		//将处理之后的傅里叶变换转换成XY坐标
-	//		FFTWUtil::FFTDataToXY(fftwOutput, yData, fftwInputArray[channel].size());
-	//		/////添加到回显数据队列中
-	//		theApp.m_vsignalCaptureView[channel]->SetEchoSignalData(EchoSignal(xData, yData));
-	//	}
 }
 void CMainFrame::OnUpdateSlider1(CCmdUI *pCmdUI)
 {
@@ -2104,4 +2146,163 @@ void CMainFrame::OnSlider1()
 	// TODO: 在此添加命令处理程序代码  
 	CMFCRibbonSlider* pSlider = DYNAMIC_DOWNCAST(CMFCRibbonSlider, m_wndRibbonBar.FindByID(ID_SLIDER1));
 	int pos = pSlider->GetPos();//将此时滑动条所在位置的值赋给pos。  
+}
+
+void CMainFrame::RedisHandel(){
+	theApp.m_redisContext = theApp.m_redisConnect->connectToRedis();
+}
+
+
+void CMainFrame::RedisSetCollectionData(CString channelCode, CString jsonData){
+
+	redisReply *reply;
+	reply = (redisReply *)redisCommand(theApp.m_redisContext, "LPUSH redisCollectionData-%s %s", channelCode, jsonData);
+	freeReplyObject(reply);
+
+}
+CString CMainFrame::RedisGetPredictedResult(CString channelCode){
+	redisReply *reply;
+	reply = (redisReply*)redisCommand(theApp.m_redisContext, "LPOP predictResult-%s", channelCode);
+	string redisResult = reply->str;
+	CString redisResult_c = redisResult.c_str();
+	freeReplyObject(reply);
+	return redisResult_c;
+	
+}
+
+void CMainFrame::OpenThread2RedisSaveData(){
+	thread t(&CMainFrame::SaveRedisSumCollectionData, this);
+	t.detach();
+}
+
+void CMainFrame::SaveRedisSumCollectionData(){
+
+	theApp.m_redisIsSave = true;
+	map<CString, ThreadSafeQueue<double>>::iterator iter = this->m_redisCollectionDataQueue.begin();
+	vector<thread> threadVector;//size = 4
+	while (iter != this->m_redisCollectionDataQueue.end()){
+		
+		threadVector.push_back(thread(&CMainFrame::SaveRedisCollectionData, this, iter->first));
+		iter++;
+	}
+	for (int i = 0; i < threadVector.size(); i++){
+		threadVector[i].join();
+	}
+	//所有线程都完事了，执行保存操作
+	theApp.m_redisIsSave = false;
+
+}
+
+void CMainFrame::SaveRedisCollectionData(CString signalCode){
+
+	CString code = signalCode;
+	ThreadSafeQueue<double> saveData;
+	while (theApp.m_icollectState){
+		if (theApp.m_icollectState == 2){
+			//暂停状态就卡在这
+			Sleep(10);
+			continue;
+		}
+		while (m_redisCollectionDataQueue[signalCode].size() > 0){
+			//TRACE("\n队列长度%d\n", m_mpcolllectioinDataQueue[signalCode].size());
+			saveData.push(*m_redisCollectionDataQueue[signalCode].wait_and_pop());
+			/*CString predictRe = this->RedisGetPredictedResult(signalCode);
+			this->m_modelPredictResult[signalCode].push(predictRe);*/
+			if (saveData.size() == theApp.m_icollectSignalsStoreCount){
+				//ThreadSafeQueue<double> acquireSignal = move(saveData);
+				CString jsonStr = m_jsonUtil->DataSerialize(saveData);
+				this->RedisSetCollectionData(signalCode,jsonStr);
+				}
+			
+			}
+		}
+	
+	//点完停止采集之后，还有数据需要保存！！！
+	while (m_redisCollectionDataQueue[signalCode].size() > 0){
+		saveData.push(*m_redisCollectionDataQueue[signalCode].wait_and_pop());
+		//ThreadSafeQueue<double> acquireSignal = move(saveData);
+		CString jsonStr = m_jsonUtil->DataSerialize(saveData);
+		this->RedisSetCollectionData(signalCode, jsonStr);
+	}
+
+}
+
+void CMainFrame::OpenThreadReadPredictResult(){
+	thread t(&CMainFrame::ReadPredictResult, this);
+	t.detach();
+}
+
+void CMainFrame::ReadPredictResult(){
+
+	map<CString, ThreadSafeQueue<CString>>::iterator iter = this->m_modelPredictResult.begin();
+	vector<thread> threadVector;//size = 4
+	while (iter != this->m_modelPredictResult.end()){
+		threadVector.push_back(thread(&CMainFrame::ReadEveryPredictResult, this, iter->first));
+		iter++;
+	}
+	for (int i = 0; i < threadVector.size(); i++){
+		threadVector[i].join();
+	}
+}
+
+void CMainFrame::ReadEveryPredictResult(CString signalCode){
+
+	redisReply *reply;
+	redisReply *reply_len;
+	reply_len = (redisReply*)redisCommand(theApp.m_redisContext, "LLEN predictResult-%s", signalCode);
+	CString code = signalCode;
+	while (theApp.m_icollectState){
+		if (theApp.m_icollectState == 2){
+			//暂停状态就卡在这
+			Sleep(10);
+			continue;
+		}
+		reply = (redisReply*)redisCommand(theApp.m_redisContext, "LPOP predictResult-%s", signalCode);
+		string redisResult = reply->str;
+		CString redisResult_c = redisResult.c_str();
+		this->m_modelPredictResult[signalCode].push(redisResult_c);	
+			
+	}
+	freeReplyObject(reply);
+	freeReplyObject(reply_len);
+}
+
+
+void CMainFrame::AcquireResult(){
+
+	redisReply *reply;
+	while (true){
+		for (int i = 0; i < 4; i++){
+			
+			CString str;
+			str.Format("%d", i);
+			CString signalCode = "0-" + str;
+			reply = (redisReply*)redisCommand(theApp.m_redisContext, "LPOP predictResult-%s", signalCode);
+			CString redisResult = reply->str;
+			this->m_modelPredictResult[signalCode].push(redisResult);
+
+
+		}
+	}
+	
+	freeReplyObject(reply);
+
+
+}
+
+
+
+void CMainFrame::InitRedisDatabase(){
+
+	redisReply *reply;
+	reply = (redisReply*)redisCommand(theApp.m_redisContext, "DEL predictResult-0-0");
+	reply = (redisReply*)redisCommand(theApp.m_redisContext, "DEL predictResult-0-1");
+	reply = (redisReply*)redisCommand(theApp.m_redisContext, "DEL predictResult-0-2");
+	reply = (redisReply*)redisCommand(theApp.m_redisContext, "DEL predictResult-0-3");
+	reply = (redisReply*)redisCommand(theApp.m_redisContext, "DEL redisCollectionData-0-0");
+	reply = (redisReply*)redisCommand(theApp.m_redisContext, "DEL redisCollectionData-0-1");
+	reply = (redisReply*)redisCommand(theApp.m_redisContext, "DEL redisCollectionData-0-2");
+	reply = (redisReply*)redisCommand(theApp.m_redisContext, "DEL redisCollectionData-0-3");
+	freeReplyObject(reply);
+	
 }

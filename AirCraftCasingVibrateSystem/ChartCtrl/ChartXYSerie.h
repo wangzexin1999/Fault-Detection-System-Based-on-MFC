@@ -19,6 +19,8 @@
  *
  */
 
+
+
 #pragma once
 #include "ChartSerieBase.h"
 #include "DuExport.h"

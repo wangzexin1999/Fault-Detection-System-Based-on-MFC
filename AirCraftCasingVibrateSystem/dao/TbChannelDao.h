@@ -33,6 +33,12 @@ public:
 	PDAttribute m_sensorId;
 	PDAttribute m_elcpressure;//电压测量类型
 	PDAttribute m_projectId;//电压测量类型
+	PDAttribute m_testlocatonId;
+	PDAttribute m_xMin; //X轴最小值
+	PDAttribute m_xMax; //X轴最大值
+	PDAttribute m_yMin; //Y轴最小值
+	PDAttribute m_yMax; //Y轴最大值
+
 	void SetTableFieldValues(TbChannel channel);
 
 	void GetTableFieldValues(TbChannel &channel);

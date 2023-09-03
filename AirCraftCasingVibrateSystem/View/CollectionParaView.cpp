@@ -117,14 +117,15 @@ void CollectionParaView::CollectionParaInfoInit(){
 	for (int i = 0; i < theApp.m_listSampleFreq.size(); i++){
 		m_sampleFrequencyCombo.InsertString(i, CommonUtil::Int2CString(theApp.m_listSampleFreq[i]));
 	}
-	m_sampleFrequencyCombo.SetCurSel(0);
+	m_sampleFrequencyCombo.SetCurSel(theApp.m_currentProject.GetCollectionparas().GetSampleFrequency().first);
+	m_line.SetWindowTextA(CommonUtil::Int2CString(theApp.m_currentProject.GetCollectionparas().GetLine()));
 }
 
 void CollectionParaView::RefreshView(){
 	///1.删除所有下拉框的选项，并清空
 	m_sampleFrequencyCombo.ResetContent();
-	m_collectionMethodCombo.ResetContent();
-	m_collectionPointCombo.ResetContent();
+	//m_collectionMethodCombo.ResetContent();
+	//m_collectionPointCombo.ResetContent();
 	///2.采集参数重新初始化
 	CollectionParaInfoInit();
 }
@@ -167,6 +168,7 @@ void CollectionParaView::OnEnChangeEditSampleBatch()
 
 void CollectionParaView::updateCollectionPara(){
 	Result res = m_colletionParasController.UpdateCollectionparas(theApp.m_currentProject.GetCollectionparas());
+
 	if (!res.GetIsSuccess()){
 		AfxMessageBox(res.GetMessages());
 	}
@@ -185,5 +187,8 @@ void CollectionParaView::OnCbnSelchangeComboFreq()
 	CString val;
 	m_sampleFrequencyCombo.GetLBText(index,val);
 	theApp.m_currentProject.GetCollectionparas().SetSampleFrequency(std::make_pair(index,CommonUtil::CString2Int(val)));
+	for (int i = 0; i < theApp.m_currentProject.GetChannelVector().size(); i++){
+		theApp.m_currentProject.GetChannelVector()[i].SetXMax(CommonUtil::CString2Int(val));
+	}
 	updateCollectionPara();
 }

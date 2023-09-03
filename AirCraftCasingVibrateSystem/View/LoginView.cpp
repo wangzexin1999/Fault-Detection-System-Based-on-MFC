@@ -13,18 +13,14 @@
 IMPLEMENT_DYNAMIC(CLoginView, CDialogEx)
 
 CLoginView::CLoginView(CWnd* pParent /*=NULL*/)
-	: CDialogEx(CLoginView::IDD, pParent)
-	
-{
+	: CDialogEx(CLoginView::IDD, pParent){
 
 }
 
-CLoginView::~CLoginView()
-{
+CLoginView::~CLoginView(){
 }
 
-void CLoginView::DoDataExchange(CDataExchange* pDX)
-{
+void CLoginView::DoDataExchange(CDataExchange* pDX){
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_EDIT_LOGNNAME, m_loginNameEdit);
 	DDX_Control(pDX, IDC_EDIT_PASSWORD, m_passWordEdit);

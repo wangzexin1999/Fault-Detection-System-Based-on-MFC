@@ -1,7 +1,5 @@
 #pragma once
 #include"TbChannel.h"
-#include"TbSumsignal.h"
-//#include"TbSignalTestRecord.h"
 #include <vector>
 #include <atlstr.h>
 using namespace std;
@@ -10,13 +8,13 @@ class TbSignal
 public:
 
 	TbSignal();
-	TbSignal(CString signalId, TbChannel channel, TbSumsignal sumsignalId, int SignalLabel, CString dataUrl);
+	TbSignal(CString signalId, TbChannel channel, CString sumsignalId, int SignalLabel, CString dataUrl);
 	~TbSignal();
 
 private:
 	CString m_signalId;
 	TbChannel m_channel;
-	TbSumsignal m_sumsignalId;
+	CString m_sumsignalId;
 	int m_signalLabel;
 	CString m_dataUrl;
 	//vector<TbSignalTestRecord> m_signalTestRecordVector;
@@ -28,8 +26,8 @@ public:
 	TbChannel & GetChannel();
 	void SetChannel(TbChannel channel);
 
-	TbSumsignal & GetSumsignal();
-	void SetSumsignal(TbSumsignal sumsignal);
+	/*TbSumsignal & GetSumsignal();
+	void SetSumsignal(TbSumsignal sumsignal);*/
 
 	int GetSignalLabel();
 	void SetSignalLabel(int SignalLabel);
@@ -44,6 +42,7 @@ public:
 	/*vector<TbSignalTestRecord> & GetSignalTestRecordVector();
 	void SetSignalTestRecordVector(vector<TbSignalTestRecord> signalTestRecordVector);*/
 
-
+	CString GetSumSignalId();
+	void SetSumSignalId(CString signalId);
 
 };

@@ -9,7 +9,9 @@
 #include "ChannelParaController.h"
 #include "CDHTestHardWare.h"
 #include <utility>
-
+#include "TbSensor.h"
+#include "TestController.h"
+#include "SensorController.h"
 // CMyDialog 对话框
 
 //#include "MainFrm.h" 
@@ -33,16 +35,16 @@ private:
 	//class CDHTestHardWare *m_pHardWare;
 	//class CDlgCom * m_pComDialog;
 	//class CMainFrame *m_pMain;
-	
+	int m_productId = 0;
+	TestController m_testController;
+	SensorController m_sensorController;
+	std::vector<TbTestlocation> m_testLocationVec;
+	std::vector<TbSensor> m_sensorVec;
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 	CGridCtrl m_channelParaGridCtrl;
 	vector<CString> m_vchannelCode;
 	DictionaryController m_dictionController; 
-
-	/*vector<TbDictionary> m_listFullValue;
-	vector<TbDictionary> m_listUpFreq;
-	vector<TbDictionary> m_listInputMode;*/
 
 	vector<TbDictionary> m_vwindowTypes;
 	vector<TbDictionary> m_vinputMethods;
@@ -111,6 +113,9 @@ protected:
 	----------------------------------------------------------------------
 	***********************************************************************/
 	void SetGridCellCheck(int row, int col, bool isChecked);
+
+	
+
 	virtual BOOL OnInitDialog();
 	/**********************************************************************
 	功能描述：得到选择的所有所有通道
@@ -128,4 +133,5 @@ protected:
 public:
 	void GetSelectedChannels(vector<TbChannel> & vchannels);
 	bool GetGridCellCheck(int row, int col);
+	void SetProductId(int productTypeId);
 };

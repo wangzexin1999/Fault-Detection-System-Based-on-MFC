@@ -23,6 +23,7 @@
 #include "httplib.h"
 #include "Common.h"
 #include <list>
+#include "RedisDataProcess.h"
 using namespace std;
 
 
@@ -54,10 +55,9 @@ public:
 	/// 用户
 	TbProject m_currentProject;
 	int m_chartCtrlIndex = 10000;/*画图控件ID*/
-	int m_icollectSignalsStoreCount = 10000; ///采集信号的存储数量。 
+	int m_icollectSignalsStoreCount = 20000; ///采集信号的存储数量。 
 
-
-	int m_icollectionState = 0; ////采集状态 0 ：停止采集 1：开始采集 2：暂停采集  以后用枚举来做
+	int m_icollectState = 0; ////采集状态 0 ：停止采集 1：开始采集 2：暂停采集  以后用枚举来做
 
 	vector<string> m_listFullValue;
 	vector<string> m_listUpFreq;
@@ -65,15 +65,17 @@ public:
 	vector<string> m_listInputMode;
 	vector<string> m_listMessaueType;
 	vector<int> m_listSampleFreq;
-
+	//vector<int> m_vlines = { 50, 100, 200, 400, 800, 1600, 3200, 6400, 12800, 25600 };
 	stuHardChannel m_curstuHardChannel;
 
 
 	int m_isampleStatus = 0;////采样状态 0 ：停止采样 1：开始采样
 	int m_signalEchoCount = 1000; //信号回显数量
-	int m_iplaybackStatus = 0;//0 : 不回放 1：开始回放 2：:暂停回放
+	volatile int m_iplaybackState = 0;//0 : 不回放 1：开始回放 2：:暂停回放
 
 	bool m_bisSave = false;//保存状态
+	bool m_redisIsSave = false;//redis保存状态
+
 	CString m_collectionRotatingSpeed = "";
 	vector<SignalAcquisitionService> m_vSignalAcquisitionService; ////信号采集服务
 	
@@ -86,6 +88,12 @@ public:
 	vector<stuHardChannel> m_vecHardChannel;			//通道信息
 
 	vector<stuGroupChannel> m_vecGroupChannel;			//通道组信息
+
+	RedisDataProcess *m_redisConnect = new RedisDataProcess();
+
+	redisContext* m_redisContext;
+	redisReply* m_redisReply;
+
 
 	bool deviceIsOnline = true;
 

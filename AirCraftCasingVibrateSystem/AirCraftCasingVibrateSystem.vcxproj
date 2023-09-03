@@ -80,8 +80,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\mysql-5.7.17-winx64\lib;lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\mysql-5.7.17-winx64\include;include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -96,7 +96,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -108,7 +108,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libcurl_a_debug.lib;libfftw3-3-32.lib;libfftw3f-3-32.lib;libfftw3l-3-32.lib;libmysql-32.lib</AdditionalDependencies>
+      <AdditionalDependencies>libcurl_a_debug.lib;libfftw3-3-32.lib;libfftw3f-3-32.lib;libfftw3l-3-32.lib;libmysql-32.lib;Win32_Interop.lib;hiredis.lib</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -205,56 +205,12 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AirCraftCasingVibrateSystem.h" />
+    <ClInclude Include="AirCraftCasingVibrateSystemDoc.h" />
     <ClInclude Include="AlarmparaController.h" />
     <ClInclude Include="AlarmparaService.h" />
     <ClInclude Include="CDHTestHardWare.h" />
     <ClInclude Include="Channel.h" />
-    <ClInclude Include="ChildRibbonPanel.h" />
-    <ClInclude Include="Common.h" />
-    <ClInclude Include="ConstDefine.h" />
-    <ClInclude Include="DHTestHardWareController.h" />
-    <ClInclude Include="DlgCom.h" />
-    <ClInclude Include="entity\AcquiredSignal.h" />
-    <ClInclude Include="AirCraftCasingVibrateSystem.h">
-      <FileType>CppHeader</FileType>
-    </ClInclude>
-    <ClInclude Include="AirCraftCasingVibrateSystemDoc.h" />
-    <ClInclude Include="SignalController.h" />
-    <ClInclude Include="SignalService.h" />
-    <ClInclude Include="SignalTestRecordController.h" />
-    <ClInclude Include="SignalTestRecordService.h" />
-    <ClInclude Include="SumsignalLabelController.h" />
-    <ClInclude Include="TbAlarmpara.h" />
-    <ClInclude Include="TbAlarmparaDao.h" />
-    <ClInclude Include="TbEquipment.h" />
-    <ClInclude Include="TbEquipmentDao.h" />
-    <ClInclude Include="TbLabel.h" />
-    <ClInclude Include="TbLabelDao.h" />
-    <ClInclude Include="TbPost.h" />
-    <ClInclude Include="TbPostDao.h" />
-    <ClInclude Include="TbProductType.h" />
-    <ClInclude Include="TbProductTypeDao.h" />
-    <ClInclude Include="TbSensor.h" />
-    <ClInclude Include="TbSensorDao.h" />
-    <ClInclude Include="TbSignal.h" />
-    <ClInclude Include="TbSignalDao.h" />
-    <ClInclude Include="TbSignalTestRecord.h" />
-    <ClInclude Include="TbSignalTestRecordDao.h" />
-    <ClInclude Include="TbSumsignalLabel.h" />
-    <ClInclude Include="TbSumsignalLabelDao.h" />
-    <ClInclude Include="SumsignalLabelService.h" />
-    <ClInclude Include="TbTestlocation.h" />
-    <ClInclude Include="TbTestlocationDao.h" />
-    <ClInclude Include="TbTeststand.h" />
-    <ClInclude Include="TbTeststandDao.h" />
-    <ClInclude Include="TbTeststate.h" />
-    <ClInclude Include="TbTeststateDao.h" />
-    <ClInclude Include="UUIDUtil.h" />
-    <ClInclude Include="View\AirCraftCasingVibrateSystemView.h" />
-    <ClInclude Include="View\AlarmParaSetView.h" />
-    <ClInclude Include="View\BaseProjectInfoView.h" />
-    <ClInclude Include="View\ChannelParaDialog.h" />
-    <ClInclude Include="View\ChannelParaPresetView.h" />
     <ClInclude Include="ChartCtrl\ChartAxis.h" />
     <ClInclude Include="ChartCtrl\ChartAxisDu.h" />
     <ClInclude Include="ChartCtrl\ChartAxisLabel.h" />
@@ -302,15 +258,45 @@
     <ClInclude Include="ChartCtrl\DuExport.h" />
     <ClInclude Include="ChartCtrl\MemDC.h" />
     <ClInclude Include="ChartCtrl\PointsOrdering.h" />
-    <ClInclude Include="View\CollectionParaPresetView.h" />
+    <ClInclude Include="ChildFrm.h" />
+    <ClInclude Include="ChildRibbonPanel.h" />
+    <ClInclude Include="Common.h" />
+    <ClInclude Include="Controller\AlarmController.h" />
+    <ClInclude Include="Controller\ChannelController.h" />
+    <ClInclude Include="Controller\ChannelParaController.h" />
+    <ClInclude Include="Controller\ClassifierController.h" />
+    <ClInclude Include="Controller\CollectionparasController.h" />
     <ClInclude Include="Controller\CollectionPlanController.h" />
-    <ClInclude Include="View\CollectionPlanManageView.h" />
     <ClInclude Include="Controller\Constant.h" />
-    <ClInclude Include="entity\DataStructure.h" />
     <ClInclude Include="Controller\DictionaryController.h" />
-    <ClInclude Include="Service\DictionaryService.h" />
+    <ClInclude Include="Controller\FeatureExtrationController.h" />
+    <ClInclude Include="Controller\GraphAttributeController.h" />
+    <ClInclude Include="Controller\ProductController.h" />
+    <ClInclude Include="Controller\ProjectController.h" />
+    <ClInclude Include="Controller\SelfCheckController.h" />
+    <ClInclude Include="Controller\UserController.h" />
+    <ClInclude Include="dao\basedao\PDAttribute.h" />
+    <ClInclude Include="dao\basedao\PDDatabase.h" />
+    <ClInclude Include="dao\basedao\PDSQL.h" />
+    <ClInclude Include="dao\TbChannelDao.h" />
+    <ClInclude Include="dao\TbCollectionparasDao.h" />
+    <ClInclude Include="dao\TbDictionaryDao.h" />
+    <ClInclude Include="dao\TbProductDao.h" />
+    <ClInclude Include="dao\TbProjectDao.h" />
+    <ClInclude Include="dao\TbSumsignalDao.h" />
+    <ClInclude Include="dao\TbUserDao.h" />
+    <ClInclude Include="DHTestHardWareController.h" />
+    <ClInclude Include="DlgCom.h" />
+    <ClInclude Include="entity\AcquiredSignal.h" />
     <ClInclude Include="entity\EchoSignal.h" />
-    <ClInclude Include="Utils\FFTWUtil.h" />
+    <ClInclude Include="entity\TbChannel.h" />
+    <ClInclude Include="entity\TbCollectionparas.h" />
+    <ClInclude Include="entity\TbCollectionPlan.h" />
+    <ClInclude Include="entity\TbDictionary.h" />
+    <ClInclude Include="entity\TbProduct.h" />
+    <ClInclude Include="entity\TbProject.h" />
+    <ClInclude Include="entity\TbSumsignal.h" />
+    <ClInclude Include="entity\TbUser.h" />
     <ClInclude Include="include\rapidjson\allocators.h" />
     <ClInclude Include="include\rapidjson\cursorstreamwrapper.h" />
     <ClInclude Include="include\rapidjson\document.h" />
@@ -347,41 +333,12 @@
     <ClInclude Include="include\rapidjson\stream.h" />
     <ClInclude Include="include\rapidjson\stringbuffer.h" />
     <ClInclude Include="include\rapidjson\writer.h" />
-    <ClInclude Include="Utils\httplib.h" />
-    <ClInclude Include="Utils\JsonUtil.h" />
+    <ClInclude Include="MainFrm.h" />
     <ClInclude Include="NewCellTypes\GridCellCheck.h" />
     <ClInclude Include="NewCellTypes\GridCellCombo.h" />
     <ClInclude Include="NewCellTypes\GridCellDateTime.h" />
     <ClInclude Include="NewCellTypes\GridCellNumeric.h" />
     <ClInclude Include="NewCellTypes\GridURLCell.h" />
-    <ClInclude Include="Controller\ProductController.h" />
-    <ClInclude Include="View\ProjectSetView.h" />
-    <ClInclude Include="entity\RealTimeSignal.h" />
-    <ClInclude Include="Service\RecordSignalService.h" />
-    <ClInclude Include="View\RegisterView.h" />
-    <ClInclude Include="Controller\ChannelController.h" />
-    <ClInclude Include="Utils\CherryTree.h" />
-    <ClInclude Include="ChildFrm.h" />
-    <ClInclude Include="Controller\ClassifierController.h" />
-    <ClInclude Include="View\Picture\ColorView.h" />
-    <ClInclude Include="Utils\CommonUtil.h" />
-    <ClInclude Include="Utils\ConfigurationUtil.h" />
-    <ClInclude Include="View\Picture\CoordinateView.h" />
-    <ClInclude Include="Utils\DateUtil.h" />
-    <ClInclude Include="View\DetectDeviceManageView.h" />
-    <ClInclude Include="View\ProductManageView.h" />
-    <ClInclude Include="Service\ProductService.h" />
-    <ClInclude Include="View\DeviceParaView.h" />
-    <ClInclude Include="View\EngineerUnitView.h" />
-    <ClInclude Include="Controller\FeatureExtrationController.h" />
-    <ClInclude Include="FFT\fftw3.h" />
-    <ClInclude Include="Utils\FileUtil.h" />
-    <ClInclude Include="View\Picture\FontView.h" />
-    <ClInclude Include="View\GeneralParaView.h" />
-    <ClInclude Include="View\GeometricParaView.h" />
-    <ClInclude Include="Controller\GraphAttributeController.h" />
-    <ClInclude Include="View\Picture\GraphAttributeView.h" />
-    <ClInclude Include="View\Picture\GraphicAttributeView.h" />
     <ClInclude Include="GridCtrl_src\CellRange.h" />
     <ClInclude Include="GridCtrl_src\GCMemDC.h" />
     <ClInclude Include="GridCtrl_src\GridCell.h" />
@@ -390,72 +347,85 @@
     <ClInclude Include="GridCtrl_src\GridDropTarget.h" />
     <ClInclude Include="GridCtrl_src\InPlaceEdit.h" />
     <ClInclude Include="GridCtrl_src\TitleTip.h" />
-    <ClInclude Include="View\Picture\LineView.h" />
-    <ClInclude Include="View\LoginView.h" />
-    <ClInclude Include="MainFrm.h" />
-    <ClInclude Include="Utils\MyGridCtrl.h" />
-    <ClInclude Include="Service\NetConService.h" />
-    <ClInclude Include="View\NewProjectView.h" />
-    <ClInclude Include="dao\basedao\PDAttribute.h" />
-    <ClInclude Include="dao\basedao\PDDatabase.h" />
-    <ClInclude Include="dao\basedao\PDSQL.h" />
-    <ClInclude Include="Controller\ProjectController.h" />
-    <ClInclude Include="View\OpenProjectView.h" />
-    <ClInclude Include="Service\ProjectService.h" />
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="entity\Result.h" />
-    <ClInclude Include="View\Picture\SelectView.h" />
-    <ClInclude Include="Controller\SelfCheckController.h" />
-    <ClInclude Include="Controller\ChannelParaController.h" />
+    <ClInclude Include="RedisDataProcess.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="SensorController.h" />
+    <ClInclude Include="SensorService.h" />
     <ClInclude Include="Service\ChannelParaService.h" />
     <ClInclude Include="Service\ChannelService.h" />
-    <ClInclude Include="View\CollectionParaView.h" />
+    <ClInclude Include="Service\CollectionparasService.h" />
+    <ClInclude Include="Service\DictionaryService.h" />
+    <ClInclude Include="Service\ProductService.h" />
+    <ClInclude Include="Service\ProjectService.h" />
     <ClInclude Include="Service\SignalAcquisitionService.h" />
+    <ClInclude Include="SignalController.h" />
+    <ClInclude Include="SignalService.h" />
+    <ClInclude Include="TbAlarmpara.h" />
+    <ClInclude Include="TbAlarmparaDao.h" />
+    <ClInclude Include="TbEquipment.h" />
+    <ClInclude Include="TbEquipmentDao.h" />
+    <ClInclude Include="TbLabel.h" />
+    <ClInclude Include="TbLabelDao.h" />
+    <ClInclude Include="TbPost.h" />
+    <ClInclude Include="TbPostDao.h" />
+    <ClInclude Include="TbProductType.h" />
+    <ClInclude Include="TbProductTypeDao.h" />
+    <ClInclude Include="TbSensor.h" />
+    <ClInclude Include="TbSensorDao.h" />
+    <ClInclude Include="TbSignal.h" />
+    <ClInclude Include="TbSignalDao.h" />
+    <ClInclude Include="TbSignalTestRecord.h" />
+    <ClInclude Include="TbSumsignalLabel.h" />
+    <ClInclude Include="TbSumsignalLabelDao.h" />
+    <ClInclude Include="TbTestlocation.h" />
+    <ClInclude Include="TbTestlocationDao.h" />
+    <ClInclude Include="TbTeststand.h" />
+    <ClInclude Include="TbTeststandDao.h" />
+    <ClInclude Include="TbTeststate.h" />
+    <ClInclude Include="TbTeststateDao.h" />
+    <ClInclude Include="TestService.h" />
+    <ClInclude Include="Utils\CherryTree.h" />
+    <ClInclude Include="Utils\CommonUtil.h" />
+    <ClInclude Include="Utils\ConfigurationUtil.h" />
+    <ClInclude Include="Utils\DateUtil.h" />
+    <ClInclude Include="Utils\FFTWUtil.h" />
+    <ClInclude Include="Utils\FileUtil.h" />
+    <ClInclude Include="Utils\JsonUtil.h" />
+    <ClInclude Include="Utils\MyGridCtrl.h" />
+    <ClInclude Include="View\AirCraftCasingVibrateSystemView.h" />
+    <ClInclude Include="View\AlarmParaSetView.h" />
+    <ClInclude Include="View\BaseProjectInfoView.h" />
+    <ClInclude Include="View\ChannelParaDialog.h" />
+    <ClInclude Include="View\ChannelParaPresetView.h" />
+    <ClInclude Include="View\ChannelParaView.h" />
+    <ClInclude Include="View\CollectionParaPresetView.h" />
+    <ClInclude Include="View\CollectionParaView.h" />
+    <ClInclude Include="View\CollectionPlanManageView.h" />
+    <ClInclude Include="View\CollectionPlanParaPresetView.h" />
+    <ClInclude Include="View\DetectDeviceManageView.h" />
+    <ClInclude Include="View\DeviceParaView.h" />
+    <ClInclude Include="View\EngineerUnitView.h" />
+    <ClInclude Include="View\GeneralParaView.h" />
+    <ClInclude Include="View\GeometricParaView.h" />
+    <ClInclude Include="View\LoginView.h" />
+    <ClInclude Include="View\NewProjectView.h" />
+    <ClInclude Include="View\OpenProjectView.h" />
+    <ClInclude Include="View\Picture\ColorView.h" />
+    <ClInclude Include="View\Picture\CoordinateView.h" />
+    <ClInclude Include="View\Picture\GraphAttributeView.h" />
+    <ClInclude Include="View\Picture\LineView.h" />
+    <ClInclude Include="View\ProductManageView.h" />
+    <ClInclude Include="View\ProjectSetView.h" />
+    <ClInclude Include="View\RegisterView.h" />
     <ClInclude Include="View\SignalDataView.h" />
-    <ClInclude Include="Service\SumsignalService.h" />
     <ClInclude Include="View\SignalSaveView.h" />
     <ClInclude Include="View\SignalSelectView.h" />
-    <ClInclude Include="entity\SmartArray.h" />
-    <ClInclude Include="entity\SmartFFTWComplexArray.h" />
-    <ClInclude Include="View\CollectionPlanParaPresetView.h" />
-    <ClInclude Include="View\StateSetDialog.h" />
-    <ClInclude Include="View\StateSetDockPanelView.h" />
-    <ClInclude Include="View\StatisticView.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="View\SubChannelParaView.h" />
-    <ClInclude Include="View\SystemParaDialog.h" />
-    <ClInclude Include="View\SystemParaView.h" />
-    <ClInclude Include="targetver.h" />
-    <ClInclude Include="entity\TbCollectionPlan.h" />
-    <ClInclude Include="entity\TbProduct.h" />
-    <ClInclude Include="dao\TbProductDao.h" />
-    <ClInclude Include="entity\TbDictionary.h" />
-    <ClInclude Include="dao\TbDictionaryDao.h" />
-    <ClInclude Include="entity\TbProject.h" />
-    <ClInclude Include="dao\TbProjectDao.h" />
-    <ClInclude Include="entity\TbRecordSignal.h" />
-    <ClInclude Include="dao\TbRecordSignalDao.h" />
-    <ClInclude Include="entity\TbChannel.h" />
-    <ClInclude Include="dao\TbChannelDao.h" />
-    <ClInclude Include="entity\TbSumsignal.h" />
-    <ClInclude Include="dao\TbSumsignalDao.h" />
-    <ClInclude Include="dao\TbUserDao.h" />
-    <ClInclude Include="entity\TbCollectionparas.h" />
-    <ClInclude Include="dao\TbCollectionparasDao.h" />
-    <ClInclude Include="entity\TbUser.h" />
-    <ClInclude Include="Controller\UserController.h" />
-    <ClInclude Include="Service\UserService.h" />
-    <ClInclude Include="Controller\CollectionparasController.h" />
-    <ClInclude Include="Service\CollectionparasService.h" />
-    <ClInclude Include="Utils\ThreadSafeQueue.h" />
-    <ClInclude Include="View\TriggerParaView.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AlarmparaController.cpp" />
     <ClCompile Include="AlarmparaService.cpp" />
     <ClCompile Include="CDHTestHardWare.cpp" />
     <ClCompile Include="Channel.cpp" />
-    <ClCompile Include="ChildRibbonPanel.cpp" />
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="ConstDefine.cpp" />
     <ClCompile Include="DHTestHardWareController.cpp" />
@@ -463,6 +433,9 @@
     <ClCompile Include="entity\AcquiredSignal.cpp" />
     <ClCompile Include="AirCraftCasingVibrateSystem.cpp" />
     <ClCompile Include="AirCraftCasingVibrateSystemDoc.cpp" />
+    <ClCompile Include="RedisDataProcess.cpp" />
+    <ClCompile Include="SensorController.cpp" />
+    <ClCompile Include="SensorService.cpp" />
     <ClCompile Include="SignalController.cpp" />
     <ClCompile Include="SignalService.cpp" />
     <ClCompile Include="SignalTestRecordController.cpp" />
@@ -483,7 +456,6 @@
     <ClCompile Include="TbSignal.cpp" />
     <ClCompile Include="TbSignalDao.cpp" />
     <ClCompile Include="TbSignalTestRecord.cpp" />
-    <ClCompile Include="TbSignalTestRecordDao.cpp" />
     <ClCompile Include="TbSumsignalLabel.cpp" />
     <ClCompile Include="TbSumsignalLabelDao.cpp" />
     <ClCompile Include="SumsignalLabelService.cpp" />
@@ -493,6 +465,8 @@
     <ClCompile Include="TbTeststandDao.cpp" />
     <ClCompile Include="TbTeststate.cpp" />
     <ClCompile Include="TbTeststateDao.cpp" />
+    <ClCompile Include="TestController.cpp" />
+    <ClCompile Include="TestService.cpp" />
     <ClCompile Include="UUIDUtil.cpp" />
     <ClCompile Include="View\AirCraftCasingVibrateSystemView.cpp" />
     <ClCompile Include="View\AlarmParaSetView.cpp" />
@@ -553,7 +527,6 @@
     <ClCompile Include="Controller\ProductController.cpp" />
     <ClCompile Include="View\ProjectSetView.cpp" />
     <ClCompile Include="entity\RealTimeSignal.cpp" />
-    <ClCompile Include="Service\RecordSignalService.cpp" />
     <ClCompile Include="View\RegisterView.cpp" />
     <ClCompile Include="Controller\ChannelController.cpp" />
     <ClCompile Include="Utils\CherryTree.cpp" />
@@ -630,8 +603,6 @@
     <ClCompile Include="dao\TbDictionaryDao.cpp" />
     <ClCompile Include="entity\TbProject.cpp" />
     <ClCompile Include="dao\TbProjectDao.cpp" />
-    <ClCompile Include="entity\TbRecordSignal.cpp" />
-    <ClCompile Include="dao\TbRecordSignalDao.cpp" />
     <ClCompile Include="entity\TbChannel.cpp" />
     <ClCompile Include="dao\TbChannelDao.cpp" />
     <ClCompile Include="entity\TbSumsignal.cpp" />

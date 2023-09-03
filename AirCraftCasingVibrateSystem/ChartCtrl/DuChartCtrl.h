@@ -18,6 +18,9 @@
 #include <map>
 #include "DuChartCtrlShuxing.h"
 #include "DuExport.h"
+
+#include "TbChannel.h"
+
 #define ID_NEW_EDIT 4001
 class  CDuChartCtrl : public CChartCtrl
 {

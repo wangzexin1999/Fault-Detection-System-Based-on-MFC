@@ -1521,8 +1521,8 @@ void CDuChartCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	CWnd::OnKeyDown(nChar, nRepCnt, nFlags);
 	//RefreshCtrl();
 }
-void  CDuChartCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
-{
+
+void  CDuChartCtrl::OnLButtonDblClk(UINT nFlags, CPoint point){
 	CChartAxis * pxAxis = GetAxisDu(CChartCtrl::BottomAxis, 0);
 	CChartAxis * pyAxis = GetAxisDu(CChartCtrl::LeftAxis, 0);
 	if (point.x <= pxAxis->GetAxisLenght() + 80 && point.x >= pxAxis->GetAxisLenght() + 30 && point.y >= pyAxis->GetAxisLenght() + 5 && point.y >= pyAxis->GetAxisLenght() + 10)
@@ -1536,12 +1536,11 @@ void  CDuChartCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 		p_MyEdit.SetWindowPos(NULL, point.x - 15, point.y - 10, perWidth, perHeight, SWP_NOZORDER | SWP_NOSIZE);
 		CWnd* pWnd = GetDlgItem(ID_NEW_EDIT);
 		pWnd->SetFocus();
-
 	}
 }
+
 void CDuChartCtrl::OnEdit()
 {
-
 	CChartAxis * pxAxis = GetAxisDu(CChartCtrl::BottomAxis, 0);
 	CChartAxis * pyAxis = GetAxisDu(CChartCtrl::LeftAxis, 0);
 	CString str;
@@ -1550,11 +1549,11 @@ void CDuChartCtrl::OnEdit()
 	p_MyEdit.GetWindowTextA(str);
 	double x_Max, x_Min;
 	pxAxis->GetMinMax(x_Min, x_Max);
-	if (str != "")
-	{
+	if (str != ""){
 		x_Max = atof(str.GetBuffer());
 	}
 	pxAxis->SetMinMax(x_Min, x_Max);
+	
 }
 
 //重写虚函数PreTranslateMessage() 用于回车键确认
